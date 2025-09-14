@@ -1,2 +1,23 @@
 @import "tailwindcss";
 
+.scroll-bar{
+    height: 100vh;
+    direction: rtl;
+    overflow: hidden;
+    transform: rotateY(180deg);
+}
+.scroll-bar-style{
+    @apply overflow-y-auto;
+    height: 100vh;
+    transform: rotateY(180deg);
+    direction: rtl;
+}
+.your-scroll-container {
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.your-scroll-container::-webkit-scrollbar {
+    display: none;
+}
