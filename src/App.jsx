@@ -1,13 +1,17 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Layout from "./pages/Layout.jsx";
+import Dashboard from "./pages/dashboard/dashboard.jsx";
 
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Layout />} />
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Dashboard />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );

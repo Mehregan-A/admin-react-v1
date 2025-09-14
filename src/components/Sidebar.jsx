@@ -131,7 +131,7 @@ const Sidebar = ({ open_close, open_slider }) => {
 
             <div
                 ref={sidebarRef}
-                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2  lg:self-start z-30 overflow-y-auto rounded-3xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
+                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2  lg:self-start z-30 overflow-y-auto rounded-4xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
                     open_slider ? "w-64 translate-x-0 " : "w-0 translate-x-full "
                 } gradient`}
             >
