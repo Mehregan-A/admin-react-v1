@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Config } from "../config/Config.jsx";
 import { IoShieldOutline } from "react-icons/io5";
+import {RiBox3Line, RiHome3Fill, RiHome5Fill} from "react-icons/ri";
+import {GoHomeFill} from "react-icons/go";
 // import { getAsyncProfile } from "../feature/redux/ProfileSlice.jsx";
 // import UserWoman from "../assets/images/UserWomen.png";
 // import UserImage from "../assets/images/User.png";
@@ -129,138 +131,113 @@ const Sidebar = ({ open_close, open_slider }) => {
 
             <div
                 ref={sidebarRef}
-                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky top-0 h-screen lg:self-start z-30 overflow-y-auto rounded-l-2xl shadow-xl backdrop-blur-md bg-opacity-90 transition-all duration-500 ease-in-out ${
-                    open_slider ? "w-64 translate-x-0 opacity-100" : "w-0 translate-x-full opacity-0"
-                } bg-gray-50`}
+                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2 h-100 lg:self-start z-30 overflow-y-auto rounded-3xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
+                    open_slider ? "w-64 translate-x-0 " : "w-0 translate-x-full "
+                } bg-gradient-to-t from-stone-800 via-stone-950 to-stone-800`}
             >
                 <div className="flex flex-col h-full justify-between">
-                    <div className="mt-7 mx-3 flex flex-col items-center justify-center text-gray-600 text-sm ">
-                        {/* profile */}
-                        {/*<Link*/}
-                        {/*    to={`/profile`}*/}
-                        {/*    className="flex flex-col gap-3 items-center mb-2 cursor-pointer"*/}
-                        {/*    onClick={handleItemClick}*/}
-                        {/*    style={{*/}
-                        {/*        transform: `scale(${scale})`,*/}
-                        {/*        transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)'*/}
-                        {/*    }}*/}
-                        {/*>*/}
-                        {/*    <div>*/}
-                        {/*        <img*/}
-                        {/*            className="w-20 h-20 rounded-full border border-sky-700  transition-shadow duration-300"*/}
-                        {/*            src={profile?.user?.image ? Config.apiImage + profile?.user?.image :profile?.gender === "female" ? UserWoman : UserImage}*/}
-                        {/*            alt="profile"*/}
-                        {/*            style={{*/}
-                        {/*                boxShadow: `0 0 10px rgba(2, 132, 199, ${scale})`*/}
-                        {/*            }}*/}
-                        {/*        />*/}
-                        {/*    </div>*/}
-                        {/*    <span className="my-3" style={{ transition: 'color 0.5s ease' }}>*/}
-                        {/*    {profile?.name} {profile?.family}*/}
-                        {/*</span>*/}
-                        {/*</Link>*/}
-
-                        {/* items */}
-                        <div className="w-full">
-                            <ul className="pt-3 mb-10 flex flex-col gap-3">
-                                {SideItem.map((item) =>
-                                    item.sub.length > 0 ? (
-                                        <li
-                                            key={item.id}
-                                            className={`${
-                                                subId === item.id ? "gap-1" : "gap-0"
-                                            } anime_hover duration-500 delay-150 overflow-hidden flex flex-col rounded-2xl  `}
-                                        >
-                                            <NavLink
-                                                to={item.link}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    subMenu(item.id);
-                                                }}
-                                                className={() =>
-                                                    location.pathname === item.link ||
-                                                    item.sub.some((sub) => sub.link === location.pathname)
-                                                        ? "active-link p-1.5 rounded-2xl flex justify-between items-center hover:bg-gray-200 transition-colors "
-                                                        : "inactive-link p-1.5 rounded-2xl flex justify-between items-center hover:bg-gray-200 transition-colors"
-                                                }
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <FaIcons icon={item.icon} />
-                                                    <span className="mr-2">{item.label}</span>
-                                                </div>
-                                                <HiOutlineChevronDown
-                                                    className={`anime_hover transition-transform duration-300 ${
-                                                        subId === item.id ? "rotate-0" : "rotate-90"
-                                                    }`}
-                                                />
-                                            </NavLink>
-
-                                            <ul
-                                                className={`flex flex-col gap-1 px-3 rounded-sm transition-[max-height,opacity] duration-600 ease-in-out overflow-hidden ${
-                                                    subId === item.id ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                                                }`}
-                                            >
-                                                {item.sub.map((detail) => (
-                                                    <li key={detail.id} className="anime_hover duration-1000 delay-150 transition-colors">
-                                                        <NavLink
-                                                            to={detail.link}
-                                                            onClick={() => {
-                                                                childMenu(detail.id);
-                                                                handleItemClick();
-                                                            }}
-                                                            className={({ isActive }) =>
-                                                                isActive
-                                                                    ? "active-link flex items-center justify-between p-1.5 rounded-lg hover:bg-gray-200 space-x-2 cursor-pointer transition-colors "
-                                                                    : "inactive-link flex items-center justify-between p-1.5 rounded-lg hover:bg-gray-200 space-x-2 cursor-pointer transition-colors "
-                                                            }
-                                                        >
-                                                            <div className="flex items-center gap-2">
-                                                                <FaCircle className="w-2 h-2" />
-                                                                <span>{detail.label}</span>
-                                                            </div>
-                                                        </NavLink>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </li>
-                                    ) : (
-                                        <li key={item.id} className="rounded-2xl hover:bg-gray-100 transition-colors  hover:shadow-xl hover:border-l-2  border-emerald-400">
-                                            <NavLink
-                                                to={item.link}
-                                                end
-                                                onClick={handleItemClick}
-                                                className={({ isActive }) =>
-                                                    isActive
-                                                        ? "active-link flex items-center p-2.5 flex-row gap-1"
-                                                        : "inactive-link flex items-center p-2.5 flex-row gap-1"
-                                                }
-                                            >
-                                                <FaIcons icon={item.icon} />
-                                                <span className="mr-2">{item.label}</span>
-                                            </NavLink>
-                                        </li>
-                                    )
-                                )}
+                    <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
+                        <div className='w-full'>
+                            <ul className="pt-3 mb-10 flex flex-col gap-1">
+                                <li className='flex justify-start rounded-full bg-gradient-to-l from-stone-600 to-stone-900  p-1 items-center'>
+                                    <div className="rounded-full w-11.5 h-11.5 bg-stone-500 text-2xl text-stone-100 items-center flex justify-center">
+                                        <RiHome5Fill />
+                                    </div>
+                                    <div className='text-stone-100 mr-2.5'>داشبورد</div>
+                                </li>
+                                <li className='flex justify-start rounded-full  p-1 items-center'>
+                                    <div className="rounded-full w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-400 items-center flex justify-center">
+                                        <RiBox3Line />
+                                    </div>
+                                    <div className='text-stone-400 mr-2.5'>محصولات</div>
+                                </li>
                             </ul>
                         </div>
+                        {/* items */}
+                        {/*<div className="w-full">*/}
+                        {/*    <ul className="pt-3 mb-10 flex flex-col gap-3">*/}
+                        {/*        {SideItem.map((item) =>*/}
+                        {/*            item.sub.length > 0 ? (*/}
+                        {/*                <li*/}
+                        {/*                    key={item.id}*/}
+                        {/*                    className={`${*/}
+                        {/*                        subId === item.id ? "gap-1" : "gap-0"*/}
+                        {/*                    } anime_hover duration-500 delay-150 overflow-hidden flex flex-col rounded-2xl  `}*/}
+                        {/*                >*/}
+                        {/*                    <NavLink*/}
+                        {/*                        to={item.link}*/}
+                        {/*                        onClick={(e) => {*/}
+                        {/*                            e.preventDefault();*/}
+                        {/*                            subMenu(item.id);*/}
+                        {/*                        }}*/}
+                        {/*                        className={() =>*/}
+                        {/*                            location.pathname === item.link ||*/}
+                        {/*                            item.sub.some((sub) => sub.link === location.pathname)*/}
+                        {/*                                ? "active-link p-1.5 rounded-2xl flex justify-between items-center hover:bg-gray-200 transition-colors "*/}
+                        {/*                                : "inactive-link p-1.5 rounded-2xl flex justify-between items-center hover:bg-gray-200 transition-colors"*/}
+                        {/*                        }*/}
+                        {/*                    >*/}
+                        {/*                        <div className="flex items-center gap-2">*/}
+                        {/*                            <FaIcons icon={item.icon} />*/}
+                        {/*                            <span className="mr-2">{item.label}</span>*/}
+                        {/*                        </div>*/}
+                        {/*                        <HiOutlineChevronDown*/}
+                        {/*                            className={`anime_hover transition-transform duration-300 ${*/}
+                        {/*                                subId === item.id ? "rotate-0" : "rotate-90"*/}
+                        {/*                            }`}*/}
+                        {/*                        />*/}
+                        {/*                    </NavLink>*/}
+
+                        {/*                    <ul*/}
+                        {/*                        className={`flex flex-col gap-1 px-3 rounded-sm transition-[max-height,opacity] duration-600 ease-in-out overflow-hidden ${*/}
+                        {/*                            subId === item.id ? "max-h-96 opacity-100" : "max-h-0 opacity-0"*/}
+                        {/*                        }`}*/}
+                        {/*                    >*/}
+                        {/*                        {item.sub.map((detail) => (*/}
+                        {/*                            <li key={detail.id} className="anime_hover duration-1000 delay-150 transition-colors">*/}
+                        {/*                                <NavLink*/}
+                        {/*                                    to={detail.link}*/}
+                        {/*                                    onClick={() => {*/}
+                        {/*                                        childMenu(detail.id);*/}
+                        {/*                                        handleItemClick();*/}
+                        {/*                                    }}*/}
+                        {/*                                    className={({ isActive }) =>*/}
+                        {/*                                        isActive*/}
+                        {/*                                            ? "active-link flex items-center justify-between p-1.5 rounded-lg hover:bg-gray-200 space-x-2 cursor-pointer transition-colors "*/}
+                        {/*                                            : "inactive-link flex items-center justify-between p-1.5 rounded-lg hover:bg-gray-200 space-x-2 cursor-pointer transition-colors "*/}
+                        {/*                                    }*/}
+                        {/*                                >*/}
+                        {/*                                    <div className="flex items-center gap-2">*/}
+                        {/*                                        <FaCircle className="w-2 h-2" />*/}
+                        {/*                                        <span>{detail.label}</span>*/}
+                        {/*                                    </div>*/}
+                        {/*                                </NavLink>*/}
+                        {/*                            </li>*/}
+                        {/*                        ))}*/}
+                        {/*                    </ul>*/}
+                        {/*                </li>*/}
+                        {/*            ) : (*/}
+                        {/*                <li key={item.id} className="rounded-2xl hover:bg-gray-100 transition-colors  hover:shadow-xl hover:border-l-2  border-emerald-400">*/}
+                        {/*                    <NavLink*/}
+                        {/*                        to={item.link}*/}
+                        {/*                        end*/}
+                        {/*                        onClick={handleItemClick}*/}
+                        {/*                        className={({ isActive }) =>*/}
+                        {/*                            isActive*/}
+                        {/*                                ? "active-link flex items-center p-2.5 flex-row gap-1"*/}
+                        {/*                                : "inactive-link flex items-center p-2.5 flex-row gap-1"*/}
+                        {/*                        }*/}
+                        {/*                    >*/}
+                        {/*                        <FaIcons icon={item.icon} />*/}
+                        {/*                        <span className="mr-2">{item.label}</span>*/}
+                        {/*                    </NavLink>*/}
+                        {/*                </li>*/}
+                        {/*            )*/}
+                        {/*        )}*/}
+                        {/*    </ul>*/}
+                        {/*</div>*/}
                     </div>
 
-                    {/* info */}
-                    <div className="flex flex-col gap-1 sm:gap-3 text-xs sm:text-xs text-gray-700 items-center p-2 sm:p-5">
-                        <div className="flex gap-1 sm:gap-2 text-gray-900 font-bold">
-                            <span>سامانه حکم ماموریت</span>
-                            <span>نسخه:{Config.version}</span>
-                        </div>
-                        <a
-                            href={"https://nilfamtech.com"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs sm:text-xs text-sky-800 flex gap-1 items-center"
-                        >
-                            <IoShieldOutline />
-                            تیم طراحی و توسعه: Nilfamtech
-                        </a>
-                    </div>
                 </div>
             </div>
         </>
