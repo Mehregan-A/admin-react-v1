@@ -17,7 +17,17 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+.gradient{
+    background: #3B3734;
+    background: linear-gradient(180deg, rgba(59, 55, 52, 0.92) 0%, rgba(42, 37, 36, 1) 20%, rgba(42, 37, 36, 1) 80%, rgba(59, 55, 52, 0.94) 100%);
+}
 
 .your-scroll-container::-webkit-scrollbar {
     display: none;
+}
+.active-link {
+    @apply bg-stone-300/40 rounded-full text-white  ;
+}
+.inactive-link {
+    @apply rounded-full text-white;
 }

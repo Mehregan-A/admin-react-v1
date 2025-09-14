@@ -131,26 +131,45 @@ const Sidebar = ({ open_close, open_slider }) => {
 
             <div
                 ref={sidebarRef}
-                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2 h-100 lg:self-start z-30 overflow-y-auto rounded-3xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
+                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2  lg:self-start z-30 overflow-y-auto rounded-3xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
                     open_slider ? "w-64 translate-x-0 " : "w-0 translate-x-full "
-                } bg-gradient-to-t from-stone-800 via-stone-950 to-stone-800`}
+                } gradient`}
             >
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
                         <div className='w-full'>
                             <ul className="pt-3 mb-10 flex flex-col gap-1">
-                                <li className='flex justify-start rounded-full bg-gradient-to-l from-stone-600 to-stone-900  p-1 items-center'>
-                                    <div className="rounded-full w-11.5 h-11.5 bg-stone-500 text-2xl text-stone-100 items-center flex justify-center">
-                                        <RiHome5Fill />
+                               {SideItem.map((item) =>
+                                <li key={item.id} className='group transition-colors cursor-pointer flex justify-start rounded-full hover:bg-gradient-to-l from-stone-400/90 via-stone-600 to-stone-700/30  p-1 items-center '>
+                                    <div className='rounded-full transition-colors group-hover:bg-stone-300/40 bg-stone-600/80 text-white'>
+                                        <NavLink
+                                            to={item.link}
+                                            end
+                                            onClick={handleItemClick}
+                                            className={({ isActive }) =>
+                                                isActive
+                                                    ? "  w-11.5 h-11.5  text-2xl  items-center flex justify-center"
+                                                    : "inactive-link  w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-50 items-center flex justify-center"
+                                            }
+                                        >
+                                            <div className='hidden group-hover:inline'>
+                                                <FaIcons icon={item.icon_fill} />
+                                        </div>
+                                            <div className=' group-hover:hidden'>
+                                                <FaIcons icon={item.icon_outline} />
+                                            </div>
+                                        </NavLink>
                                     </div>
-                                    <div className='text-stone-100 mr-2.5'>داشبورد</div>
+                                    <div className='text-stone-100 mr-2.5'>{item.label}</div>
+
                                 </li>
-                                <li className='flex justify-start rounded-full  p-1 items-center'>
-                                    <div className="rounded-full w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-400 items-center flex justify-center">
-                                        <RiBox3Line />
-                                    </div>
-                                    <div className='text-stone-400 mr-2.5'>محصولات</div>
-                                </li>
+                               )}
+                                {/*<li className='flex justify-start rounded-full  p-1 items-center'>*/}
+                                {/*    <div className="rounded-full w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-200 items-center flex justify-center">*/}
+                                {/*        <RiBox3Line />*/}
+                                {/*    </div>*/}
+                                {/*    <div className='text-stone-400 mr-2.5'>محصولات</div>*/}
+                                {/*</li>*/}
                             </ul>
                         </div>
                         {/* items */}
@@ -217,7 +236,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                         {/*                    </ul>*/}
                         {/*                </li>*/}
                         {/*            ) : (*/}
-                        {/*                <li key={item.id} className="rounded-2xl hover:bg-gray-100 transition-colors  hover:shadow-xl hover:border-l-2  border-emerald-400">*/}
+                        {/*                <li key={item.id} className="rounded-2xl  transition-colors  hover:shadow-xl hover:border-l-2  border-emerald-400">*/}
                         {/*                    <NavLink*/}
                         {/*                        to={item.link}*/}
                         {/*                        end*/}

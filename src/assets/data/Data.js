@@ -2,15 +2,17 @@
 export const SideItem = [
     {
         id: 1,
-        icon: "MdOutlineHome",
-        label: "پیشخوان",
+        icon_fill: "PiHouseFill",
+        icon_outline: "PiHouseLight",
+        label: "داشبورد",
         link: "/dashboard",
         sub: [],
     },
     {
         id: 14,
-        icon: "MdOutlineDescription",
-        label: "حکم ماموریت",
+        icon_fill: "PiCubeFill",
+        icon_outline: "PiCube",
+        label: "محصولات",
         sub: [
             {
                 id: 42,
@@ -34,36 +36,41 @@ export const SideItem = [
     },
     {
         id: 2,
-        icon: "MdOutlineDirectionsCar",
-        label: "لیست خودرو ها",
+        icon_fill: "PiShoppingCartSimpleFill",
+        icon_outline: "PiShoppingCartSimpleLight",
+        label: "سفارش ها",
         link: "/car/list/10/1",
         sub: [],
     },
     {
         id: 9,
-        icon: "MdOutlineGroups",
-        label: "لیست کارمندان",
+        icon_fill: "PiUsersThreeFill",
+        icon_outline: "PiUsersThreeLight",
+        label: "مشتریان",
         link: "/user/list/50/1",
         sub: [],
     },
     {
         id: 3,
-        icon: "MdOutlineSupervisorAccount",
-        label: "مدیران",
+        icon_fill: "PiMoneyWavyFill",
+        icon_outline: "PiMoneyWavyLight",
+        label: "مالی",
         link: "/admin/list/10/1",
         sub: [],
     },
     {
         id: 4,
-        icon: "MdOutlinePerson",
-        label: "پروفایل کاربری",
+        icon_fill: "PiWrenchFill",
+        icon_outline: "PiWrenchLight",
+        label: "تنظیمات",
         link: "/profile",
         sub: [],
     },
     {
         id: 8,
-        icon: "MdOutlineSettings",
-        label: "تنظیمات",
+        icon_fill: "PiUserGearFill",
+        icon_outline: "PiUserGearLight",
+        label: "پروفایل",
         sub: [
             {
                 id: 50,
@@ -81,24 +88,24 @@ export const SideItem = [
             //     : []),
         ],
     },
-    {
-        id: 10,
-        icon: "MdOutlineLock",
-        label: "گزارش ورود به سیستم",
-        sub: [
-            {
-                id: 45,
-                icon: "MdOutlineList",
-                label: "ورود موفق",
-                link: "/logs/success/50/1",
-            },
-            {
-                id: 44,
-                icon: "MdOutlinePersonAdd",
-                label: "ورود ناموفق",
-                link: "/logs/field/50/1",
-            },
-        ],
-    },
+    // {
+    //     id: 10,
+    //     icon: "MdOutlineLock",
+    //     label: "گزارش ورود به سیستم",
+    //     sub: [
+    //         {
+    //             id: 45,
+    //             icon: "MdOutlineList",
+    //             label: "ورود موفق",
+    //             link: "/logs/success/50/1",
+    //         },
+    //         {
+    //             id: 44,
+    //             icon: "MdOutlinePersonAdd",
+    //             label: "ورود ناموفق",
+    //             link: "/logs/field/50/1",
+    //         },
+    //     ],
+    // },
 ]
 
