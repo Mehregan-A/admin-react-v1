@@ -44,7 +44,7 @@ const Layout = () => {
         <>
             <div className='scroll-bar '>
                 <div className='scroll-bar-style your-scroll-container'>
-                    <div className="flex flex-col w-full bg-[#1b1918] " style={{ minHeight: "100vh" }}>
+                    <div className="flex flex-col w-full dark:bg-[#1b1918] " style={{ minHeight: "100vh" }}>
                         <div className="w-full relative">
                             <div className="flex">
                                 <Sidebar open_slider={closed.open} open_close={toggleSidebar} />

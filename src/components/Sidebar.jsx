@@ -131,180 +131,121 @@ const Sidebar = ({ open_close, open_slider }) => {
                 ref={sidebarRef}
                 className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2  lg:self-start z-30 overflow-y-auto rounded-4xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
                     open_slider ? "w-64 translate-x-0 " : "w-0 translate-x-full "
-                } gradient`}
+                } dark:bg-gradient-to-b dark:from-stone-800 dark:via-stone-900 dark:to-stone-800 bg-gradient-to-b from-stone-100 via-white to-stone-100  `}
             >
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
-                        <div className='w-full'>
-                            <div className='flex items-center justify-between px-2'>
-                                <div className='flex items-center gap-1'>
-                                    <img src={Image} className='rounded-full w-13 h-13'/>
-                                    <h1 className='text-stone-100'>سایت فروشگاهی</h1>
-                                </div>
-                                <div>
-                                    <PiEquals size={27} className='text-stone-100' />
-                                </div>
-                            </div>
-                            <ul className="pt-10 mb-10 flex flex-col gap-1">
-                               {SideItem.map((item) =>
-                                   item.sub.length > 0 ? (
-                                       <li
-                                           key={item.id}
-                                           className={`${
-                                               subId === item.id ? "gap-1 flex-col" : "gap-0 "
-                                           }  anime_hover duration-500 delay-150 overflow-hidden group transition-colors cursor-pointer flex  rounded-full hover:bg-gradient-to-l from-stone-400/90 via-stone-600 to-stone-700/30  p-1 items-center `}
-                                       >
-                                           <div className='rounded-full transition-colors group-hover:bg-stone-300/40 bg-stone-600/80 text-white'>
-                                               <NavLink
-                                                   to={item.link}
-                                                   onClick={(e) => {
-                                                       e.preventDefault();
-                                                       subMenu(item.id);
-                                                   }}
-                                                   className={() =>
-                                                       location.pathname === item.link ||
-                                                       item.sub.some((sub) => sub.link === location.pathname)
-                                                           ? "active-link w-11.5 h-11.5  text-2xl  items-center flex justify-center"
-                                                           : "inactive-link  w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-50 items-center flex justify-center"
-                                                   }
-                                               >
-                                                   <div className='hidden group-hover:inline'>
-                                                       <FaIcons icon={item.icon_fill} />
-                                                   </div>
-                                                   <div className=' group-hover:hidden'>
-                                                       <FaIcons icon={item.icon_outline} />
-                                                   </div>
-                                               </NavLink>
-                                           </div>
-                                           <div className={`${
-                                               subId === item.id ? "gap-1 flex-col" : "gap-0 "
-                                           } w-full flex justify-between items-center gap-1`}>
-                                               <div className='text-stone-100 mr-2.5'>{item.label}</div>
-                                               <div>
-                                                   <HiOutlineChevronDown
-                                                       className={`anime_hover transition-transform duration-300 text-stone-100 ${
-                                                           subId === item.id ? "rotate-0" : "rotate-90"
-                                                       }`}
-                                                   />
-                                               </div>
-                                           </div>
-                                       </li>
-                                   ) : (
-                                <li key={item.id} className='group transition-colors cursor-pointer flex justify-start rounded-full hover:bg-gradient-to-l from-stone-400/90 via-stone-600 to-stone-700/30  p-1 items-center '>
-                                    <div className='rounded-full transition-colors group-hover:bg-stone-300/40 bg-stone-600/80 text-white'>
-                                        <NavLink
-                                            to={item.link}
-                                            end
-                                            onClick={handleItemClick}
-                                            className={({ isActive }) =>
-                                                isActive
-                                                    ? " w-11.5 h-11.5  text-2xl  items-center flex justify-center"
-                                                    : "inactive-link  w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-50 items-center flex justify-center"
-                                            }
+                        <ul className="pt-10 mb-10 flex flex-col gap-1 w-full">
+                            {SideItem.map((item) =>
+                                item.sub.length > 0 ? (
+                                    <li
+                                        key={item.id}
+                                        className="flex flex-col w-full"
+                                    >
+                                        {/* کتگوری اصلی */}
+                                        <div
+                                            onClick={() => subMenu(item.id)}
+                                            className={`anime_hover w-full duration-500 group transition-colors cursor-pointer flex items-center rounded-full p-1 ${
+                                                subId === item.id
+                                                    ? "bg-gradient-to-l from-gray-200 via-gray-300 to-gray-400 dark:bg-gradient-to-l dark:from-stone-400/90 dark:via-stone-600 dark:to-stone-700/30"
+                                                    : "hover:bg-gradient-to-l from-gray-100 via-gray-200 to-gray-300 dark:hover:bg-gradient-to-l dark:from-stone-400/90 dark:via-stone-600 dark:to-stone-700/30"
+                                            }`}
                                         >
-                                            <div className='hidden group-hover:inline'>
-                                                <FaIcons icon={item.icon_fill} />
-                                        </div>
-                                            <div className=' group-hover:hidden'>
-                                                <FaIcons icon={item.icon_outline} />
-                                            </div>
-                                        </NavLink>
-                                    </div>
-                                    <div className='text-stone-100 mr-2.5'>{item.label}</div>
-                                </li>
-                                   )
-                               )}
-                                {/*<li className='flex justify-start rounded-full  p-1 items-center'>*/}
-                                {/*    <div className="rounded-full w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-200 items-center flex justify-center">*/}
-                                {/*        <RiBox3Line />*/}
-                                {/*    </div>*/}
-                                {/*    <div className='text-stone-400 mr-2.5'>محصولات</div>*/}
-                                {/*</li>*/}
-                            </ul>
-                        </div>
-                        {/* items */}
-                        {/*<div className="w-full">*/}
-                        {/*    <ul className="pt-3 mb-10 flex flex-col gap-3">*/}
-                        {/*        {SideItem.map((item) =>*/}
-                        {/*            item.sub.length > 0 ? (*/}
-                        {/*                <li*/}
-                        {/*                    key={item.id}*/}
-                        {/*                    className={`${*/}
-                        {/*                        subId === item.id ? "gap-1" : "gap-0"*/}
-                        {/*                    } anime_hover duration-500 delay-150 overflow-hidden flex flex-col rounded-2xl  `}*/}
-                        {/*                >*/}
-                        {/*                    <NavLink*/}
-                        {/*                        to={item.link}*/}
-                        {/*                        onClick={(e) => {*/}
-                        {/*                            e.preventDefault();*/}
-                        {/*                            subMenu(item.id);*/}
-                        {/*                        }}*/}
-                        {/*                        className={() =>*/}
-                        {/*                            location.pathname === item.link ||*/}
-                        {/*                            item.sub.some((sub) => sub.link === location.pathname)*/}
-                        {/*                                ? "active-link p-1.5 rounded-2xl flex justify-between items-center hover:bg-gray-200 transition-colors "*/}
-                        {/*                                : "inactive-link p-1.5 rounded-2xl flex justify-between items-center hover:bg-gray-200 transition-colors"*/}
-                        {/*                        }*/}
-                        {/*                    >*/}
-                        {/*                        <div className="flex items-center gap-2">*/}
-                        {/*                            <FaIcons icon={item.icon} />*/}
-                        {/*                            <span className="mr-2">{item.label}</span>*/}
-                        {/*                        </div>*/}
-                        {/*                        <HiOutlineChevronDown*/}
-                        {/*                            className={`anime_hover transition-transform duration-300 ${*/}
-                        {/*                                subId === item.id ? "rotate-0" : "rotate-90"*/}
-                        {/*                            }`}*/}
-                        {/*                        />*/}
-                        {/*                    </NavLink>*/}
 
-                        {/*                    <ul*/}
-                        {/*                        className={`flex flex-col gap-1 px-3 rounded-sm transition-[max-height,opacity] duration-600 ease-in-out overflow-hidden ${*/}
-                        {/*                            subId === item.id ? "max-h-96 opacity-100" : "max-h-0 opacity-0"*/}
-                        {/*                        }`}*/}
-                        {/*                    >*/}
-                        {/*                        {item.sub.map((detail) => (*/}
-                        {/*                            <li key={detail.id} className="anime_hover duration-1000 delay-150 transition-colors">*/}
-                        {/*                                <NavLink*/}
-                        {/*                                    to={detail.link}*/}
-                        {/*                                    onClick={() => {*/}
-                        {/*                                        childMenu(detail.id);*/}
-                        {/*                                        handleItemClick();*/}
-                        {/*                                    }}*/}
-                        {/*                                    className={({ isActive }) =>*/}
-                        {/*                                        isActive*/}
-                        {/*                                            ? "active-link flex items-center justify-between p-1.5 rounded-lg hover:bg-gray-200 space-x-2 cursor-pointer transition-colors "*/}
-                        {/*                                            : "inactive-link flex items-center justify-between p-1.5 rounded-lg hover:bg-gray-200 space-x-2 cursor-pointer transition-colors "*/}
-                        {/*                                    }*/}
-                        {/*                                >*/}
-                        {/*                                    <div className="flex items-center gap-2">*/}
-                        {/*                                        <FaCircle className="w-2 h-2" />*/}
-                        {/*                                        <span>{detail.label}</span>*/}
-                        {/*                                    </div>*/}
-                        {/*                                </NavLink>*/}
-                        {/*                            </li>*/}
-                        {/*                        ))}*/}
-                        {/*                    </ul>*/}
-                        {/*                </li>*/}
-                        {/*            ) : (*/}
-                        {/*                <li key={item.id} className="rounded-2xl  transition-colors  hover:shadow-xl hover:border-l-2  border-emerald-400">*/}
-                        {/*                    <NavLink*/}
-                        {/*                        to={item.link}*/}
-                        {/*                        end*/}
-                        {/*                        onClick={handleItemClick}*/}
-                        {/*                        className={({ isActive }) =>*/}
-                        {/*                            isActive*/}
-                        {/*                                ? "active-link flex items-center p-2.5 flex-row gap-1"*/}
-                        {/*                                : "inactive-link flex items-center p-2.5 flex-row gap-1"*/}
-                        {/*                        }*/}
-                        {/*                    >*/}
-                        {/*                        <FaIcons icon={item.icon} />*/}
-                        {/*                        <span className="mr-2">{item.label}</span>*/}
-                        {/*                    </NavLink>*/}
-                        {/*                </li>*/}
-                        {/*            )*/}
-                        {/*        )}*/}
-                        {/*    </ul>*/}
-                        {/*</div>*/}
+                                        <div className={`${subId === item.id?"bg-gray-300 dark:bg-stone-300/40":"bg-gray-100 dark:bg-stone-600/80"} rounded-full transition-colors  group-hover:bg-gray-200 dark:group-hover:bg-stone-300/40  text-stone-800 dark:text-white`}>
+                                                <NavLink
+                                                    to={item.link }
+                                                    className={() =>
+                                                        location.pathname === item.link ||
+                                                        item.sub.some((sub) => sub.link === location.pathname)
+                                                            ? "active-link w-11.5 h-11.5 text-2xl flex items-center justify-center"
+                                                            : "inactive-link w-11.5 h-11.5 bg-gray-100 dark:bg-stone-700 text-2xl text-stone-800 dark:text-stone-50 flex items-center justify-center"
+                                                    }
+                                                >
+                                                    <div className={`${subId === item.id?"inline":"hidden"} hidden group-hover:inline`}>
+                                                        <FaIcons icon={item.icon_fill} />
+                                                    </div>
+                                                    <div className={`${subId === item.id?"hidden":"inline"} hidden group-hover:hidden`}>
+                                                        <FaIcons icon={item.icon_outline} />
+                                                    </div>
+                                                </NavLink>
+                                            </div>
+                                            <div className="flex justify-between items-center w-full mr-2.5">
+                                                <span className="dark:text-stone-100 text-stone-800">{item.label}</span>
+                                                <HiOutlineChevronDown
+                                                    className={`anime_hover transition-transform duration-300 dark:text-stone-100 text-stone-800 ${
+                                                        subId === item.id ? "rotate-0" : "rotate-90"
+                                                    }`}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* ساب‌کتگوری‌ها */}
+                                        {subId === item.id && (
+                                            <ul className="ml-8 mt-2 flex flex-col">
+                                                {item.sub.map((sub) => (
+                                                    <li key={sub.id} className="relative flex items-center py-2">
+                                                        {/* خط عمودی */}
+                                                        <div className="absolute right-6 top-0 bottom-0 flex items-center">
+                                                            <div className="w-[0.5px] h-full bg-green-600 dark:bg-emerald-400 ml-2" />
+                                                        </div>
+
+                                                        <NavLink
+                                                            to={sub.link}
+                                                            className={({ isActive }) =>
+                                                                `flex items-center gap-2 px-3 py-1 rounded-full transition-colors w-full ${
+                                                                    isActive
+                                                                        ? "bg-gray-300 dark:bg-stone-300  font-semibold"
+                                                                        : "text-gray-700 dark:text-stone-300  hover:bg-gray-200 dark:hover:bg-stone-600/40"
+                                                                }`
+                                                            }
+                                                        >
+                                                            {/* فضای دایره همیشه اشغال می‌شود */}
+                                                            <div className="flex-shrink-0 mr-[9px] w-1 h-1 z-30">
+                                                                {/* دایره فقط وقتی فعال است پر می‌شود */}
+                                                                <div
+                                                                    className={`w-1.5 h-1 rounded-full  ${
+                                                                        location.pathname === sub.link ? "bg-green-600 dark:bg-emerald-400" : "bg-transparent"
+                                                                    }`}
+                                                                />
+                                                            </div>
+
+                                                            <div className="bg-gray-100 dark:bg-stone-600 w-full py-2.5 px-4 text-stone-800 dark:text-stone-100 rounded-3xl mr-1">
+                                                                {sub.label}
+                                                            </div>
+                                                        </NavLink>
+                                                    </li>
+                                                ))}
+
+                                            </ul>
+                                        )}
+                                    </li>
+                                ) : (
+                                    <li key={item.id} className="group transition-colors cursor-pointer flex items-center rounded-full   dark:hover:bg-gradient-to-l dark:hover:from-stone-400/90 dark:hover:via-stone-600 dark:hover:to-stone-700/30 p-1">
+                                        <div className="rounded-full transition-colors group-hover:bg-gray-300 dark:group-hover:bg-stone-300/40 bg-gray-100 dark:bg-stone-600/80 text-white">
+                                            <NavLink
+                                                to={item.link}
+                                                end
+                                                onClick={handleItemClick}
+                                                className={({ isActive }) =>
+                                                    isActive
+                                                        ? "w-11.5 h-11.5 text-2xl flex items-center justify-center"
+                                                        : "inactive-link w-11.5 h-11.5 bg-gray-100 dark:bg-stone-700 text-2xl text-stone-800 dark:text-stone-50 flex items-center justify-center"
+                                                }
+                                            >
+                                                <div className="hidden group-hover:inline">
+                                                    <FaIcons icon={item.icon_fill} />
+                                                </div>
+                                                <div className="group-hover:hidden">
+                                                    <FaIcons icon={item.icon_outline} />
+                                                </div>
+                                            </NavLink>
+                                        </div>
+                                        <div className="dark:text-stone-100 text-stone-800 mr-2.5">{item.label}</div>
+                                    </li>
+                                )
+                            )}
+                        </ul>
                     </div>
 
                 </div>

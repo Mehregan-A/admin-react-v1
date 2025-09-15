@@ -16,19 +16,19 @@ export const SideItem = [
         sub: [
             {
                 id: 42,
-                icon: "MdOutlinePersonAdd",
+                icon: "PiCirclesThreeFill",
                 label: "ثبت جدید",
-                link: "/decree/add",
+                link: "/dashboard",
             },
             {
                 id: 43,
-                icon: "MdOutlineList",
+                icon: "PiCirclesThreeFill",
                 label: "لیست ماموریت",
                 link: "/decree/list/50/1",
             },
             {
                 id: 46,
-                icon: "MdOutlineList",
+                icon: "PiCirclesThreeFill",
                 label: "جستجو",
                 link: "/decree/search/50/1",
             },
