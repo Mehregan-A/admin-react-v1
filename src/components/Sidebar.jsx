@@ -1,4 +1,4 @@
-// import Image from '/src/assets/images/User.png';
+import Image from '/src/assets/image/logo-sidebar.jpg';
 import { SideItem } from "../assets/data/data.js";
 import { NavLink, useLocation } from "react-router-dom";
 import FaIcons from "./Icon.jsx";
@@ -12,9 +12,7 @@ import { Config } from "../config/Config.jsx";
 import { IoShieldOutline } from "react-icons/io5";
 import {RiBox3Line, RiHome3Fill, RiHome5Fill} from "react-icons/ri";
 import {GoHomeFill} from "react-icons/go";
-// import { getAsyncProfile } from "../feature/redux/ProfileSlice.jsx";
-// import UserWoman from "../assets/images/UserWomen.png";
-// import UserImage from "../assets/images/User.png";
+import {PiEquals, PiEqualsBold, PiEqualsLight} from "react-icons/pi";
 
 const Sidebar = ({ open_close, open_slider }) => {
     // const { profile } = useSelector(state => state.profile);
@@ -138,8 +136,60 @@ const Sidebar = ({ open_close, open_slider }) => {
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
                         <div className='w-full'>
-                            <ul className="pt-3 mb-10 flex flex-col gap-1">
+                            <div className='flex items-center justify-between px-2'>
+                                <div className='flex items-center gap-1'>
+                                    <img src={Image} className='rounded-full w-13 h-13'/>
+                                    <h1 className='text-stone-100'>سایت فروشگاهی</h1>
+                                </div>
+                                <div>
+                                    <PiEquals size={27} className='text-stone-100' />
+                                </div>
+                            </div>
+                            <ul className="pt-10 mb-10 flex flex-col gap-1">
                                {SideItem.map((item) =>
+                                   item.sub.length > 0 ? (
+                                       <li
+                                           key={item.id}
+                                           className={`${
+                                               subId === item.id ? "gap-1 flex-col" : "gap-0 "
+                                           }  anime_hover duration-500 delay-150 overflow-hidden group transition-colors cursor-pointer flex  rounded-full hover:bg-gradient-to-l from-stone-400/90 via-stone-600 to-stone-700/30  p-1 items-center `}
+                                       >
+                                           <div className='rounded-full transition-colors group-hover:bg-stone-300/40 bg-stone-600/80 text-white'>
+                                               <NavLink
+                                                   to={item.link}
+                                                   onClick={(e) => {
+                                                       e.preventDefault();
+                                                       subMenu(item.id);
+                                                   }}
+                                                   className={() =>
+                                                       location.pathname === item.link ||
+                                                       item.sub.some((sub) => sub.link === location.pathname)
+                                                           ? "active-link w-11.5 h-11.5  text-2xl  items-center flex justify-center"
+                                                           : "inactive-link  w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-50 items-center flex justify-center"
+                                                   }
+                                               >
+                                                   <div className='hidden group-hover:inline'>
+                                                       <FaIcons icon={item.icon_fill} />
+                                                   </div>
+                                                   <div className=' group-hover:hidden'>
+                                                       <FaIcons icon={item.icon_outline} />
+                                                   </div>
+                                               </NavLink>
+                                           </div>
+                                           <div className={`${
+                                               subId === item.id ? "gap-1 flex-col" : "gap-0 "
+                                           } w-full flex justify-between items-center gap-1`}>
+                                               <div className='text-stone-100 mr-2.5'>{item.label}</div>
+                                               <div>
+                                                   <HiOutlineChevronDown
+                                                       className={`anime_hover transition-transform duration-300 text-stone-100 ${
+                                                           subId === item.id ? "rotate-0" : "rotate-90"
+                                                       }`}
+                                                   />
+                                               </div>
+                                           </div>
+                                       </li>
+                                   ) : (
                                 <li key={item.id} className='group transition-colors cursor-pointer flex justify-start rounded-full hover:bg-gradient-to-l from-stone-400/90 via-stone-600 to-stone-700/30  p-1 items-center '>
                                     <div className='rounded-full transition-colors group-hover:bg-stone-300/40 bg-stone-600/80 text-white'>
                                         <NavLink
@@ -148,7 +198,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                             onClick={handleItemClick}
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "  w-11.5 h-11.5  text-2xl  items-center flex justify-center"
+                                                    ? " w-11.5 h-11.5  text-2xl  items-center flex justify-center"
                                                     : "inactive-link  w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-50 items-center flex justify-center"
                                             }
                                         >
@@ -161,8 +211,8 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         </NavLink>
                                     </div>
                                     <div className='text-stone-100 mr-2.5'>{item.label}</div>
-
                                 </li>
+                                   )
                                )}
                                 {/*<li className='flex justify-start rounded-full  p-1 items-center'>*/}
                                 {/*    <div className="rounded-full w-11.5 h-11.5 bg-stone-700 text-2xl text-stone-200 items-center flex justify-center">*/}
