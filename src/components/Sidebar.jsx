@@ -4,29 +4,25 @@ import { NavLink, useLocation } from "react-router-dom";
 import FaIcons from "./Icon.jsx";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { useEffect, useState, useRef } from "react";
-import { FaX } from "react-icons/fa6";
-import { FaCircle } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Config } from "../config/Config.jsx";
-import { IoShieldOutline } from "react-icons/io5";
-import {RiBox3Line, RiHome3Fill, RiHome5Fill} from "react-icons/ri";
-import {GoHomeFill} from "react-icons/go";
-import {PiEquals, PiEqualsBold, PiEqualsLight} from "react-icons/pi";
+import {useDispatch, useSelector} from "react-redux";
+import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
+import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 
 const Sidebar = ({ open_close, open_slider }) => {
-    // const { profile } = useSelector(state => state.profile);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const {theme}=useSelector(state => state.theme)
     const location = useLocation();
-
     const sidebarRef = useRef();
-
-    // useEffect(() => {
-    //     dispatch(getAsyncProfile());
-    // }, [dispatch]);
-
     const [subId, setSubId] = useState(0);
     const [childId, setChildId] = useState(0);
+    const [isTheme, setIsTheme] = useState('light');
+
+    useEffect(() => {
+        if (theme === true){
+            setIsTheme((isTheme === "light")?"dark":"light");
+        }
+    }, [theme]);
+
 
     useEffect(() => {
         const activeSubId = SideItem.find(item =>
@@ -46,9 +42,9 @@ const Sidebar = ({ open_close, open_slider }) => {
         setSubId(subId === input ? 0 : input);
     };
 
-    const childMenu = (input) => {
-        setChildId(childId === input ? 0 : input);
-    };
+    // const childMenu = (input) => {
+    //     setChildId(childId === input ? 0 : input);
+    // };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -114,9 +110,23 @@ const Sidebar = ({ open_close, open_slider }) => {
             sidebarCurrent?.removeEventListener("scroll", handleScroll);
         };
     }, []);
-    const minScale = 0.7;
-    const maxScale = 1;
-    const scale = Math.max(minScale, maxScale - scrollY / 150);
+
+    useEffect(()=>{
+        if(JSON.parse(localStorage.getItem("theme")) == null){
+            document.documentElement.classList.add('dark');
+            localStorage.setItem("theme", JSON.stringify('dark'));
+        }else {
+            if(JSON.parse(localStorage.getItem("theme")) === 'dark'){
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem("theme", JSON.stringify('light'));
+            }else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                localStorage.setItem("theme", JSON.stringify('dark'));
+            }
+        }
+    },[theme])
 
     return (
         <>
@@ -142,7 +152,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         key={item.id}
                                         className="flex flex-col w-full"
                                     >
-                                        {/* کتگوری اصلی */}
+
                                         <div
                                             onClick={() => subMenu(item.id)}
                                             className={`anime_hover w-full duration-500 group transition-colors cursor-pointer flex items-center rounded-full p-1 ${
@@ -158,8 +168,8 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     className={() =>
                                                         location.pathname === item.link ||
                                                         item.sub.some((sub) => sub.link === location.pathname)
-                                                            ? "active-link w-11.5 h-11.5 text-2xl flex items-center justify-center"
-                                                            : "inactive-link w-11.5 h-11.5 bg-gray-100 dark:bg-stone-700 text-2xl text-stone-800 dark:text-stone-50 flex items-center justify-center"
+                                                            ? "active-link w-11.5 h-11.5 text-2xl flex items-center justify-center rounded-full"
+                                                            : "inactive-link w-11.5 h-11.5 bg-gray-600 dark:bg-stone-700 rounded-full text-2xl text-stone-200 dark:text-stone-50 flex items-center justify-center"
                                                     }
                                                 >
                                                     <div className={`${subId === item.id?"inline":"hidden"} hidden group-hover:inline`}>
@@ -180,14 +190,12 @@ const Sidebar = ({ open_close, open_slider }) => {
                                             </div>
                                         </div>
 
-                                        {/* ساب‌کتگوری‌ها */}
                                         {subId === item.id && (
                                             <ul className="ml-8 mt-2 flex flex-col">
                                                 {item.sub.map((sub) => (
                                                     <li key={sub.id} className="relative flex items-center py-2">
-                                                        {/* خط عمودی */}
                                                         <div className="absolute right-6 top-0 bottom-0 flex items-center">
-                                                            <div className="w-[0.5px] h-full bg-green-600 dark:bg-emerald-400 ml-2" />
+                                                            <div className="w-[0.5px] h-full bg-stone-600 dark:bg-stone-100 ml-2" />
                                                         </div>
 
                                                         <NavLink
@@ -195,17 +203,17 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                             className={({ isActive }) =>
                                                                 `flex items-center gap-2 px-3 py-1 rounded-full transition-colors w-full ${
                                                                     isActive
-                                                                        ? "bg-gray-300 dark:bg-stone-300  font-semibold"
-                                                                        : "text-gray-700 dark:text-stone-300  hover:bg-gray-200 dark:hover:bg-stone-600/40"
+                                                                        ? " font-semibold"
+                                                                        : "text-gray-700 dark:text-stone-300 "
                                                                 }`
                                                             }
                                                         >
-                                                            {/* فضای دایره همیشه اشغال می‌شود */}
+
                                                             <div className="flex-shrink-0 mr-[9px] w-1 h-1 z-30">
-                                                                {/* دایره فقط وقتی فعال است پر می‌شود */}
+
                                                                 <div
                                                                     className={`w-1.5 h-1 rounded-full  ${
-                                                                        location.pathname === sub.link ? "bg-green-600 dark:bg-emerald-400" : "bg-transparent"
+                                                                        location.pathname === sub.link ? "bg-stone-600 dark:bg-stone-100" : "bg-transparent"
                                                                     }`}
                                                                 />
                                                             </div>
@@ -221,16 +229,16 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         )}
                                     </li>
                                 ) : (
-                                    <li key={item.id} className="group transition-colors cursor-pointer flex items-center rounded-full   dark:hover:bg-gradient-to-l dark:hover:from-stone-400/90 dark:hover:via-stone-600 dark:hover:to-stone-700/30 p-1">
-                                        <div className="rounded-full transition-colors group-hover:bg-gray-300 dark:group-hover:bg-stone-300/40 bg-gray-100 dark:bg-stone-600/80 text-white">
+                                    <li key={item.id} className="group transition-colors cursor-pointer flex items-center rounded-full hover:bg-gradient-to-l from-gray-400 via-gray-300 to-gray-100   dark:hover:bg-gradient-to-l dark:hover:from-stone-400/90 dark:hover:via-stone-600 dark:hover:to-stone-700/30 p-1">
+                                        <div className="rounded-full transition-colors group-hover:bg-white dark:group-hover:bg-stone-300/40 bg-gray-100 dark:bg-stone-600/80 text-white">
                                             <NavLink
                                                 to={item.link}
                                                 end
                                                 onClick={handleItemClick}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "w-11.5 h-11.5 text-2xl flex items-center justify-center"
-                                                        : "inactive-link w-11.5 h-11.5 bg-gray-100 dark:bg-stone-700 text-2xl text-stone-800 dark:text-stone-50 flex items-center justify-center"
+                                                        ? "w-11.5 h-11.5 text-2xl flex items-center justify-center rounded-full"
+                                                        : "inactive-link w-11.5 h-11.5 bg-gray-600 dark:bg-stone-700 text-2xl rounded-full text-gray-50 dark:text-stone-50 flex items-center justify-center"
                                                 }
                                             >
                                                 <div className="hidden group-hover:inline">
@@ -249,6 +257,11 @@ const Sidebar = ({ open_close, open_slider }) => {
                     </div>
 
                 </div>
+                <div className="p-5">
+                    <PiMoonThin onClick={()=>{dispatch(set_theme(false))}} className={`${theme ? 'block' : 'hidden'} w-8 h-8 text-stone-200`} />
+                    <PiSunDimThin onClick={()=>{dispatch(set_theme(true))}} className={`${theme ? 'hidden' : 'block'} w-8 h-8 text-stone-200`} />
+                </div>
+
             </div>
         </>
     );
