@@ -150,16 +150,20 @@ const Sidebar = ({ open_close, open_slider }) => {
                                 item.sub.length > 0 ? (
                                     <li
                                         key={item.id}
-                                        className="relative anime_hover w-full duration-500 group transition-colors cursor-pointer flex items-center p-3.5  bg-gradient-to-r from-gray-100/80 to-white hover:bg-cyan-50/20  hover:shadow hover:shadow-cyan-300/50 rounded-lg hover:drop-shadow-lg hover:drop-shadow-cyan-300  "
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            subMenu(item.id);
+                                        }}
+                                        className="relative anime_hover w-full duration-500 group transition-colors cursor-pointer p-3.5 flex flex-col items-center bg-gradient-to-r from-gray-100/80 to-white hover:bg-cyan-50/20  hover:shadow hover:shadow-cyan-300/50 rounded-lg hover:drop-shadow-lg hover:drop-shadow-cyan-300  "
                                     >
-                                        <div className={`${subId === item.id?"absolute -right-2 bg-gray-300 dark:bg-stone-300/40":"bg-gray-100 dark:bg-stone-600/80"} rounded-full transition-colors  group-hover:bg-white drop-shadow-lg group-hover:drop-shadow-cyan-300  hover:shadow hover:shadow-cyan-300/50`}>
+                                        <div className={`${subId === item.id?" bg-gray-300 dark:bg-stone-300/40":"bg-gray-100 dark:bg-stone-600/80"} absolute -right-2 -top-0.5 rounded-full transition-colors  group-hover:bg-white drop-shadow-lg group-hover:drop-shadow-cyan-300  hover:shadow hover:shadow-cyan-300/50`}>
                                                 <NavLink
                                                     to={item.link }
                                                     className={() =>
                                                         location.pathname === item.link ||
                                                         item.sub.some((sub) => sub.link === location.pathname)
-                                                            ? "w-11 h-11 text-2xl flex items-center justify-center rounded-full"
-                                                            : "w-11 h-11  bg-gray-50 text-2xl rounded-full text-cyan-700/70 text-shadow-lg flex items-center justify-center"
+                                                            ? "w-13 h-13 text-2xl bg-gray-50 flex items-center justify-center text-cyan-600/70 rounded-full"
+                                                            : "w-13 h-13  bg-gray-50 text-2xl rounded-full text-cyan-600/70 text-shadow-lg flex items-center justify-center"
                                                     }
                                                 >
                                                     <div className={`${subId === item.id?"inline":"hidden"} hidden group-hover:inline`}>
@@ -170,44 +174,56 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     </div>
                                                 </NavLink>
                                             </div>
-                                            <div className="flex justify-between items-center w-full mr-2.5">
-                                                <span className="dark:text-stone-100 text-stone-800">{item.label}</span>
+                                            <div className="flex justify-between items-center w-full">
+                                                <span className="dark:text-stone-100 text-stone-800 mr-10">{item.label}</span>
                                                 <HiOutlineChevronDown
-                                                    className={`anime_hover transition-transform duration-300 dark:text-stone-100 text-stone-800 ${
+                                                    className={`flex justify-end anime_hover text-cyan-600/70 transition-transform duration-300 animate-bounce w-4 h-4 ${
                                                         subId === item.id ? "rotate-0" : "rotate-90"
                                                     }`}
                                                 />
                                             </div>
 
                                         {subId === item.id && (
-                                            <ul className="ml-8 mt-2 flex flex-col">
+                                            <ul className="w-full mt-2 flex flex-col border-r-2 border-gray-200">
                                                 {item.sub.map((sub) => (
                                                     <li key={sub.id} className="relative flex items-center py-2">
-                                                        <div className="absolute right-6 top-0 bottom-0 flex items-center">
-                                                            <div className="w-[0.5px] h-full bg-stone-600 dark:bg-stone-100 ml-2" />
-                                                        </div>
+                                                         <span
+                                                             className="absolute left-full top-0 bottom-0 w-6 pointer-events-none"
+                                                             aria-hidden="true"
+                                                         >
+                                                              <svg
+                                                                  viewBox="0 0 24 100"
+                                                                  preserveAspectRatio="none"
+                                                                  className="absolute inset-0 h-full w-full stroke-gray-300 transform -rotate-90"
+                                                              >
+                                                                <path
+                                                                    d="M50,18 Q5,50 10,10"
+                                                                    fill="none"
+                                                                    strokeWidth="1"
+                                                                />
+                                                              </svg>
+                                                            </span>
 
                                                         <NavLink
                                                             to={sub.link}
                                                             className={({ isActive }) =>
-                                                                `flex items-center gap-2 px-3 py-1 rounded-full transition-colors w-full ${
+                                                                `flex items-center gap-2 px-3 py-1  transition-colors w-full ${
                                                                     isActive
                                                                         ? " font-semibold"
                                                                         : "text-gray-700 dark:text-stone-300 "
                                                                 }`
                                                             }
                                                         >
+                                                            {/*<div className="flex-shrink-0 mr-[9px] w-1 h-1 z-30">*/}
 
-                                                            <div className="flex-shrink-0 mr-[9px] w-1 h-1 z-30">
+                                                            {/*    <div*/}
+                                                            {/*        className={`w-1.5 h-1 rounded-full  ${*/}
+                                                            {/*            location.pathname === sub.link ? "bg-stone-600 dark:bg-stone-100" : "bg-transparent"*/}
+                                                            {/*        }`}*/}
+                                                            {/*    />*/}
+                                                            {/*</div>*/}
 
-                                                                <div
-                                                                    className={`w-1.5 h-1 rounded-full  ${
-                                                                        location.pathname === sub.link ? "bg-stone-600 dark:bg-stone-100" : "bg-transparent"
-                                                                    }`}
-                                                                />
-                                                            </div>
-
-                                                            <div className="bg-gray-100 dark:bg-stone-600 w-full py-2.5 px-4 text-stone-800 dark:text-stone-100 rounded-3xl mr-1">
+                                                            <div className="hover:bg-cyan-300/50 w-full py-2.5 px-2 text-cyan-700/80  rounded-lg mr-1">
                                                                 {sub.label}
                                                             </div>
                                                         </NavLink>
@@ -226,7 +242,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 onClick={handleItemClick}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "w-13 h-13 text-2xl flex items-center justify-center rounded-full"
+                                                        ? "w-13 h-13 text-2xl bg-gray-50 text-cyan-600/70 flex items-center justify-center rounded-full"
                                                         : "w-13 h-13  bg-gray-50 text-2xl rounded-full text-cyan-600/70 text-shadow-lg flex items-center justify-center"
                                                 }
                                             >
