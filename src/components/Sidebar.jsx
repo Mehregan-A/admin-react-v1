@@ -145,31 +145,21 @@ const Sidebar = ({ open_close, open_slider }) => {
             >
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
-                        <ul className="pt-10 mb-10 flex flex-col gap-1 w-full">
+                        <ul className="pt-10 mb-10 flex flex-col gap-5 w-full">
                             {SideItem.map((item) =>
                                 item.sub.length > 0 ? (
                                     <li
                                         key={item.id}
-                                        className="flex flex-col w-full"
+                                        className="relative anime_hover w-full duration-500 group transition-colors cursor-pointer flex items-center p-3.5  bg-gradient-to-r from-gray-100/80 to-white hover:bg-cyan-50/20  hover:shadow hover:shadow-cyan-300/50 rounded-lg hover:drop-shadow-lg hover:drop-shadow-cyan-300  "
                                     >
-
-                                        <div
-                                            onClick={() => subMenu(item.id)}
-                                            className={`anime_hover w-full duration-500 group transition-colors cursor-pointer flex items-center rounded-full p-1 ${
-                                                subId === item.id
-                                                    ? "bg-gradient-to-l from-gray-200 via-gray-300 to-gray-400 dark:bg-gradient-to-l dark:from-stone-400/90 dark:via-stone-600 dark:to-stone-700/30"
-                                                    : "hover:bg-gradient-to-l from-gray-100 via-gray-200 to-gray-300 dark:hover:bg-gradient-to-l dark:from-stone-400/90 dark:via-stone-600 dark:to-stone-700/30"
-                                            }`}
-                                        >
-
-                                        <div className={`${subId === item.id?"bg-gray-300 dark:bg-stone-300/40":"bg-gray-100 dark:bg-stone-600/80"} rounded-full transition-colors  group-hover:bg-gray-200 dark:group-hover:bg-stone-300/40  text-stone-800 dark:text-white`}>
+                                        <div className={`${subId === item.id?"absolute -right-2 bg-gray-300 dark:bg-stone-300/40":"bg-gray-100 dark:bg-stone-600/80"} rounded-full transition-colors  group-hover:bg-white drop-shadow-lg group-hover:drop-shadow-cyan-300  hover:shadow hover:shadow-cyan-300/50`}>
                                                 <NavLink
                                                     to={item.link }
                                                     className={() =>
                                                         location.pathname === item.link ||
                                                         item.sub.some((sub) => sub.link === location.pathname)
-                                                            ? "active-link w-11.5 h-11.5 text-2xl flex items-center justify-center rounded-full"
-                                                            : "inactive-link w-11.5 h-11.5 bg-gray-600 dark:bg-stone-700 rounded-full text-2xl text-stone-200 dark:text-stone-50 flex items-center justify-center"
+                                                            ? "w-11 h-11 text-2xl flex items-center justify-center rounded-full"
+                                                            : "w-11 h-11  bg-gray-50 text-2xl rounded-full text-cyan-700/70 text-shadow-lg flex items-center justify-center"
                                                     }
                                                 >
                                                     <div className={`${subId === item.id?"inline":"hidden"} hidden group-hover:inline`}>
@@ -188,7 +178,6 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     }`}
                                                 />
                                             </div>
-                                        </div>
 
                                         {subId === item.id && (
                                             <ul className="ml-8 mt-2 flex flex-col">
@@ -229,16 +218,16 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         )}
                                     </li>
                                 ) : (
-                                    <li key={item.id} className="group transition-colors cursor-pointer flex items-center bg-gradient-to-l from- to-gray-100 hover:bg-emerald-50/20  hover:shadow hover:shadow-emerald-300/50 rounded-lg hover:drop-shadow-lg hover:drop-shadow-emerald-300/50 p-1">
-                                        <div className="rounded-full transition-colors group-hover:bg-white bg-gray-100 ">
+                                    <li key={item.id} className="relative group transition-colors cursor-pointer flex items-center  bg-gradient-to-r from-gray-100/80 to-white hover:inset-shadow-none  hover:bg-cyan-50/20  hover:shadow hover:shadow-cyan-300/50 rounded-lg hover:drop-shadow-lg hover:drop-shadow-cyan-300 p-3.5">
+                                        <div className="absolute -right-2 rounded-full transition-colors duration-300 group-hover:bg-white drop-shadow-lg group-hover:drop-shadow-cyan-300  hover:shadow hover:shadow-cyan-300/50">
                                             <NavLink
                                                 to={item.link}
                                                 end
                                                 onClick={handleItemClick}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "w-9 h-9 text-2xl flex items-center justify-center rounded-full"
-                                                        : "w-9 h-9 bg-gray-600 dark:bg-stone-700 text-2xl rounded-full text-emerald-800/70 text-shadow-lg flex items-center justify-center"
+                                                        ? "w-13 h-13 text-2xl flex items-center justify-center rounded-full"
+                                                        : "w-13 h-13  bg-gray-50 text-2xl rounded-full text-cyan-600/70 text-shadow-lg flex items-center justify-center"
                                                 }
                                             >
                                                 <div className="hidden group-hover:inline">
@@ -249,7 +238,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 </div>
                                             </NavLink>
                                         </div>
-                                        <div className="dark:text-stone-100 text-stone-800 mr-2.5">{item.label}</div>
+                                        <div className="dark:text-stone-100 text-stone-800 mr-10">{item.label}</div>
                                     </li>
                                 )
                             )}
