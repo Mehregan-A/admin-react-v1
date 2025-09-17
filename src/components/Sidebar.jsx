@@ -139,9 +139,9 @@ const Sidebar = ({ open_close, open_slider }) => {
 
             <div
                 ref={sidebarRef}
-                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky m-2  lg:self-start z-30 overflow-y-auto rounded-4xl shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
+                className={`your-scroll-container flex-shrink-0 no-print fixed lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md  transition-all duration-500 ease-in-out ${
                     open_slider ? "w-64 translate-x-0 " : "w-0 translate-x-full "
-                } dark:bg-gradient-to-b dark:from-stone-800 dark:via-stone-900 dark:to-stone-800 bg-gradient-to-b from-stone-100 via-white to-stone-100  `}
+                } bg-gradient-to-r from-white to-gray-100`}
             >
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
@@ -229,16 +229,16 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         )}
                                     </li>
                                 ) : (
-                                    <li key={item.id} className="group transition-colors cursor-pointer flex items-center rounded-full hover:bg-gradient-to-l from-gray-400 via-gray-300 to-gray-100   dark:hover:bg-gradient-to-l dark:hover:from-stone-400/90 dark:hover:via-stone-600 dark:hover:to-stone-700/30 p-1">
-                                        <div className="rounded-full transition-colors group-hover:bg-white dark:group-hover:bg-stone-300/40 bg-gray-100 dark:bg-stone-600/80 text-white">
+                                    <li key={item.id} className="group transition-colors cursor-pointer flex items-center bg-gradient-to-l from- to-gray-100 hover:bg-emerald-50/20  hover:shadow hover:shadow-emerald-300/50 rounded-lg hover:drop-shadow-lg hover:drop-shadow-emerald-300/50 p-1">
+                                        <div className="rounded-full transition-colors group-hover:bg-white bg-gray-100 ">
                                             <NavLink
                                                 to={item.link}
                                                 end
                                                 onClick={handleItemClick}
                                                 className={({ isActive }) =>
                                                     isActive
-                                                        ? "w-11.5 h-11.5 text-2xl flex items-center justify-center rounded-full"
-                                                        : "inactive-link w-11.5 h-11.5 bg-gray-600 dark:bg-stone-700 text-2xl rounded-full text-gray-50 dark:text-stone-50 flex items-center justify-center"
+                                                        ? "w-9 h-9 text-2xl flex items-center justify-center rounded-full"
+                                                        : "w-9 h-9 bg-gray-600 dark:bg-stone-700 text-2xl rounded-full text-emerald-800/70 text-shadow-lg flex items-center justify-center"
                                                 }
                                             >
                                                 <div className="hidden group-hover:inline">
