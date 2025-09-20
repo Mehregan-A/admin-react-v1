@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
 import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 import {AnimatePresence,  motion} from "framer-motion";
+import {MdMenuOpen, MdOutlineMenu} from "react-icons/md";
 
 const Sidebar = ({ open_close, open_slider }) => {
     const dispatch = useDispatch();
@@ -141,10 +142,7 @@ const Sidebar = ({ open_close, open_slider }) => {
 
             {/* سایدبار */}
             <div
-                ref={sidebarRef}
-                className={`your-scroll-container flex-shrink-0 no-print h-screen fixed lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 ${
-                    open_slider ? "translate-x-0" : "translate-x-full"
-                }`}
+                className={`your-scroll-container flex-shrink-0 no-print h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 `}
             >
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
@@ -171,8 +169,8 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     className={() =>
                                                         location.pathname === item.link ||
                                                         item.sub.some((sub) => sub.link === location.pathname)
-                                                            ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-cyan-400 rounded-full"
-                                                            : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-cyan-400 flex items-center justify-center"
+                                                            ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
+                                                            : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
                                                     }
                                                 >
                                                     <div className={`hidden group-hover:inline`}>
@@ -236,7 +234,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                             </AnimatePresence>
                                         </li>
                                     ) : (
-                                        <li
+                                <li
                                             key={item.id}
                                             className={`relative group cursor-pointer flex items-center rounded-lg p-3.5 transition-all duration-500 ease-in-out ${
                                                 location.pathname === item.link || item.sub.some((sub) => sub.link === location.pathname)
@@ -257,7 +255,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     className={() =>
                                                         location.pathname === item.link
                                                             ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-cyan-400 rounded-full"
-                                                            : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-cyan-400 flex items-center justify-center"
+                                                            : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
                                                     }
                                                 >
                                                     <div className={`${
@@ -275,39 +273,122 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     )
                             )}
                         </ul>
+                        {/* تم */}
+                        <button
+                            onClick={() => dispatch(set_theme(!theme))}
+                            className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
+                        >
+                            {/* دایره‌ی متحرک */}
+                            <span
+                                className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
+                                    theme ? "translate-x-6" : "translate-x-0"
+                                }`}
+                            ></span>
+
+                            {/* آیکون‌ها */}
+                            <PiMoonThin
+                                className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
+                                    theme ? "opacity-100" : "opacity-0"
+                                }`}
+                            />
+                            <PiSunDimThin
+                                className={`absolute right-1 w-6 h-6 text-orange-400 transition-opacity ${
+                                    theme ? "opacity-0" : "opacity-100"
+                                }`}
+                            />
+                        </button>
                     </div>
 
-                    {/* تم */}
-                    <button
-                        onClick={() => dispatch(set_theme(!theme))}
-                        className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
-                    >
-                        {/* دایره‌ی متحرک */}
-                        <span
-                            className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
-                                theme ? "translate-x-6" : "translate-x-0"
-                            }`}
-                        ></span>
-
-                        {/* آیکون‌ها */}
-                        <PiMoonThin
-                            className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
-                                theme ? "opacity-100" : "opacity-0"
-                            }`}
-                        />
-                        <PiSunDimThin
-                            className={`absolute right-1 w-6 h-6 text-orange-400 transition-opacity ${
-                                theme ? "opacity-0" : "opacity-100"
-                            }`}
-                        />
-                    </button>
                 </div>
+            </div>
+            {/* Mobile Sidebar (RTL) */}
+            <button
+                onClick={open_close} // تابعی که open_slider را تغییر می‌دهد
+                className="fixed top-4 right-4 z-50 lg:hidden bg-cyan-600 text-white p-2 rounded-md shadow-md"
+            >
+                {open_slider ? <MdOutlineMenu /> :  <MdMenuOpen />}
+            </button>
+
+            <div
+                ref={sidebarRef}
+                className={`fixed top-0 right-0 h-screen w-20 bg-gray-100 dark:bg-gray-800 z-40 flex flex-col items-center py-5 gap-4 transition-transform duration-300 ${
+                    !open_slider ? "translate-x-0" : "translate-x-full"
+                } lg:hidden`}
+            >
+                {SideItem.map((item) => (
+                    <div key={item.id} className="relative flex flex-col items-center w-full">
+                        {/* آیکون دایره */}
+                        <button
+                            onClick={() => setSubId(subId === item.id ? 0 : item.id)}
+                            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                                subId === item.id
+                                    ? "bg-cyan-600 text-white shadow-lg shadow-cyan-300/50 transform scale-105"
+                                    : "bg-gray-200 dark:bg-gray-700 text-cyan-600 dark:text-cyan-300"
+                            }`}
+                        >
+                            <div className={`${
+                                location.pathname === item.link || item.sub.some((sub) => sub.link === location.pathname) ?"inline":"" } hidden group-hover:inline`}>
+                                <FaIcons icon={item.icon_fill} />
+                            </div>
+                            <div className={`${
+                                location.pathname === item.link || item.sub.some((sub) => sub.link === location.pathname) ?"hidden":"inline" } group-hover:hidden`}>
+                                <FaIcons icon={item.icon_outline} />
+                            </div>
+                        </button>
+
+                        {/* Submenu کشویی از سمت چپ */}
+                        <AnimatePresence>
+                            {subId === item.id && (
+                                <motion.ul
+                                    initial={{ x: -60, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: -60, opacity: 0 }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    className="absolute right-full top-0 mr-2 w-40 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden text-right"
+                                >
+                                    {item.sub.map((sub) => (
+                                        <li key={sub.id}>
+                                            <NavLink
+                                                to={sub.link}
+                                                onClick={handleItemClick}
+                                                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-stone-300 hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transition-colors"
+                                            >
+                                                {sub.label}
+                                            </NavLink>
+                                        </li>
+                                    ))}
+                                </motion.ul>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                ))}
+                <button
+                    onClick={() => dispatch(set_theme(!theme))}
+                    className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
+                >
+                    {/* دایره‌ی متحرک */}
+                    <span
+                        className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
+                            theme ? "translate-x-6" : "translate-x-0"
+                        }`}
+                    ></span>
+
+                    {/* آیکون‌ها */}
+                    <PiMoonThin
+                        className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
+                            theme ? "opacity-100" : "opacity-0"
+                        }`}
+                    />
+                    <PiSunDimThin
+                        className={`absolute right-1 w-6 h-6 text-orange-400 transition-opacity ${
+                            theme ? "opacity-0" : "opacity-100"
+                        }`}
+                    />
+                </button>
             </div>
         </>
     );
-
-
-
 };
 
 export default Sidebar;
