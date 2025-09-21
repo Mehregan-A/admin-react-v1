@@ -9,7 +9,7 @@ import {Config} from "../../config/Config.jsx";
 
 const Login = () => {
     const dispatch = useDispatch();
-    const { login,login_index,isLoading_enter } = useSelector(state => state.login);
+    // const { login,login_index,isLoading_enter } = useSelector(state => state.login);
     const navigation = useNavigate();
     // const location = useLocation();
     useEffect(() => {
@@ -57,6 +57,9 @@ const Login = () => {
 
     return (
         <>
+            <div className='w-full h-screen bg-white dark:bg-gray-800 '>
+
+            </div>
         </>
     );
 };
