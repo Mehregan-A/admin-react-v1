@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
+import  loginImage from "../../assets/image/login.svg"
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {getAsyncCheck, getAsyncLoginIndex, loginClearResult, postAsyncLogin} from "../../feature/redux/LoginSlice.jsx";
 import { useEffect } from "react";
 import {useNavigate} from "react-router";
 import {Config} from "../../config/Config.jsx";
+import InputLogIn from "../../components/inputs/InputLogin.jsx";
 
 
 const Login = () => {
@@ -57,9 +59,27 @@ const Login = () => {
 
     return (
         <>
-            <div className='w-full h-screen bg-white dark:bg-gray-800 '>
 
+            <div className='h-screen bg-radial from-cyan-200 from-40% to-cyan-400 w-full flex'>
+                <div className='w-4/7 h-screen items-center flex justify-end'>
+                    <img src={loginImage} className='w-7xl'/>
+                </div>
+                <div className='w-4/7 h-screen  flex justify-center'>
+                    <div className="flex flex-col justify-start my-auto
+                bg-white/30 border border-white/20
+                backdrop-blur-md w-3/6 h-6/8
+                drop-shadow-xl rounded-2xl p-20">
+                        <span>logo</span>
+                        <span className="text-xl font-bold">ورود</span>
+                        <form onSubmit={formik.handleSubmit}>
+                            <InputLogIn autoFocusOnMount={true} formik={formik} name="username" label="نام کاربری" noPersian={true} />
+                            <InputLogIn formik={formik} type="password" name="password" label="کلمه عبور" noPersian={true} />
+                        </form>
+                    </div>
+
+                </div>
             </div>
+
         </>
     );
 };
