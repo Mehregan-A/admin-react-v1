@@ -132,15 +132,13 @@ const Sidebar = ({ open_close, open_slider }) => {
 
     return (
         <>
-            {/* بک‌گراند نیمه شفاف */}
-            <div
-                onClick={open_close}
-                className={`no-print fixed inset-0 bg-black/20 backdrop-blur-[1px] transition-opacity duration-300 z-20 lg:hidden ${
-                    open_slider ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                }`}
-            ></div>
+            {/*<div*/}
+            {/*    onClick={open_close}*/}
+            {/*    className={`no-print fixed inset-0 bg-black/20 backdrop-blur-[1px] transition-opacity duration-300 z-20 lg:hidden ${*/}
+            {/*        open_slider ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"*/}
+            {/*    }`}*/}
+            {/*></div>*/}
 
-            {/* سایدبار */}
             <div
                 className={`your-scroll-container flex-shrink-0 no-print h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 `}
             >
@@ -155,14 +153,14 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 e.preventDefault();
                                                 subMenu(item.id);
                                             }}
-                                            className="relative group cursor-pointer p-3.5 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
-                             bg-gray-100/80 dark:bg-gray-800 hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30
-                             hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105"
+                                            className={`${ location.pathname === item.link?"dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 transform scale-105":""} relative group cursor-pointer p-3.5 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
+                                             bg-gray-100/80 dark:bg-gray-800 hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30
+                                             hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                         >
                                             <div
                                                 className={`${
-                                                    subId === item.id ? "bg-gray-300 dark:bg-stone-300/40" : "bg-gray-100 dark:bg-stone-600/80"
-                                                } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white drop-shadow-lg group-hover:drop-shadow-cyan-300`}
+                                                    subId === item.id ? "bg-gray-300 dark:bg-gray-300/40" : "bg-gray-100 dark:bg-gray-600/80"
+                                                } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}
                                             >
                                                 <NavLink
                                                     to={item.link}
@@ -202,16 +200,15 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     >
                                                         {item.sub.map((sub) => (
                                                             <li key={sub.id} className="relative flex items-center py-2">
-                                                                {/* فاصله و خط راهنما */}
                                                                 <span className="absolute left-full top-0 bottom-0 w-6 pointer-events-none" aria-hidden="true">
-                              <svg
-                                  viewBox="0 0 24 100"
-                                  preserveAspectRatio="none"
-                                  className="absolute inset-0 h-full w-full stroke-gray-300 transform -rotate-90"
-                              >
-                                <path d="M50,18 Q5,50 10,10" fill="none" strokeWidth="1" />
-                              </svg>
-                            </span>
+                                                                  <svg
+                                                                      viewBox="0 0 24 100"
+                                                                      preserveAspectRatio="none"
+                                                                      className="absolute inset-0 h-full w-full stroke-gray-300 transform -rotate-90"
+                                                                  >
+                                                                    <path d="M50,18 Q5,50 10,10" fill="none" strokeWidth="1" />
+                                                                  </svg>
+                                                                </span>
 
                                                                 <NavLink
                                                                     to={sub.link}
@@ -241,13 +238,13 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     ? "bg-gray-50 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 transform scale-105"
                                                     : "bg-gray-100/80 dark:bg-gray-800"
                                             }
-                             bg-gray-100/80 dark:bg-gray-800 hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
+                                                 bg-gray-100/80 dark:bg-gray-800 hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                         >
                                             <div className={`absolute ${
                                                 location.pathname === item.link || item.sub.some((sub) => sub.link === location.pathname)
                                                     ? "bg-gray-50 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 transform scale-105"
                                                     : "bg-gray-100/80 dark:bg-gray-800"
-                                            } -right-2 rounded-full transition-all duration-500 group-hover:bg-white drop-shadow-lg group-hover:drop-shadow-cyan-300`}>
+                                            } -right-2 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}>
                                                 <NavLink
                                                     to={item.link}
                                                     end
@@ -273,19 +270,16 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     )
                             )}
                         </ul>
-                        {/* تم */}
                         <button
                             onClick={() => dispatch(set_theme(!theme))}
                             className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
                         >
-                            {/* دایره‌ی متحرک */}
                             <span
                                 className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
                                     theme ? "translate-x-6" : "translate-x-0"
                                 }`}
                             ></span>
 
-                            {/* آیکون‌ها */}
                             <PiMoonThin
                                 className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
                                     theme ? "opacity-100" : "opacity-0"
@@ -301,10 +295,11 @@ const Sidebar = ({ open_close, open_slider }) => {
 
                 </div>
             </div>
-            {/* Mobile Sidebar (RTL) */}
+
+            {/*mobile*/}
             <button
-                onClick={open_close} // تابعی که open_slider را تغییر می‌دهد
-                className="fixed top-4 right-4 z-50 lg:hidden bg-cyan-600 text-white p-2 rounded-md shadow-md"
+                onClick={open_close}
+                className="fixed top-2 right-16 z-50 lg:hidden bg-cyan-600 text-white p-2 rounded-md shadow-md"
             >
                 {open_slider ? <MdOutlineMenu /> :  <MdMenuOpen />}
             </button>
@@ -317,7 +312,6 @@ const Sidebar = ({ open_close, open_slider }) => {
             >
                 {SideItem.map((item) => (
                     <div key={item.id} className="relative flex flex-col items-center w-full">
-                        {/* آیکون دایره */}
                         <button
                             onClick={() => setSubId(subId === item.id ? 0 : item.id)}
                             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
@@ -336,7 +330,6 @@ const Sidebar = ({ open_close, open_slider }) => {
                             </div>
                         </button>
 
-                        {/* Submenu کشویی از سمت چپ */}
                         <AnimatePresence>
                             {subId === item.id && (
                                 <motion.ul
@@ -344,14 +337,14 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     animate={{ x: 0, opacity: 1 }}
                                     exit={{ x: -60, opacity: 0 }}
                                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    className="absolute right-full top-0 mr-2 w-40 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden text-right"
+                                    className={`${!open_slider? "w-40" : "w-0"} absolute right-full top-0 mr-2  bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden text-right`}
                                 >
                                     {item.sub.map((sub) => (
                                         <li key={sub.id}>
                                             <NavLink
                                                 to={sub.link}
                                                 onClick={handleItemClick}
-                                                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-stone-300 hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transition-colors"
+                                                className={`flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transition-colors`}
                                             >
                                                 {sub.label}
                                             </NavLink>
@@ -367,14 +360,12 @@ const Sidebar = ({ open_close, open_slider }) => {
                     onClick={() => dispatch(set_theme(!theme))}
                     className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
                 >
-                    {/* دایره‌ی متحرک */}
                     <span
                         className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
                             theme ? "translate-x-6" : "translate-x-0"
                         }`}
                     ></span>
 
-                    {/* آیکون‌ها */}
                     <PiMoonThin
                         className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
                             theme ? "opacity-100" : "opacity-0"
