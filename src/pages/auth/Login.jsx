@@ -62,27 +62,52 @@ const Login = () => {
             <div className='relative'>
                 <div className='absolute  w-full h-px z-50 bg-gray-800 '></div>
                 <div className='h-screen bg-gray-50 w-full flex'>
-                    <div className='w-3/7 h-screen items-center flex justify-end flex-col bg-cyan-100 '>
-                        <img src={loginImage} className='w-6xl'/>
-                    </div>
-                    <div className='w-4/7 h-screen  flex justify-center'>
-                        <div className="flex flex-col items-center my-auto bg-white w-7/15 h-6/8 drop-shadow-xl drop-shadow-gray-200  rounded-3xl px-20">
-                            <span>logo</span>
-                            <span className="text-xl font-bold">ورود</span>
-                            <form className='w-full' onSubmit={formik.handleSubmit}>
-                                <div className='w-full flex flex-col gap-4'>
-                                    <InputLogIn autoFocusOnMount={true} formik={formik} name="username" label="نام کاربری" noPersian={true} />
-                                    <InputLogIn formik={formik} type="password" name="password" label="کلمه عبور" noPersian={true} />
-                                </div>
-                                <button type="submit" className="bubbly-button m-2 bg-cyan-400 text-gray-50 rounded-xl p-2 w-full cursor-pointer drop-shadow-xl drop-shadow-cyan-300">ورود</button>
-                            </form>
-                        </div>
 
+                    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-r from-cyan-400 to-cyan-600 p-4">
+                        <img src={loginImage} className='w-2xl'/>
+                        <div className="flex flex-col items-center bg-white w-full max-w-md rounded-3xl shadow-xl p-8">
+                            <span className="text-3xl font-bold text-cyan-600 mb-4">Marktoo</span>
+                            <span className="text-2xl font-semibold mb-6 text-gray-700">ورود به حساب کاربری</span>
+                            <form className="w-full" onSubmit={formik.handleSubmit}>
+                                <div className="flex flex-col gap-5">
+                                    <InputLogIn
+                                        autoFocusOnMount={true}
+                                        formik={formik}
+                                        name="username"
+                                        label="نام کاربری"
+                                        noPersian={true}
+                                        className="border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+                                    />
+                                    <InputLogIn
+                                        formik={formik}
+                                        type="password"
+                                        name="password"
+                                        label="کلمه عبور"
+                                        noPersian={true}
+                                        className="border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="mt-6 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-xl py-3 shadow-lg transition transform hover:scale-105"
+                                >
+                                    ورود
+                                </button>
+                            </form>
+
+                            <a href="#" className="mt-4 text-sm text-cyan-600 hover:underline">
+                                فراموشی کلمه عبور؟
+                            </a>
+                            <p className="mt-6 text-gray-500 text-sm">
+                                حساب کاربری ندارید؟
+                                <a href="#" className="text-cyan-500 font-semibold hover:underline"> ثبت نام کنید</a>
+                            </p>
+                        </div>
                     </div>
+
                 </div>
             </div>
-
-
         </>
     );
 };
