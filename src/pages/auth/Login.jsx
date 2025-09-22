@@ -59,26 +59,29 @@ const Login = () => {
 
     return (
         <>
-
-            <div className='h-screen bg-radial from-cyan-200 from-40% to-cyan-400 w-full flex'>
-                <div className='w-4/7 h-screen items-center flex justify-end'>
-                    <img src={loginImage} className='w-7xl'/>
-                </div>
-                <div className='w-4/7 h-screen  flex justify-center'>
-                    <div className="flex flex-col justify-start my-auto
-                bg-white/30 border border-white/20
-                backdrop-blur-md w-3/6 h-6/8
-                drop-shadow-xl rounded-2xl p-20">
-                        <span>logo</span>
-                        <span className="text-xl font-bold">ورود</span>
-                        <form onSubmit={formik.handleSubmit}>
-                            <InputLogIn autoFocusOnMount={true} formik={formik} name="username" label="نام کاربری" noPersian={true} />
-                            <InputLogIn formik={formik} type="password" name="password" label="کلمه عبور" noPersian={true} />
-                        </form>
+            <div className='relative'>
+                <div className='absolute  w-full h-px z-50 bg-gray-800 '></div>
+                <div className='h-screen bg-gray-50 w-full flex'>
+                    <div className='w-3/7 h-screen items-center flex justify-end flex-col bg-cyan-100 '>
+                        <img src={loginImage} className='w-6xl'/>
                     </div>
+                    <div className='w-4/7 h-screen  flex justify-center'>
+                        <div className="flex flex-col items-center my-auto bg-white w-7/15 h-6/8 drop-shadow-xl drop-shadow-gray-200  rounded-3xl px-20">
+                            <span>logo</span>
+                            <span className="text-xl font-bold">ورود</span>
+                            <form className='w-full' onSubmit={formik.handleSubmit}>
+                                <div className='w-full flex flex-col gap-4'>
+                                    <InputLogIn autoFocusOnMount={true} formik={formik} name="username" label="نام کاربری" noPersian={true} />
+                                    <InputLogIn formik={formik} type="password" name="password" label="کلمه عبور" noPersian={true} />
+                                </div>
+                                <button type="submit" className="bubbly-button m-2 bg-cyan-400 text-gray-50 rounded-xl p-2 w-full cursor-pointer drop-shadow-xl drop-shadow-cyan-300">ورود</button>
+                            </form>
+                        </div>
 
+                    </div>
                 </div>
             </div>
+
 
         </>
     );

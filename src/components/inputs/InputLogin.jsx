@@ -53,7 +53,6 @@ const InputLogIn = ({
             ? "border-rose-500 bg-rose-100/30"
             : "";
 
-    // فوکوس خودکار
     useEffect(() => {
         if (autoFocusOnMount && inputRef.current) {
             inputRef.current.focus();
@@ -61,23 +60,16 @@ const InputLogIn = ({
     }, [autoFocusOnMount]);
 
     return (
-        <div className="flex items-center w-full relative border border-gray-100 rounded-lg">
-            <div className="min-w-[70px] max-w-[120px] bg-gray-50 px-2 flex items-center justify-center text-center">
-                <label
-                    htmlFor={name}
-                    title={label}
-                    className="whitespace-nowrap text-xs font-medium text-gray-900"
-                >
-                    {label}
-                    {iconLable}
-                </label>
-            </div>
-            <div className="w-full flex flex-row relative items-center">
+        <div className="w-full relative">
+            <label htmlFor={name}
+                   className="mb-1 flex flex-row justify-end text-xs font-medium text-gray-900 ">
+                {label}
+            </label>
+
+            <div className="flex flex-col relative">
                 {nameSearch && (
-                    <div
-                        className="rounded-l-lg bg-sky-800 px-8 py-2.5 absolute top-0 left-0 cursor-pointer"
-                        onClick={onClickSearch}
-                    >
+                    <div className="rounded-l-lg bg-sky-800 px-8 py-2.5 absolute top-0 left-0 cursor-pointer"
+                         onClick={onClickSearch}>
                         {nameSearch}
                     </div>
                 )}
@@ -92,16 +84,16 @@ const InputLogIn = ({
                     id={name}
                     name={name}
                     minLength={minLength}
-                    ref={inputRef} // مرجع اضافه شد
+                    ref={inputRef}
                     className={`${errorsStyle}
                         ${
                         getIn(formik.errors, name) &&
                         getIn(formik.touched, name)
                             ? "focus-visible:ring-rose-500  border border-rose-300"
-                            : "focus-visible:ring-sky-800 bg-gray-100 border border-gray-200"
+                            : "focus-visible:ring-cyan-800  border border-gray-200"
                     }
-                        bg-gray-200/40 text-gray-900 text-sm rounded-l-md
-                        focus-visible:outline-0 focus-visible:ring-0 block w-full p-2`}
+                         text-gray-900 text-sm rounded-lg
+                        focus-visible:outline-0 focus-visible:ring-0 block w-full p-2 bg-cyan-50`}
                     placeholder={placeholder}
                 />
                 {isPasswordField && (

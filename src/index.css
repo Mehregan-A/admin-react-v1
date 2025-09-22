@@ -18,21 +18,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-.gradient-dark{
-    background: #3B3734;
-    background: linear-gradient(180deg, rgba(59, 55, 52, 0.92) 0%, rgba(42, 37, 36, 1) 20%, rgba(42, 37, 36, 1) 80%, rgba(59, 55, 52, 0.94) 100%);
-}
-.gradient-light{
-    background: #EBEBEB;
-    background: linear-gradient(180deg, rgba(235, 235, 235, 1) 0%, rgba(245, 245, 245, 1) 20%, rgba(245, 245, 245, 1) 80%, rgba(235, 235, 235, 1) 100%);
-}
 
 .your-scroll-container::-webkit-scrollbar {
     display: none;
 }
-/*.active-link {*/
-/*    @apply bg-stone-300/40 rounded-full text-white  ;*/
-/*}*/
-/*.inactive-link {*/
-/*    @apply rounded-full text-white;*/
-/*}*/
