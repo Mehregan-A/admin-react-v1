@@ -153,11 +153,16 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 e.preventDefault();
                                                 subMenu(item.id);
                                             }}
-                                            className={`${ location.pathname === item.link?"dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 transform scale-105":""} relative group cursor-pointer p-3.5 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
-                                             bg-gray-100/80 dark:bg-gray-800 hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30
-                                             hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
+                                            className={`relative group cursor-pointer p-3.5 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out ${
+                                                subId === item.id || item.sub.some((sub) => sub.link === location.pathname)
+                                                    ? "bg-cyan-50/20 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 scale-105"
+                                                    : "bg-gray-100/80 dark:bg-gray-800"
+                                            }
+                                                hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30
+                                                hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                         >
-                                            <div
+
+                                        <div
                                                 className={`${
                                                     subId === item.id ? "bg-gray-300 dark:bg-gray-300/40" : "bg-gray-100 dark:bg-gray-600/80"
                                                 } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}
@@ -212,10 +217,14 @@ const Sidebar = ({ open_close, open_slider }) => {
 
                                                                 <NavLink
                                                                     to={sub.link}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleItemClick();
+                                                                    }}
                                                                     className={({ isActive }) =>
                                                                         `flex items-center gap-2 px-3 py-1 transition-all duration-500 ease-in-out w-full ${
                                                                             isActive
-                                                                                ? "font-semibold text-cyan-600 dark:text-cyan-400"
+                                                                                ? "font-semibold text-cyan-600 dark:text-cyan-400 bg-cyan-300/50 dark:bg-cyan-900/50 rounded-lg mr-1"
                                                                                 : "text-gray-700 dark:text-stone-300"
                                                                         }`
                                                                     }

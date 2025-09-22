@@ -18,7 +18,7 @@ export const SideItem = [
                 id: 42,
                 icon: "PiCirclesThreeFill",
                 label: "ثبت جدید",
-                link: "/dashboard",
+                link: "#",
             },
             {
                 id: 43,
