@@ -8,6 +8,7 @@ import {useNavigate} from "react-router";
 import {Config} from "../../config/Config.jsx";
 import InputLogIn from "../../components/inputs/InputLogin.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
+import ToastContainer from "../../components/toast/ToastContainer.jsx";
 
 
 const Login = () => {
@@ -64,7 +65,7 @@ const Login = () => {
                 <div className='absolute  w-full h-px z-50 bg-gray-800 '></div>
                 <div className='h-screen bg-gray-50 w-full flex'>
 
-                    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-r from-cyan-400 to-cyan-600 p-4">
+                    <div className="w-full min-h-screen flex items-center justify-around bg-gradient-to-r from-cyan-400 to-cyan-600 p-4">
                         <img src={loginImage} className='w-2xl'/>
                         <div className="flex flex-col items-center bg-white w-full max-w-md rounded-3xl shadow-xl p-8">
                             <span className="text-3xl font-bold text-cyan-600 mb-4">Marktoo</span>
@@ -115,6 +116,7 @@ const Login = () => {
                     </div>
 
                 </div>
+                <ToastContainer />
             </div>
         </>
     );

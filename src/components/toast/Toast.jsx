@@ -61,10 +61,11 @@ const Alert = (desc, type, time) => {
 
     }
 
+
     document.getElementById('alertShow').innerHTML +=
         `
-        <div id="${id}"  class=" left-0 rounded-md overflow-hidden shadow-2xl bg-gray-100 " role="alert">
-            <div class="border-r-8 ${color} flex w-full h-full flex-row justify-center items-center item-center p-2 px-3">
+        <div id="${id}"   class=" left-0 rounded-lg overflow-hidden shadow-2xl drop-shadow-xl  bg-gray-100 " role="alert">
+            <div class="border-r-5 ${color} flex w-full h-full flex-row justify-center items-center item-center p-2 px-3">
                 <div class="flex flex-row gap-2 w-full h-full justify-center items-center">
                    ${icon}
                     <div class="flex-col flex gap-1">
