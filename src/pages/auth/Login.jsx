@@ -7,16 +7,17 @@ import { useEffect } from "react";
 import {useNavigate} from "react-router";
 import {Config} from "../../config/Config.jsx";
 import InputLogIn from "../../components/inputs/InputLogin.jsx";
+import {Toast} from "../../components/toast/Toast.jsx";
 
 
 const Login = () => {
     const dispatch = useDispatch();
-    // const { login,login_index,isLoading_enter } = useSelector(state => state.login);
+    const { login,login_index,isLoading_enter } = useSelector(state => state.login);
     const navigation = useNavigate();
     // const location = useLocation();
-    useEffect(() => {
-        dispatch(getAsyncLoginIndex());
-    },[])
+    // useEffect(() => {
+    //     dispatch(getAsyncLoginIndex());
+    // },[])
 
     const initialValues = {
         username: "",
@@ -44,18 +45,18 @@ const Login = () => {
         validateOnMount: true
     });
 
-    // useEffect(() => {
-    //     if (login && login.data) {
-    //         if (login.status === 200) {
-    //             Toast.success(`${login.data.message}`);
-    //             dispatch(loginClearResult());
-    //             setTimeout(() => navigation("/"), 2000);
-    //         } else {
-    //             Toast.error(`${login.data.message}`);
-    //             dispatch(loginClearResult());
-    //         }
-    //     }
-    // }, [login]);
+    useEffect(() => {
+        if (login && login.data) {
+            if (login.status === 200) {
+                Toast.success(`${login.data.message}`);
+                dispatch(loginClearResult());
+                setTimeout(() => navigation("/"), 2000);
+            } else {
+                Toast.error(`${login.data.message}`);
+                dispatch(loginClearResult());
+            }
+        }
+    }, [login]);
 
     return (
         <>
@@ -87,12 +88,19 @@ const Login = () => {
                                         className="border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
                                     />
                                 </div>
-
                                 <button
+                                    disabled={!formik.isValid || isLoading_enter}
                                     type="submit"
-                                    className="mt-6 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-xl py-3 shadow-lg transition transform hover:scale-105"
+                                    className={`mt-6 w-full flex justify-center items-center gap-x-2 px-4 py-3 rounded-xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 hover:bg-cyan-500 text-gray-50 transition transform enabled:hover:scale-105 text-sm shadow-xl`}
                                 >
-                                    ورود
+                                    {isLoading_enter ? (
+                                        <>
+                                            <span className="w-4 h-4 border-2 border-gray-50 border-t-transparent rounded-full animate-spin"></span>
+                                            <span className='text-lg'>ورود...</span>
+                                        </>
+                                    ) : (
+                                        <span className='text-lg'>ورود</span>
+                                    )}
                                 </button>
                             </form>
 

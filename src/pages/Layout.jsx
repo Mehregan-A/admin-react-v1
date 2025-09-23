@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from "../components/Sidebar.jsx";
 // import Navbar from "../components/Navbar.jsx";
 import { Outlet } from "react-router";
-// import ToastContainer from "../components/toast/ToastContainer.jsx";
 // import { getAsyncCheck } from "../feature/redux/LoginSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ToastContainer from "../components/toast/ToastContainer.jsx";
 
 const Layout = () => {
     // const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const Layout = () => {
                     </div>
                 </div>
             </div>
-            {/*<ToastContainer />*/}
+            <ToastContainer />
         </>
     );
 
