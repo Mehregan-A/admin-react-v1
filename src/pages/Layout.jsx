@@ -2,25 +2,25 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from "../components/Sidebar.jsx";
 // import Navbar from "../components/Navbar.jsx";
 import { Outlet } from "react-router";
-// import { getAsyncCheck } from "../feature/redux/LoginSlice.jsx";
+import { getAsyncCheck } from "../feature/redux/LoginSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ToastContainer from "../components/toast/ToastContainer.jsx";
 
 const Layout = () => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const { isAuthenticated, isLoading } = useSelector(state => state.login);
+    const { isAuthenticated, isLoading } = useSelector(state => state.login);
 
-    // useEffect(() => {
-    //     dispatch(getAsyncCheck());
-    // }, []);
+    useEffect(() => {
+        dispatch(getAsyncCheck());
+    }, []);
 
-    // useEffect(() => {
-    //     if (isAuthenticated === false && !isLoading) {
-    //         navigate("/login");
-    //     }
-    // }, [isAuthenticated, isLoading]);
+    useEffect(() => {
+        if (isAuthenticated === false && !isLoading) {
+            navigate("/login");
+        }
+    }, [isAuthenticated, isLoading]);
 
     const [closed, setClosed] = useState({ open: true });
 

@@ -1,16 +1,20 @@
 import Image from '/src/assets/image/logo-sidebar.jpg';
 import { SideItem } from "../assets/data/data.js";
-import { NavLink, useLocation } from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import FaIcons from "./Icon.jsx";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { useEffect, useState, useRef } from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
+import {PiMoonThin, PiSignOut, PiSunDimThin} from "react-icons/pi";
 import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 import {AnimatePresence,  motion} from "framer-motion";
 import {MdMenuOpen, MdOutlineMenu} from "react-icons/md";
+import {Toast} from "./toast/Toast.jsx";
+import {getAsyncLogout, loginClearResult} from "../feature/redux/LoginSlice.jsx";
 
 const Sidebar = ({ open_close, open_slider }) => {
+    const {logout} = useSelector(state => state.login)
+    const navigation = useNavigate()
     const dispatch = useDispatch();
     const {theme}=useSelector(state => state.theme)
     const location = useLocation();
@@ -129,6 +133,22 @@ const Sidebar = ({ open_close, open_slider }) => {
             }
         }
     },[theme])
+    useEffect(() => {
+        if(logout && logout.status){
+            if(logout.status === 200){
+                // toast
+                Toast.success(`${logout.data.message}`);
+                dispatch(loginClearResult())
+                setTimeout(()=>{
+                    return navigation ("/login")
+                },2000)
+            }else {
+                // toast
+                Toast.error(`${logout.data.message}`);
+                dispatch(loginClearResult())
+            }
+        }
+    }, [logout]);
 
     return (
         <>
@@ -281,7 +301,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                         </ul>
                         <button
                             onClick={() => dispatch(set_theme(!theme))}
-                            className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
+                            className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 cursor-pointer rounded-full p-1 transition-colors"
                         >
                             <span
                                 className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
@@ -299,6 +319,10 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     theme ? "opacity-0" : "opacity-100"
                                 }`}
                             />
+                        </button>
+                        <button onClick={()=>{dispatch(getAsyncLogout())}} className='flex items-center justify-center gap-1 mt-4 bg-gray-100   p-2 rounded-full cursor-pointer dark:bg-gray-700 shadow-lg hover:shadow-cyan-300/50  transition-colors transform scale-105'>
+                            <PiSignOut className='w-5 h-5 text-cyan-500/80' />
+                            <span className='text-cyan-800 dark:text-gray-50'>خروج</span>
                         </button>
                     </div>
 
@@ -386,6 +410,9 @@ const Sidebar = ({ open_close, open_slider }) => {
                         }`}
                     />
                 </button>
+                <div className='flex items-center justify-center gap-2 mt-4 bg-gray-100 shadow dark:bg-gray-700 p-2 rounded-full cursor-pointer'>
+                    <PiSignOut className='w-6 h-6 text-cyan-300' />
+                </div>
             </div>
         </>
     );
