@@ -6,21 +6,14 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FaRegEdit, FaRegTrashAlt, FaTasks, FaUsers} from "react-icons/fa";
 import {VscCircleSlash} from "react-icons/vsc";
-import AcceptMessage from "../../components/AcceptMessage.jsx";
-import {FaCirclePlus, FaLinkSlash} from "react-icons/fa6";
-import {deleteAsyncUser, getAsyncListUser, getAsyncStatusUser, userClearResultDelete} from "../../feature/redux/CategorySlice.jsx";
+import {deleteAsyncUser, getAsyncListCategory, getAsyncStatusUser, userClearResultDelete} from "../../feature/redux/CategorySlice.jsx";
 import {Config} from "../../config/Config.jsx";
-import UserImage from "../../assets/images/User.png";
 import {Toast} from "../../components/toast/Toast.jsx";
-import AddUser from "./AddUser.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
-import {FiEdit, FiList, FiTrash2} from "react-icons/fi";
-import {MdOutlineDirectionsCar, MdOutlineGroups, MdOutlineSupervisorAccount} from "react-icons/md";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
-import UserWoman from "../../assets/images/UserWomen.png"
-import HeaderBox from "../../components/header/HeaderBox.jsx";
 
-const UserList = () => {
+
+const CategoryList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,12 +26,12 @@ const UserList = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_user,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.user);
+    const { list_category,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.category);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListUser({ row, page}));
-            navigate(`/user/list/${row}/${page}`);
+            dispatch(getAsyncListCategory({ row, page}));
+            navigate(`/category/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -116,27 +109,23 @@ const UserList = () => {
             selector: row =>
                 <div className="w-14 h-14 rounded-full border-2 border-sky-700">
                     <img
-                        src={row.image ? Config.apiImage + row.image : row.gender === "female" ?UserWoman:UserImage}
+                        src={Config.apiImage + row.image }
                         className="w-full h-full rounded-full object-cover"
-                        alt="user"
+                        alt="category"
                     />
                 </div>,
         },
         {
-            name: "نام",
-            selector: row => row.full_name,
+            name: "نام دسته",
+            selector: row => row.title,
         },
         {
-            name: "کد ملی",
-            selector: row => row.national_code,
+            name: "url",
+            selector: row => row.url,
         },
         {
-            name: "موبایل",
-            selector: row => row.mobile,
-        },
-        {
-            name: "جنسیت",
-            selector: row => row.gender === "female" ? "خانم" : "آقا",
+            name: "ویژگی",
+            selector: row => row?.attribute?.map((detail) => console.log(detail)) ,
         },
         {
             name: " وضعیت",
@@ -152,7 +141,7 @@ const UserList = () => {
                     <ButtonWithTooltip
                         onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش کارمند"
+                        text="ویرایش دسته"
                         hoverColor="hover:text-green-600"
                     />
                     <ButtonWithTooltip
@@ -185,50 +174,38 @@ const UserList = () => {
 
     return (
         <div className={`flex flex-col gap-2`}>
-            {/* Header */}
-            <HeaderBox
-                icon={MdOutlineGroups}
-                iconSize={30}
-                title="لیست کارمندان"
-                actionButton={
-                    <button className="flex self-end gap-2 items-center py-1.5 px-3 bg-gray-50  border hover:text-sky-700 border-sky-600  rounded-3xl cursor-pointer"  onClick={() => setOpenId("")}>
-                        <FaCirclePlus size={20} className='flex-shrink-0 text-sky-700 hidden md:block' />
-                        <span className='text-nowrap text-sm'>افزودن کارمند جدید</span>
-                    </button>
-                }
-            />
             <DataTable
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_user?.data}
-                numberPage={list_user?.page}
+                data={list_category?.data}
+                numberPage={list_category?.page}
                 columns={columns}
             />
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddUser
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListUser({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_user={list_user.data}
-                    />
-                </div>
-            )}
-            {showModal && (
-                <AcceptMessage
-                    isLoading={isLoading_action}
-                    text={modalData.text}
-                    accept={handleAccept}
-                    reject={handleReject}
-                    open_close={() => setShowModal(!showModal)}
-                    showModal={showModal}
-                />
-            )}
+            {/*{openAdd.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AddUser*/}
+            {/*            open_slider={openAdd.open}*/}
+            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            list_user={list_category.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
+            {/*{showModal && (*/}
+            {/*    <AcceptMessage*/}
+            {/*        isLoading={isLoading_action}*/}
+            {/*        text={modalData.text}*/}
+            {/*        accept={handleAccept}*/}
+            {/*        reject={handleReject}*/}
+            {/*        open_close={() => setShowModal(!showModal)}*/}
+            {/*        showModal={showModal}*/}
+            {/*    />*/}
+            {/*)}*/}
         </div>
     );
 };
 
-export default UserList;
+export default CategoryList;

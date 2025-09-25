@@ -10,20 +10,20 @@ export const SideItem = [
     },
     {
         id: 14,
-        icon_fill: "PiCubeFill",
-        icon_outline: "PiCube",
-        label: "محصولات",
+        icon_fill: "PiTreeViewFill",
+        icon_outline: "PiTreeViewLight",
+        label: "تعاریف",
         sub: [
             {
                 id: 42,
                 icon: "PiCirclesThreeFill",
-                label: "ثبت جدید",
-                link: "#",
+                label: "دسته",
+                link: "/category/list/50/1",
             },
             {
                 id: 43,
                 icon: "PiCirclesThreeFill",
-                label: "لیست ماموریت",
+                label: "زیر دسته",
                 link: "/decree/list/50/1",
             },
             {

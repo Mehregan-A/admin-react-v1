@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+    font-family: 'IRANYekan';
+    src: url("./assets/fonts/yekan/woff2/Yekan.woff2") format("woff2");
+    font-weight: normal;
+}
+html {
+    font-family: IRANYekan, serif;
+}
+
 .scroll-bar{
     height: 100vh;
     direction: rtl;
