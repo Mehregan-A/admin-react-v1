@@ -126,33 +126,33 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
                 />
                 <div ref={myElementRef} className="flex flex-col gap-2 w-full items-center">
                     {/* Header */}
-                    {/*<div className={`relative md:max-w-2xl w-full rounded-xl shadow bg-gray-50  space-y-2 transform transition-all duration-300 ease-in-out ${isOpenModal ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} z-10`}>*/}
-                    {/*    <div className="h-8 flex items-center justify-between text-gray-800 m-2">*/}
-                    {/*        <button*/}
-                    {/*            className="cursor-pointer hover:text-sky-600 transition-colors"*/}
-                    {/*            onClick={closeModal}*/}
-                    {/*        >*/}
-                    {/*            <HiMiniXMark className="w-6 h-6 cursor-pointer" />*/}
-                    {/*        </button>*/}
-                    {/*        <div className="flex gap-2 items-center bg-gray-50 rounded-3xl">*/}
-                    {/*            <HiOutlinePencilAlt className="w-5 h-5" />*/}
-                    {/*            <span className="text-sm">{Id ? "ویرایش اطلاعات کارمند" : "ثبت اطلاعات کارمند"}</span>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className={`relative md:max-w-2xl w-full rounded-xl shadow bg-gray-50  space-y-2 transform transition-all duration-300 ease-in-out ${isOpenModal ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} z-10`}>
+                        <div className="h-8 flex items-center justify-between text-gray-800 m-2">
+                            <button
+                                className="cursor-pointer hover:text-sky-600 transition-colors"
+                                onClick={closeModal}
+                            >
+                                <HiMiniXMark className="w-6 h-6 cursor-pointer" />
+                            </button>
+                            <div className="flex gap-2 items-center bg-gray-50 rounded-3xl">
+                                <HiOutlinePencilAlt className="w-5 h-5" />
+                                <span className="text-sm">{Id ? "ویرایش اطلاعات کارمند" : "ثبت اطلاعات کارمند"}</span>
+                            </div>
+                        </div>
+                    </div>
                     {/* Form */}
                     <div className={`relative md:max-w-2xl w-full rounded-xl shadow bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 ${isOpenModal ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} z-10`}>
                         <form onSubmit={formik.handleSubmit} className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
                             <div className="flex flex-col md:flex-row md:gap-4 gap-6">
                                 {/* Inputs */}
-                                <div className="w-full grid grid-cols-2 md:gap-y-5 md:gap-x-3 gap-3.5">
+                                <div className="w-full flex flex-col items-center justify-center gap-10">
                                     <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام دسته بندی" />
                                     <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
                                 </div>
 
                                 <div className="w-full md:w-[200px] flex flex-col justify-between gap-4 md:gap-7">
                                     <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
-                                    {!Id && (
+
                                         <div className="flex items-center justify-center">
                                             <InputCheckbox
                                                 formik={formik}
@@ -161,7 +161,7 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
                                                 value={true}
                                             />
                                         </div>
-                                    )}
+
                                 </div>
                             </div>
 

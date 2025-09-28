@@ -37,17 +37,18 @@ const InputCheckbox = ({
                 checked={checked}
                 type={type}
                 id={name}
-                className={`bg-gray-50  rounded-full accent-sky-800 ${changesClass}`}
+                className={`bg-gray-50  rounded-full accent-cyan-400 ${changesClass}`}
             />
-            {getIn(formik.errors, name) && getIn(formik.touched, name) && (
-                <p className="mt-2 text-rose-600 text-xs">{formik.errors[name]}</p>
-            )}
             <label
                 htmlFor={name}
-                className="block text-xs font-medium text-gray-900 "
+                className="block text-xs font-medium text-gray-900 dark:text-gray-200 "
             >
                 {label}
             </label>
+            {getIn(formik.errors, name) && getIn(formik.touched, name) && (
+                <p className="mt-2 text-rose-600 text-xs">{formik.errors[name]}</p>
+            )}
+
         </div>
     );
 };

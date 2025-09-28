@@ -14,12 +14,12 @@ html {
     height: 100vh;
     direction: rtl;
     overflow: hidden;
-    transform: rotateY(180deg);
+    /*transform: rotateY(180deg);*/
 }
 .scroll-bar-style{
     @apply overflow-y-auto;
     height: 100vh;
-    transform: rotateY(180deg);
+    /*transform: rotateY(180deg);*/
     direction: rtl;
 }
 .your-scroll-container {
