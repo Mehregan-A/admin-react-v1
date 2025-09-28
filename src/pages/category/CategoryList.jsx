@@ -15,6 +15,8 @@ import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
+import AcceptMessage from "../../AcceptMessage.jsx";
+import AddCategory from "./AddCategory.jsx";
 
 
 const CategoryList = () => {
@@ -102,7 +104,7 @@ const CategoryList = () => {
             <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
                 {icon}
             </button>
-            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-50 bg-cyan-500 rounded-xl drop-shadow-lg border-t-2 drop-shadow-cyan-700 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
+            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-50 bg-cyan-400 rounded-lg drop-shadow-lg border-t-2 drop-shadow-cyan-700 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
                 {text}
             </span>
         </div>
@@ -187,27 +189,27 @@ const CategoryList = () => {
                 numberPage={list_category?.page}
                 columns={columns}
             />
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddUser*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_user={list_category.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
-            {/*{showModal && (*/}
-            {/*    <AcceptMessage*/}
-            {/*        isLoading={isLoading_action}*/}
-            {/*        text={modalData.text}*/}
-            {/*        accept={handleAccept}*/}
-            {/*        reject={handleReject}*/}
-            {/*        open_close={() => setShowModal(!showModal)}*/}
-            {/*        showModal={showModal}*/}
-            {/*    />*/}
-            {/*)}*/}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddCategory
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListCategory({ row, page }))}
+                        Id={isIdsEdit.id}
+                        list_user={list_category.data}
+                    />
+                </div>
+            )}
+            {showModal && (
+                <AcceptMessage
+                    isLoading={isLoading_action}
+                    text={modalData.text}
+                    accept={handleAccept}
+                    reject={handleReject}
+                    open_close={() => setShowModal(!showModal)}
+                    showModal={showModal}
+                />
+            )}
         </div>
     );
 };
