@@ -18,34 +18,34 @@ export const getAsyncInfoUser = createAsyncThunk("user/getAsyncInfoUser",async (
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditUser = createAsyncThunk("user/postAsyncEditDriver", async (payload, { rejectWithValue }) => {
+export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/user/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddUser = createAsyncThunk("user/postAsyncAddDriver",async (payload,{rejectWithValue})=>{
+export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/user/add",payload,{})
+        const res = await http.post("/admin/category/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusUser = createAsyncThunk("user/getAsyncStatusUser",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/user/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
         })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncUser = createAsyncThunk("user/deleteAsyncUser",async (payload,{rejectWithValue})=>{
+export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/user/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -84,13 +84,13 @@ const categorySlice = createSlice({
     name: 'category',
     initialState,
     reducers : {
-        userClearResult : (state) => {
+        categoryClearResult : (state) => {
             state.result = false
         },
-        userClearResultDelete : (state) => {
+        categoryClearResultDelete : (state) => {
             state.result_delete = false
         },
-        userClearInfo : (state) => {
+        categoryClearInfo : (state) => {
             state.info_edit = false
         },
     },
@@ -127,58 +127,58 @@ const categorySlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditUser.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditUser.pending,(state)=>{
+        builder.addCase(postAsyncEditCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditUser.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddUser.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddUser.pending,(state)=>{
+        builder.addCase(postAsyncAddCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddUser.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusUser.fulfilled,(state, action)=>{
-            const result = state.list_user.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
+            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusUser.pending,(state)=>{
+        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusUser.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncUser.fulfilled,(state, action)=>{
-            state.list_user.data = state.list_user.data.filter(
+        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
+            state.list_category.data = state.list_category.data.filter(
                 driver => driver.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncUser.pending,(state)=>{
+        builder.addCase(deleteAsyncCategory.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncUser.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
@@ -199,6 +199,6 @@ const categorySlice = createSlice({
         })
     }
 })
-export const { userClearResult,userClearInfo,userClearResultDelete} = categorySlice.actions
+export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = categorySlice.actions
 
 export default categorySlice.reducer

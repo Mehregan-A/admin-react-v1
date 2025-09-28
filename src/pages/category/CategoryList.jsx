@@ -6,7 +6,11 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {FaRegEdit, FaRegTrashAlt, FaTasks, FaUsers} from "react-icons/fa";
 import {VscCircleSlash} from "react-icons/vsc";
-import {deleteAsyncUser, getAsyncListCategory, getAsyncStatusUser, userClearResultDelete} from "../../feature/redux/CategorySlice.jsx";
+import {
+    categoryClearResultDelete,
+    deleteAsyncCategory,
+    getAsyncListCategory, getAsyncStatusCategory,
+} from "../../feature/redux/CategorySlice.jsx";
 import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
@@ -60,11 +64,11 @@ const CategoryList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncUser({ del: id }));
+                await dispatch(deleteAsyncCategory({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusUser({ Id: id }));
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusUser({ Id: id }));
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }
 
             setShowModal(false);
@@ -76,11 +80,11 @@ const CategoryList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(userClearResultDelete());
+                dispatch(categoryClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(userClearResultDelete())
+                dispatch(categoryClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -95,10 +99,10 @@ const CategoryList = () => {
     }, [isIdsEdit.action]);
     const ButtonWithTooltip = ({ onClick, icon, text, hoverColor }) => (
         <div className="relative group">
-            <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 cursor-pointer`}>
+            <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
                 {icon}
             </button>
-            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-50 bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
+            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-50 bg-cyan-500 rounded-xl drop-shadow-lg border-t-2 drop-shadow-cyan-700 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
                 {text}
             </span>
         </div>
@@ -107,7 +111,7 @@ const CategoryList = () => {
         {
             name: "تصویر",
             selector: row =>
-                <div className="w-14 h-14 rounded-full border-2 border-sky-700">
+                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
                     <img
                         src={Config.apiImage + row.image }
                         className="w-full h-full rounded-full object-cover"
@@ -125,7 +129,7 @@ const CategoryList = () => {
         },
         {
             name: "ویژگی",
-            selector: row => row?.attribute?.map((detail) => console.log(detail)) ,
+            selector: row => row.attribute?.map(a => a.label).join("، ") || "-",
         },
         {
             name: " وضعیت",
@@ -142,26 +146,26 @@ const CategoryList = () => {
                         onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
                         text="ویرایش دسته"
-                        hoverColor="hover:text-green-600"
+                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
                         onClick={() => handleActionRequest(row.status, row.id)}
                         icon={<IoBanOutline className="w-5 h-5" />}
                         text={`${row.status === "active"?"غیرفعال":"فعال"}`}
-                        hoverColor="hover:text-yellow-600"
+                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                     />
                     <ButtonWithTooltip
                         onClick={() => handleActionRequest("delete", row.id)}
                         icon={<IoTrashOutline className="w-5 h-5" />}
                         text="حذف"
-                        hoverColor="hover:text-red-600"
+                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
                     />
-                    <ButtonWithTooltip
-                        onClick={() => setIdsEdit({ id: row.id, action: "show" })}
-                        icon={<IoListOutline className="w-6 h-6" />}
-                        text="ماموریت‌ها"
-                        hoverColor="hover:text-sky-600"
-                    />
+                    {/*<ButtonWithTooltip*/}
+                    {/*    onClick={() => setIdsEdit({ id: row.id, action: "show" })}*/}
+                    {/*    icon={<IoListOutline className="w-6 h-6" />}*/}
+                    {/*    text="ماموریت‌ها"*/}
+                    {/*    hoverColor="hover:text-sky-600"*/}
+                    {/*/>*/}
                 </div>
             )
         }

@@ -16,7 +16,7 @@ const DataTable = ({title,columns,isError, data,isLoading, numberPage,icon,perPa
     }, [width, data])
 
     return (
-        <div className="flex bg-gray-50 dark:bg-gray-800  p-5 rounded-3xl  drop-shadow-xl drop-shadow-gray-500 inset-shadow-sm inset-shadow-cyan-400 flex-col lg:gap-2 w-full lg:mt-0">
+        <div className="flex bg-gray-50 dark:bg-gray-800  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 inset-shadow-sm inset-shadow-cyan-400 flex-col lg:gap-2 w-full lg:mt-0">
             <div className="flex flex-row justify-between items-center gap-1 px-4">
                 <div className="flex flex-row gap-2 items-center">
                     {icon}
@@ -79,8 +79,8 @@ const PcMode = ({columns, data,numberPage,searchParams}) => {
     return (
         <>
             <div className="sticky top-0 z-10 bg-cyan-400 rounded-t-lg h-2"></div>
-            <table className="w-full text-sm text-right text-gray-500  border-t-4 border-t-cyan-300 rounded">
-                <thead className="sticky top-1 z-10 text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-200 dark:bg-gray-800 ">
+            <table className="w-full text-sm text-right text-gray-500 dark:text-gray-200  border-t-4 border-t-cyan-300 rounded">
+                <thead className="sticky top-1 z-10 text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-200 dark:bg-gray-700 ">
                 <tr>
                     {columns && columns.length > 0 && columns.map((item, index) => {
                         if (item?.name) {
