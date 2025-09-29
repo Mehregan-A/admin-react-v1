@@ -17,10 +17,13 @@ import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import AddCategory from "./AddCategory.jsx";
+import {PiChartPieSlice} from "react-icons/pi";
+import AttributeCategory from "./AttributeCategory.jsx";
 
 
 const CategoryList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
+    const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
     const location = useLocation();
     const openModal = location.state?.openModal;
@@ -43,6 +46,10 @@ const CategoryList = () => {
     // Open user form with selected id
     const setOpenId = (id,action) => {
         setOpenAdd({ open: true });
+        setIdsEdit({id,action});
+    };
+    const setOpenIdAtt = (id,action) => {
+        setOpenAtt({ open: true });
         setIdsEdit({id,action});
     };
     // Handle delete or deactivate action
@@ -94,17 +101,12 @@ const CategoryList = () => {
     const handleReject = useCallback(() => {
         setShowModal(false);
     }, []);
-    useEffect(() => {
-        if (isIdsEdit.action ==="show") {
-            navigate(`/user/information/${isIdsEdit.id}`);
-        }
-    }, [isIdsEdit.action]);
     const ButtonWithTooltip = ({ onClick, icon, text, hoverColor }) => (
         <div className="relative group">
             <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
                 {icon}
             </button>
-            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-50 bg-cyan-400 rounded-lg drop-shadow-lg border-t-2 drop-shadow-cyan-700 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
+            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-700 dark:text-gray-100 dark:bg-gray-800 bg-gray-100 rounded-lg drop-shadow-lg  drop-shadow-gray-400 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
                 {text}
             </span>
         </div>
@@ -162,12 +164,12 @@ const CategoryList = () => {
                         text="حذف"
                         hoverColor="hover:text-red-600 dark:hover:text-red-400"
                     />
-                    {/*<ButtonWithTooltip*/}
-                    {/*    onClick={() => setIdsEdit({ id: row.id, action: "show" })}*/}
-                    {/*    icon={<IoListOutline className="w-6 h-6" />}*/}
-                    {/*    text="ماموریت‌ها"*/}
-                    {/*    hoverColor="hover:text-sky-600"*/}
-                    {/*/>*/}
+                    <ButtonWithTooltip
+                        onClick={() => setOpenIdAtt(row.id, "att")}
+                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
+                        text="ویژگی"
+                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
+                    />
                 </div>
             )
         }
@@ -196,7 +198,18 @@ const CategoryList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListCategory({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_user={list_category.data}
+                        list_category={list_category.data}
+                    />
+                </div>
+            )}
+            {openAtt.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AttributeCategory
+                        open_slider={openAtt.open}
+                        open_close={() => setOpenAtt({ open: !openAtt.open })}
+                        reload={() => dispatch(getAsyncListCategory({ row, page }))}
+                        Id={isIdsEdit.id}
+                        list_category={list_category.data}
                     />
                 </div>
             )}

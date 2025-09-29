@@ -10,13 +10,21 @@ import {HiOutlinePencilAlt} from "react-icons/hi";
 // import InputImageUpload from "../../components/input/InputImageUpload.jsx";
 // import InputCheckbox from "../../components/input/InputCheckbox.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
-import {categoryClearResult, postAsyncAddCategory, postAsyncEditCategory} from "../../feature/redux/CategorySlice.jsx";
+import {
+    categoryClearResult, categoryClearResultDelete,
+    getAsyncInfoCategoryAtt,
+    postAsyncAddCategory,
+    postAsyncEditCategory
+} from "../../feature/redux/CategorySlice.jsx";
 import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
+import {PiChartPieSlice} from "react-icons/pi";
+import SelectOption from "../../components/inputs/SelectOption.jsx";
 
 
-const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
+const AttributeCategory = ({Id,list_category,open_close,reload,open_slider}) => {
+    const dispatch = useDispatch();
     const myElementRef = useRef(null);
     // transitions for open & close
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -34,11 +42,13 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
             open_close();
         }, 300);
     }
+    useEffect(() => {
+        dispatch(getAsyncInfoCategoryAtt())
+    },[])
 
     const {result,isLoading} = useSelector(state => state.category);
     // redux
     const foundItem = list_category?.find(item => item.id === Id);
-    const dispatch = useDispatch();
     const initialValues = {
         title:'',
         image:'',
@@ -136,32 +146,23 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
                                 <HiMiniXMark className="w-6 h-6 cursor-pointer" />
                             </button>
                             <div className="flex gap-2 items-center dark:text-gray-200 rounded-3xl">
-                                <HiOutlinePencilAlt className="w-5 h-5" />
-                                <span className="text-sm">{Id ? "ویرایش اطلاعات دسته" : "ثبت اطلاعات دسته"}</span>
+                                <PiChartPieSlice className="w-5 h-5" />
+                                <span className="text-sm">{"ویژگی دسته"}</span>
                             </div>
                         </div>
                         <div className='w-full h-px bg-cyan-300'></div>
                         <form onSubmit={formik.handleSubmit} className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
-                            <div className="flex flex-col md:flex-row md:gap-4 gap-6">
-                                {/* Inputs */}
-                                <div className="w-full flex flex-col items-center justify-center gap-10">
-                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام دسته بندی" />
-                                    <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
+                            <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4">
+
+                                <div className="flex gap-2">
+                                    {foundItem.attribute.map((att) =>
+                                        <div className='dark:bg-gray-800 dark:text-gray-100 bg-gray-50 drop-shadow-xl dark:drop-shadow-none dark:drop-shadow-gray-500 p-2 rounded-xl h-10' key={att.value}>{att.label}</div>
+                                    )}
                                 </div>
 
-                                <div className="w-full md:w-[200px] flex flex-col justify-between gap-4 md:gap-7">
-                                    <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
-
-                                        <div className="flex items-center justify-center">
-                                            <InputCheckbox
-                                                formik={formik}
-                                                name="status"
-                                                label="دسته فعال باشد؟"
-                                                value={true}
-                                            />
-                                        </div>
-
-                                </div>
+                            </div>
+                            <div className="w-full flex flex-col items-center justify-center gap-10">
+                                <SelectOption formik={formik} options={foundItem.attribute} name="title"  label="ویژگی جدبد" />
                             </div>
 
                             {/* Submit */}
@@ -192,4 +193,4 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
     );
 };
 
-export default AddCategory;
+export default AttributeCategory;

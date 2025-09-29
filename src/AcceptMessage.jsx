@@ -65,7 +65,7 @@ const AcceptMessage = ({ text, accept, reject, open_close, showModal,isLoading }
         <div className="fixed inset-0 z-30 flex items-center justify-center">
             {/* Backdrop */}
             <div
-                className={`absolute inset-0 bg-black/20 backdrop-blur-[1px] transition-opacity duration-300 z-0 ${isOpenModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`absolute inset-0 bg-black/20 backdrop-blur-[3px] transition-opacity duration-300 z-0 ${isOpenModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
             />
             <div ref={modalRef} className="flex flex-col gap-1.5">
                 {/* Header */}

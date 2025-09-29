@@ -9,9 +9,9 @@ export const getAsyncListCategory = createAsyncThunk("category/getAsyncListCateg
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoUser = createAsyncThunk("user/getAsyncInfoUser",async (payload,{rejectWithValue})=>{
+export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
+        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -67,7 +67,7 @@ const initialState = {
     isLoading_action: false,
     isLoading_list:false,
     isError_list:false,
-    info_edit: false,
+    info_att: [],
     list_category:[],
     list_info_user:[],
     usersData: {},
@@ -110,20 +110,20 @@ const categorySlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(getAsyncInfoUser.fulfilled,(state, action)=>{
-            state.info_edit = action.payload.data.result
+        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
+            state.info_att = action.payload.data.result
             state.isLoading = false
             state.isError = false
-            const user = action.payload.data.result.user;
-            state.usersData[user.id] = user;
+            // const user = action.payload.data.result.user;
+            // state.usersData[user.id] = user;
         })
-        builder.addCase(getAsyncInfoUser.pending,(state)=>{
-            state.info_edit = false
+        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
+            state.info_att = false
             state.isLoading = true
             state.isError = false
         })
-        builder.addCase(getAsyncInfoUser.rejected,(state,action)=>{
-            state.info_edit = action.payload
+        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
+            state.info_att = action.payload
             state.isLoading = false
             state.isError = true
         })
