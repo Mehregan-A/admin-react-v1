@@ -5,20 +5,7 @@ import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import {HiMiniXMark, HiPencilSquare} from "react-icons/hi2";
 import {HiOutlinePencilAlt} from "react-icons/hi";
-// import {gender} from "../../assets/data/Data.js";
-// import SelectOption from "../../components/input/SelectOption.jsx";
-// import InputImageUpload from "../../components/input/InputImageUpload.jsx";
-// import InputCheckbox from "../../components/input/InputCheckbox.jsx";
-import {Toast} from "../../components/toast/Toast.jsx";
-import {
-    categoryClearResult, categoryClearResultDelete,
-    getAsyncInfoCategoryAtt,
-    postAsyncAddCategory,
-    postAsyncEditCategory
-} from "../../feature/redux/CategorySlice.jsx";
-import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
-import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
-import Input from "../../components/inputs/Input.jsx";
+import {getAsyncListAttribute} from "../../feature/redux/AttributeSlice.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
 
@@ -43,31 +30,22 @@ const AttributeCategory = ({Id,list_category,open_close,reload,open_slider}) => 
         }, 300);
     }
     useEffect(() => {
-        dispatch(getAsyncInfoCategoryAtt())
+        dispatch(getAsyncListAttribute())
     },[])
 
     const {result,isLoading} = useSelector(state => state.category);
+    const {list_attribute} = useSelector(state => state.attribute);
+
     // redux
     const foundItem = list_category?.find(item => item.id === Id);
     const initialValues = {
-        title:'',
-        image:'',
-        status:''
+        value:'',
     }
     const validationSchema = yup.object({
-        title: yup
-            .string()
-            .required('نام الزامی است')
-            .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
-            .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
 
     });
     const onSubmit = (values) => {
-        if (Id) {
-            dispatch(postAsyncEditCategory(values));
-        } else {
-            dispatch(postAsyncAddCategory(values));
-        }
+        console.log(values);
     };
 
     const formik = useFormik({
@@ -76,23 +54,23 @@ const AttributeCategory = ({Id,list_category,open_close,reload,open_slider}) => 
         onSubmit,
         validateOnMount : true
     })
-
-    useEffect(() => {
-        if(result && result?.status){
-            if(result.status === 200) {
-                // toast
-                Toast.success(`${result.data.message}`);
-                open_close()
-                reload()
-                dispatch(categoryClearResult())
-
-            }else{
-                // toast
-                Toast.error(`${result.data.message}`);
-                dispatch(categoryClearResult())
-            }
-        }
-    }, [result]);
+    //
+    // useEffect(() => {
+    //     if(result && result?.status){
+    //         if(result.status === 200) {
+    //             // toast
+    //             Toast.success(`${result.data.message}`);
+    //             open_close()
+    //             reload()
+    //             dispatch(categoryClearResult())
+    //
+    //         }else{
+    //             // toast
+    //             Toast.error(`${result.data.message}`);
+    //             dispatch(categoryClearResult())
+    //         }
+    //     }
+    // }, [result]);
     //prevent to scroll
     useEffect(() => {
         const scrollBar = document.querySelector('.scroll-bar');
@@ -162,7 +140,7 @@ const AttributeCategory = ({Id,list_category,open_close,reload,open_slider}) => 
 
                             </div>
                             <div className="w-full flex flex-col items-center justify-center gap-10">
-                                <SelectOption formik={formik} options={foundItem.attribute} name="title"  label="ویژگی جدبد" />
+                                <SelectOption formik={formik} options={list_attribute} name="value"  label="ویژگی جدبد" />
                             </div>
 
                             {/* Submit */}
