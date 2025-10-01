@@ -66,7 +66,6 @@ const Login = () => {
                 <div className='h-screen bg-gray-50 w-full flex'>
 
                     <div className="w-full min-h-screen flex items-center justify-around bg-gradient-to-r from-cyan-400 to-cyan-600 p-4">
-                        <img src={loginImage} className='w-2xl'/>
                         <div className="flex flex-col items-center bg-white w-full max-w-md rounded-3xl shadow-xl p-8">
                             <span className="text-3xl font-bold text-cyan-600 mb-4">Marktoo</span>
                             <span className="text-2xl font-semibold mb-6 text-gray-700">ورود به حساب کاربری</span>
@@ -113,6 +112,7 @@ const Login = () => {
                                 <a href="#" className="text-cyan-500 font-semibold hover:underline"> ثبت نام کنید</a>
                             </p>
                         </div>
+                        <img src={loginImage} className='w-2xl'/>
                     </div>
 
                 </div>

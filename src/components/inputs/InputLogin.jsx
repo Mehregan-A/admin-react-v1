@@ -62,7 +62,7 @@ const InputLogIn = ({
     return (
         <div className="w-full relative">
             <label htmlFor={name}
-                   className="mb-1 flex flex-row justify-end text-xs font-medium text-gray-900 ">
+                   className="mb-1 flex flex-row justify-start text-xs font-medium text-gray-900 ">
                 {label}
             </label>
 

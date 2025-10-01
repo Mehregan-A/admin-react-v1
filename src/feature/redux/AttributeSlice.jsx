@@ -43,7 +43,7 @@ export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusC
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
+export const deleteAsyncCategory = createAsyncThunk("attribute/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
         return await res

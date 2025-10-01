@@ -12,15 +12,23 @@ const SelectOption = ({
                           tabIndex = false,
                           disabled = false,
                           ref,
+                          onChange, // ⭐️ callback برای اضافه کردن ویژگی‌ها
                       }) => {
     const [value, setValue] = useState("");
     const [dropdown, setDropdown] = useState(null);
 
     const selectHandler = (input) => {
+        if (!input) return; // اگر input خالی بود هیچ کاری نکن
+
         formik.setFieldValue(name, input.value);
         setValue(input.label);
         setDropdown(null);
+
+        if (onChange) {
+            onChange(input); // ارسال کل آبجکت {value,label}
+        }
     };
+
 
     const handleDropdown = (id) => {
         if (dropdown === id || (dropdown && id === undefined)) {
@@ -65,7 +73,7 @@ const SelectOption = ({
         <div className="group relative w-full">
             <label
                 htmlFor={name}
-                className="flex flex-row gap-1 mb-1 text-xs font-medium text-gray-900 "
+                className="flex flex-row gap-1 mb-1 text-xs font-medium text-gray-900"
             >
                 {label}
                 {require && <span className="text-red-500">*</span>}
@@ -109,7 +117,7 @@ const SelectOption = ({
 
                 <div
                     tabIndex={-1}
-                    className={`z-30 absolute transition-[max-height,opacity] duration-300 ease-in-out w-full rounded-lg bg-gray-50  shadow overflow-y-auto scrollbar ${
+                    className={`z-30 absolute transition-[max-height,opacity] duration-300 ease-in-out w-full rounded-lg bg-gray-50 shadow overflow-y-auto scrollbar ${
                         dropdown === name
                             ? "max-h-60 opacity-100 pointer-events-auto"
                             : "max-h-0 opacity-0 pointer-events-none"

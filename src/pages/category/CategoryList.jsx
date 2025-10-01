@@ -182,6 +182,15 @@ const CategoryList = () => {
 
     return (
         <div className={`flex flex-col gap-2`}>
+            <div className='flex justify-between items-center p-2'>
+                <div className='flex justify-start gap-2 p-5'>
+                    <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
+                    <div className="text-cyan-700 dark:text-cyan-400">دسته بندی</div>
+                </div>
+                <button
+                    onClick={() => setOpenId("")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 hover:bg-white dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته</button>
+            </div>
             <DataTable
                 icon={''}
                 isLoading={isLoading_list}

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from "../components/Sidebar.jsx";
-// import Navbar from "../components/Navbar.jsx";
 import { Outlet } from "react-router";
 import { getAsyncCheck } from "../feature/redux/LoginSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ToastContainer from "../components/toast/ToastContainer.jsx";
+import Navbar from "../components/Navbar.jsx";
 
 const Layout = () => {
     const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const Layout = () => {
                                 <Sidebar open_slider={closed.open} open_close={toggleSidebar} />
                                 <div  className="flex flex-col container mx-auto">
                                     <div>
-                                        {/*<Navbar open_close={toggleSidebar} />*/}
+                                        <Navbar open_close={toggleSidebar} />
                                     </div>
                                     <div className="mb-10 p-5 md:p-0 md:px-10">
                                         <Outlet />
