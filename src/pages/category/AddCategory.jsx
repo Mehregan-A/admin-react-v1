@@ -14,6 +14,8 @@ import {categoryClearResult, postAsyncAddCategory, postAsyncEditCategory} from "
 import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
+import SelectOption from "../../components/inputs/SelectOption.jsx";
+import {optionsActive} from "../../assets/data/Data.js";
 
 
 const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
@@ -42,7 +44,8 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
     const initialValues = {
         title:'',
         image:'',
-        status:''
+        status:'',
+        is_featured:""
     }
     const validationSchema = yup.object({
         title: yup
@@ -147,6 +150,14 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
                                 <div className="w-full flex flex-col items-center justify-center gap-10">
                                     <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام دسته بندی" />
                                     <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
+                                    {!foundItem && (
+                                        <SelectOption
+                                            formik={formik}
+                                            options={optionsActive}
+                                            name="is_featured"
+                                            label="وضعیت نمایش"
+                                        />
+                                    )}
                                 </div>
 
                                 <div className="w-full md:w-[200px] flex flex-col justify-between gap-4 md:gap-7">

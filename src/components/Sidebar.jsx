@@ -190,24 +190,31 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     subId === item.id ? "bg-gray-300 dark:bg-gray-300/40" : "bg-gray-100 dark:bg-gray-600/80"
                                                 } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}
                                             >
-                                                <NavLink
-                                                    to={item.link}
-                                                    className={() =>
-                                                        location.pathname === item.link ||
-                                                        item.sub.some((sub) => sub.link === location.pathname)
-                                                            ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
-                                                            : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
-                                                    }
-                                                >
-                                                    <div
-                                                        className={`hidden group-hover:inline`}>
-                                                        <FaIcons icon={item.icon_fill} />
-                                                    </div>
-                                                    <div className={`group-hover:hidden`}>
-                                                        <FaIcons icon={item.icon_outline} />
-                                                    </div>
-                                                </NavLink>
-                                            </div>
+                                            <NavLink
+                                                to={item.link}
+                                                className={() =>
+                                                    location.pathname === item.link ||
+                                                    item.sub.some((sub) => sub.link === location.pathname)
+                                                        ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
+                                                        : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
+                                                }
+                                            >
+                                                {location.pathname === item.link ||
+                                                item.sub.some((sub) => sub.link === location.pathname) ? (
+                                                    <FaIcons icon={item.icon_fill} />
+                                                ) : (
+                                                    <>
+                                                        <div className="hidden group-hover:inline">
+                                                            <FaIcons icon={item.icon_fill} />
+                                                        </div>
+                                                        <div className="group-hover:hidden">
+                                                            <FaIcons icon={item.icon_outline} />
+                                                        </div>
+                                                    </>
+                                                )}
+                                            </NavLink>
+
+                                        </div>
 
                                             <div className="flex justify-between items-center w-full">
                                                 <span className="dark:text-stone-100 text-cyan-700 mr-10">{item.label}</span>

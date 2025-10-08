@@ -43,7 +43,7 @@ const InputImageUpload = ({ formik, label, formikAddress, name, changesClass }) 
                 ) : (
                     <div className="bg-gray-100 dark:bg-gray-800 drop-shadow-md drop-shadow-cyan-500 rounded-lg h-20 w-28 overflow-hidden flex flex-col items-center justify-center text-gray-500 text-xs">
                         <FaCloudUploadAlt className="text-2xl animate-bounce mb-1 text-cyan-500" />
-                        <span  className='text-[10px] text-gray-200'>تصویر بارگذاری کنید</span>
+                        <span  className='text-[10px] dark:text-gray-200 text-gray-800'>تصویر بارگذاری کنید</span>
                     </div>
                 )}
             </div>

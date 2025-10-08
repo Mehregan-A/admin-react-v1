@@ -45,7 +45,6 @@ const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider 
 
     const onSubmit = () => {
         console.log("ویژگی‌های انتخاب‌شده: ", selectedAttributes);
-        // اینجا میتونی dispatch یا API بزنی
     };
 
     const formik = useFormik({

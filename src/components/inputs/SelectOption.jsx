@@ -12,20 +12,20 @@ const SelectOption = ({
                           tabIndex = false,
                           disabled = false,
                           ref,
-                          onChange, // ⭐️ callback برای اضافه کردن ویژگی‌ها
+                          onChange,
                       }) => {
     const [value, setValue] = useState("");
     const [dropdown, setDropdown] = useState(null);
 
     const selectHandler = (input) => {
-        if (!input) return; // اگر input خالی بود هیچ کاری نکن
+        if (!input) return;
 
         formik.setFieldValue(name, input.value);
         setValue(input.label);
         setDropdown(null);
 
         if (onChange) {
-            onChange(input); // ارسال کل آبجکت {value,label}
+            onChange(input);
         }
     };
 

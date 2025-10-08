@@ -1,11 +1,8 @@
 import {useLocation, useParams} from "react-router-dom";
-import {HiTrash} from "react-icons/hi2";
-import {HiOutlinePencilAlt} from "react-icons/hi";
+import CategoryNotFound from "../../assets/image/category_not_found.png"
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {FaRegEdit, FaRegTrashAlt, FaTasks, FaUsers} from "react-icons/fa";
-import {VscCircleSlash} from "react-icons/vsc";
 import {
     categoryClearResultDelete,
     deleteAsyncCategory,
@@ -117,7 +114,7 @@ const CategoryList = () => {
             selector: row =>
                 <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
                     <img
-                        src={Config.apiImage + row.image }
+                        src={row.image ? Config.apiImage + row.image : CategoryNotFound}
                         className="w-full h-full rounded-full object-cover"
                         alt="category"
                     />

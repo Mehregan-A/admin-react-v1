@@ -52,7 +52,7 @@ const Layout = () => {
                                     <div>
                                         <Navbar open_close={toggleSidebar} />
                                     </div>
-                                    <div className="mb-10 p-5 md:p-0">
+                                    <div className="mb-10 p-5 md:p-5">
                                         <Outlet />
                                     </div>
                                 </div>
