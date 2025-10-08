@@ -1,16 +1,15 @@
-import Image from '/src/assets/image/logo-sidebar.jpg';
 import { SideItem } from "../assets/data/data.js";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import FaIcons from "./Icon.jsx";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { useEffect, useState, useRef } from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {PiMoonThin, PiSignOut, PiSunDimThin} from "react-icons/pi";
+import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
 import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 import {AnimatePresence,  motion} from "framer-motion";
-import {MdMenuOpen, MdOutlineMenu} from "react-icons/md";
 import {Toast} from "./toast/Toast.jsx";
-import {getAsyncLogout, loginClearResult} from "../feature/redux/LoginSlice.jsx";
+import { loginClearResult} from "../feature/redux/LoginSlice.jsx";
+import Logo from "../assets/image/logoMarketoo.svg"
 
 const Sidebar = ({ open_close, open_slider }) => {
     const {logout} = useSelector(state => state.login)
@@ -159,8 +158,13 @@ const Sidebar = ({ open_close, open_slider }) => {
             {/*    }`}*/}
             {/*></div>*/}
             <div
-                className={`your-scroll-container flex-shrink-0 no-print fixed h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 `}
+                ref={sidebarRef}
+                className={`${!open_slider ? "translate-x-0" : "translate-x-full"} your-scroll-container flex-shrink-0 no-print fixed h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 `}
             >
+                {/*<div className='w-20 h-20 flex items-center justify-center'>*/}
+                {/*    <img src={Logo}/>*/}
+                {/*    <span className="text-xl font-bold text-cyan-600 mb-4">مارکتو</span>*/}
+                {/* </div>*/}
                 <div className="flex flex-col h-full justify-between">
                     <div className="mt-7 mx-3 flex flex-col items-center justify-center text-sm">
                         <ul className="pt-10 mb-10 flex flex-col gap-5 w-full">
@@ -195,7 +199,8 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                             : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
                                                     }
                                                 >
-                                                    <div className={`hidden group-hover:inline`}>
+                                                    <div
+                                                        className={`hidden group-hover:inline`}>
                                                         <FaIcons icon={item.icon_fill} />
                                                     </div>
                                                     <div className={`group-hover:hidden`}>
@@ -241,14 +246,15 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                                         handleItemClick();
                                                                     }}
                                                                     className={({ isActive }) =>
-                                                                        `flex items-center gap-2 px-3 py-1 transition-all duration-500 ease-in-out w-full ${
+                                                                        `flex items-center mr-3 gap-2 px-1 py-1 transition-all duration-500 ease-in-out w-full ${
                                                                             isActive
                                                                                 ? "font-semibold text-cyan-600 dark:text-cyan-400 bg-cyan-300/50 dark:bg-cyan-900/50 rounded-lg mr-1"
-                                                                                : "text-gray-700 dark:text-stone-300"
+                                                                                : "text-gray-700 dark:text-gray-300"
                                                                         }`
                                                                     }
                                                                 >
-                                                                    <div className="w-full py-2.5 px-2 rounded-lg mr-1 transition-all duration-500 ease-in-out hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transform hover:scale-105">
+                                                                    <div
+                                                                        className="w-full py-2.5 px-2 rounded-lg mr-1 transition-all duration-500 ease-in-out hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transform hover:scale-105">
                                                                         {sub.label}
                                                                     </div>
                                                                 </NavLink>
@@ -319,23 +325,12 @@ const Sidebar = ({ open_close, open_slider }) => {
                                 }`}
                             />
                         </button>
-                        <button onClick={()=>{dispatch(getAsyncLogout())}} className='flex items-center justify-center gap-1 mt-4 bg-gray-100   p-2 rounded-full cursor-pointer dark:bg-gray-700 shadow-lg hover:shadow-cyan-300/50  transition-colors transform scale-105'>
-                            <PiSignOut className='w-5 h-5 text-cyan-500/80' />
-                            <span className='text-cyan-800 dark:text-gray-50'>خروج</span>
-                        </button>
                     </div>
 
                 </div>
             </div>
 
             {/*mobile*/}
-            <button
-                onClick={open_close}
-                className="fixed top-2 right-16 z-50 lg:hidden bg-cyan-600 text-white p-2 rounded-md shadow-md"
-            >
-                {open_slider ? <MdOutlineMenu /> :  <MdMenuOpen />}
-            </button>
-
             <div
                 ref={sidebarRef}
                 className={`fixed top-0 right-0 h-screen w-20 bg-gray-100 dark:bg-gray-800 z-40 flex flex-col items-center py-5 gap-4 transition-transform duration-300 ${
@@ -409,9 +404,6 @@ const Sidebar = ({ open_close, open_slider }) => {
                         }`}
                     />
                 </button>
-                <div className='flex items-center justify-center gap-2 mt-4 bg-gray-100 shadow dark:bg-gray-700 p-2 rounded-full cursor-pointer'>
-                    <PiSignOut className='w-6 h-6 text-cyan-300' />
-                </div>
             </div>
         </>
     );

@@ -6,6 +6,8 @@ import {useNavigate} from "react-router";
 import {getAsyncLogout, loginClearResult} from "../feature/redux/LoginSlice.jsx";
 import {Toast} from "./toast/Toast.jsx";
 import {FaRightFromBracket} from "react-icons/fa6";
+import {IoLogOutOutline, IoReorderThreeOutline} from "react-icons/io5";
+import {PiSignOut} from "react-icons/pi";
 
 const Navbar = ({open_close}) => {
     const {logout} = useSelector(state => state.login);
@@ -26,38 +28,23 @@ const Navbar = ({open_close}) => {
     }, [logout]);
 
     return (
-        <div className="w-full shadow-md bg-white dark:bg-gray-800 rounded-xl">
-            <div className="flex justify-between items-center px-4 py-3">
-
-                {/* دکمه باز/بستن منو و خروج */}
-                <div className="flex items-center gap-3 text-gray-700">
-                    <button onClick={open_close}
-                            className="w-9 h-9 bg-gray-50 dark:bg-gray-700 flex items-center rounded-xl justify-center shadow-lg cursor-pointer hover:text-sky-800 transition-colors">
-                        <FaAlignRight className="w-5 h-5"/>
+        <div className="w-full h-18 p-4 shadow-lg shadow-gray-300 dark:shadow-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg items-center">
+            <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-start gap-2'>
+                    <button
+                        onClick={open_close}
+                        className="text-gray-500 dark:text-gray-300 hover:text-cyan-400 transition-all p-1.5 rounded-md shadow-md dark:shadow-gray-500 cursor-pointer"
+                    >
+                        <IoReorderThreeOutline size={25} />
                     </button>
-                    <button onClick={() => dispatch(getAsyncLogout())}
-                            className="w-9 h-9 bg-gray-50 dark:bg-gray-700 flex items-center rounded-xl justify-center shadow-lg cursor-pointer hover:text-red-600 transition-colors">
-                        <FaRightFromBracket className="w-5 h-5"/>
+                    <button onClick={()=>{dispatch(getAsyncLogout())}} className='text-gray-500 dark:text-gray-300 hover:text-cyan-400 dark:shadow-gray-500 transition-all p-1.5 rounded-md shadow-md cursor-pointer'>
+                        <IoLogOutOutline size={25} />
                     </button>
                 </div>
+                <div className='flex'>
+                    <div className='rounded-full w-11 h-11 bg-gray-200 dark:bg-cyan-300'>
 
-                {/* لوگو و نام پنل */}
-                <div className="flex items-center gap-2">
-                    {/*<img src="/logo.png" alt="لوگو" className="w-10 h-10"/>*/}
-                    <span className="font-bold text-lg">پنل مدیریت فروشگاه</span>
-                </div>
-
-                {/* پروفایل ادمین */}
-                <div className="flex items-center gap-3 text-gray-600">
-                    <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1">
-                        <FaSearch className="text-gray-400"/>
-                        <input
-                            type="text"
-                            placeholder="جستجو..."
-                            className="bg-transparent outline-none px-2 text-sm w-32 md:w-48"
-                        />
                     </div>
-                    <FaUserCircle className="text-3xl cursor-pointer hover:text-blue-500"/>
                 </div>
             </div>
         </div>
