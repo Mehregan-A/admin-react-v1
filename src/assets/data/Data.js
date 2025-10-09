@@ -46,7 +46,7 @@ export const SideItem = [
         id: 9,
         icon_fill: "PiUsersThreeFill",
         icon_outline: "PiUsersThreeLight",
-        label: "مشتریان",
+        label: "کاربران",
         link: "/user/list/50/1",
         sub: [],
     },

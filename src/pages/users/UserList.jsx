@@ -1,27 +1,25 @@
 import {useLocation, useParams} from "react-router-dom";
-import {HiTrash} from "react-icons/hi2";
-import {HiOutlinePencilAlt} from "react-icons/hi";
+import CategoryNotFound from "../../assets/image/category_not_found.png"
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {FaRegEdit, FaRegTrashAlt, FaTasks, FaUsers} from "react-icons/fa";
-import {VscCircleSlash} from "react-icons/vsc";
-import AcceptMessage from "../../components/AcceptMessage.jsx";
-import {FaCirclePlus, FaLinkSlash} from "react-icons/fa6";
-import {deleteAsyncUser, getAsyncListUser, getAsyncStatusUser, userClearResultDelete} from "../../feature/redux/CategorySlice.jsx";
+import {
+    categoryClearResultDelete,
+    deleteAsyncCategory,
+    getAsyncListCategory, getAsyncStatusCategory,
+} from "../../feature/redux/CategorySlice.jsx";
 import {Config} from "../../config/Config.jsx";
-import UserImage from "../../assets/images/User.png";
 import {Toast} from "../../components/toast/Toast.jsx";
-import AddUser from "./AddUser.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
-import {FiEdit, FiList, FiTrash2} from "react-icons/fi";
-import {MdOutlineDirectionsCar, MdOutlineGroups, MdOutlineSupervisorAccount} from "react-icons/md";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
-import UserWoman from "../../assets/images/UserWomen.png"
-import HeaderBox from "../../components/header/HeaderBox.jsx";
+import AcceptMessage from "../../AcceptMessage.jsx";
+import {PiChartPieSlice} from "react-icons/pi";
+import {getAsyncListUser} from "../../feature/redux/UserSlice.jsx";
+
 
 const UserList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
+    const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
     const location = useLocation();
     const openModal = location.state?.openModal;
@@ -46,6 +44,10 @@ const UserList = () => {
         setOpenAdd({ open: true });
         setIdsEdit({id,action});
     };
+    const setOpenIdAtt = (id,action) => {
+        setOpenAtt({ open: true });
+        setIdsEdit({id,action});
+    };
     // Handle delete or deactivate action
     const handleActionRequest = useCallback((type, id) => {
         if (type === "active"){
@@ -67,11 +69,11 @@ const UserList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncUser({ del: id }));
+                await dispatch(deleteAsyncCategory({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusUser({ Id: id }));
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusUser({ Id: id }));
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }
 
             setShowModal(false);
@@ -83,29 +85,25 @@ const UserList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(userClearResultDelete());
+                dispatch(categoryClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(userClearResultDelete())
+                dispatch(categoryClearResultDelete())
             }
         }
     }, [result_delete]);
+    console.log(list_user.data)
     // Cancel modal
     const handleReject = useCallback(() => {
         setShowModal(false);
     }, []);
-    useEffect(() => {
-        if (isIdsEdit.action ==="show") {
-            navigate(`/user/information/${isIdsEdit.id}`);
-        }
-    }, [isIdsEdit.action]);
     const ButtonWithTooltip = ({ onClick, icon, text, hoverColor }) => (
         <div className="relative group">
-            <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 cursor-pointer`}>
+            <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
                 {icon}
             </button>
-            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-50 bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
+            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-700 dark:text-gray-100 dark:bg-gray-800 bg-gray-100 rounded-lg drop-shadow-lg  drop-shadow-gray-400 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
                 {text}
             </span>
         </div>
@@ -114,21 +112,21 @@ const UserList = () => {
         {
             name: "تصویر",
             selector: row =>
-                <div className="w-14 h-14 rounded-full border-2 border-sky-700">
+                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
                     <img
-                        src={row.image ? Config.apiImage + row.image : row.gender === "female" ?UserWoman:UserImage}
+                        src={row.image ? Config.apiImage + row.image : CategoryNotFound}
                         className="w-full h-full rounded-full object-cover"
-                        alt="user"
+                        alt="category"
                     />
                 </div>,
         },
         {
-            name: "نام",
-            selector: row => row.full_name,
+            name: "نام ",
+            selector: row => row.name,
         },
         {
-            name: "کد ملی",
-            selector: row => row.national_code,
+            name: "نام خانوادگی",
+            selector: row => row.family,
         },
         {
             name: "موبایل",
@@ -136,7 +134,7 @@ const UserList = () => {
         },
         {
             name: "جنسیت",
-            selector: row => row.gender === "female" ? "خانم" : "آقا",
+            selector: row => row.gender==="famale"?"خانم":"آقا",
         },
         {
             name: " وضعیت",
@@ -152,26 +150,26 @@ const UserList = () => {
                     <ButtonWithTooltip
                         onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش کارمند"
-                        hoverColor="hover:text-green-600"
+                        text="ویرایش دسته"
+                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
                         onClick={() => handleActionRequest(row.status, row.id)}
                         icon={<IoBanOutline className="w-5 h-5" />}
                         text={`${row.status === "active"?"غیرفعال":"فعال"}`}
-                        hoverColor="hover:text-yellow-600"
+                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                     />
                     <ButtonWithTooltip
                         onClick={() => handleActionRequest("delete", row.id)}
                         icon={<IoTrashOutline className="w-5 h-5" />}
                         text="حذف"
-                        hoverColor="hover:text-red-600"
+                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
                     />
                     <ButtonWithTooltip
-                        onClick={() => setIdsEdit({ id: row.id, action: "show" })}
-                        icon={<IoListOutline className="w-6 h-6" />}
-                        text="ماموریت‌ها"
-                        hoverColor="hover:text-sky-600"
+                        onClick={() => setOpenIdAtt(row.id, "att")}
+                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
+                        text="ویژگی"
+                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
                     />
                 </div>
             )
@@ -185,18 +183,16 @@ const UserList = () => {
 
     return (
         <div className={`flex flex-col gap-2`}>
-            {/* Header */}
-            <HeaderBox
-                icon={MdOutlineGroups}
-                iconSize={30}
-                title="لیست کارمندان"
-                actionButton={
-                    <button className="flex self-end gap-2 items-center py-1.5 px-3 bg-gray-50  border hover:text-sky-700 border-sky-600  rounded-3xl cursor-pointer"  onClick={() => setOpenId("")}>
-                        <FaCirclePlus size={20} className='flex-shrink-0 text-sky-700 hidden md:block' />
-                        <span className='text-nowrap text-sm'>افزودن کارمند جدید</span>
-                    </button>
-                }
-            />
+            <div className='flex justify-between items-center p-2'>
+                <div className='flex justify-start gap-2 p-5'>
+                    <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
+                    <div className="text-cyan-700 dark:text-cyan-400">کاربران</div>
+                </div>
+                <button
+                    onClick={() => setOpenId("")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
+
+            </div>
             <DataTable
                 icon={''}
                 isLoading={isLoading_list}
@@ -206,17 +202,17 @@ const UserList = () => {
                 numberPage={list_user?.page}
                 columns={columns}
             />
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddUser
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListUser({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_user={list_user.data}
-                    />
-                </div>
-            )}
+            {/*{openAdd.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AddCategory*/}
+            {/*            open_slider={openAdd.open}*/}
+            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            list_category={list_category.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

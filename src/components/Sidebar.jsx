@@ -159,7 +159,7 @@ const Sidebar = ({ open_close, open_slider }) => {
             {/*></div>*/}
             <div
                 ref={sidebarRef}
-                className={`${!open_slider ? "translate-x-0" : "translate-x-full"} your-scroll-container flex-shrink-0 no-print fixed h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 `}
+                className={`${open_slider ? "translate-x-0" : "translate-x-full"} your-scroll-container flex-shrink-0 no-print fixed h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto shadow-xl backdrop-blur-md w-64 transition-transform duration-500 ease-in-out bg-gradient-to-r from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 `}
             >
                 {/*<div className='w-20 h-20 flex items-center justify-center'>*/}
                 {/*    <img src={Logo}/>*/}

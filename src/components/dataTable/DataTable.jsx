@@ -54,7 +54,7 @@ const MobileMode = ({data, columns,numberPage,searchParams}) => {
                         {columns && columns.length > 0 && columns.map((itemColumns, indexC) => {
                             if (itemColumns?.name !== undefined) {
                                 return (
-                                    <div key={indexC} className="flex gap-4 justify-between break-words odd:bg-gray-200 even:bg-gray-200/70  rounded-lg px-5 text-gray-600 ">
+                                    <div key={indexC} className="flex gap-4 justify-between break-words odd:bg-gray-200 dark:even:bg-gray-700 even:bg-gray-200/70 dark:odd:bg-gray-800 rounded-lg px-5 text-gray-600 dark:text-gray-200">
                                         <span className="flex-shrink-0 items-center flex justify-center txst-xs  border-l-4 border-gray-100 w-16 text-xs font-bold pl-5">{itemColumns.name}</span>
                                         <span className="text-justify text-sm py-3 w-full">{[row].map(itemColumns.selector)}</span>
                                     </div>

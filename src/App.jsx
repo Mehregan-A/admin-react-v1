@@ -5,6 +5,7 @@ import Dashboard from "./pages/dashboard/dashboard.jsx";
 import Login from "./pages/auth/Login.jsx";
 import CategoryList from "./pages/category/CategoryList.jsx";
 import AdminList from "./pages/admin/AdminList.jsx";
+import UserList from "./pages/users/UserList.jsx";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="category/list/:row/:page" element={<CategoryList/>} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
+                    <Route path="user/list/:row/:page" element={<UserList />} />
                 </Route>
             </Routes>
         </BrowserRouter>
