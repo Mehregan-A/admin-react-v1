@@ -1,14 +1,9 @@
 import {useEffect, useRef, useState} from 'react';
 import {useFormik} from "formik";
-// import Input from "../../components/input/Input.jsx";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
-import {HiMiniXMark, HiPencilSquare} from "react-icons/hi2";
+import {HiMiniXMark} from "react-icons/hi2";
 import {HiOutlinePencilAlt} from "react-icons/hi";
-// import {gender} from "../../assets/data/Data.js";
-// import SelectOption from "../../components/input/SelectOption.jsx";
-// import InputImageUpload from "../../components/input/InputImageUpload.jsx";
-// import InputCheckbox from "../../components/input/InputCheckbox.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import {categoryClearResult, postAsyncAddCategory, postAsyncEditCategory} from "../../feature/redux/CategorySlice.jsx";
 import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";

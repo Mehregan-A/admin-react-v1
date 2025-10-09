@@ -292,7 +292,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                     onClick={handleItemClick}
                                                     className={() =>
                                                         location.pathname === item.link
-                                                            ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-cyan-400 rounded-full"
+                                                            ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-gray-200 rounded-full"
                                                             : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
                                                     }
                                                 >

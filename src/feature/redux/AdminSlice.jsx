@@ -9,9 +9,9 @@ export const getAsyncListAdmin = createAsyncThunk("admin/getAsyncListAdmin",asyn
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditAdmin = createAsyncThunk("admin/postAsyncEditAdmin", async (payload, { rejectWithValue }) => {
+export const putAsyncEditAdmin = createAsyncThunk("admin/putAsyncEditAdmin", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/admin/update/${payload.id}`, payload.values, {});
+        const res = await http.put(`/admin/admin/update/${payload.id}`, payload.values, {});
 
         return res;
     } catch (error) {
@@ -43,9 +43,9 @@ export const getAsyncStatusAdmin = createAsyncThunk("admin/getAsyncStatusAdmin",
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncPassword = createAsyncThunk("admin/postAsyncPassword",async (payload,{rejectWithValue})=>{
+export const putAsyncPassword = createAsyncThunk("admin/putAsyncPassword",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post(`/admin/admin/password/change/${payload.id}`,payload.values,{
+        const res = await http.put(`/admin/admin/password/change/${payload.id}`,payload.values,{
         })
         return await res
     }catch (error) {
@@ -93,15 +93,15 @@ const adminSlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(postAsyncEditAdmin.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditAdmin.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditAdmin.pending,(state)=>{
+        builder.addCase(putAsyncEditAdmin.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditAdmin.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditAdmin.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -151,17 +151,17 @@ const adminSlice = createSlice({
             state.isLoading_action = false
             state.isError = true
         })
-        builder.addCase(postAsyncPassword.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncPassword.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
 
         })
-        builder.addCase(postAsyncPassword.pending,(state)=>{
+        builder.addCase(putAsyncPassword.pending,(state)=>{
             state.result = false
             state.isLoading = true
 
         })
-        builder.addCase(postAsyncPassword.rejected,(state,action)=>{
+        builder.addCase(putAsyncPassword.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
 

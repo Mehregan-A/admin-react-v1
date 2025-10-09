@@ -36,8 +36,8 @@ export const SideItem = [
     },
     {
         id: 2,
-        icon_fill: "PiShoppingCartSimpleFill",
-        icon_outline: "PiShoppingCartSimpleLight",
+        icon_fill: "PiUsersFill",
+        icon_outline: "PiUsers",
         label: "مدیران",
         link: "/admin/list/10/1",
         sub: [],
@@ -55,7 +55,7 @@ export const SideItem = [
         icon_fill: "PiMoneyWavyFill",
         icon_outline: "PiMoneyWavyLight",
         label: "مالی",
-        link: "/admin/list/10/1",
+        link: "",
         sub: [],
     },
     {
@@ -111,5 +111,13 @@ export const SideItem = [
 export const optionsActive = [
     { value: '1', label: 'صفحه اول' },
     { value: '0', label: 'صفحه غیر اول' },
+];
+export const gender = [
+    { value: 'male', label: 'آقا' },
+    { value: 'female', label: 'خانم' },
+];
+export const role = [
+    { value: 'employee', label: 'کارمند' },
+    { value: 'accountant', label: 'حسابدار' },
 ];
 

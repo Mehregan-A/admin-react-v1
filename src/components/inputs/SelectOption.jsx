@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { BiChevronLeft } from "react-icons/bi";
 
-const SelectOption = ({
+const
+    SelectOption = ({
                           formik,
                           formikAddress,
                           name,
@@ -73,7 +74,7 @@ const SelectOption = ({
         <div className="group relative w-full">
             <label
                 htmlFor={name}
-                className="flex flex-row gap-1 mb-1 text-xs font-medium text-gray-900"
+                className="flex flex-row gap-1 mb-1 text-xs font-medium text-gray-900 dark:text-gray-100"
             >
                 {label}
                 {require && <span className="text-red-500">*</span>}
@@ -89,7 +90,7 @@ const SelectOption = ({
                     id={name}
                     name={name}
                     type="text"
-                    className={`focus-visible:border-cyan-300 border bg-gray-100  text-gray-900 text-sm rounded-lg focus-visible:outline-0 block w-full p-2 px-2 ${
+                    className={`focus-visible:border-cyan-300 border bg-gray-100 dark:bg-gray-800 dark:text-gray-100  text-gray-900 text-sm rounded-lg focus-visible:outline-0 block w-full p-2 px-2 ${
                         formik.touched[name] && formik.errors[name]
                             ? "border-red-500"
                             : "border-gray-300"
@@ -103,7 +104,7 @@ const SelectOption = ({
                 <BiChevronLeft
                     data-id={name}
                     size={22}
-                    className={`absolute left-2 top-1/2 transform -translate-y-1/2 transition-transform duration-300 text-cyan-700 ${
+                    className={`absolute left-2 top-1/2 transform -translate-y-1/2 transition-transform duration-300 text-cyan-300 ${
                         dropdown === name ? "-rotate-90" : ""
                     }`}
                     onClick={() => handleDropdown(name)}
@@ -117,7 +118,7 @@ const SelectOption = ({
 
                 <div
                     tabIndex={-1}
-                    className={`z-30 absolute transition-[max-height,opacity] duration-300 ease-in-out w-full rounded-lg bg-gray-50 shadow overflow-y-auto scrollbar ${
+                    className={`z-30 absolute transition-[max-height,opacity] duration-300 ease-in-out w-full rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:shadow-gray-600 shadow overflow-y-auto scrollbar ${
                         dropdown === name
                             ? "max-h-60 opacity-100 pointer-events-auto"
                             : "max-h-0 opacity-0 pointer-events-none"

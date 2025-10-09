@@ -26,6 +26,9 @@ import PerPageSelector from "../../components/RowSelector.jsx";
 import {MdOutlineGroups, MdOutlinePerson, MdOutlineSupervisorAccount} from "react-icons/md";
 import {IoBanOutline, IoCreateOutline, IoKeyOutline, IoPersonCircleOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
+import AddAdmin from "./AddAdmin.jsx";
+import CategoryNotFound from "../../assets/image/category_not_found.png";
+import PasswordAdmin from "./PasswordAdmin.jsx";
 // import {getAsyncSearchCar} from "../../feature/redux/SearchSlice.jsx";
 // import {getAsyncProfile} from "../../feature/redux/ProfileSlice.jsx";
 // import HeaderBox from "../../components/header/HeaderBox.jsx";
@@ -155,7 +158,7 @@ const AdminList = () => {
                     </div>
                     <button
                         onClick={() => setOpenId("")}
-                        className='flex justify-center items-center gap-2 p-3 bg-gray-100 hover:bg-white dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مدیر</button>
+                        className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مدیر</button>
                 </div>
                 {/* Admin Cards */}
                 <div className={`flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 inset-shadow-sm inset-shadow-cyan-400  p-5  `}>
@@ -169,8 +172,7 @@ const AdminList = () => {
                                 ?<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-2 mt-4 ">
                                     {list_admin?.data &&
                                         list_admin?.data?.map((item, index) => (
-                                            <div key={index} className="relative flex shadow-md dark:shadow-cyan-500  border-gray-300 rounded-2xl  overflow-hidden hover:shadow-md transition-all duration-300">
-                                                {/* بخش چپ - عکس و اطلاعات */}
+                                            <div key={index} className="relative h-36 flex shadow-md dark:shadow-cyan-500  border-gray-300 rounded-2xl  overflow-hidden hover:shadow-md transition-all duration-300">
                                                 <div className="flex flex-col flex-1 p-4">
                                                     <div className="flex items-center gap-3 mb-3">
                                                         <div
@@ -181,8 +183,7 @@ const AdminList = () => {
                                                                         ? "bg-gradient-to-br from-purple-200 to-purple-400 dark:from-gray-800 dark:to-gray-800 dark:drop-shadow-lg dark:drop-shadow-purple-400 "
                                                                         : "bg-gradient-to-br from-emerald-200 to-emerald-400 dark:from-gray-800 dark:to-gray-800 dark:drop-shadow-lg dark:drop-shadow-emerald-400 "
                                                             }`}
-                                                        >
-                                                            {item.name?.[0] || "؟"}
+                                                        >{item.name?.[0]}
                                                         </div>
                                                         <div className="flex justify-between w-full">
                                                             <div>
@@ -236,7 +237,6 @@ const AdminList = () => {
                                                     </div>
                                                 </div>
 
-                                                {/* بخش راست - پرفراژ کوپن */}
                                                 <div className={`relative w-20  ${item.role==="manager"?"bg-gradient-to-b from-amber-200 to-amber-400 dark:bg-gradient-to-b dark:from-amber-300 dark:to-gray-800":"bg-gradient-to-b from-cyan-200 to-cyan-400 dark:bg-gradient-to-b dark:from-cyan-300 dark:to-gray-800"}  flex flex-col justify-center items-center text-white font-semibold`}>
                                                      <span className="text-xs tracking-wide">
                                                         {{
@@ -246,7 +246,6 @@ const AdminList = () => {
                                                         }[item.role] || "نامشخص"}
                                                       </span>
 
-                                                    {/* دایره‌های پرفراژ بالا و پایین */}
                                                     <div className="absolute left-7 -top-3 w-6 h-6 bg-gray-100 dark:bg-gray-800 rounded-full border border-gray-200 dark:border-0"></div>
                                                     {/*<div className="absolute -left-3 -top-3 w-6 h-6 bg-gray-100 rounded-full  border-red-500 border-2 border-dashed"></div>*/}
                                                     {/*<div className="absolute -left-3 -bottom-3 w-6 h-6 bg-gray-100 rounded-full border border-gray-200"></div>*/}
@@ -263,28 +262,28 @@ const AdminList = () => {
                 </div>
             </div>
             {/* New admin Component */}
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddAdmin*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListAdmin({ row, page }))}*/}
-            {/*            id={isIdsEdit}*/}
-            {/*            list_admin={list_admin.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddAdmin
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListAdmin({ row, page }))}
+                        id={isIdsEdit}
+                        list_admin={list_admin.data}
+                    />
+                </div>
+            )}
             {/*/!* change password Component *!/*/}
-            {/*{openPass.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <PasswordAdmin*/}
-            {/*            open_slider={openPass.open}*/}
-            {/*            open_close={() => setOpenPass({ open: !openPass.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListAdmin({ row, page }))}*/}
-            {/*            id={isIdsEdit}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {openPass.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <PasswordAdmin
+                        open_slider={openPass.open}
+                        open_close={() => setOpenPass({ open: !openPass.open })}
+                        reload={() => dispatch(getAsyncListAdmin({ row, page }))}
+                        id={isIdsEdit}
+                    />
+                </div>
+            )}
             {/* Confirm modal */}
             {showModal && (
                 <AcceptMessage
