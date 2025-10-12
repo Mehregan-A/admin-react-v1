@@ -70,23 +70,9 @@ export const SideItem = [
         id: 8,
         icon_fill: "PiUserGearFill",
         icon_outline: "PiUserGearLight",
+        link: "/profile",
         label: "پروفایل",
-        sub: [
-            {
-                id: 50,
-                icon: "MdOutlinePersonAdd",
-                label: "تنظیمات سیستم",
-                link: "/setting/system",
-            },
-            // ...(Config.decree_Setting
-            //     ? [{
-            //         id: 51,
-            //         icon: "MdOutlineList",
-            //         label: "تنظیمات چاپ",
-            //         link: "/setting/print",
-            //     }]
-            //     : []),
-        ],
+        sub: [],
     },
     // {
     //     id: 10,

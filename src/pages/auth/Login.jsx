@@ -2,19 +2,33 @@ import { useFormik } from "formik";
 import  loginImage from "../../assets/image/login.svg"
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import Wave1 from "../../assets/image/wave.svg"
+import WaveDark from "../../assets/image/Wave2Dark.svg"
+import Wave2 from "../../assets/image/wave2.svg"
+import Wavedark2 from "../../assets/image/waveDark.svg"
 import {getAsyncCheck, getAsyncLoginIndex, loginClearResult, postAsyncLogin} from "../../feature/redux/LoginSlice.jsx";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {Config} from "../../config/Config.jsx";
 import InputLogIn from "../../components/inputs/InputLogin.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import ToastContainer from "../../components/toast/ToastContainer.jsx";
+import {set_theme} from "../../feature/redux/ThemeSlice.jsx";
+import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
 
 
 const Login = () => {
     const dispatch = useDispatch();
+    const {theme}=useSelector(state => state.theme)
     const { login,login_index,isLoading_enter } = useSelector(state => state.login);
     const navigation = useNavigate();
+    const [isTheme, setIsTheme] = useState('light');
+
+    useEffect(() => {
+        if (theme === true){
+            setIsTheme((isTheme === "light")?"dark":"light");
+        }
+    }, [theme]);
     // const location = useLocation();
     // useEffect(() => {
     //     dispatch(getAsyncLoginIndex());
@@ -58,17 +72,63 @@ const Login = () => {
             }
         }
     }, [login]);
+    useEffect(()=>{
+        if(JSON.parse(localStorage.getItem("theme")) == null){
+            document.documentElement.classList.add('dark');
+            localStorage.setItem("theme", JSON.stringify('dark'));
+        }else {
+            if(JSON.parse(localStorage.getItem("theme")) === 'dark'){
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem("theme", JSON.stringify('light'));
+            }else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                localStorage.setItem("theme", JSON.stringify('dark'));
+            }
+        }
+    },[theme])
 
     return (
         <>
-            <div className='relative'>
-                <div className='absolute w-full h-px z-50 bg-gray-800'></div>
-                <div className='min-h-screen bg-gray-50 w-full flex flex-col md:flex-row'>
+            <div className="relative">
 
-                    <div className="w-full min-h-screen flex items-center justify-around bg-gradient-to-r from-cyan-300 to-cyan-600 p-10">
-                        <div className="flex flex-col items-center bg-white w-full max-w-md rounded-3xl shadow-xl p-8 ">
-                            <span className="text-3xl font-bold text-cyan-600 mb-4">Marktoo</span>
-                            <span className="text-2xl font-semibold mb-6 text-gray-700">ورود به حساب کاربری</span>
+                <div className="relative min-h-screen bg-gray-50 w-full flex flex-col md:flex-row overflow-hidden">
+                    <button
+                        onClick={() => dispatch(set_theme(!theme))}
+                        className="fixed top-5 right-5 z-50 bg-gray-50  dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-3 rounded-full shadow-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors cursor-pointer"
+                    >
+                        {theme ? <PiMoonThin className='text-cyan-400' size={20} /> : <PiSunDimThin className='text-yellow-500' size={20}/>}
+                    </button>
+
+                    <div className="relative w-full min-h-screen flex items-center justify-around bg-gray-50 dark:bg-gray-800 p-10">
+
+                        <img
+                            src={Wave1}
+                            alt="wave background"
+                            className="absolute bottom-0 left-0 w-2xl pointer-events-none select-none dark:hidden"
+                        />
+                        <img
+                            src={WaveDark}
+                            alt="wave background"
+                            className="absolute bottom-0 left-0 w-2xl pointer-events-none select-none hidden dark:block"
+                        />
+                        <img
+                            src={Wave2}
+                            alt="wave background"
+                            className="absolute top-0 right-0 w-2xl pointer-events-none select-none dark:hidden"
+                        />
+
+                        <img
+                            src={Wavedark2}
+                            alt="wave background"
+                            className="absolute top-0 right-0 w-2xl pointer-events-none select-none hidden dark:block"
+                        />
+
+
+                        <div className="relative flex flex-col items-center bg-white dark:bg-gray-700 w-full max-w-md rounded-3xl shadow-xl p-8 z-10">
+                            <span className="text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-4">Marktoo</span>
+                            <span className="text-2xl font-semibold mb-6 text-gray-700 dark:text-gray-100">ورود به حساب کاربری</span>
 
                             <form className="w-full" onSubmit={formik.handleSubmit}>
                                 <div className="flex flex-col gap-5">
@@ -98,10 +158,10 @@ const Login = () => {
                                     {isLoading_enter ? (
                                         <>
                                             <span className="w-4 h-4 border-2 border-gray-50 border-t-transparent rounded-full animate-spin"></span>
-                                            <span className='text-lg'>ورود...</span>
+                                            <span className="text-lg">ورود...</span>
                                         </>
                                     ) : (
-                                        <span className='text-lg'>ورود</span>
+                                        <span className="text-lg">ورود</span>
                                     )}
                                 </button>
                             </form>
@@ -114,17 +174,16 @@ const Login = () => {
                                 <a href="#" className="text-cyan-500 font-semibold hover:underline"> ثبت نام کنید</a>
                             </p>
                         </div>
-                        <div className="hidden lg:flex  items-center justify-center ">
+                        <div className="hidden lg:flex items-center justify-center">
                             <img src={loginImage} alt="login" className="max-w-lg w-full h-auto object-contain" />
                         </div>
                     </div>
-
-
-
                 </div>
+
                 <ToastContainer />
             </div>
         </>
+
     );
 
 };

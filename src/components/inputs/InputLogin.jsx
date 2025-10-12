@@ -62,7 +62,7 @@ const InputLogIn = ({
     return (
         <div className="w-full relative">
             <label htmlFor={name}
-                   className="mb-1 flex flex-row justify-start text-xs font-medium text-gray-900 ">
+                   className="mb-1 flex flex-row justify-start text-xs font-medium text-gray-900 dark:text-gray-100">
                 {label}
             </label>
 
@@ -92,8 +92,8 @@ const InputLogIn = ({
                             ? "focus-visible:ring-rose-500  border border-rose-300"
                             : "focus-visible:ring-cyan-800  border border-gray-200"
                     }
-                         text-gray-900 text-sm rounded-lg
-                        focus-visible:outline-0 focus-visible:ring-0 block w-full p-2 bg-cyan-50`}
+                         text-gray-900 dark:text-gray-100 text-sm rounded-lg
+                        focus-visible:outline-0 focus-visible:ring-0 dark:bg-gray-800 block w-full p-2 bg-cyan-50`}
                     placeholder={placeholder}
                 />
                 {isPasswordField && (

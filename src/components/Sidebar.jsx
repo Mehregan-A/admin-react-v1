@@ -272,7 +272,9 @@ const Sidebar = ({ open_close, open_slider }) => {
                                             </AnimatePresence>
                                         </li>
                                     ) : (
-                                <li
+                                <NavLink
+                                            to={item.link}
+                                            end
                                             key={item.id}
                                             className={`relative group cursor-pointer flex items-center rounded-lg p-3.5 transition-all duration-500 ease-in-out ${
                                                 location.pathname === item.link || item.sub.some((sub) => sub.link === location.pathname)
@@ -307,7 +309,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 </NavLink>
                                             </div>
                                             <div className="dark:text-cyan-100 text-cyan-800 mr-10">{item.label}</div>
-                                        </li>
+                                </NavLink>
                                     )
                             )}
                         </ul>
