@@ -63,7 +63,7 @@ export const SideItem = [
         icon_fill: "PiWrenchFill",
         icon_outline: "PiWrenchLight",
         label: "تنظیمات",
-        link: "/profile",
+        link: "",
         sub: [],
     },
     {
