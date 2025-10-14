@@ -6,6 +6,7 @@ import AttributeSlice from "./redux/AttributeSlice.jsx";
 import AdminSlice from "./redux/AdminSlice.jsx";
 import UserSlice from "./redux/UserSlice.jsx";
 import ProfileSlice from "./redux/ProfileSlice.jsx";
+import categorySubSlice from "./redux/CategorySubSlice.jsx";
 
 
 
@@ -18,6 +19,7 @@ export const store = configureStore({
         admin:AdminSlice,
         user:UserSlice,
         profile:ProfileSlice,
+        subCategory:categorySubSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

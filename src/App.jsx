@@ -7,6 +7,7 @@ import CategoryList from "./pages/category/CategoryList.jsx";
 import AdminList from "./pages/admin/AdminList.jsx";
 import UserList from "./pages/users/UserList.jsx";
 import Profile from "./pages/profile/Profile.jsx";
+import ListSubCategory from "./pages/subCategory/ListSubCategory.jsx";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                     <Route index element={<Dashboard />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="category/list/:row/:page" element={<CategoryList/>} />
+                    <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
                     <Route path="user/list/:row/:page" element={<UserList />} />
                     <Route path="/profile" element={<Profile />} />

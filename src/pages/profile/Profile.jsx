@@ -10,6 +10,9 @@ import {useNavigate} from "react-router";
 import {MdOutlineHome, MdOutlinePerson, MdOutlinePlaylistAddCheck} from "react-icons/md";
 import CategoryNotFound from "../../assets/image/category_not_found.png";
 import {TbLock, TbLockFilled} from "react-icons/tb";
+import PasswordAdmin from "../admin/PasswordAdmin.jsx";
+import {getAsyncListAdmin} from "../../feature/redux/AdminSlice.jsx";
+import ProfilePassword from "./ProfilePassword.jsx";
 // import UserWoman from "../../assets/images/UserWomen.png";
 // import HeaderBox from "../../components/header/HeaderBox.jsx";
 
@@ -28,19 +31,22 @@ const Profile = () => {
 
 // List article selector
     const { profile,isLoading_list,isError_list } = useSelector(state => state.profile);
-    console.log(profile)
 
     return (
         <>
-            <div className={`flex flex-col gap-2 bg-gray-200 dark:bg-gray-800 min-h-screen lg:container`}>
+            <div className={`flex flex-col gap-2 bg-gray-200 dark:bg-gray-800  min-h-screen lg:container`}>
                 {/* Header */}
+                <div className='flex justify-start gap-2 p-5'>
+                    <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
+                    <div className="text-cyan-700 dark:text-cyan-400">پروفایل</div>
+                </div>
                 <div className={`flex flex-col gap-3 min-h-120`}>
                     {isLoading_list
                         ?<Loading />
                         :isError_list
                             ?<Reject />
                             :profile &&
-                            <div className="w-full bg-gray-50 dark:bg-gray-800 p-7 rounded-xl shadow-lg flex flex-col gap-4">
+                            <div className="w-full bg-gray-50 dark:bg-gray-800 shadow-lg dark:shadow-cyan-400 shadow-gray-300 p-7 rounded-xl  flex flex-col gap-4">
                                 <span className="text-xl text-gray-800 dark:text-gray-100 p-2">پروفایل</span>
                                 <div className="flex items-center gap-7">
                                     <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 drop-shadow-xl drop-shadow-cyan-300">
@@ -50,9 +56,22 @@ const Profile = () => {
                                             alt="profile"
                                         />
                                     </div>
-                                    <div className="flex flex-col gap-2">
-                                        <div className='bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600  border rounded-2xl w-20 items-center flex justify-center'>
-                                            <span className='dark:text-gray-200 text-gray-700'>{profile.role}</span>
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex  gap-5 items-center">
+                                            <div className='bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600  border rounded-2xl w-20 items-center flex justify-center'>
+                                                <span className='dark:text-gray-200 text-gray-700'> {{
+                                                    manager: "مدیر",
+                                                    accountant: "حسابدار",
+                                                    employee: "کارمند",
+                                                    developer: "دولوپر" ,
+                                                }[profile.role] || "نامشخص"}
+                                                </span>
+                                            </div>
+                                            <div className='bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600  border rounded-2xl w-20 items-center flex justify-center'>
+                                                <div className={`${profile.status==="active"?"text-green-500":"text-red-500"} `}>
+                                                    <span>{profile.status==="active"?"فعال":"غیرفعال"}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className='flex justify-center text-xl dark:text-gray-100'>
                                             <span>{profile.name}</span>
@@ -70,7 +89,7 @@ const Profile = () => {
                                                     <span>{profile.family}</span>
                                                 </div>
                                             </div>
-                                            <div className='absolute -bottom-px h-px w-40 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
+                                            <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
                                             </div>
                                         </div>
                                     </div>
@@ -82,7 +101,7 @@ const Profile = () => {
                                                     <span>{profile.username}</span>
                                                 </div>
                                             </div>
-                                            <div className='absolute -bottom-px h-px w-40 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
+                                            <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
                                             </div>
                                         </div>
                                     </div>
@@ -94,7 +113,7 @@ const Profile = () => {
                                                     <span>{profile.mobile}</span>
                                                 </div>
                                             </div>
-                                            <div className='absolute -bottom-px h-px w-40 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
+                                            <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
                                             </div>
                                         </div>
                                     </div>
@@ -106,50 +125,39 @@ const Profile = () => {
                                                     <span>{profile.gender==="male"?"آقا":"خانم"}</span>
                                                 </div>
                                             </div>
-                                            <div className='absolute -bottom-px h-px w-40 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
+                                            <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col gap-2">
-                                        <span className="dark:text-gray-300 text-gray-800">وضعیت</span>
-                                        <div className='relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600 border rounded-2xl h-8 items-center flex justify-center p-5'>
-                                            <div>
-                                                <div className={`${profile.status==="active"?"text-green-500":"text-red-500"} `}>
-                                                    <span>{profile.status==="active"?"فعال":"غیرفعال"}</span>
-                                                </div>
-                                            </div>
-                                            <div className='absolute -bottom-px h-px w-40 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
+                                    <button
+                                        onClick={() => setOpenPass({open:true})}
+                                        className="flex flex-col gap-2 mt-8 cursor-pointer group transition-all">
                                         <div className='relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600 border rounded-2xl items-center flex justify-center p-5'>
-                                            <div className="flex flex-col gap-2">
-                                                <div className="w-10 h-10  items-center flex justify-center dark:text-gray-100 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-600 border-gray-200 dark:border-gray-600 border rounded-full">
+                                            <div className="flex flex-col gap-2 items-center ">
+                                                <div className="w-10 h-10 items-center flex justify-center dark:text-gray-100 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-600 border-gray-200 dark:border-gray-600 border rounded-full ">
                                                     <TbLockFilled size={25} />
                                                 </div>
-                                                <div className='dark:text-gray-100 text-gray-700'>
+                                                <div className='dark:text-gray-100 text-gray-700 text-center '>
                                                     <span className="text-xl">تغییر رمز</span>
                                                 </div>
                                             </div>
-                                            <div className='absolute -bottom-px h-px w-40 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
-                                            </div>
+                                            <div className='absolute -bottom-px left-1/2 transform -translate-x-1/2 h-px w-1/4 bg-gradient-to-r  dark:group-hover:via-cyan-300 group-hover:via-cyan-300 dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200'></div>
                                         </div>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                     }
                 </div>
                 {/*/!* change password Component *!/*/}
-                {/*{openPass.open && (*/}
-                {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-                {/*        <PasswordProfile*/}
-                {/*            open_slider={openPass.open}*/}
-                {/*            open_close={() => setOpenPass({ open: !openPass.open })}*/}
-                {/*            reload={() => dispatch(getAsyncProfile())}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*)}*/}
+                {openPass.open && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center">
+                        <ProfilePassword
+                            open_slider={openPass.open}
+                            open_close={() => setOpenPass({ open: !openPass.open })}
+                            reload={() => dispatch(getAsyncProfile())}
+                        />
+                    </div>
+                )}
             </div>
         </>
     );

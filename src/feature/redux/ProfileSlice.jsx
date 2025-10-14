@@ -9,7 +9,7 @@ export const getAsyncProfile = createAsyncThunk("profile/getAsyncProfile",async 
         return rejectWithValue(error.response, error.message)
     }
 })
- const postAsyncPasswordProfile = createAsyncThunk("profile/postAsyncPasswordProfile",async (payload,{rejectWithValue})=>{
+export const postAsyncPasswordProfile = createAsyncThunk("profile/postAsyncPasswordProfile",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.post(`/admin/profile/password/change`, payload, {});
         return res;
@@ -19,7 +19,7 @@ export const getAsyncProfile = createAsyncThunk("profile/getAsyncProfile",async 
             message: error.message,
         });
     }
-});
+})
 
 
 const initialState = {

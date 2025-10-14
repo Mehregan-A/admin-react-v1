@@ -24,7 +24,7 @@ export const SideItem = [
                 id: 43,
                 icon: "PiCirclesThreeFill",
                 label: "زیر دسته",
-                link: "/decree/list/50/1",
+                link: "/category/sub/list/50/1",
             },
             {
                 id: 46,

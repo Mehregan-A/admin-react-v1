@@ -71,7 +71,7 @@ const PageItem = ({num,searchParams}) => {
         <li>
             <div onClick = {() => changePageNum(num)}
                  className = {` flex items-center justify-center cursor-pointer p-1 size-7 border rounded-full
-                 ${page == num ? "bg-sky-800 text-gray-200 border-sky-800" : " bg-white/70 border-gray-300  text-gray-500 "}`}>
+                 ${page == num ? "bg-cyan-400 text-gray-200 border-cyan-400" : " bg-white/70 dark:bg-gray-800 dark:text-gray-100 border-gray-300  text-gray-500 "}`}>
                 {num}
             </div>
         </li>
