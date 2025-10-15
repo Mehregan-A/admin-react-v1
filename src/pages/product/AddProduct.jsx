@@ -5,24 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {HiMiniXMark} from "react-icons/hi2";
 import {HiOutlinePencilAlt} from "react-icons/hi";
 import {Toast} from "../../components/toast/Toast.jsx";
-import {
-
-    getAsyncSelectCategory,
-
-} from "../../feature/redux/CategorySlice.jsx";
+import {categoryClearResult, postAsyncAddCategory, postAsyncEditCategory} from "../../feature/redux/CategorySlice.jsx";
 import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
 import {optionsActive} from "../../assets/data/Data.js";
-import {
-    postAsyncAddSubCategory,
-
-    SubcategoryClearResult, updateAsyncEditSubCategory
-} from "../../feature/redux/CategorySubSlice.jsx";
 
 
-const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) => {
+const AddProduct = ({Id,list_category,open_close,reload,open_slider}) => {
     const myElementRef = useRef(null);
     // transitions for open & close
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -41,19 +32,31 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
         }, 300);
     }
 
-    const {result,isLoading} = useSelector(state => state.subcategory);
-    const {list_category_select} = useSelector(state => state.category);
-    useEffect(() => {
-        dispatch(getAsyncSelectCategory())
-    }, []);
+    const {result,isLoading} = useSelector(state => state.category);
     // redux
-    const foundItem = list_sub_category?.find(item => item.id === Id);
+    const foundItem = list_category?.find(item => item.id === Id);
     const dispatch = useDispatch();
     const initialValues = {
-        category_id:"" ,
-        title: "",
-        url: "",
-        status : ""
+        url:'',
+        title:'',
+        abstract:'',
+        body:"",
+        image:"",
+        brand_id:"",
+        category_id:"",
+        sub_category_id:"",
+        status:"",
+        publish_at:"",
+        seo_title:"",
+        seo_desc:"",
+        gallery:"",
+        attribute:"",
+        pricing_type:"",
+        price:"",
+        discount_price:"",
+        stock_qty:"",
+        weight:"",
+        variants:"",
     }
     const validationSchema = yup.object({
         title: yup
@@ -65,9 +68,9 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
     });
     const onSubmit = (values) => {
         if (Id) {
-            dispatch(updateAsyncEditSubCategory(values));
+            dispatch(postAsyncEditCategory(values));
         } else {
-            dispatch(postAsyncAddSubCategory(values));
+            dispatch(postAsyncAddCategory(values));
         }
     };
 
@@ -85,12 +88,12 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
                 Toast.success(`${result.data.message}`);
                 open_close()
                 reload()
-                dispatch(SubcategoryClearResult())
+                dispatch(categoryClearResult())
 
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(SubcategoryClearResult())
+                dispatch(categoryClearResult())
             }
         }
     }, [result]);
@@ -132,9 +135,6 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
     return (
         <>
             <div className="fixed inset-0 z-20 flex items-center justify-center overflow-auto p-4">
-                <div
-                    className={`absolute inset-0 bg-black/20 backdrop-blur-[3px] transition-opacity duration-300 z-0 ${isOpenModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                />
                 <div ref={myElementRef} className="flex flex-col gap-2 w-full items-center">
 
                     {/* Form */}
@@ -148,24 +148,29 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
                             </button>
                             <div className="flex gap-2 items-center dark:text-gray-200 rounded-3xl">
                                 <HiOutlinePencilAlt className="w-5 h-5" />
-                                <span className="text-sm">{Id ? "ویرایش اطلاعات زیر دسته" : "ثبت اطلاعات  زیر دسته"}</span>
+                                <span className="text-sm">{Id ? "ویرایش اطلاعات دسته" : "ثبت اطلاعات دسته"}</span>
                             </div>
                         </div>
                         <div className='w-full h-px bg-cyan-300'></div>
                         <form onSubmit={formik.handleSubmit} className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
-                            <div className="flex flex-col md:gap-4 gap-6">
+                            <div className="flex flex-col md:flex-row md:gap-4 gap-6">
                                 {/* Inputs */}
                                 <div className="w-full flex flex-col items-center justify-center gap-10">
-                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام زیر دسته" />
+                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام دسته بندی" />
                                     <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
-                                    <SelectOption
-                                        formik={formik}
-                                        options={list_category_select}
-                                        name="category_id"
-                                        label="انتخاب دسته"
-                                    />
+                                    {!foundItem && (
+                                        <SelectOption
+                                            formik={formik}
+                                            options={optionsActive}
+                                            name="is_featured"
+                                            label="وضعیت نمایش"
+                                        />
+                                    )}
                                 </div>
-                                <div className="w-full flex justify-end gap-4 md:gap-7">
+
+                                <div className="w-full md:w-[200px] flex flex-col justify-between gap-4 md:gap-7">
+                                    <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
+
                                     <div className="flex items-center justify-center">
                                         <InputCheckbox
                                             formik={formik}
@@ -174,6 +179,7 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
                                             value={true}
                                         />
                                     </div>
+
                                 </div>
                             </div>
 
@@ -205,4 +211,4 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
     );
 };
 
-export default AddSubCategory;
+export default AddProduct;

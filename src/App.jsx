@@ -8,6 +8,8 @@ import AdminList from "./pages/admin/AdminList.jsx";
 import UserList from "./pages/users/UserList.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import ListSubCategory from "./pages/subCategory/ListSubCategory.jsx";
+import ListProduct from "./pages/product/ListProduct.jsx";
+import AddProduct from "./pages/product/AddProduct.jsx";
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="category/list/:row/:page" element={<CategoryList/>} />
                     <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
+                    <Route path="product/list/:row/:page" element={<ListProduct/>} />
+                    <Route path="product/add" element={<AddProduct />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
                     <Route path="user/list/:row/:page" element={<UserList />} />
                     <Route path="/profile" element={<Profile />} />

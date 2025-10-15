@@ -18,9 +18,9 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("subcategory/getAsyncInf
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditSubCategory = createAsyncThunk("subcategory/postAsyncEditSubCategory", async (payload, { rejectWithValue }) => {
+export const updateAsyncEditSubCategory = createAsyncThunk("subcategory/updateAsyncEditSubCategory", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/sub-category/update/${payload.id}`, payload, {});
+        const res = await http.put(`/admin/sub-category/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -88,7 +88,7 @@ const categorySubSlice = createSlice({
     name: 'subcategory',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        SubcategoryClearResult : (state) => {
             state.result = false
         },
         SubcategoryClearResultDelete : (state) => {
@@ -131,15 +131,15 @@ const categorySubSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditSubCategory.fulfilled,(state, action)=>{
+        builder.addCase(updateAsyncEditSubCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditSubCategory.pending,(state)=>{
+        builder.addCase(updateAsyncEditSubCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditSubCategory.rejected,(state,action)=>{
+        builder.addCase(updateAsyncEditSubCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -212,6 +212,6 @@ const categorySubSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,SubcategoryClearResultDelete} = categorySubSlice.actions
+export const { SubcategoryClearResult,categoryClearInfo,SubcategoryClearResultDelete} = categorySubSlice.actions
 
 export default categorySubSlice.reducer

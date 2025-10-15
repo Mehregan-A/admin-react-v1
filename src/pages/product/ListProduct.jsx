@@ -1,21 +1,27 @@
 import {useLocation, useParams} from "react-router-dom";
+import CategoryNotFound from "../../assets/image/category_not_found.png"
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {
+    categoryClearResultDelete,
+    deleteAsyncCategory,
+    getAsyncListCategory, getAsyncStatusCategory,
+} from "../../feature/redux/CategorySlice.jsx";
+import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
+// import AddCategory from "./AddCategory.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
-import {
-    deleteAsyncSubCategory,
-    getAsyncListSubCategory,
-    getAsyncStatusSubCategory, SubcategoryClearResultDelete
-} from "../../feature/redux/CategorySubSlice.jsx";
-import AddSubCategory from "./AddSubCategory.jsx";
+// import AttributeCategory from "./AttributeCategory.jsx";
+import {getAsyncListProduct} from "../../feature/redux/ProductSlice.jsx";
+import {persianDateNT} from "../../components/utility/persianDateNT.js";
+import DataTableProduct from "../../components/dataTable/DataTableProduct.jsx";
 
 
-const ListSubCategory = () => {
+const ListProduct = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -29,12 +35,12 @@ const ListSubCategory = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_sub_category,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.subcategory);
+    const { list_product,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.product);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListSubCategory({ row, page}));
-            navigate(`/category/sub/list/${row}/${page}`);
+            dispatch(getAsyncListProduct({ row, page}));
+            navigate(`/product/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -67,11 +73,11 @@ const ListSubCategory = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncSubCategory({ del: id }));
+                await dispatch(deleteAsyncCategory({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusSubCategory({ Id: id }));
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusSubCategory({ Id: id }));
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }
 
             setShowModal(false);
@@ -83,11 +89,11 @@ const ListSubCategory = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(SubcategoryClearResultDelete());
+                dispatch(categoryClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(SubcategoryClearResultDelete())
+                dispatch(categoryClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -107,7 +113,18 @@ const ListSubCategory = () => {
     );
     const columns = [
         {
-            name: "نام زیر دسته",
+            name: "تصویر",
+            selector: row =>
+                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
+                    <img
+                        src={row.image ? Config.apiImage + row.image : CategoryNotFound}
+                        className="w-full h-full rounded-full object-cover"
+                        alt="category"
+                    />
+                </div>,
+        },
+        {
+            name: "نام محصول",
             selector: row => row.title,
         },
         {
@@ -115,12 +132,16 @@ const ListSubCategory = () => {
             selector: row => row.url,
         },
         {
-            name: "نام دسته",
-            selector: row => row.category_title,
+            name: "چکیده",
+            selector: row => row.abstract,
         },
         {
-            name: " وضعیت",
-            selector: row => row.status === "active" ? <div className={`text-green-500`}>فعال</div> :  <div className={`text-red-500`}>غیرفعال</div>
+            name: " وضعیت انتشار",
+            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-400`}>انتظار</div>
+        },
+        {
+            name: "زمان انتشار",
+            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
         },
         {
             name: "عملیات",
@@ -132,7 +153,7 @@ const ListSubCategory = () => {
                     <ButtonWithTooltip
                         onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش زیر دسته"
+                        text="ویرایش دسته"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
@@ -146,6 +167,12 @@ const ListSubCategory = () => {
                         icon={<IoTrashOutline className="w-5 h-5" />}
                         text="حذف"
                         hoverColor="hover:text-red-600 dark:hover:text-red-400"
+                    />
+                    <ButtonWithTooltip
+                        onClick={() => setOpenIdAtt(row.id, "att")}
+                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
+                        text="ویژگی"
+                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
                     />
                 </div>
             )
@@ -162,33 +189,33 @@ const ListSubCategory = () => {
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
                     <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">زیر دسته</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">دسته بندی</div>
                 </div>
                 <button
-                    onClick={() => setOpenId("")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن زیر دسته</button>
+                    onClick={() => navigate("/product/add")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن محصول</button>
 
             </div>
-            <DataTable
+            <DataTableProduct
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_sub_category?.data}
-                numberPage={list_sub_category?.page}
+                data={list_product?.data}
+                numberPage={list_product?.page}
                 columns={columns}
             />
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddSubCategory
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListSubCategory({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_sub_category={list_sub_category.data}
-                    />
-                </div>
-            )}
+            {/*{openAdd.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AddCategory*/}
+            {/*            open_slider={openAdd.open}*/}
+            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            list_product={list_product.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
             {/*{openAtt.open && (*/}
             {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
             {/*        <AttributeCategory*/}
@@ -196,7 +223,7 @@ const ListSubCategory = () => {
             {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
             {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
             {/*            Id={isIdsEdit.id}*/}
-            {/*            list_sub_category={list_sub_category.data}*/}
+            {/*            list_product={list_product.data}*/}
             {/*        />*/}
             {/*    </div>*/}
             {/*)}*/}
@@ -214,4 +241,4 @@ const ListSubCategory = () => {
     );
 };
 
-export default ListSubCategory;
+export default ListProduct;

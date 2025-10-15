@@ -1,17 +1,9 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 
-export const getAsyncListCategory = createAsyncThunk("category/getAsyncListCategory",async (payload,{rejectWithValue})=>{
+export const getAsyncListProduct = createAsyncThunk("product/getAsyncListProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/category/list/${payload.row}/${payload.page}`,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncSelectCategory = createAsyncThunk("category/getAsyncSelectCategory",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`admin/category/select`,{})
+        const res = await http.get(`admin/products/list/${payload.row}/${payload.page}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -34,9 +26,9 @@ export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCat
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
+export const postAsyncAddProduct = createAsyncThunk("product/postAsyncAddProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/category/add",payload,{})
+        const res = await http.post("/admin/products/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -92,7 +84,7 @@ const initialState = {
     isLoading_list:false,
     isError_list:false,
     info_att: [],
-    list_category:[],
+    list_product:[],
     list_category_select:[],
     list_info_user:[],
     usersData: {},
@@ -105,8 +97,8 @@ const initialState = {
 
 
 
-const categorySlice = createSlice({
-    name: 'category',
+const ProductSlice = createSlice({
+    name: 'product',
     initialState,
     reducers : {
         categoryClearResult : (state) => {
@@ -120,33 +112,18 @@ const categorySlice = createSlice({
         },
     },
     extraReducers : (builder)=>{
-        builder.addCase(getAsyncListCategory.fulfilled,(state, action)=>{
-            state.list_category = action.payload.data.result
+        builder.addCase(getAsyncListProduct.fulfilled,(state, action)=>{
+            state.list_product = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListCategory.pending,(state)=>{
-            state.list_category = false
+        builder.addCase(getAsyncListProduct.pending,(state)=>{
+            state.list_product = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListCategory.rejected,(state,action)=>{
-            state.list_category = action.payload
-            state.isLoading_list = false
-            state.isError_list = true
-        })
-        builder.addCase(getAsyncSelectCategory.fulfilled,(state, action)=>{
-            state.list_category_select = action.payload.data.result
-            state.isLoading_list = false
-            state.isError_list = false
-        })
-        builder.addCase(getAsyncSelectCategory.pending,(state)=>{
-            state.list_category_select = false
-            state.isLoading_list = true
-            state.isError_list = false
-        })
-        builder.addCase(getAsyncSelectCategory.rejected,(state,action)=>{
-            state.list_category_select = action.payload
+        builder.addCase(getAsyncListProduct.rejected,(state,action)=>{
+            state.list_product = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
@@ -179,15 +156,15 @@ const categorySlice = createSlice({
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddProduct.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.pending,(state)=>{
+        builder.addCase(postAsyncAddProduct.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddProduct.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -263,6 +240,6 @@ const categorySlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = categorySlice.actions
+export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = ProductSlice.actions
 
-export default categorySlice.reducer
+export default ProductSlice.reducer

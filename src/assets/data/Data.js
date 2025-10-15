@@ -52,10 +52,10 @@ export const SideItem = [
     },
     {
         id: 3,
-        icon_fill: "PiMoneyWavyFill",
-        icon_outline: "PiMoneyWavyLight",
-        label: "مالی",
-        link: "",
+        icon_fill: "PiPackageFill",
+        icon_outline: "PiPackage",
+        label: "محصولات",
+        link: "/product/list/50/1",
         sub: [],
     },
     {
