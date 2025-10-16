@@ -9,9 +9,9 @@ export const getAsyncListProduct = createAsyncThunk("product/getAsyncListProduct
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
+export const getAsyncInfoProduct = createAsyncThunk("product/getAsyncInfoProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
+        const res = await http.get(`admin/products/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -83,7 +83,7 @@ const initialState = {
     isLoading_action: false,
     isLoading_list:false,
     isError_list:false,
-    info_att: [],
+    info_product: [],
     list_product:[],
     list_category_select:[],
     list_info_user:[],
@@ -93,7 +93,6 @@ const initialState = {
     isError: false,
 }
 
-//get / list / result / isLoading / isError / select
 
 
 
@@ -127,20 +126,20 @@ const ProductSlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
+        builder.addCase(getAsyncInfoProduct.fulfilled,(state, action)=>{
+            state.info_product = action.payload.data.result
             state.isLoading = false
             state.isError = false
             // const user = action.payload.data.result.user;
             // state.usersData[user.id] = user;
         })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
+        builder.addCase(getAsyncInfoProduct.pending,(state)=>{
+            state.info_product = false
             state.isLoading = true
             state.isError = false
         })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
+        builder.addCase(getAsyncInfoProduct.rejected,(state,action)=>{
+            state.info_product = action.payload
             state.isLoading = false
             state.isError = true
         })

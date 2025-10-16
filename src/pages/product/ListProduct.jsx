@@ -19,6 +19,8 @@ import {PiChartPieSlice} from "react-icons/pi";
 import {getAsyncListProduct} from "../../feature/redux/ProductSlice.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import DataTableProduct from "../../components/dataTable/DataTableProduct.jsx";
+import Color from 'color-thief-react';
+import AddProduct from "./AddProduct.jsx";
 
 
 const ListProduct = () => {
@@ -115,10 +117,10 @@ const ListProduct = () => {
         {
             name: "تصویر",
             selector: row =>
-                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
+                <div className="w-18 h-18  rounded-lg">
                     <img
                         src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                        className="w-full h-full rounded-full object-cover"
+                        className="w-full h-full rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg object-cover shadow-lg shadow-cyan-400 dark:shadow-cyan-300"
                         alt="category"
                     />
                 </div>,
@@ -151,9 +153,9 @@ const ListProduct = () => {
             selector: row => (
                 <div className="flex lg:justify-center gap-0.5">
                     <ButtonWithTooltip
-                        onClick={() => setOpenId(row.id, "edit")}
+                        onClick={() => navigate(`/product/add/${row.id}`)}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش دسته"
+                        text="ویرایش محصول"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
@@ -189,7 +191,7 @@ const ListProduct = () => {
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
                     <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">دسته بندی</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">محصولات</div>
                 </div>
                 <button
                     onClick={() => navigate("/product/add")}
@@ -205,17 +207,6 @@ const ListProduct = () => {
                 numberPage={list_product?.page}
                 columns={columns}
             />
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddCategory*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_product={list_product.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {/*{openAtt.open && (*/}
             {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
             {/*        <AttributeCategory*/}

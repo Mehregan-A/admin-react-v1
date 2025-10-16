@@ -23,7 +23,7 @@ function App() {
                     <Route path="category/list/:row/:page" element={<CategoryList/>} />
                     <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
                     <Route path="product/list/:row/:page" element={<ListProduct/>} />
-                    <Route path="product/add" element={<AddProduct />} />
+                    <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
                     <Route path="user/list/:row/:page" element={<UserList />} />
                     <Route path="/profile" element={<Profile />} />
