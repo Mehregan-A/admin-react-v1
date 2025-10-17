@@ -8,6 +8,7 @@ import UserSlice from "./redux/UserSlice.jsx";
 import ProfileSlice from "./redux/ProfileSlice.jsx";
 import CategorySubSlice from "./redux/CategorySubSlice.jsx";
 import ProductSlice from "./redux/ProductSlice.jsx";
+import BrandSlice from "./redux/BrandSlice.jsx";
 
 
 
@@ -22,6 +23,7 @@ export const store = configureStore({
         profile:ProfileSlice,
         subcategory:CategorySubSlice,
         product:ProductSlice,
+        brand:BrandSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

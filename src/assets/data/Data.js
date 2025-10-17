@@ -60,10 +60,10 @@ export const SideItem = [
     },
     {
         id: 4,
-        icon_fill: "PiWrenchFill",
-        icon_outline: "PiWrenchLight",
-        label: "تنظیمات",
-        link: "",
+        icon_fill: "PiMedalFill",
+        icon_outline: "PiMedalLight",
+        label: "برند",
+        link: "/brand/list/50/1",
         sub: [],
     },
     {

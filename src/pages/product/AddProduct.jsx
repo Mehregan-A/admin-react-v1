@@ -109,23 +109,14 @@ const AddProduct = () => {
                         }
                     </div>
                 </div>
-                <div className='flex flex-col gap-2'>
-                    <div className="w-full flex gap-2 p-5">
-                        <div className="bg-gray-700 rounded-xl w-full h-60">
-                            <span>ویرایش تصویر</span>
-                            <div className="w-full h-20 flex">
-                                {info_product.gallery.map((item, index) => {
-                                    return(
-                                        <img
-                                            src={item.url ? Config.apiImage + item.url: CategoryNotFound}
-                                            className="w-32 h-32 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg object-cover shadow-lg shadow-cyan-400 dark:shadow-cyan-300"
-                                            alt="category"
-                                        />
-                                    )
-                                })}
+                <div className="flex gap-2">
+                    <div className="flex flex-col gap-4 bg-gray-100 rounded-xl h-96 w-xl p-4">
+                        <div className=" text-gray-800">افزودن عکس محصول</div>
+                        <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
 
-                            </div>
-                        </div>
+                    </div>
+                    <div>
+
                     </div>
                 </div>
             </div>

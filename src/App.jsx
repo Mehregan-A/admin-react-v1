@@ -10,6 +10,7 @@ import Profile from "./pages/profile/Profile.jsx";
 import ListSubCategory from "./pages/subCategory/ListSubCategory.jsx";
 import ListProduct from "./pages/product/ListProduct.jsx";
 import AddProduct from "./pages/product/AddProduct.jsx";
+import BrandList from "./pages/brand/BrandList.jsx";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                     <Route path="product/list/:row/:page" element={<ListProduct/>} />
                     <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
+                    <Route path="brand/list/:row/:page" element={<BrandList />} />
                     <Route path="user/list/:row/:page" element={<UserList />} />
                     <Route path="/profile" element={<Profile />} />
                 </Route>

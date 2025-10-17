@@ -21,7 +21,7 @@ const InputImageUpload = ({ formik, label, formikAddress, name, changesClass }) 
     };
 
     return (
-        <div className={`flex flex-col justify-center items-center gap-2 border border-gray-400 p-3 mt-2 rounded-xl w-full ${changesClass}`}>
+        <div className={`flex bg-gray-50 dark:bg-gray-800  flex-col justify-center items-center gap-2 border-2 border-dashed border-gray-300/60 p-3 mt-2 rounded-2xl w-full ${changesClass}`}>
             <div className="relative">
                 {formikAddress && formikAddress !== null && formikAddress !== undefined ? (
                     <div className="bg-gray-300 rounded-lg h-20 w-28 overflow-hidden relative">
@@ -33,15 +33,15 @@ const InputImageUpload = ({ formik, label, formikAddress, name, changesClass }) 
 
                         {formikAddress && (
                             <div
-                                className="size-7 rounded-lg bg-gray-100 text-gray-700 hover:text-gray-50 shadow-xl hover:bg-red-500 transition-all duration-300 cursor-pointer flex flex-row items-center justify-center gap-2 p-1 absolute top-0 left-0"
+                                className="size-7 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 hover:text-gray-50 shadow-xl hover:bg-red-500 transition-all duration-300 cursor-pointer flex flex-row items-center justify-center gap-2 p-1 absolute top-0 left-0"
                                 onClick={removeSelectedImage}
                             >
-                                <BiTrash className="" size={20} />
+                                <BiTrash className="dark:text-gray-100" size={20} />
                             </div>
                         )}
                     </div>
                 ) : (
-                    <div className="bg-gray-100 dark:bg-gray-800 drop-shadow-md drop-shadow-cyan-500 rounded-lg h-20 w-28 overflow-hidden flex flex-col items-center justify-center text-gray-500 text-xs">
+                    <div className="bg-gray-100 dark:bg-gray-800 drop-shadow-md drop-shadow-cyan-500 rounded-2xl h-20 w-28 overflow-hidden flex flex-col items-center justify-center text-gray-500 text-xs">
                         <FaCloudUploadAlt className="text-2xl animate-bounce mb-1 text-cyan-500" />
                         <span  className='text-[10px] dark:text-gray-200 text-gray-800'>تصویر بارگذاری کنید</span>
                     </div>

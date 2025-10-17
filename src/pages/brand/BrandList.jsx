@@ -4,9 +4,7 @@ import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    categoryClearResultDelete,
-    deleteAsyncCategory,
-    getAsyncListCategory, getAsyncStatusCategory,
+    categoryClearResultDelete
 } from "../../feature/redux/CategorySlice.jsx";
 import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
@@ -15,17 +13,17 @@ import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "reac
 import AcceptMessage from "../../AcceptMessage.jsx";
 // import AddCategory from "./AddCategory.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
+import {
+    BrandClearResultDelete,
+    deleteAsyncBrand,
+    getAsyncListBrand,
+    getAsyncStatusBrand
+} from "../../feature/redux/BrandSlice.jsx";
+import AddBrand from "./AddBrand.jsx";
 // import AttributeCategory from "./AttributeCategory.jsx";
-import {getAsyncListProduct} from "../../feature/redux/ProductSlice.jsx";
-import {persianDateNT} from "../../components/utility/persianDateNT.js";
-import DataTableProduct from "../../components/dataTable/DataTableProduct.jsx";
-import Color from 'color-thief-react';
-import AddProduct from "./AddProduct.jsx";
-import DynamicShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
-import ColoredShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
 
 
-const ListProduct = () => {
+const BrandList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -39,12 +37,12 @@ const ListProduct = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_product,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.product);
+    const { list_brand,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.brand);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListProduct({ row, page}));
-            navigate(`/product/list/${row}/${page}`);
+            dispatch(getAsyncListBrand({ row, page}));
+            navigate(`/brand/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -77,11 +75,11 @@ const ListProduct = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncCategory({ del: id }));
+                await dispatch(deleteAsyncBrand({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
+                await dispatch(getAsyncStatusBrand({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
+                await dispatch(getAsyncStatusBrand({ Id: id }));
             }
 
             setShowModal(false);
@@ -93,11 +91,11 @@ const ListProduct = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(categoryClearResultDelete());
+                dispatch(BrandClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(categoryClearResultDelete())
+                dispatch(BrandClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -118,17 +116,17 @@ const ListProduct = () => {
     const columns = [
         {
             name: "تصویر",
-            selector: row => (
-                <ColoredShadowImage
-                    src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                />
-            ),
+            selector: row =>
+                <div className="w-14 h-14 rounded-full shadow-lg shadow-cyan-300 ">
+                    <img
+                        src={row.logo ? Config.apiImage + row.logo : CategoryNotFound}
+                        className="w-full h-full rounded-b-4xl rounded-t-lg object-cover"
+                        alt="category"
+                    />
+                </div>,
         },
-
-
-
         {
-            name: "نام محصول",
+            name: "نام برند",
             selector: row => row.title,
         },
         {
@@ -136,16 +134,8 @@ const ListProduct = () => {
             selector: row => row.url,
         },
         {
-            name: "چکیده",
-            selector: row => row.abstract,
-        },
-        {
-            name: " وضعیت انتشار",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-400`}>انتظار</div>
-        },
-        {
-            name: "زمان انتشار",
-            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
+            name: " وضعیت",
+            selector: row => row.status === "active" ? <div className={`text-green-500`}>فعال</div> :  <div className={`text-red-500`}>غیرفعال</div>
         },
         {
             name: "عملیات",
@@ -155,9 +145,9 @@ const ListProduct = () => {
             selector: row => (
                 <div className="flex lg:justify-center gap-0.5">
                     <ButtonWithTooltip
-                        onClick={() => navigate(`/product/add/${row.id}`)}
+                        onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش محصول"
+                        text="ویرایش برند"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
@@ -171,12 +161,6 @@ const ListProduct = () => {
                         icon={<IoTrashOutline className="w-5 h-5" />}
                         text="حذف"
                         hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => setOpenIdAtt(row.id, "att")}
-                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
-                        text="ویژگی"
-                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
                     />
                 </div>
             )
@@ -192,23 +176,34 @@ const ListProduct = () => {
         <div className={`flex flex-col gap-2`}>
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
-                    <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">محصولات</div>
+                    <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
+                    <div className="text-cyan-700 dark:text-cyan-400">برند</div>
                 </div>
                 <button
-                    onClick={() => navigate("/product/add")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن محصول</button>
+                    onClick={() => setOpenId("")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
 
             </div>
-            <DataTableProduct
+            <DataTable
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_product?.data}
-                numberPage={list_product?.page}
+                data={list_brand?.data}
+                numberPage={list_brand?.page}
                 columns={columns}
             />
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddBrand
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListBrand({ row, page }))}
+                        Id={isIdsEdit.id}
+                        list_brand={list_brand.data}
+                    />
+                </div>
+            )}
             {/*{openAtt.open && (*/}
             {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
             {/*        <AttributeCategory*/}
@@ -216,7 +211,7 @@ const ListProduct = () => {
             {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
             {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
             {/*            Id={isIdsEdit.id}*/}
-            {/*            list_product={list_product.data}*/}
+            {/*            list_brand={list_brand.data}*/}
             {/*        />*/}
             {/*    </div>*/}
             {/*)}*/}
@@ -234,4 +229,4 @@ const ListProduct = () => {
     );
 };
 
-export default ListProduct;
+export default BrandList;
