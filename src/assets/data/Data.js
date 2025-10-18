@@ -35,6 +35,20 @@ export const SideItem = [
         ],
     },
     {
+        id: 15,
+        icon_fill: "PiNewspaperClippingFill",
+        icon_outline: "PiNewspaperClipping",
+        label: "مقاله",
+        sub: [
+            {
+                id: 42,
+                icon: "PiCirclesThreeFill",
+                label: "لیست مقالات",
+                link: "/article/list/50/1",
+            },
+        ],
+    },
+    {
         id: 2,
         icon_fill: "PiUsersFill",
         icon_outline: "PiUsers",

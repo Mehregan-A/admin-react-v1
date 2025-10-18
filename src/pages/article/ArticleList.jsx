@@ -13,19 +13,12 @@ import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
-// import AddCategory from "./AddCategory.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
-// import AttributeCategory from "./AttributeCategory.jsx";
-import {getAsyncListProduct} from "../../feature/redux/ProductSlice.jsx";
-import {persianDateNT} from "../../components/utility/persianDateNT.js";
-import DataTableProduct from "../../components/dataTable/DataTableProduct.jsx";
-import Color from 'color-thief-react';
-import AddProduct from "./AddProduct.jsx";
-import DynamicShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
-import ColoredShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
+import {getAsyncListArticle} from "../../feature/redux/ArticleSlice.jsx";
+import DataTableArticle from "../../components/dataTable/DataTableProduct.jsx";
 
 
-const ListProduct = () => {
+const ArticleList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -39,12 +32,12 @@ const ListProduct = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_product,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.product);
+    const { list_article,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.article);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListProduct({ row, page}));
-            navigate(`/product/list/${row}/${page}`);
+            dispatch(getAsyncListArticle({ row, page}));
+            navigate(`/article/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -119,16 +112,19 @@ const ListProduct = () => {
         {
             name: "تصویر",
             selector: row => (
-                <ColoredShadowImage
-                    src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                />
+                <div className="w-18 h-18 flex items-center justify-center">
+                    <div className="hexagon-shadow">
+                        <img
+                            src={row.image ? Config.apiImage + row.image : CategoryNotFound}
+                            alt="category"
+                            className="hexagon-img"
+                        />
+                    </div>
+                </div>
             ),
         },
-
-
-
         {
-            name: "نام محصول",
+            name: "نام دسته",
             selector: row => row.title,
         },
         {
@@ -140,12 +136,8 @@ const ListProduct = () => {
             selector: row => row.abstract,
         },
         {
-            name: " وضعیت انتشار",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-400`}>انتظار</div>
-        },
-        {
-            name: "زمان انتشار",
-            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
+            name: " وضعیت",
+            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-red-500`}>پیش نویس</div>
         },
         {
             name: "عملیات",
@@ -155,9 +147,9 @@ const ListProduct = () => {
             selector: row => (
                 <div className="flex lg:justify-center gap-0.5">
                     <ButtonWithTooltip
-                        onClick={() => navigate(`/product/add/${row.id}`)}
+                        onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش محصول"
+                        text="ویرایش دسته"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
@@ -193,22 +185,33 @@ const ListProduct = () => {
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
                     <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">محصولات</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">مقاله ها</div>
                 </div>
                 <button
-                    onClick={() => navigate("/product/add")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن محصول</button>
+                    onClick={() => setOpenId("")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
 
             </div>
-            <DataTable
+            <DataTableArticle
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_product?.data}
-                numberPage={list_product?.page}
+                data={list_article?.data}
+                numberPage={list_article?.page}
                 columns={columns}
             />
+            {/*{openAdd.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AddCategory*/}
+            {/*            open_slider={openAdd.open}*/}
+            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            list_article={list_article.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
             {/*{openAtt.open && (*/}
             {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
             {/*        <AttributeCategory*/}
@@ -216,7 +219,7 @@ const ListProduct = () => {
             {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
             {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
             {/*            Id={isIdsEdit.id}*/}
-            {/*            list_product={list_product.data}*/}
+            {/*            list_article={list_article.data}*/}
             {/*        />*/}
             {/*    </div>*/}
             {/*)}*/}
@@ -234,4 +237,4 @@ const ListProduct = () => {
     );
 };
 
-export default ListProduct;
+export default ArticleList;

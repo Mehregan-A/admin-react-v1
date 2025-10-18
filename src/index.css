@@ -31,6 +31,119 @@ html {
 .your-scroll-container::-webkit-scrollbar {
     display: none;
 }
+/* ====== place in your global CSS (index.css / globals.css) ====== */
+
+@property --r {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --a {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+/* class used on your <img> inside the table cell */
+.hexagon-img {
+    /* default controls */
+    --r: 0.4;    /* میزان نرمی لبه‌ها [0 .. 1] */
+    --a: 30deg;   /* زاویه پایه */
+
+    /* اندازه / نسبت تصویر */
+    width: 100%;         /* درون سلول جدول از w-full استفاده می‌کنیم */
+    height: 100%;
+    aspect-ratio: 1;     /* مطمئن می‌شه تصویر مربعی بمونه */
+    object-fit: cover;   /* مشابه object-cover در JSX */
+
+    /* میانیابیِ مقادیر با calc() */
+    --_a: calc(30deg * var(--r));
+    /* توجه: تابع‌های trig (cos/sin) بخشی از مشخصات پیشرفتهٔ CSS هستند
+       و ممکنه در بعضی مرورگرها پشتیبانی کامل نداشته باشند.
+       در صورتی که مرورگر پشتیبانی کند، محاسبات زیر معتبر خواهد بود. */
+    --_r: calc(50% * cos(30deg) / cos(calc(30deg * (1 - var(--r)))));
+
+    cursor: pointer;
+
+    /* اجازه می‌ده متغیرها با transition نرم تغییر کنن (نیازمند @property) */
+    transition: --r 0.5s, --a 0.5s;
+
+    /* شکل شش‌ضلعی با گوشه‌های نرم — (نیازمند پشتیبانی shape() در مرورگر) */
+    clip-path: shape(
+            from calc(50% + var(--_r) * cos(var(--a) - var(--_a)))
+            calc(50% + var(--_r) * sin(var(--a) - var(--_a))),
+
+            curve to calc(50% + var(--_r) * cos(var(--a) + var(--_a)))
+            calc(50% + var(--_r) * sin(var(--a) + var(--_a)))
+            with calc(50% + 50% * cos(var(--a)))
+            calc(50% + 50% * sin(var(--a))),
+
+            line to calc(50% + var(--_r) * cos(60deg + var(--a) - var(--_a)))
+            calc(50% + var(--_r) * sin(60deg + var(--a) - var(--_a))),
+
+            curve to calc(50% + var(--_r) * cos(60deg + var(--a) + var(--_a)))
+            calc(50% + var(--_r) * sin(60deg + var(--a) + var(--_a)))
+            with calc(50% + 50% * cos(60deg + var(--a)))
+            calc(50% + 50% * sin(60deg + var(--a))),
+
+            line to calc(50% + var(--_r) * cos(120deg + var(--a) - var(--_a)))
+            calc(50% + var(--_r) * sin(120deg + var(--a) - var(--_a))),
+
+            curve to calc(50% + var(--_r) * cos(120deg + var(--a) + var(--_a)))
+            calc(50% + var(--_r) * sin(120deg + var(--a) + var(--_a)))
+            with calc(50% + 50% * cos(120deg + var(--a)))
+            calc(50% + 50% * sin(120deg + var(--a))),
+
+            line to calc(50% + var(--_r) * cos(180deg + var(--a) - var(--_a)))
+            calc(50% + var(--_r) * sin(180deg + var(--a) - var(--_a))),
+
+            curve to calc(50% + var(--_r) * cos(180deg + var(--a) + var(--_a)))
+            calc(50% + var(--_r) * sin(180deg + var(--a) + var(--_a)))
+            with calc(50% + 50% * cos(180deg + var(--a)))
+            calc(50% + 50% * sin(180deg + var(--a))),
+
+            line to calc(50% + var(--_r) * cos(240deg + var(--a) - var(--_a)))
+            calc(50% + var(--_r) * sin(240deg + var(--a) - var(--_a))),
+
+            curve to calc(50% + var(--_r) * cos(240deg + var(--a) + var(--_a)))
+            calc(50% + var(--_r) * sin(240deg + var(--a) + var(--_a)))
+            with calc(50% + 50% * cos(240deg + var(--a)))
+            calc(50% + 50% * sin(240deg + var(--a))),
+
+            line to calc(50% + var(--_r) * cos(300deg + var(--a) - var(--_a)))
+            calc(50% + var(--_r) * sin(300deg + var(--a) - var(--_a))),
+
+            curve to calc(50% + var(--_r) * cos(300deg + var(--a) + var(--_a)))
+            calc(50% + var(--_r) * sin(300deg + var(--a) + var(--_a)))
+            with calc(50% + 50% * cos(300deg + var(--a)))
+            calc(50% + 50% * sin(300deg + var(--a)))
+    );
+}
+
+/* hover states (همانند نمونهٔ ارسالی) */
+.hexagon-img:hover {
+    --r: 0.35;
+    --a: 0deg;
+}
+
+/* زمانی که دو تصویر کنار هم هستند، هاور روی دومی زاویهٔ متفاوت می‌ده */
+.hexagon-img + .hexagon-img:hover {
+    --a: 60deg;
+}
+.hexagon-shadow {
+    position: relative;
+    width: 72px;  /* هماهنگ با w-12 */
+    height: 72px; /* هماهنگ با h-16 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @apply drop-shadow-lg drop-shadow-cyan-300
+}
+
+
+
+
 
 
 
