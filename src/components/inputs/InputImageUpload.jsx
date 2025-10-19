@@ -21,7 +21,7 @@ const InputImageUpload = ({ formik, label, formikAddress, name, changesClass }) 
     };
 
     return (
-        <div className={`flex bg-gray-50 dark:bg-gray-800  flex-col justify-center items-center gap-2 border-2 border-dashed border-gray-300/60 p-3 mt-2 rounded-2xl w-full ${changesClass}`}>
+        <div className={`flex bg-gray-50 dark:bg-gray-800 h-full  flex-col justify-center items-center gap-2 border-2 border-dashed border-gray-300/60 p-3 mt-2 rounded-2xl w-full ${changesClass}`}>
             <div className="relative">
                 {formikAddress && formikAddress !== null && formikAddress !== undefined ? (
                     <div className="bg-gray-300 rounded-lg h-20 w-28 overflow-hidden relative">

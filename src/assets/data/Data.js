@@ -41,10 +41,16 @@ export const SideItem = [
         label: "مقاله",
         sub: [
             {
-                id: 42,
+                id: 47,
                 icon: "PiCirclesThreeFill",
                 label: "لیست مقالات",
                 link: "/article/list/50/1",
+            },
+            {
+                id: 48,
+                icon: "PiCirclesThreeFill",
+                label: "افزودن مقاله",
+                link: "/article/add",
             },
         ],
     },

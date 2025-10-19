@@ -12,6 +12,7 @@ import ListProduct from "./pages/product/ListProduct.jsx";
 import AddProduct from "./pages/product/AddProduct.jsx";
 import BrandList from "./pages/brand/BrandList.jsx";
 import ArticleList from "./pages/article/ArticleList.jsx";
+import AddArticle from "./pages/article/AddArticle.jsx";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                     <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
                     <Route path="product/list/:row/:page" element={<ListProduct/>} />
                     <Route path="product/add/:id" element={<AddProduct />} />
+                    <Route path="article/add" element={<AddArticle />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
                     <Route path="brand/list/:row/:page" element={<BrandList />} />
                     <Route path="article/list/:row/:page" element={<ArticleList />} />

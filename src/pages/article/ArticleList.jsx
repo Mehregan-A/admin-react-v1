@@ -16,6 +16,7 @@ import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
 import {getAsyncListArticle} from "../../feature/redux/ArticleSlice.jsx";
 import DataTableArticle from "../../components/dataTable/DataTableProduct.jsx";
+import {persianDateNT} from "../../components/utility/persianDateNT.js";
 
 
 const ArticleList = () => {
@@ -136,8 +137,24 @@ const ArticleList = () => {
             selector: row => row.abstract,
         },
         {
+            name: "read_time",
+            selector: row => row.read_time,
+        },
+        {
+            name: " نام دسته بندی",
+            selector: row => row.category_title,
+        },
+        {
+            name: " نام زیر دسته",
+            selector: row => row.sub_category_title,
+        },
+        {
             name: " وضعیت",
             selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-red-500`}>پیش نویس</div>
+        },
+        {
+            name: "زمان انتشار",
+            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
         },
         {
             name: "عملیات",
