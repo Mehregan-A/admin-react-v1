@@ -48,28 +48,17 @@ html {
 /* class used on your <img> inside the table cell */
 .hexagon-img {
     /* default controls */
-    --r: 0.4;    /* میزان نرمی لبه‌ها [0 .. 1] */
-    --a: 30deg;   /* زاویه پایه */
-
-    /* اندازه / نسبت تصویر */
-    width: 100%;         /* درون سلول جدول از w-full استفاده می‌کنیم */
+    --r: 0.4;
+    --a: 30deg;
+    width: 100%;
     height: 100%;
-    aspect-ratio: 1;     /* مطمئن می‌شه تصویر مربعی بمونه */
-    object-fit: cover;   /* مشابه object-cover در JSX */
+    aspect-ratio: 1;
+    object-fit: cover;
 
-    /* میانیابیِ مقادیر با calc() */
     --_a: calc(30deg * var(--r));
-    /* توجه: تابع‌های trig (cos/sin) بخشی از مشخصات پیشرفتهٔ CSS هستند
-       و ممکنه در بعضی مرورگرها پشتیبانی کامل نداشته باشند.
-       در صورتی که مرورگر پشتیبانی کند، محاسبات زیر معتبر خواهد بود. */
     --_r: calc(50% * cos(30deg) / cos(calc(30deg * (1 - var(--r)))));
-
     cursor: pointer;
-
-    /* اجازه می‌ده متغیرها با transition نرم تغییر کنن (نیازمند @property) */
     transition: --r 0.5s, --a 0.5s;
-
-    /* شکل شش‌ضلعی با گوشه‌های نرم — (نیازمند پشتیبانی shape() در مرورگر) */
     clip-path: shape(
             from calc(50% + var(--_r) * cos(var(--a) - var(--_a)))
             calc(50% + var(--_r) * sin(var(--a) - var(--_a))),
@@ -121,20 +110,18 @@ html {
     );
 }
 
-/* hover states (همانند نمونهٔ ارسالی) */
 .hexagon-img:hover {
     --r: 0.35;
     --a: 0deg;
 }
 
-/* زمانی که دو تصویر کنار هم هستند، هاور روی دومی زاویهٔ متفاوت می‌ده */
 .hexagon-img + .hexagon-img:hover {
     --a: 60deg;
 }
 .hexagon-shadow {
     position: relative;
-    width: 72px;  /* هماهنگ با w-12 */
-    height: 72px; /* هماهنگ با h-16 */
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;

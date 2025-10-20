@@ -126,4 +126,8 @@ export const role = [
     { value: 'employee', label: 'کارمند' },
     { value: 'accountant', label: 'حسابدار' },
 ];
+export const status = [
+    { value: 'draft', label: 'پیش نویس' },
+    { value: 'published', label: 'انتشار' },
+];
 

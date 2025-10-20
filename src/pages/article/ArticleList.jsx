@@ -137,10 +137,6 @@ const ArticleList = () => {
             selector: row => row.abstract,
         },
         {
-            name: "read_time",
-            selector: row => row.read_time,
-        },
-        {
             name: " نام دسته بندی",
             selector: row => row.category_title,
         },
@@ -164,9 +160,9 @@ const ArticleList = () => {
             selector: row => (
                 <div className="flex lg:justify-center gap-0.5">
                     <ButtonWithTooltip
-                        onClick={() => setOpenId(row.id, "edit")}
+                        onClick={() => navigate(`/article/add/${row.id}`)}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش دسته"
+                        text="ویرایش مقاله"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
@@ -205,8 +201,8 @@ const ArticleList = () => {
                     <div className="text-cyan-700 dark:text-cyan-400">مقاله ها</div>
                 </div>
                 <button
-                    onClick={() => setOpenId("")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
+                    onClick={() => navigate("/article/add")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مقاله</button>
 
             </div>
             <DataTableArticle

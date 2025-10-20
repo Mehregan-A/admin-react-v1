@@ -15,33 +15,36 @@ import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {optionsActive} from "../../assets/data/Data.js";
+import {optionsActive, status} from "../../assets/data/Data.js";
 import {getAsyncInfoProduct} from "../../feature/redux/ProductSlice.jsx";
 import {useParams} from "react-router-dom";
 import {Config} from "../../config/Config.jsx";
 import CategoryNotFound from "../../assets/image/category_not_found.png";
 import TextArea from "../../components/inputs/TextArea.jsx";
-import {NilfamEditor} from "nilfam-editor";
+import { NilfamEditor } from 'nilfam-editor';
+import 'nilfam-editor/nilfam-editor.css';
+import InputCalendar from "../../components/inputs/InputCalender.jsx";
+import {
+    articleClearResult,
+    getAsyncGetInfoArticle,
+    postAsyncAddArticle,
+    putAsyncEditArticle
+} from "../../feature/redux/ArticleSlice.jsx";
 
 
 const AddArticle = () => {
     const { id } = useParams();
-    const myElementRef = useRef(null);
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
-    }, []);
-
-    useEffect(() => {
         if (id){
-            console.log(id);
-            dispatch(getAsyncInfoProduct({Id:id}))
+            dispatch(getAsyncGetInfoArticle({Id:id}))
         }
     },[])
 
-
-    const {result,isLoading,info_product} = useSelector(state => state.product);
+    const {result,isLoading,list_info_article} = useSelector(state => state.article);
+    console.log(list_info_article)
     // redux
     const initialValues = {
         url:'',
@@ -49,40 +52,31 @@ const AddArticle = () => {
         abstract:'',
         body:"",
         image:"",
-        brand_id:"",
         category_id:"",
         sub_category_id:"",
         status:"",
         publish_at:"",
         seo_title:"",
         seo_desc:"",
-        gallery:"",
-        attribute:"",
-        pricing_type:"",
-        price:"",
-        discount_price:"",
-        stock_qty:"",
-        weight:"",
-        variants:"",
     }
     const validationSchema = yup.object({
-        title: yup
-            .string()
-            .required('نام الزامی است')
-            .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
-            .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
+        // title: yup
+        //     .string()
+        //     .required('نام الزامی است')
+        //     .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
+        //     .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
 
     });
     const onSubmit = (values) => {
-        // if (Id) {
-        //     dispatch(postAsyncEditCategory(values));
-        // } else {
-        //     dispatch(postAsyncAddCategory(values));
-        // }
+        if (id) {
+            dispatch(putAsyncEditArticle(values));
+        } else {
+            dispatch(postAsyncAddArticle(values));
+        }
     };
 
     const formik = useFormik({
-        initialValues:   initialValues,
+        initialValues: list_info_article ||  initialValues,
         validationSchema,
         onSubmit,
         validateOnMount : true
@@ -93,12 +87,12 @@ const AddArticle = () => {
             if(result.status === 200) {
                 // toast
                 Toast.success(`${result.data.message}`);
-                dispatch(categoryClearResult())
+                dispatch(articleClearResult())
 
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(categoryClearResult())
+                dispatch(articleClearResult())
             }
         }
     }, [result]);
@@ -111,7 +105,7 @@ const AddArticle = () => {
 
     return (
         <>
-            <div className={`flex flex-col gap-2`}>
+            <form onSubmit={formik.handleSubmit} className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
                     <div className='flex justify-start gap-2 p-5'>
@@ -125,18 +119,22 @@ const AddArticle = () => {
                         }
                     </div>
                 </div>
-                <div className="flex gap-2 h-80">
-                    <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-xl p-4">
+                <div className="flex w-full gap-2 h-80">
+                    <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
                         <Input formik={formik} maxLength={25} name="title" label="نام مقاله" />
                         <Input formik={formik} maxLength={25} name="url" label="url" />
                         <TextArea formik={formik} maxLength={25} name="abstract" label="چکیده" />
                     </div>
-                    <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-xl p-4">
+                    <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
                         <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
                     </div>
                 </div>
-                <div className="flex gap-2 h-40">
-                    <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-xl p-4">
+                <div className="flex flex-col w-full shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl ">
+                    <NilfamEditor value={formik.values.body} dark={true} lang="fa"
+                                  onChange={newContent => formik.setFieldValue("body", newContent)} />
+                </div>
+                <div className="flex gap-2 ">
+                    <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
                         <SelectOption
                             formik={formik}
                             options={list_category_select}
@@ -150,12 +148,43 @@ const AddArticle = () => {
                             label="انتخاب زیر دسته"
                         />
                     </div>
+                    <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                        <Input formik={formik} maxLength={4} name="read_time" label="زمان مطالعه" />
+                        <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
+                    </div>
                 </div>
-                <div className="flex flex-col p-20">
-                    <NilfamEditor value={formik.values.body} dark={false} lang="en"
-                                  onChange={newContent => formik.setFieldValue("body", newContent)} />
+                <div className="flex gap-2 ">
+                    <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                        <Input formik={formik} maxLength={25} name="seo_title" label="عنوان سئو" />
+                        <TextArea formik={formik} maxLength={25} name="seo_desc" label="توضیحات سئو" />
+                        <SelectOption
+                            formik={formik}
+                            options={status}
+                            name="status"
+                            label="وضعیت"
+                        />
+                    </div>
                 </div>
-            </div>
+                {/* Submit */}
+                <div className="flex justify-center">
+                    <button
+                        disabled={!formik.isValid || isLoading}
+                        type="submit"
+                        className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                    >
+                        {isLoading ? (
+                            <>
+                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                            </>
+                        ) : (
+                            <span>{id ? "ویرایش" : "ثبت"}</span>
+                        )}
+                    </button>
+
+                </div>
+            </form>
         </>
 
     );

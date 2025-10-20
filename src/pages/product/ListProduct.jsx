@@ -141,7 +141,7 @@ const ListProduct = () => {
         },
         {
             name: " وضعیت انتشار",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-400`}>انتظار</div>
+            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-400`}>پیش نویس</div>
         },
         {
             name: "زمان انتشار",

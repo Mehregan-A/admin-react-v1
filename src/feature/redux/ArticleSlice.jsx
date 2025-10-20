@@ -26,17 +26,17 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const putAsyncEditArticle = createAsyncThunk("article/putAsyncEditArticle", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.put(`/admin/article/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
+export const postAsyncAddArticle = createAsyncThunk("article/postAsyncAddArticle",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/category/add",payload,{})
+        const res = await http.post("/admin/article/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -75,9 +75,9 @@ export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCateg
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
+export const getAsyncGetInfoArticle = createAsyncThunk("article/getAsyncGetInfoArticle",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
+        const res = await http.get(`admin/article/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -106,13 +106,13 @@ const ArticleSlice = createSlice({
     name: 'article',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        articleClearResult : (state) => {
             state.result = false
         },
-        categoryClearResultDelete : (state) => {
+        articleClearResultDelete : (state) => {
             state.result_delete = false
         },
-        categoryClearInfo : (state) => {
+        articleClearInfo : (state) => {
             state.info_edit = false
         },
     },
@@ -164,27 +164,27 @@ const ArticleSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditArticle.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(putAsyncEditArticle.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditArticle.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddArticle.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.pending,(state)=>{
+        builder.addCase(postAsyncAddArticle.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddArticle.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -243,23 +243,23 @@ const ArticleSlice = createSlice({
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
+        builder.addCase(getAsyncGetInfoArticle.fulfilled,(state, action)=>{
+            state.list_info_article = action.payload.data.result
             state.isLoading = false
             state.isError = false
         })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
+        builder.addCase(getAsyncGetInfoArticle.pending,(state)=>{
+            state.list_info_article = false
             state.isLoading = true
             state.isError = false
         })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
+        builder.addCase(getAsyncGetInfoArticle.rejected,(state,action)=>{
+            state.list_info_article = action.payload
             state.isLoading = false
             state.isError = true
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = ArticleSlice.actions
+export const { articleClearResult,articleClearInfo,articleClearResultDelete} = ArticleSlice.actions
 
 export default ArticleSlice.reducer
