@@ -30,6 +30,7 @@ import {
     postAsyncAddArticle,
     putAsyncEditArticle
 } from "../../feature/redux/ArticleSlice.jsx";
+import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 
 
 const AddArticle = () => {
@@ -38,7 +39,6 @@ const AddArticle = () => {
     const {list_category_select} = useSelector(state => state.category);
     const [activeTab, setActiveTab] = useState("1");
     useEffect(() => {
-        dispatch(getAsyncSelectCategory())
         if (id){
             dispatch(getAsyncGetInfoArticle({Id:id}))
         }
@@ -63,11 +63,58 @@ const AddArticle = () => {
     const validationSchema = yup.object({
         // title: yup
         //     .string()
-        //     .required('نام الزامی است')
-        //     .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
-        //     .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
-
+        //     .required('عنوان مقاله الزامی است')
+        //     .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+        //     .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        //
+        // url: yup
+        //     .string()
+        //     .required('آدرس URL الزامی است')
+        //     .matches(/^[a-z0-9-]+$/, 'فقط حروف کوچک، عدد و خط تیره مجاز است')
+        //     .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        //
+        // abstract: yup
+        //     .string()
+        //     .required('چکیده مقاله الزامی است')
+        //     // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
+        //     .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
+        //
+        // body: yup
+        //     .string()
+        //     .required('متن مقاله الزامی است')
+        //     .min(50, 'مقاله حداقل ۵۰ کاراکتر داشته باشد'),
+        //
+        // // image: yup
+        // //     .mixed()
+        // //     .required('تصویر مقاله الزامی است'),
+        //
+        // category_id: yup
+        //     .string()
+        //     .required('انتخاب دسته الزامی است'),
+        //
+        // sub_category_id: yup
+        //     .string()
+        //     .required('انتخاب زیر دسته الزامی است'),
+        //
+        // read_time: yup
+        //     .number()
+        //     .typeError('زمان مطالعه باید عدد باشد')
+        //     .positive('عدد مثبت وارد کنید')
+        //     .integer('عدد صحیح وارد کنید')
+        //     .required('زمان مطالعه الزامی است'),
+        // seo_title: yup
+        //     .string()
+        //     .required('عنوان سئو الزامی است')
+        //     .min(3, 'عنوان سئو باید حداقل ۳ کاراکتر باشد')
+        //     .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        //
+        // seo_desc: yup
+        //     .string()
+        //     .required('توضیحات سئو الزامی است')
+        //     .min(10, 'توضیحات باید حداقل ۱۰ کاراکتر باشد')
+        //     .max(300, 'توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد'),
     });
+
     const onSubmit = (values) => {
         if (id) {
             dispatch(putAsyncEditArticle(values));
@@ -248,14 +295,15 @@ const AddArticle = () => {
                                             label="وضعیت"
                                         />
                                     }
-                                    {/*{id &&*/}
-                                    {/*    <SelectOption*/}
-                                    {/*        formik={formik}*/}
-                                    {/*        options={list_info_article?.status}*/}
-                                    {/*        name="status"*/}
-                                    {/*        label="وضعیت"*/}
-                                    {/*    />*/}
-                                    {/*}*/}
+                                    {id &&
+                                        <InputSelectStatus
+                                            formik={formik}
+                                            optionEnter={list_info_article?.status}
+                                            options={status}
+                                            name="status"
+                                            label="وضعیت"
+                                        />
+                                    }
                                 </div>
                             </div>
                             {/* Submit */}

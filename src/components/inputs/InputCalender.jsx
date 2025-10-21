@@ -48,7 +48,7 @@ const InputCalendar = ({
 
             <div className="flex flex-col  w-full relative">
                 <DatePicker
-                    style={{ backgroundColor: '#161616' }}
+                    style={{ backgroundColor: '#161616', color: '#fff' }}
                     value={
                         formikAddress > 0
                             ? new Date(formikAddress * 1000)

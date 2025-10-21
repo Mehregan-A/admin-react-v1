@@ -10,6 +10,7 @@ import CategorySubSlice from "./redux/CategorySubSlice.jsx";
 import ProductSlice from "./redux/ProductSlice.jsx";
 import BrandSlice from "./redux/BrandSlice.jsx";
 import ArticleSlice from "./redux/ArticleSlice.jsx";
+import SliderSlice from "./redux/SliderSlice.jsx";
 
 
 
@@ -26,6 +27,7 @@ export const store = configureStore({
         product:ProductSlice,
         brand:BrandSlice,
         article:ArticleSlice,
+        slider:SliderSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

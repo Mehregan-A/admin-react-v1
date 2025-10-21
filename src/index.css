@@ -127,29 +127,16 @@ html {
     justify-content: center;
     @apply drop-shadow-lg drop-shadow-cyan-300
 }
-.bgclass{
-    background: radial-gradient(at 18% 99%,
-    white 0px, transparent 50%)
-    repeat scroll 0% 0%,
-
-    radial-gradient(at 97% 8%, #e1f9fe 0px,
-            transparent 50%) repeat scroll 0% 0%,
-
-    radial-gradient(at 79% 82%, #e1f9fe 0px,
-            transparent 50%) repeat scroll 0% 0%,
-
-    radial-gradient(at 96% 10%, white 0px,
-            transparent 50%) repeat scroll 0% 0%,
-
-    radial-gradient(at 42% 20%, #78e1fb 0px,
-            transparent 50%) repeat scroll 0% 0%,
-
-    radial-gradient(at 4% 49%, #e1f9fe 0px,
-            transparent 50%) repeat scroll 0% 0%, rgba(0, 0, 0, 0)
-
-    radial-gradient(at 57% 33%, white 0px,
-            white 50%) repeat scroll 0% 0%;
+/* tailwind.css */
+@layer utilities {
+    .banner {
+        background-image: linear-gradient(-20deg, #D1FDFF 0%, #fdffd7 100%);
+    }
+    .dark\:banner {
+        background-image: linear-gradient(-20deg, #0F2027 0%, #2C5364 100%);
+    }
 }
+
 
 
 
