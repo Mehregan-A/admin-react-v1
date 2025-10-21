@@ -51,9 +51,9 @@ export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusC
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
+export const deleteAsyncArticle = createAsyncThunk("article/deleteAsyncArticle",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/article/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -204,18 +204,18 @@ const ArticleSlice = createSlice({
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
-            state.list_category.data = state.list_category.data.filter(
+        builder.addCase(deleteAsyncArticle.fulfilled,(state, action)=>{
+            state.list_article.data = state.list_article.data.filter(
                 driver => driver.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.pending,(state)=>{
+        builder.addCase(deleteAsyncArticle.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncArticle.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })

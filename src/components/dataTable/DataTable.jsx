@@ -78,9 +78,9 @@ const MobileMode = ({data, columns,numberPage,searchParams}) => {
 const PcMode = ({columns, data,numberPage,searchParams}) => {
     return (
         <>
-            <div className="sticky top-0 z-10 bg-cyan-400 rounded-t-lg h-2"></div>
-            <table className="w-full text-sm text-right text-gray-500 dark:text-gray-200  border-t-4 border-t-cyan-300 rounded">
-                <thead className="sticky top-1 z-10 text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-200 dark:bg-gray-700 ">
+            <div className="sticky top-0 z-10 bg-cyan-400  rounded-t-lg h-2"></div>
+            <table className="w-full text-sm text-right text-gray-500  dark:text-gray-200  border-t-4 border-t-cyan-300 rounded">
+                <thead className="sticky top-1 z-10 text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-200  dark:bg-gray-700 ">
                 <tr>
                     {columns && columns.length > 0 && columns.map((item, index) => {
                         if (item?.name) {
@@ -98,7 +98,7 @@ const PcMode = ({columns, data,numberPage,searchParams}) => {
                 <tbody>
                 {data && data.length > 0 && data.map((row, index) => {
                     return (
-                        <tr key={index + 2000} className={`even:bg-gray-100 dark:even:bg-gray-800 odd:bg-gray-50 dark:odd:bg-gray-900/60 border-b border-cyan-300 dark:border-gray-300`}>
+                        <tr key={index + 2000} className={`even:bg-gray-100 bgclass  dark:even:bg-gray-800 odd:bg-gray-50 dark:odd:bg-gray-900/60 border-b border-cyan-300 dark:border-gray-300`}>
                             {columns && columns.length > 0 && columns.map((itemColumns, indexColumns) => {
                                 if (itemColumns?.name !== undefined) {
                                     return (

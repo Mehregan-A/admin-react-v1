@@ -125,7 +125,7 @@ const
                     }`}
                 >
                     {options?.length > 0 ? (
-                        options.map((item, index) => (
+                        options?.map((item, index) => (
                             <div
                                 key={index}
                                 onClick={() => selectHandler(item)}

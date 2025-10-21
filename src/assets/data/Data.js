@@ -71,6 +71,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 10,
+        icon_fill: "PiAlignLeftSimpleFill",
+        icon_outline: "PiAlignLeftSimple",
+        label: "بنر",
+        link: "/slider/list/50/1",
+        sub: [],
+    },
+    {
         id: 3,
         icon_fill: "PiPackageFill",
         icon_outline: "PiPackage",

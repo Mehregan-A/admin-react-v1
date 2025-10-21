@@ -14,12 +14,9 @@ import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
-import {articleClearResultDelete, deleteAsyncArticle, getAsyncListArticle} from "../../feature/redux/ArticleSlice.jsx";
-import DataTableArticle from "../../components/dataTable/DataTableProduct.jsx";
-import {persianDateNT} from "../../components/utility/persianDateNT.js";
 
 
-const ArticleList = () => {
+const SliderList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -33,12 +30,12 @@ const ArticleList = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_article,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.article);
+    const { list_category,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.category);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListArticle({ row, page}));
-            navigate(`/article/list/${row}/${page}`);
+            dispatch(getAsyncListCategory({ row, page}));
+            navigate(`/category/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -71,7 +68,11 @@ const ArticleList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncArticle({ del: id }));
+                await dispatch(deleteAsyncCategory({ del: id }));
+            } else if (actionType === "inactive") {
+                await dispatch(getAsyncStatusCategory({ Id: id }));
+            }else if (actionType === "active") {
+                await dispatch(getAsyncStatusCategory({ Id: id }));
             }
 
             setShowModal(false);
@@ -83,11 +84,11 @@ const ArticleList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(articleClearResultDelete());
+                dispatch(categoryClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(articleClearResultDelete())
+                dispatch(categoryClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -108,20 +109,17 @@ const ArticleList = () => {
     const columns = [
         {
             name: "تصویر",
-            selector: row => (
-                <div className="w-18 h-18 flex items-center justify-center">
-                    <div className="hexagon-shadow">
-                        <img
-                            src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                            alt="category"
-                            className="hexagon-img"
-                        />
-                    </div>
-                </div>
-            ),
+            selector: row =>
+                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
+                    <img
+                        src={row.image ? Config.apiImage + row.image : CategoryNotFound}
+                        className="w-full h-full rounded-full object-cover"
+                        alt="category"
+                    />
+                </div>,
         },
         {
-            name: "عنوان مقاله",
+            name: "نام دسته",
             selector: row => row.title,
         },
         {
@@ -129,24 +127,12 @@ const ArticleList = () => {
             selector: row => row.url,
         },
         {
-            name: "چکیده",
-            selector: row => row.abstract,
-        },
-        {
-            name: " نام دسته بندی",
-            selector: row => row.category_title,
-        },
-        {
-            name: " نام زیر دسته",
-            selector: row => row.sub_category_title,
+            name: "ویژگی",
+            selector: row => row.attribute?.map(a => a.label).join("، ") || "-",
         },
         {
             name: " وضعیت",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-500`}>پیش نویس</div>
-        },
-        {
-            name: "زمان انتشار",
-            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
+            selector: row => row.status === "active" ? <div className={`text-green-500`}>فعال</div> :  <div className={`text-red-500`}>غیرفعال</div>
         },
         {
             name: "عملیات",
@@ -156,10 +142,16 @@ const ArticleList = () => {
             selector: row => (
                 <div className="flex lg:justify-center gap-0.5">
                     <ButtonWithTooltip
-                        onClick={() => navigate(`/article/add/${row.id}`)}
+                        onClick={() => setOpenId(row.id, "edit")}
                         icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش مقاله"
+                        text="ویرایش دسته"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
+                    />
+                    <ButtonWithTooltip
+                        onClick={() => handleActionRequest(row.status, row.id)}
+                        icon={<IoBanOutline className="w-5 h-5" />}
+                        text={`${row.status === "active"?"غیرفعال":"فعال"}`}
+                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                     />
                     <ButtonWithTooltip
                         onClick={() => handleActionRequest("delete", row.id)}
@@ -188,20 +180,20 @@ const ArticleList = () => {
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
                     <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">مقاله ها</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">دسته بندی</div>
                 </div>
                 <button
-                    onClick={() => navigate("/article/add")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مقاله</button>
+                    onClick={() => setOpenId("")}
+                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
 
             </div>
-            <DataTableArticle
+            <DataTable
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_article?.data}
-                numberPage={list_article?.page}
+                data={list_category?.data}
+                numberPage={list_category?.page}
                 columns={columns}
             />
             {/*{openAdd.open && (*/}
@@ -211,7 +203,7 @@ const ArticleList = () => {
             {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
             {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
             {/*            Id={isIdsEdit.id}*/}
-            {/*            list_article={list_article.data}*/}
+            {/*            list_category={list_category.data}*/}
             {/*        />*/}
             {/*    </div>*/}
             {/*)}*/}
@@ -222,7 +214,7 @@ const ArticleList = () => {
             {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
             {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
             {/*            Id={isIdsEdit.id}*/}
-            {/*            list_article={list_article.data}*/}
+            {/*            list_category={list_category.data}*/}
             {/*        />*/}
             {/*    </div>*/}
             {/*)}*/}
@@ -240,4 +232,4 @@ const ArticleList = () => {
     );
 };
 
-export default ArticleList;
+export default SliderList;
