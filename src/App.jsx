@@ -14,6 +14,7 @@ import BrandList from "./pages/brand/BrandList.jsx";
 import ArticleList from "./pages/article/ArticleList.jsx";
 import AddArticle from "./pages/article/AddArticle.jsx";
 import SliderList from "./pages/slider/SliderList.jsx";
+import FaqList from "./pages/faq/FaqList.jsx";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                     <Route path="article/add" element={<AddArticle />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
                     <Route path="slider/list/:row/:page" element={<SliderList />} />
+                    <Route path="faq/list/:row/:page" element={<FaqList />} />
                     <Route path="brand/list/:row/:page" element={<BrandList />} />
                     <Route path="article/list/:row/:page" element={<ArticleList />} />
                     <Route path="user/list/:row/:page" element={<UserList />} />

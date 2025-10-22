@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 
-export const getAsyncListSlider = createAsyncThunk("slider/getAsyncListSlider",async (payload,{rejectWithValue})=>{
+export const getAsyncListFaq = createAsyncThunk("faq/getAsyncListFaq",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/slider/list/${payload.row}/${payload.page}`,{})
+        const res = await http.get(`admin/faq/list/${payload.row}/${payload.page}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -26,33 +26,34 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const putAsyncEditSlider = createAsyncThunk("slider/putAsyncEditSlider", async (payload, { rejectWithValue }) => {
+export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.put(`/admin/slider/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddSlider = createAsyncThunk("slider/postAsyncAddSlider",async (payload,{rejectWithValue})=>{
+export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/slider/add",payload,{})
+        const res = await http.post("/admin/category/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusSlider = createAsyncThunk("slider/getAsyncStatusSlider",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post(`/admin/slider/status/change/${payload.Id}`,payload,{})
+        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
+        })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncSlider = createAsyncThunk("slider/deleteAsyncSlider",async (payload,{rejectWithValue})=>{
+export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/slider/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -91,7 +92,7 @@ const initialState = {
     isLoading_list:false,
     isError_list:false,
     info_att: [],
-    list_slider:[],
+    list_category:[],
     list_category_select:[],
     list_info_user:[],
     usersData: {},
@@ -100,33 +101,34 @@ const initialState = {
     isError: false,
 }
 
-const SliderSlice = createSlice({
-    name: 'slider',
+
+const FaqSlice = createSlice({
+    name: 'faq',
     initialState,
     reducers : {
-        sliderClearResult : (state) => {
+        faqClearResult : (state) => {
             state.result = false
         },
-        sliderClearResultDelete : (state) => {
+        categoryClearResultDelete : (state) => {
             state.result_delete = false
         },
-        sliderClearInfo : (state) => {
+        categoryClearInfo : (state) => {
             state.info_edit = false
         },
     },
     extraReducers : (builder)=>{
-        builder.addCase(getAsyncListSlider.fulfilled,(state, action)=>{
-            state.list_slider = action.payload.data.result
+        builder.addCase(getAsyncListFaq.fulfilled,(state, action)=>{
+            state.list_faq = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListSlider.pending,(state)=>{
-            state.list_slider = false
+        builder.addCase(getAsyncListFaq.pending,(state)=>{
+            state.list_faq = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListSlider.rejected,(state,action)=>{
-            state.list_slider = action.payload
+        builder.addCase(getAsyncListFaq.rejected,(state,action)=>{
+            state.list_faq = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
@@ -162,58 +164,58 @@ const SliderSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(putAsyncEditSlider.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(putAsyncEditSlider.pending,(state)=>{
+        builder.addCase(postAsyncEditCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(putAsyncEditSlider.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddSlider.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddSlider.pending,(state)=>{
+        builder.addCase(postAsyncAddCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddSlider.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusSlider.fulfilled,(state, action)=>{
-            const result = state.list_slider.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
+            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusSlider.pending,(state)=>{
+        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusSlider.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncSlider.fulfilled,(state, action)=>{
-            state.list_slider.data = state.list_slider.data.filter(
+        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
+            state.list_category.data = state.list_category.data.filter(
                 driver => driver.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncSlider.pending,(state)=>{
+        builder.addCase(deleteAsyncCategory.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncSlider.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
@@ -258,6 +260,6 @@ const SliderSlice = createSlice({
         })
     }
 })
-export const { sliderClearResult,sliderClearInfo,sliderClearResultDelete} = SliderSlice.actions
+export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = FaqSlice.actions
 
-export default SliderSlice.reducer
+export default FaqSlice.reducer

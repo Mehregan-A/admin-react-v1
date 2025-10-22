@@ -127,16 +127,6 @@ html {
     justify-content: center;
     @apply drop-shadow-lg drop-shadow-cyan-300
 }
-/* tailwind.css */
-@layer utilities {
-    .banner {
-        background-image: linear-gradient(-20deg, #D1FDFF 0%, #fdffd7 100%);
-    }
-    .dark\:banner {
-        background-image: linear-gradient(-20deg, #0F2027 0%, #2C5364 100%);
-    }
-}
-
 
 
 

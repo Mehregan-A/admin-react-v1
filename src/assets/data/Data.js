@@ -95,6 +95,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 11,
+        icon_fill: "PiChatsFill",
+        icon_outline: "PiChatsLight",
+        label: "سوالات متداول",
+        link: "/faq/list/50/1",
+        sub: [],
+    },
+    {
         id: 8,
         icon_fill: "PiUserGearFill",
         icon_outline: "PiUserGearLight",

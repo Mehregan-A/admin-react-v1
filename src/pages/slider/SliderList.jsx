@@ -14,10 +14,21 @@ import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoKeyOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
-import {getAsyncListSlider} from "../../feature/redux/SliderSlice.jsx";
+import {
+    deleteAsyncSlider,
+    getAsyncListSlider,
+    getAsyncStatusSlider,
+    sliderClearResultDelete
+} from "../../feature/redux/SliderSlice.jsx";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
 import {BiSolidError} from "react-icons/bi";
+import {persianDateNT} from "../../components/utility/persianDateNT.js";
+import AddSubCategory from "../subCategory/AddSubCategory.jsx";
+import {getAsyncListSubCategory} from "../../feature/redux/CategorySubSlice.jsx";
+import AddSlider from "./AddSlider.jsx";
+import {MdPublishedWithChanges} from "react-icons/md";
+import PagingGetUrl from "../../components/PagingGetUrl.jsx";
 
 
 const SliderList = () => {
@@ -53,11 +64,11 @@ const SliderList = () => {
     };
     // Handle delete or deactivate action
     const handleActionRequest = useCallback((type, id) => {
-        if (type === "active"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را غیرفعال کنید؟"
+        if (type === "draft"){
+            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را منتشر کنید؟"
             setModalData({ actionType: type, id, text });
-        }else if (type === "inactive"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را فعال کنید؟"
+        }else if (type === "published"){
+            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را پیش نویس کنید؟"
             setModalData({ actionType: type, id, text });
         }else if (type === "delete"){
             const text = "آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟"
@@ -72,11 +83,11 @@ const SliderList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncCategory({ del: id }));
-            } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
-            }else if (actionType === "active") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
+                await dispatch(deleteAsyncSlider({ del: id }));
+            } else if (actionType === "draft") {
+                await dispatch(getAsyncStatusSlider({Id: id,status:'published'}));
+            }else if (actionType === "published") {
+                await dispatch(getAsyncStatusSlider({Id: id,status:'draft'}));
             }
 
             setShowModal(false);
@@ -88,11 +99,11 @@ const SliderList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(categoryClearResultDelete());
+                dispatch(sliderClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(categoryClearResultDelete())
+                dispatch(sliderClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -110,69 +121,6 @@ const SliderList = () => {
             </span>
         </div>
     );
-    const columns = [
-        {
-            name: "تصویر",
-            selector: row =>
-                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
-                    <img
-                        src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                        className="w-full h-full rounded-full object-cover"
-                        alt="category"
-                    />
-                </div>,
-        },
-        {
-            name: "نام دسته",
-            selector: row => row.title,
-        },
-        {
-            name: "url",
-            selector: row => row.url,
-        },
-        {
-            name: "ویژگی",
-            selector: row => row.attribute?.map(a => a.label).join("، ") || "-",
-        },
-        {
-            name: " وضعیت",
-            selector: row => row.status === "active" ? <div className={`text-green-500`}>فعال</div> :  <div className={`text-red-500`}>غیرفعال</div>
-        },
-        {
-            name: "عملیات",
-            style: {
-                width: '100px'
-            },
-            selector: row => (
-                <div className="flex lg:justify-center gap-0.5">
-                    <ButtonWithTooltip
-                        onClick={() => setOpenId(row.id, "edit")}
-                        icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش دسته"
-                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest(row.status, row.id)}
-                        icon={<IoBanOutline className="w-5 h-5" />}
-                        text={`${row.status === "active"?"غیرفعال":"فعال"}`}
-                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest("delete", row.id)}
-                        icon={<IoTrashOutline className="w-5 h-5" />}
-                        text="حذف"
-                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => setOpenIdAtt(row.id, "att")}
-                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
-                        text="ویژگی"
-                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
-                    />
-                </div>
-            )
-        }
-    ];
     useEffect(() => {
         if (openModal) {
             setOpenAdd({ open: !openAdd.open })
@@ -184,15 +132,15 @@ const SliderList = () => {
             {/* Header */}
             <div className="flex justify-between items-center p-2">
                 <div className="flex justify-start gap-2 p-5">
-                    <div className="text-gray-400 dark:text-gray-300">تعاریف |</div>
-                    <div className="text-cyan-700 dark:text-cyan-400">دسته بندی</div>
+                    <div className="text-gray-400 dark:text-gray-300">داشبورد |</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">بنر</div>
                 </div>
 
                 <button
                     onClick={() => setOpenId("")}
                     className="flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400 drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm"
                 >
-                    افزودن دسته بندی
+                    افزودن بنر
                 </button>
             </div>
 
@@ -209,8 +157,7 @@ const SliderList = () => {
                                 key={banner.id}
                                 className="bg-white drop-shadow-lg drop-shadow-cyan-200 rounded-3xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100"
                             >
-                                {/* تصویر */}
-                                <div className="relative w-full xl:w-96 xl:h-36 bg-gray-100">
+                                <div className="relative w-full  h-36 bg-gray-100">
                                     <img
                                         src={
                                             banner.image
@@ -223,26 +170,37 @@ const SliderList = () => {
                                     <span
                                         className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
                                             banner.status === "published"
-                                                ? "bg-green-100  text-green-700"
-                                                : "bg-gray-200 text-gray-600"
+                                                ? "bg-green-100 dark:bg-gray-800 dark:text-green-500 text-green-700"
+                                                : "bg-gray-100 dark:bg-gray-800  text-yellow-500 dark:text-yellow-300"
                                         }`}
                                     >
-                {banner.status === "published" ? "منتشر شده" : "پیش‌نویس"}
-              </span>
+                                {banner.status === "published" ? "منتشر شده" : "پیش‌نویس"}
+                              </span>
                                 </div>
 
-                                {/* متن و جزئیات */}
                                 <div className="bg-gradient-to-br from-[#fdffd7] to-[#D1FDFF] dark:from-cyan-500/40  dark:to-gray-800">
-                                    <div className="p-4 flex  flex-col gap-2">
-                                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 line-clamp-1">
-                                            {banner.title}
-                                        </h2>
-                                        <p className="text-sm text-gray-500 dark:text-gray-300 line-clamp-2">
-                                            {banner.body}
-                                        </p>
+                                    <div className="p-2 flex  flex-col gap-2">
+                                        <div className="flex justify-between items-center">
+                                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 line-clamp-1">
+                                                {banner.title}
+                                            </h2>
+                                            <div className="flex gap-1 items-center justify-end">
+                                                <p className="text-sm text-gray-500 dark:text-gray-300 line-clamp-2">تاریخ انتشار:</p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-300 line-clamp-2">
+                                                    {persianDateNT.unixWithoutTime(banner.publish_at)}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-1 items-center">
+                                            <p className="text-sm text-gray-500 dark:text-gray-300 line-clamp-2">url:</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-300 line-clamp-2">
+                                                {banner.url}
+                                            </p>
+                                        </div>
 
                                     </div>
-                                    <div className="flex gap-1 justify-end px-4 py-2">
+                                    <div className="flex gap-1 justify-end p-6">
                                         <ButtonWithTooltip
                                             onClick={() => setOpenId(banner.id, "edit")}
                                             icon={<IoCreateOutline className="w-5 h-5" />}
@@ -251,8 +209,8 @@ const SliderList = () => {
                                         />
                                         <ButtonWithTooltip
                                             onClick={() => handleActionRequest(banner.status, banner.id)}
-                                            icon={<IoBanOutline className="w-5 h-5" />}
-                                            text={`${banner.status === "active"?"غیرفعال":"فعال"}`}
+                                            icon={<MdPublishedWithChanges className="w-5 h-5" />}
+                                            text={`${banner.status === "published"?"پیش نویس":"انتشار"}`}
                                             hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                                         />
                                         <ButtonWithTooltip
@@ -277,8 +235,17 @@ const SliderList = () => {
                     </div>
                 )}
             </div>
-
-            {/* مودال تایید عملیات */}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddSlider
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListSlider({ row, page }))}
+                        Id={isIdsEdit.id}
+                        list_slider={list_slider.data}
+                    />
+                </div>
+            )}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}
@@ -289,6 +256,9 @@ const SliderList = () => {
                     showModal={showModal}
                 />
             )}
+            {/*<div className='flex justify-end p-2 rounded-3xl mt-3'>*/}
+            {/*    <PagingGetUrl total_page={list_slider?.page} searchParams={searchParams}/>*/}
+            {/*</div>*/}
         </div>
 
     );
