@@ -24,6 +24,7 @@ import TextArea from "../../components/inputs/TextArea.jsx";
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import InputRadioButton from "../../components/inputs/InputRadioButton.jsx";
 import {postAsyncAddSlider, putAsyncEditSlider, sliderClearResult} from "../../feature/redux/SliderSlice.jsx";
+import Media from "../../components/inputs/media/Media.jsx";
 
 
 const AddSlider = ({Id,list_slider,open_close,reload,open_slider}) => {
@@ -166,8 +167,14 @@ const AddSlider = ({Id,list_slider,open_close,reload,open_slider}) => {
                                 </div>
 
                                 <div className="w-full md:w-[250px] flex flex-col justify-between gap-4 md:gap-3">
-                                    <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
-
+                                    {/*<InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />*/}
+                                    <Media
+                                        single={true}
+                                        label="افزودن تصویر بزرگ"
+                                        desc="سایز عکس 480x720-px"
+                                        name="image"
+                                        formik={formik}
+                                        formikAddress={formik.values.image}/>
                                     <div className="flex items-center justify-center">
                                         <InputRadioButton
                                             formik={formik}

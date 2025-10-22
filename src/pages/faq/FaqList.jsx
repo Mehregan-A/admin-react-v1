@@ -11,7 +11,14 @@ import {
 import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
-import {IoBanOutline, IoChevronDownCircleSharp, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
+import {
+    IoBanOutline,
+    IoChevronDownCircleSharp,
+    IoChevronUpCircleSharp,
+    IoCreateOutline,
+    IoListOutline,
+    IoTrashOutline
+} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
 import {getAsyncListFaq} from "../../feature/redux/FaqSlice.jsx";
@@ -20,6 +27,7 @@ import {getAsyncListFaq} from "../../feature/redux/FaqSlice.jsx";
 const FaqList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const openModal = location.state?.openModal;
@@ -188,12 +196,36 @@ const FaqList = () => {
                     className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن سوال</button>
 
             </div>
-            <div className="w-full h-20 bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-md shadow-cyan-300">
-                <div className="flex justify-between py-5.5 px-14 items-center">
-                    <p className="text-gray-800 dark:text-cyan-200 text-lg">هزینه بسته و بندی ارسال با شرکت پست از چه بابت است؟</p>
-                    <div className="text-cyan-400">
-                        <IoChevronDownCircleSharp size={35}/>
+            <div className="w-full bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-md shadow-cyan-300 transition-all duration-300 overflow-hidden">
+
+                <div
+                    className="flex justify-between py-5 px-10 items-center cursor-pointer"
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    <p className="text-gray-800 dark:text-cyan-200 text-lg font-medium">
+                        هزینه بسته‌بندی ارسال با شرکت پست از چه بابت است؟
+                    </p>
+                    <div className="text-cyan-400 transition-transform duration-300">
+                        {isOpen ? (
+                            <IoChevronUpCircleSharp size={35} />
+                        ) : (
+                            <IoChevronDownCircleSharp size={35} />
+                        )}
                     </div>
+                </div>
+                <div
+                    className={`px-10 pb-5 text-gray-700 dark:text-cyan-100 text-base leading-relaxed transition-all duration-800 ${
+                        isOpen
+                            ? "max-h-96 opacity-100"
+                            : "max-h-0 opacity-0"
+                    } overflow-hidden`}
+                >
+                    <p>
+                        هزینه بسته‌بندی ارسال با شرکت پست شامل مواردی مانند بسته‌بندی ایمن کالا،
+                        استفاده از مواد محافظ (مثل نایلون حباب‌دار یا کارتن مقاوم)، و خدمات آماده‌سازی
+                        جهت جلوگیری از آسیب در حین حمل و نقل است. این هزینه معمولاً بر اساس وزن، ابعاد
+                        و نوع بسته تعیین می‌شود.
+                    </p>
                 </div>
             </div>
             {/*{openAdd.open && (*/}
