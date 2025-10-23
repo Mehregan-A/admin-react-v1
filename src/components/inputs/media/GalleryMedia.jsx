@@ -7,6 +7,8 @@ import {Toast} from "../../toast/Toast.jsx";
 import {HiMiniXMark} from "react-icons/hi2";
 import {TfiGallery} from "react-icons/tfi";
 import {BiTrash} from "react-icons/bi";
+import AcceptMessage from "../../../AcceptMessage.jsx";
+import Alert from "./Alert.jsx";
 
 const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,setSelectedItem}) => {
 
@@ -120,7 +122,7 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
 
 
     return (
-        <div className={`fixed inset-0 z-50   bg-gray-800 backdrop-blur flex flex-col items-center justify-center`}>
+        <div className={`fixed  inset-0 z-50  bg-gray-800 backdrop-blur flex flex-col items-center justify-center`}>
             <div className="bg-gray-100 rounded-tr-4xl rounded-bl-4xl dark:bg-gray-800 rounded p-5 max-w-[780px] lg:w-[780px] md:m-10 ">
                 <div className="h-8 flex items-center justify-between text-gray-800 m-2">
                     <button
@@ -165,7 +167,7 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
                     <div className="h-10">
                         {uploadPercent > 0 && (
                             <div className="w-full bg-neutral-200 dark:bg-neutral-600 my-5 rounded-full">
-                                <div className="bg-green-500 p-0.5 text-center text-xs font-medium leading-none text-white rounded-full" style={{width: `${uploadPercent}%`}}>
+                                <div className="bg-cyan-300 p-0.5 text-center text-xs font-medium leading-none text-white rounded-full" style={{width: `${uploadPercent}%`}}>
                                     {uploadPercent}%
                                 </div>
                             </div>
@@ -185,7 +187,7 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
                                         <img className="object-center container object-cover rounded-2xl" src={Config.apiImage + value.url} alt=""/>
 
                                         {selectedItem.find(item => item.id === parseInt(value.id)) && (
-                                            <FiCheckCircle size={30} className="absolute left-1/2 top-1/2 transition -translate-x-1/2 -translate-y-1/2 text-green-500 bg-white/40 rounded-full "/>
+                                            <FiCheckCircle size={30} className="absolute left-1/2 top-1/2 transition -translate-x-1/2 -translate-y-1/2 text-cyan-400 bg-white/40 rounded-full "/>
                                         )}
                                         <div
                                             onClick={() => {
@@ -201,10 +203,9 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
                         </div>
 
                     )}
-
-                    {/*<Alert showAlertPage={showAlertPage} setShowAlertPage={setShowAlertPage} title="اخطار" label="آیا برای حذف این فایل مطمئن هستید‌؟" onclick={removeMediaFunc}/>*/}
+                    <Alert showAlertPage={showAlertPage} setShowAlertPage={setShowAlertPage} title="اخطار" label="آیا برای حذف این فایل مطمئن هستید‌؟" onclick={removeMediaFunc}/>
                 </div>
-                <nav className="flex flex-col md:flex-row w-full gap-2 bg-slate-100/70 dark:bg-slate-400/70 mt-2 justify-between items-center p-2 px-4 rounded" aria-label="Table navigation">
+                <nav className="flex flex-col md:flex-row w-full gap-2 bg-slate-100/70 dark:bg-gray-800 shadow-md shadow-cyan-400 mt-3 justify-between items-center p-2 px-4 rounded-xl" aria-label="Table navigation">
                     <div className="flex flex-row gap-2 justify-center items-center">
                         <span className="text-xs lg:font-normal text-slate-600 dark:text-slate-200">درحال نمایش </span>
                         <span className="text-xs md:font-bold text-slate-800 dark:text-white">{((parseInt(numberPage) - 1) * parseInt(perPage)) + 1}-{parseInt(perPage) * parseInt(numberPage) < count ? parseInt(perPage) * parseInt(numberPage) : count}</span>

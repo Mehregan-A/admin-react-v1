@@ -49,11 +49,11 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
     return (
         <div className="border-2 border-dashed border-gray-300/60 p-3 mt-2 rounded-2xl bg-gray-50 dark:bg-gray-800 w-full h-full">
             {single ? (
-                <div className="">
+                <div className="flex justify-center">
                     <div className={`flex flex-col gap-2 items-center justify-center size-56  rounded-md mt-3 py-4 ${classDiv}`}>
                         <div className="w-full flex items-center justify-center">
                             {formikAddress && formikAddress !== null && formikAddress !== undefined ? (
-                                <div className="bg-gray-300 rounded-lg h-20 w-28 overflow-hidden relative">
+                                <div className="bg-gray-300 rounded-lg max-h-20 w-full overflow-hidden relative">
                                     {typeof formikAddress !== "object" ? (
                                         <img src={Config.apiImage + formikAddress} alt="تصویر آپلود شده" className="w-full h-full object-cover" />
                                     ) : (

@@ -64,13 +64,13 @@ const Alert = (desc, type, time) => {
 
     document.getElementById('alertShow').innerHTML +=
         `
-        <div id="${id}"   class=" left-0 rounded-lg overflow-hidden shadow-2xl drop-shadow-xl  bg-gray-100 " role="alert">
+        <div id="${id}"   class=" left-0 rounded-lg overflow-hidden shadow-2xl drop-shadow-xl dark:bg-gray-800  bg-gray-100 " role="alert">
             <div class="border-r-5 ${color} flex w-full h-full flex-row justify-center items-center item-center p-2 px-3">
                 <div class="flex flex-row gap-2 w-full h-full justify-center items-center">
                    ${icon}
                     <div class="flex-col flex gap-1">
-                        <span class="font-bold text-[14px] ">${title}</span>
-                        <span class="text-gray-500 text-[13px] ">${desc}</span>
+                        <span class="font-bold text-[14px] dark:text-gray-100 ">${title}</span>
+                        <span class="text-gray-500 dark:text-gray-300 text-[13px] ">${desc}</span>
                     </div>
                 </div>
             </div>

@@ -26,34 +26,34 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const putAsyncEditFaq = createAsyncThunk("faq/putAsyncEditFaq", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.put(`/admin/faq/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
+export const postAsyncAddFaq = createAsyncThunk("faq/postAsyncAddFaq",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/category/add",payload,{})
+        const res = await http.post("/admin/faq/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusFaq = createAsyncThunk("faq/getAsyncStatusFaq",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/faq/status/change/${payload.Id}`,{
         })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
+export const deleteAsyncFaq = createAsyncThunk("faq/deleteAsyncFaq",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/faq/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -109,10 +109,10 @@ const FaqSlice = createSlice({
         faqClearResult : (state) => {
             state.result = false
         },
-        categoryClearResultDelete : (state) => {
+        faqClearResultDelete : (state) => {
             state.result_delete = false
         },
-        categoryClearInfo : (state) => {
+        faqClearInfo : (state) => {
             state.info_edit = false
         },
     },
@@ -164,58 +164,58 @@ const FaqSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditFaq.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(putAsyncEditFaq.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditFaq.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddFaq.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.pending,(state)=>{
+        builder.addCase(postAsyncAddFaq.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddFaq.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
-            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusFaq.fulfilled,(state, action)=>{
+            const result = state.list_faq.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
+        builder.addCase(getAsyncStatusFaq.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusFaq.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
-            state.list_category.data = state.list_category.data.filter(
+        builder.addCase(deleteAsyncFaq.fulfilled,(state, action)=>{
+            state.list_faq.data = state.list_faq.data.filter(
                 driver => driver.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.pending,(state)=>{
+        builder.addCase(deleteAsyncFaq.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncFaq.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
@@ -260,6 +260,6 @@ const FaqSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = FaqSlice.actions
+export const { faqClearResult,faqClearInfo,faqClearResultDelete} = FaqSlice.actions
 
 export default FaqSlice.reducer
