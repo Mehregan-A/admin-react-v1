@@ -55,6 +55,26 @@ export const SideItem = [
         ],
     },
     {
+        id: 16,
+        icon_fill: "PiTicketFill",
+        icon_outline: "PiTicket",
+        label: "کوپن",
+        sub: [
+            {
+                id: 49,
+                icon: "PiCirclesThreeFill",
+                label: "لیست کوپن",
+                link: "/coupon/list/50/1",
+            },
+            {
+                id: 50,
+                icon: "PiCirclesThreeFill",
+                label: "افزودن کوپن",
+                link: "/coupon/add",
+            },
+        ],
+    },
+    {
         id: 2,
         icon_fill: "PiUsersFill",
         icon_outline: "PiUsers",

@@ -156,7 +156,7 @@ const FaqList = () => {
                                         <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-3xl shadow-md dark:shadow-cyan-200  transition-all duration-300 overflow-hidden">
                                             <div
                                                 className="flex justify-between pt-2 px-8 items-center cursor-pointer"
-                                                onClick={() => setIsOpen(index)}
+                                                onClick={() => setIsOpen(isOpen === index ? null : index)}
                                             >
                                                 <div className="flex items-center justify-center gap-3">
                                                     <p className="text-gray-800 dark:text-cyan-200 text-lg font-medium">
@@ -236,17 +236,6 @@ const FaqList = () => {
                     />
                 </div>
             )}
-            {/*{openAtt.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AttributeCategory*/}
-            {/*            open_slider={openAtt.open}*/}
-            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_category={list_category.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}
