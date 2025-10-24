@@ -161,7 +161,7 @@ const CouponList = () => {
                         <div className="text-cyan-700 dark:text-cyan-400">مدیران</div>
                     </div>
                     <button
-                        onClick={() => setOpenId("")}
+                        onClick={() => navigate("/coupon/add")}
                         className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مدیر</button>
                 </div>
                 {/* Admin Cards */}
@@ -176,7 +176,7 @@ const CouponList = () => {
                                 ?<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-2 mt-4 ">
                                     {list_coupon?.data &&
                                         list_coupon?.data?.map((item, index) => (
-                                            <div key={index} className="relative h-36 flex shadow-md dark:shadow-cyan-500  border-gray-300 rounded-2xl  overflow-hidden hover:shadow-md transition-all duration-300">
+                                            <div key={index} className="relative  flex shadow-md dark:shadow-cyan-500  border-gray-300 rounded-2xl  overflow-hidden hover:shadow-md transition-all duration-300">
                                                 <div className="flex flex-col flex-1 p-4">
                                                     <div className="flex items-center gap-3 mb-3">
 
@@ -187,6 +187,9 @@ const CouponList = () => {
                                                                 </h3>
                                                                 <p className="text-xs text-gray-500 dark:text-gray-200">تاریخ شروع: {persianDateNT.unixWithoutTime(item.start_at)}</p>
                                                                 <p className="text-xs text-gray-500 dark:text-gray-200">تاریخ پایان: {persianDateNT.unixWithoutTime(item.expires_at)}</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-200"> حداقل سفارش: {item.min_order}</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-200"> تعداد دفعات استفاده : {item.max_uses}</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-200"> محدود به سفارش اول : {item.first_order_only===1?"بله":"خیر"}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -204,7 +207,7 @@ const CouponList = () => {
 
                                                         <div className="flex gap-1">
                                                             <ButtonWithTooltip
-                                                                onClick={() => setOpenId(item.id, "edit")}
+                                                                onClick={() => navigate(`/coupon/add/${row.id}`)}
                                                                 icon={<IoCreateOutline className="w-5 h-5" />}
                                                                 text="ویرایش "
                                                                 hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
@@ -220,12 +223,6 @@ const CouponList = () => {
                                                                 icon={<IoTrashOutline className="w-5 h-5" />}
                                                                 text="حذف"
                                                                 hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                                                            />
-                                                            <ButtonWithTooltip
-                                                                onClick={() => passModal(item.id)}
-                                                                icon={<IoKeyOutline className="w-5 h-5" />}
-                                                                text="تغییر رمز"
-                                                                hoverColor="hover:text-cyan-300 text-gray-700"
                                                             />
                                                         </div>
                                                     </div>
