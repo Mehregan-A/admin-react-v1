@@ -37,7 +37,12 @@ import PerPageSelector from "../../components/RowSelector.jsx";
 import {MdOutlineGroups, MdOutlinePerson, MdOutlineSupervisorAccount} from "react-icons/md";
 import {IoBanOutline, IoCreateOutline, IoKeyOutline, IoPersonCircleOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
-import {getAsyncListCoupon} from "../../feature/redux/CouponSlice.jsx";
+import {
+    couponClearResultDelete,
+    deleteAsyncCoupon,
+    getAsyncListCoupon,
+    getAsyncStatusCoupon
+} from "../../feature/redux/CouponSlice.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 
 const CouponList = () => {
@@ -98,11 +103,11 @@ const CouponList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncAdmin({ del: id }));
+                await dispatch(deleteAsyncCoupon({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusAdmin({ Id: id }));
+                await dispatch(getAsyncStatusCoupon({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusAdmin({ Id: id }));
+                await dispatch(getAsyncStatusCoupon({ Id: id }));
             }
             setShowModal(false);
         } catch (err) {
@@ -118,12 +123,12 @@ const CouponList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(adminClearResultDelete());
+                dispatch(couponClearResultDelete());
 
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(adminClearResultDelete())
+                dispatch(couponClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -207,7 +212,7 @@ const CouponList = () => {
 
                                                         <div className="flex gap-1">
                                                             <ButtonWithTooltip
-                                                                onClick={() => navigate(`/coupon/add/${row.id}`)}
+                                                                onClick={() => navigate(`/coupon/add/${item.id}`)}
                                                                 icon={<IoCreateOutline className="w-5 h-5" />}
                                                                 text="ویرایش "
                                                                 hoverColor="hover:text-green-600 dark:hover:text-emerald-400"

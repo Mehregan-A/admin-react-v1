@@ -9,9 +9,9 @@ export const getAsyncListBrand = createAsyncThunk("brand/getAsyncListBrand",asyn
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncSelectCategory = createAsyncThunk("category/getAsyncSelectCategory",async (payload,{rejectWithValue})=>{
+export const getAsyncSelectBrand = createAsyncThunk("brand/getAsyncSelectBrand",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/category/select`,{})
+        const res = await http.get(`admin/brand/select`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -93,7 +93,7 @@ const initialState = {
     isError_list:false,
     info_att: [],
     list_brand:[],
-    list_category_select:[],
+    list_brand_select:[],
     list_info_user:[],
     usersData: {},
     result : false,
@@ -134,18 +134,18 @@ const BrandSlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(getAsyncSelectCategory.fulfilled,(state, action)=>{
-            state.list_category_select = action.payload.data.result
+        builder.addCase(getAsyncSelectBrand.fulfilled,(state, action)=>{
+            state.list_brand_select = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncSelectCategory.pending,(state)=>{
-            state.list_category_select = false
+        builder.addCase(getAsyncSelectBrand.pending,(state)=>{
+            state.list_brand_select = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncSelectCategory.rejected,(state,action)=>{
-            state.list_category_select = action.payload
+        builder.addCase(getAsyncSelectBrand.rejected,(state,action)=>{
+            state.list_brand_select = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })

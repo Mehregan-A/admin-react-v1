@@ -12,46 +12,49 @@ const SelectOptionMultiSelect = ({
                                      require = false,
                                  }) => {
     const [value, setValue] = useState([]);
-
     const [dropdown, setDropdown] = useState(false);
 
-    // انتخاب آیتم
+    // 🟢 انتخاب یا حذف آیتم
     const selectHandler = (input) => {
         if (!formik || !formik.setFieldValue) return;
 
-        const current = Array.isArray(formikAddress) ? formikAddress : [];
-        const exist = current.includes(input.value);
+        // تبدیل همه مقادیر به string برای تطابق مطمئن
+        const current = Array.isArray(formikAddress)
+            ? formikAddress.map(String)
+            : [];
+
+        const exist = current.includes(String(input.value));
 
         let newValues;
         if (exist) {
-            newValues = current.filter((val) => val !== input.value);
+            newValues = current.filter((val) => val !== String(input.value));
         } else {
-            newValues = [...current, input.value];
+            newValues = [...current, String(input.value)];
         }
 
         formik.setFieldValue(name, newValues);
 
-        // بروزرسانی labelهای انتخاب‌شده در state داخلی
+        // بروزرسانی لیبل‌ها
         const newLabels = options
-            .filter((item) => newValues.includes(item.value))
+            .filter((item) => newValues.includes(String(item.value)))
             .map((x) => x.label);
 
         setValue(newLabels);
     };
 
-    // مقداردهی اولیه فقط یکبار
+    // 🟢 بروزرسانی وقتی options یا formikAddress تغییر کرد
     useEffect(() => {
         if (Array.isArray(formikAddress) && Array.isArray(options)) {
             const initialLabels = options
-                .filter((item) => formikAddress.includes(item.value))
+                .filter((item) =>
+                    formikAddress.map(String).includes(String(item.value))
+                )
                 .map((x) => x.label);
             setValue(initialLabels);
         }
-        // فقط در mount
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [formikAddress, options]);
 
-    // بستن دراپ‌دان بیرون از کامپوننت
+    // 🟢 بستن دراپ‌دان هنگام کلیک بیرون از کامپوننت
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (!event.target.closest(`[data-select="${name}"]`)) {
@@ -64,12 +67,14 @@ const SelectOptionMultiSelect = ({
 
     return (
         <div className="relative w-full" data-select={name}>
-            <label
-                htmlFor={name}
-                className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-                {label} {require && <span className="text-red-500">*</span>}
-            </label>
+            {label && (
+                <label
+                    htmlFor={name}
+                    className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                    {label} {require && <span className="text-red-500">*</span>}
+                </label>
+            )}
 
             <div
                 onClick={() => setDropdown(!dropdown)}
@@ -79,23 +84,27 @@ const SelectOptionMultiSelect = ({
                     value.map((val, i) => (
                         <span
                             key={i}
-                            className="bg-sky-100 dark:bg-gray-800 border border-cyan-400 text-gray-200 px-2 py-1 rounded-md text-xs flex items-center gap-1"
+                            className="bg-cyan-100 dark:bg-gray-800 border border-cyan-400 dark:text-gray-200 text-gray-800 px-2 py-1 rounded-md text-xs flex items-center gap-1"
                         >
-              {val}
+                            {val}
                             <span
                                 className="cursor-pointer text-xs hover:text-red-500"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    const item = options.find((x) => x.label === val);
+                                    const item = options.find(
+                                        (x) => x.label === val
+                                    );
                                     if (item) selectHandler(item);
                                 }}
                             >
-                <FaXmark />
-              </span>
-            </span>
+                                <FaXmark />
+                            </span>
+                        </span>
                     ))
                 ) : (
-                    <span className="text-gray-400 text-sm">انتخاب کنید...</span>
+                    <span className="text-gray-400 text-sm">
+                        انتخاب کنید...
+                    </span>
                 )}
 
                 <BiChevronDown
@@ -114,17 +123,27 @@ const SelectOptionMultiSelect = ({
                             options.map((item, index) => {
                                 const selected =
                                     Array.isArray(formikAddress) &&
-                                    formikAddress.includes(item.value);
+                                    formikAddress
+                                        .map(String)
+                                        .includes(String(item.value));
+
                                 return (
                                     <div
                                         key={index}
                                         onClick={() => selectHandler(item)}
                                         className={`flex justify-between items-center px-3 py-2 text-sm cursor-pointer rounded-lg hover:bg-cyan-400 hover:text-white transition-colors duration-200 dark:hover:bg-cyan-400 ${
-                                            selected ? "bg-sky-50 dark:bg-gray-800" : ""
+                                            selected
+                                                ? "bg-sky-50 dark:bg-gray-800"
+                                                : ""
                                         }`}
                                     >
                                         <span>{item.label}</span>
-                                        {selected && <TbCheck className="text-cyan-400" size={18} />}
+                                        {selected && (
+                                            <TbCheck
+                                                className="text-cyan-400"
+                                                size={18}
+                                            />
+                                        )}
                                     </div>
                                 );
                             })

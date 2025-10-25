@@ -6,41 +6,34 @@ import {HiMiniXMark} from "react-icons/hi2";
 import {HiOutlinePencilAlt} from "react-icons/hi";
 import {Toast} from "../../components/toast/Toast.jsx";
 import {
-    categoryClearResult,
     getAsyncSelectCategory,
-    postAsyncAddCategory,
-    postAsyncEditCategory
 } from "../../feature/redux/CategorySlice.jsx";
-import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {coupon, optionsActive, status} from "../../assets/data/Data.js";
-import {getAsyncInfoProduct} from "../../feature/redux/ProductSlice.jsx";
+import {coupon} from "../../assets/data/Data.js";
 import {useParams} from "react-router-dom";
-import {Config} from "../../config/Config.jsx";
-import CategoryNotFound from "../../assets/image/category_not_found.png";
-import TextArea from "../../components/inputs/TextArea.jsx";
-import { NilfamEditor } from 'nilfam-editor';
 import 'nilfam-editor/nilfam-editor.css';
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
-import {
-    articleClearResult,
-    getAsyncGetInfoArticle,
-    postAsyncAddArticle,
-    putAsyncEditArticle
-} from "../../feature/redux/ArticleSlice.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 import SelectOptionMultiSelect from "../../components/inputs/SelectOptionMultiSelect.jsx";
-import {getAsyncInfoCoupon} from "../../feature/redux/CouponSlice.jsx";
+import {
+    couponClearResult,
+    getAsyncInfoCoupon,
+    postAsyncAddCoupon,
+    putAsyncEditCoupon
+} from "../../feature/redux/CouponSlice.jsx";
+import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
 
 
 const CouponAdd = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
+    const {list_brand_select} = useSelector(state => state.brand);
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
+        dispatch(getAsyncSelectBrand())
         if (id){
             dispatch(getAsyncInfoCoupon({Id:id}))
         }
@@ -118,12 +111,12 @@ const CouponAdd = () => {
     });
 
     const onSubmit = (values) => {
-        console.log(formik.values)
-        // if (id) {
-        //     dispatch(putAsyncEditArticle(values));
-        // } else {
-        //     dispatch(postAsyncAddArticle(values));
-        // }
+        console.log(values);
+        if (id) {
+            dispatch(putAsyncEditCoupon(values));
+        } else {
+            dispatch(postAsyncAddCoupon(values));
+        }
     };
 
     const formik = useFormik({
@@ -138,15 +131,16 @@ const CouponAdd = () => {
             if(result.status === 200) {
                 // toast
                 Toast.success(`${result.data.message}`);
-                dispatch(articleClearResult())
+                dispatch(couponClearResult())
 
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(articleClearResult())
+                dispatch(couponClearResult())
             }
         }
     }, [result]);
+    console.log(formik.values.category_id)
 
 
     return (
@@ -171,6 +165,19 @@ const CouponAdd = () => {
                                 <div className="grid grid-cols-2 w-full  gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
                                     <Input formik={formik} maxLength={25} name="code" label="کد:" />
                                     <Input formik={formik} maxLength={25} name="min_order" label="حداقل سفارش:" />
+                                    <Input formik={formik} maxLength={25} name="max_uses" label="حداکثر دفعات استفاده:" />
+                                    <Input formik={formik} maxLength={25} name="user_limit" label="محدودیت برای هر کاربر:" />
+                                    <Input formik={formik} maxLength={25} name="first_order_only" label="فقط برای اولین سفارش:" />
+                                    {formik.values.type==="percent"?
+                                        <Input formik={formik} maxLength={25} isPercent  name="value" label="درصد تخفیف:" />
+                                        :
+                                        <Input formik={formik} maxLength={25} name="value" isAmount  label="مبلغ تخفیف:" />
+                                    }
+                                    {/*{id && formik.values.type==="percent"?*/}
+                                    {/*    <Input formik={formik} maxLength={25} name="value" label="درصد تخفیف:" />*/}
+                                    {/*    :*/}
+                                    {/*    <Input formik={formik} maxLength={25} name="value" label="مبلغ تخفیف:" />*/}
+                                    {/*}*/}
                                     <SelectOptionMultiSelect
                                         formik={formik}
                                         formikAddress={formik.values.category_id}
@@ -178,6 +185,13 @@ const CouponAdd = () => {
                                         name="category_id"
                                         label="انتخاب دسته"
                                     />
+                                    {/*<SelectOption*/}
+                                    {/*    formik={formik}*/}
+                                    {/*    formikAddress={formik.values.brand_id}*/}
+                                    {/*    options={list_brand_select}*/}
+                                    {/*    name="brand_id"*/}
+                                    {/*    label="انتخاب برند"*/}
+                                    {/*/>*/}
                                     <InputCheckbox
                                         formik={formik}
                                         name="status"

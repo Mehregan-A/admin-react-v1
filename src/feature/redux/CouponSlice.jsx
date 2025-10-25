@@ -10,34 +10,25 @@ export const getAsyncListCoupon = createAsyncThunk("coupon/getAsyncListCoupon",a
         return rejectWithValue(error.response, error.message)
     }
 })
-export const putAsyncEditAdmin = createAsyncThunk("admin/putAsyncEditAdmin", async (payload, { rejectWithValue }) => {
+export const postAsyncAddCoupon = createAsyncThunk("coupon/postAsyncAddCoupon",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.put(`/admin/admin/update/${payload.id}`, payload.values, {});
-
-        return res;
-    } catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-});
-export const postAsyncAddAdmin = createAsyncThunk("admin/postAsyncAddAdmin",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post("/admin/admin/add",payload,{})
+        const res = await http.post("/admin/coupon/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncAdmin = createAsyncThunk("admin/deleteAsyncAdmin",async (payload,{rejectWithValue})=>{
+export const deleteAsyncCoupon = createAsyncThunk("coupon/deleteAsyncCoupon",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/admin/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/coupon/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusAdmin = createAsyncThunk("admin/getAsyncStatusAdmin",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusCoupon = createAsyncThunk("coupon/getAsyncStatusCoupon",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/admin/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/coupon/status/change/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -46,7 +37,7 @@ export const getAsyncStatusAdmin = createAsyncThunk("admin/getAsyncStatusAdmin",
 })
 export const putAsyncEditCoupon = createAsyncThunk("coupon/putAsyncEditCoupon",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.put(`/admin/coupon/update/${payload.id}`,payload.values,{
+        const res = await http.put(`/admin/coupon/update/${payload.id}`,payload,{
         })
         return await res
     }catch (error) {
@@ -81,10 +72,10 @@ const CouponSlice = createSlice({
     name: 'coupon',
     initialState,
     reducers : {
-        adminClearResult : (state) => {
+        couponClearResult : (state) => {
             state.result = false
         },
-        adminClearResultDelete : (state) => {
+        couponClearResultDelete : (state) => {
             state.result_delete = false
         },
     },
@@ -121,60 +112,48 @@ const CouponSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(putAsyncEditAdmin.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddCoupon.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(putAsyncEditAdmin.pending,(state)=>{
+        builder.addCase(postAsyncAddCoupon.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(putAsyncEditAdmin.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddCoupon.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddAdmin.fulfilled,(state, action)=>{
-            state.result = action.payload
-            state.isLoading = false
-        })
-        builder.addCase(postAsyncAddAdmin.pending,(state)=>{
-            state.result = false
-            state.isLoading = true
-        })
-        builder.addCase(postAsyncAddAdmin.rejected,(state,action)=>{
-            state.result = action.payload
-            state.isLoading = false
-        })
-        builder.addCase(deleteAsyncAdmin.fulfilled,(state, action)=>{
-            state.list_admin.data = state.list_admin.data.filter(
-                driver => driver.id !== Number(action.payload.data.result)
+        builder.addCase(deleteAsyncCoupon.fulfilled,(state, action)=>{
+            state.list_coupon.data = state.list_coupon.data.filter(
+                coupon => coupon.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
             state.isError = false
         })
-        builder.addCase(deleteAsyncAdmin.pending,(state)=>{
+        builder.addCase(deleteAsyncCoupon.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
             state.isError = false
         })
-        builder.addCase(deleteAsyncAdmin.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncCoupon.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
             state.isError = true
         })
-        builder.addCase(getAsyncStatusAdmin.fulfilled,(state, action)=>{
-            const result = state.list_admin.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusCoupon.fulfilled,(state, action)=>{
+            const result = state.list_coupon.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isLoading_action = false
             state.isError = false
         })
-        builder.addCase(getAsyncStatusAdmin.pending,(state)=>{
+        builder.addCase(getAsyncStatusCoupon.pending,(state)=>{
             state.result = false
             state.isLoading_action = true
             state.isError = false
         })
-        builder.addCase(getAsyncStatusAdmin.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusCoupon.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading_action = false
             state.isError = true
@@ -196,6 +175,6 @@ const CouponSlice = createSlice({
         })
     }
 })
-export const { adminClearResult,adminClearResultDelete} = CouponSlice.actions
+export const { couponClearResult,couponClearResultDelete} = CouponSlice.actions
 
 export default CouponSlice.reducer
