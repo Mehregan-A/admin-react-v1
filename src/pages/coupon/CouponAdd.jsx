@@ -15,7 +15,7 @@ import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {optionsActive, status} from "../../assets/data/Data.js";
+import {coupon, optionsActive, status} from "../../assets/data/Data.js";
 import {getAsyncInfoProduct} from "../../feature/redux/ProductSlice.jsx";
 import {useParams} from "react-router-dom";
 import {Config} from "../../config/Config.jsx";
@@ -32,21 +32,21 @@ import {
 } from "../../feature/redux/ArticleSlice.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 import SelectOptionMultiSelect from "../../components/inputs/SelectOptionMultiSelect.jsx";
+import {getAsyncInfoCoupon} from "../../feature/redux/CouponSlice.jsx";
 
 
 const CouponAdd = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
-    const [activeTab, setActiveTab] = useState("1");
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
         if (id){
-            dispatch(getAsyncGetInfoArticle({Id:id}))
+            dispatch(getAsyncInfoCoupon({Id:id}))
         }
     },[])
 
-    const {result,isLoading,list_info_article} = useSelector(state => state.article);
+    const {result,isLoading,info_coupon} = useSelector(state => state.coupon);
     // redux
     const initialValues = {
         code: "",
@@ -127,7 +127,7 @@ const CouponAdd = () => {
     };
 
     const formik = useFormik({
-        initialValues: list_info_article ||  initialValues,
+        initialValues: info_coupon ||  initialValues,
         validationSchema,
         onSubmit,
         validateOnMount : true
@@ -166,7 +166,6 @@ const CouponAdd = () => {
                     </div>
                 </div>
                 <form className="mt-7" onSubmit={formik.handleSubmit}>
-                    {activeTab==="1" &&
                         <div className="flex flex-col gap-6">
                             <div className="flex w-full gap-2 h-80">
                                 <div className="grid grid-cols-2 w-full  gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
@@ -187,6 +186,23 @@ const CouponAdd = () => {
                                     />
                                     <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.publish_at} />
                                     <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.publish_at} />
+                                    {!id &&
+                                        <SelectOption
+                                            formik={formik}
+                                            options={coupon}
+                                            name="type"
+                                            label="نوع کوپن"
+                                        />
+                                    }
+                                    {id &&
+                                        <InputSelectStatus
+                                            formik={formik}
+                                            optionEnter={info_coupon?.type}
+                                            options={coupon}
+                                            name="type"
+                                            label="نوع کوپن"
+                                        />
+                                    }
                                     {/* Submit */}
                                     <div className="flex justify-center">
                                         <button
@@ -208,7 +224,6 @@ const CouponAdd = () => {
                                 </div>
                             </div>
                         </div>
-                    }
                 </form>
             </div>
         </>

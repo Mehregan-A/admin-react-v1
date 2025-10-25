@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
+import {getAsyncInfoCategoryAtt} from "./CategorySlice.jsx";
 
 export const getAsyncListCoupon = createAsyncThunk("coupon/getAsyncListCoupon",async (payload,{rejectWithValue})=>{
     try {
@@ -43,9 +44,18 @@ export const getAsyncStatusAdmin = createAsyncThunk("admin/getAsyncStatusAdmin",
         return rejectWithValue(error.response, error.message)
     }
 })
-export const putAsyncPassword = createAsyncThunk("admin/putAsyncPassword",async (payload,{rejectWithValue})=>{
+export const putAsyncEditCoupon = createAsyncThunk("coupon/putAsyncEditCoupon",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.put(`/admin/admin/password/change/${payload.id}`,payload.values,{
+        const res = await http.put(`/admin/coupon/update/${payload.id}`,payload.values,{
+        })
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
+export const getAsyncInfoCoupon = createAsyncThunk("coupon/getAsyncInfoCoupon",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.get(`admin/coupon/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -58,6 +68,7 @@ export const putAsyncPassword = createAsyncThunk("admin/putAsyncPassword",async 
 const initialState = {
     isLoading_action: false,
     list_coupon:[],
+    info_coupon:false,
     isLoading_list:false,
     isError_list:false,
     result : false,
@@ -92,6 +103,23 @@ const CouponSlice = createSlice({
             state.list_coupon = action.payload
             state.isLoading_list = false
             state.isError_list = true
+        })
+        builder.addCase(getAsyncInfoCoupon.fulfilled,(state, action)=>{
+            state.info_coupon= action.payload.data.result
+            state.isLoading = false
+            state.isError = false
+            // const user = action.payload.data.result.user;
+            // state.usersData[user.id] = user;
+        })
+        builder.addCase(getAsyncInfoCoupon.pending,(state)=>{
+            state.info_coupon = false
+            state.isLoading = true
+            state.isError = false
+        })
+        builder.addCase(getAsyncInfoCoupon.rejected,(state,action)=>{
+            state.info_coupon = action.payload
+            state.isLoading = false
+            state.isError = true
         })
         builder.addCase(putAsyncEditAdmin.fulfilled,(state, action)=>{
             state.result = action.payload
@@ -151,17 +179,17 @@ const CouponSlice = createSlice({
             state.isLoading_action = false
             state.isError = true
         })
-        builder.addCase(putAsyncPassword.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditCoupon.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
 
         })
-        builder.addCase(putAsyncPassword.pending,(state)=>{
+        builder.addCase(putAsyncEditCoupon.pending,(state)=>{
             state.result = false
             state.isLoading = true
 
         })
-        builder.addCase(putAsyncPassword.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditCoupon.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
 

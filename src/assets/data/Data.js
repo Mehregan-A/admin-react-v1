@@ -166,4 +166,8 @@ export const status = [
     { value: 'draft', label: 'پیش نویس' },
     { value: 'published', label: 'انتشار' },
 ];
+export const coupon = [
+    { value: 'percent', label: 'درصدی' },
+    { value: 'fixed', label: 'مبلغ ثابت' },
+];
 
