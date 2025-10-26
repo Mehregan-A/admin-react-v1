@@ -161,18 +161,36 @@ const CouponAdd = () => {
                 </div>
                 <form className="mt-7" onSubmit={formik.handleSubmit}>
                         <div className="flex flex-col gap-6">
-                            <div className="flex w-full gap-2 h-80">
+                            <div className="flex w-full gap-2 ">
                                 <div className="grid grid-cols-2 w-full  gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
                                     <Input formik={formik} maxLength={25} name="code" label="کد:" />
                                     <Input formik={formik} maxLength={25} name="min_order" label="حداقل سفارش:" />
                                     <Input formik={formik} maxLength={25} name="max_uses" label="حداکثر دفعات استفاده:" />
                                     <Input formik={formik} maxLength={25} name="user_limit" label="محدودیت برای هر کاربر:" />
-                                    <Input formik={formik} maxLength={25} name="first_order_only" label="فقط برای اولین سفارش:" />
+                                    {!id &&
+                                        <SelectOption
+                                            formik={formik}
+                                            options={coupon}
+                                            name="type"
+                                            label="نوع کوپن"
+                                        />
+                                    }
+                                    {id &&
+                                        <InputSelectStatus
+                                            formik={formik}
+                                            optionEnter={info_coupon?.type}
+                                            options={coupon}
+                                            name="type"
+                                            label="نوع کوپن"
+                                        />
+                                    }
                                     {formik.values.type==="percent"?
                                         <Input formik={formik} maxLength={25} isPercent  name="value" label="درصد تخفیف:" />
                                         :
                                         <Input formik={formik} maxLength={25} name="value" isAmount  label="مبلغ تخفیف:" />
                                     }
+                                    <Input formik={formik} maxLength={25} name="first_order_only" label="فقط برای اولین سفارش:" />
+
                                     {/*{id && formik.values.type==="percent"?*/}
                                     {/*    <Input formik={formik} maxLength={25} name="value" label="درصد تخفیف:" />*/}
                                     {/*    :*/}
@@ -192,31 +210,15 @@ const CouponAdd = () => {
                                     {/*    name="brand_id"*/}
                                     {/*    label="انتخاب برند"*/}
                                     {/*/>*/}
+                                    <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.publish_at} />
+                                    <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.publish_at} />
+
                                     <InputCheckbox
                                         formik={formik}
                                         name="status"
                                         label="کوپن فعال باشد؟"
                                         value={true}
                                     />
-                                    <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.publish_at} />
-                                    <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.publish_at} />
-                                    {!id &&
-                                        <SelectOption
-                                            formik={formik}
-                                            options={coupon}
-                                            name="type"
-                                            label="نوع کوپن"
-                                        />
-                                    }
-                                    {id &&
-                                        <InputSelectStatus
-                                            formik={formik}
-                                            optionEnter={info_coupon?.type}
-                                            options={coupon}
-                                            name="type"
-                                            label="نوع کوپن"
-                                        />
-                                    }
                                     {/* Submit */}
                                     <div className="flex justify-center">
                                         <button

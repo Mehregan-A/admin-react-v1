@@ -37,7 +37,7 @@ const InputCheckbox = ({
                 checked={checked}
                 type={type}
                 id={name}
-                className={`bg-gray-50  rounded-full accent-cyan-400 ${changesClass}`}
+                className={`bg-gray-50 rounded-full accent-cyan-400 ${changesClass}`}
             />
             <label
                 htmlFor={name}

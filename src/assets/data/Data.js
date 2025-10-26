@@ -115,6 +115,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 12,
+        icon_fill: "PiCreditCardFill",
+        icon_outline: "PiCreditCard",
+        label: "پرداخت",
+        link: "/payment/list/50/1",
+        sub: [],
+    },
+    {
         id: 11,
         icon_fill: "PiChatsFill",
         icon_outline: "PiChatsLight",

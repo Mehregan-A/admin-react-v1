@@ -17,6 +17,7 @@ import SliderList from "./pages/slider/SliderList.jsx";
 import FaqList from "./pages/faq/FaqList.jsx";
 import CouponList from "./pages/coupon/CouponList.jsx";
 import CouponAdd from "./pages/coupon/CouponAdd.jsx";
+import ListPayment from "./pages/payment/ListPayment.jsx";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                     <Route path="coupon/add/:id" element={<CouponAdd />} />
                     <Route path="coupon/add" element={<CouponAdd />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
+                    <Route path="payment/list/:row/:page" element={<ListPayment />} />
                     <Route path="coupon/list/:row/:page" element={<CouponList />} />
                     <Route path="slider/list/:row/:page" element={<SliderList />} />
                     <Route path="faq/list/:row/:page" element={<FaqList />} />

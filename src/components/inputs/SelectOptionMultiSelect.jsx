@@ -70,7 +70,7 @@ const SelectOptionMultiSelect = ({
             {label && (
                 <label
                     htmlFor={name}
-                    className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300"
+                    className="block mb-1 text-xs font-medium text-gray-800 dark:text-gray-300"
                 >
                     {label} {require && <span className="text-red-500">*</span>}
                 </label>
