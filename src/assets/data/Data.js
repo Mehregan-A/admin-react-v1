@@ -75,6 +75,26 @@ export const SideItem = [
         ],
     },
     {
+        id: 17,
+        icon_fill: "PiGearSixFill",
+        icon_outline: "PiGearSix",
+        label: "تنظیمات",
+        sub: [
+            {
+                id: 51,
+                icon: "PiCirclesThreeFill",
+                label: "تنظیمات کلی",
+                link: "/setting",
+            },
+            {
+                id: 52,
+                icon: "PiCirclesThreeFill",
+                label: "تنظیمات پیامک",
+                link: "/sms-setting",
+            },
+        ],
+    },
+    {
         id: 2,
         icon_fill: "PiUsersFill",
         icon_outline: "PiUsers",
@@ -120,14 +140,6 @@ export const SideItem = [
         icon_outline: "PiCreditCard",
         label: "پرداخت",
         link: "/payment/list/50/1",
-        sub: [],
-    },
-    {
-        id: 11,
-        icon_fill: "PiChatsFill",
-        icon_outline: "PiChatsLight",
-        label: "سوالات متداول",
-        link: "/faq/list/50/1",
         sub: [],
     },
     {
@@ -177,5 +189,9 @@ export const status = [
 export const coupon = [
     { value: 'percent', label: 'درصدی' },
     { value: 'fixed', label: 'مبلغ ثابت' },
+];
+export const options = [
+    { value: 'active', label: 'فعال' },
+    { value: 'inactive', label: 'غیرفعال' },
 ];
 

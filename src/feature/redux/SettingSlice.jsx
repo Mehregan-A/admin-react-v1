@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 
-export const getAsyncListPayment = createAsyncThunk("payment/getAsyncListPayment",async (payload,{rejectWithValue})=>{
+export const getAsyncListSetting = createAsyncThunk("setting/getAsyncListSetting",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/payment/list/${payload.row}/${payload.page}`,{})
+        const res = await http.get(`/admin/setting/list`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -26,9 +26,9 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const postAsyncEditSetting = createAsyncThunk("setting/postAsyncEditSetting", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/setting/update`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -42,9 +42,9 @@ export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCateg
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusPayment = createAsyncThunk("payment/getAsyncStatusPayment",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/customers/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -92,7 +92,7 @@ const initialState = {
     isLoading_list:false,
     isError_list:false,
     info_att: [],
-    list_category:[],
+    list_setting:[],
     list_category_select:[],
     list_info_user:[],
     usersData: {},
@@ -101,11 +101,11 @@ const initialState = {
     isError: false,
 }
 
-const PaymentSlice = createSlice({
-    name: 'payment',
+const SettingSlice = createSlice({
+    name: 'setting',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        settingClearResult : (state) => {
             state.result = false
         },
         categoryClearResultDelete : (state) => {
@@ -116,18 +116,18 @@ const PaymentSlice = createSlice({
         },
     },
     extraReducers : (builder)=>{
-        builder.addCase(getAsyncListPayment.fulfilled,(state, action)=>{
-            state.list_payment = action.payload.data.result
+        builder.addCase(getAsyncListSetting.fulfilled,(state, action)=>{
+            state.list_setting= action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListPayment.pending,(state)=>{
-            state.list_payment = false
+        builder.addCase(getAsyncListSetting.pending,(state)=>{
+            state.list_setting = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListPayment.rejected,(state,action)=>{
-            state.list_payment = action.payload
+        builder.addCase(getAsyncListSetting.rejected,(state,action)=>{
+            state.list_setting = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
@@ -163,15 +163,15 @@ const PaymentSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditSetting.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(postAsyncEditSetting.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditSetting.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -187,18 +187,18 @@ const PaymentSlice = createSlice({
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusPayment.fulfilled,(state, action)=>{
-            const result = state.list_payment.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
+            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusPayment.pending,(state)=>{
+        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusPayment.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
@@ -259,6 +259,6 @@ const PaymentSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = PaymentSlice.actions
+export const { settingClearResult,categoryClearInfo,categoryClearResultDelete} = SettingSlice.actions
 
-export default PaymentSlice.reducer
+export default SettingSlice.reducer

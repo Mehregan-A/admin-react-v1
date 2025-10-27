@@ -14,7 +14,7 @@ import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
-import {getAsyncListPayment} from "../../feature/redux/PaymentSlice.jsx";
+import {getAsyncListPayment, getAsyncStatusPayment} from "../../feature/redux/PaymentSlice.jsx";
 import zarinpal from "../../assets/image/zarnpal.png"
 
 
@@ -50,7 +50,9 @@ const ListPayment = () => {
         setIdsEdit({id,action});
     };
     // Handle delete or deactivate action
-    const handleActionRequest = useCallback((type, id) => {
+    const
+
+        handleActionRequest = useCallback((type, id) => {
         if (type === "active"){
             const text = "آیا مطمئن هستید که می‌خواهید این آیتم را غیرفعال کنید؟"
             setModalData({ actionType: type, id, text });
@@ -72,9 +74,9 @@ const ListPayment = () => {
             if (actionType === "delete") {
                 await dispatch(deleteAsyncCategory({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
+                await dispatch(getAsyncStatusPayment({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
+                await dispatch(getAsyncStatusPayment({ Id: id }));
             }
 
             setShowModal(false);

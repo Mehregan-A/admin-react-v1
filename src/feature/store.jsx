@@ -14,6 +14,7 @@ import SliderSlice from "./redux/SliderSlice.jsx";
 import FaqSlice from "./redux/FaqSlice.jsx";
 import CouponSlice from "./redux/CouponSlice.jsx";
 import PaymentSlice from "./redux/PaymentSlice.jsx";
+import SettingSlice from "./redux/SettingSlice.jsx";
 
 
 
@@ -34,6 +35,7 @@ export const store = configureStore({
         faq:FaqSlice,
         coupon:CouponSlice,
         payment:PaymentSlice,
+        setting:SettingSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })
