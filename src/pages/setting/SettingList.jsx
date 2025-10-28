@@ -16,7 +16,6 @@ import Reject from "../../components/loading/Reject.jsx";
 
 
 const SettingList = () => {
-    const { id } = useParams();
     const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("1");
     const location = useLocation();
@@ -98,14 +97,15 @@ const SettingList = () => {
 
     const onSubmit = (values) => {
         console.log(values)
-        // dispatch(postAsyncEditSetting(values));
+        dispatch(postAsyncEditSetting(values));
     };
 
     const formik = useFormik({
         initialValues: list_setting ||  initialValues,
         validationSchema,
         onSubmit,
-        validateOnMount : true
+        validateOnMount : true,
+        enableReinitialize: true
     })
 
     useEffect(() => {
@@ -172,7 +172,7 @@ const SettingList = () => {
                             <form className="mt-7" onSubmit={formik.handleSubmit}>
                                 {activeTab==="1" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex flex-col w-full gap-2 h-80">
+                                        <div className="flex flex-col w-full gap-2">
                                             <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
                                                 <Input formik={formik} maxLength={25} name="site_title" label="نام سایت" />
                                             </div>
@@ -272,10 +272,10 @@ const SettingList = () => {
                                                 {isLoading ? (
                                                     <>
                                                         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                                        <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                                                        <span>در حال ویرایش...</span>
                                                     </>
                                                 ) : (
-                                                    <span>{id ? "ویرایش" : "ثبت"}</span>
+                                                    <span>ثبت</span>
                                                 )}
                                             </button>
                                         </div>

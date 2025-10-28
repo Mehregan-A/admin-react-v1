@@ -3,13 +3,10 @@ import CategoryNotFound from "../../assets/image/category_not_found.png"
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    categoryClearResultDelete
-} from "../../feature/redux/CategorySlice.jsx";
 import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
-import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
+import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {
     BrandClearResultDelete,
@@ -17,10 +14,10 @@ import {
     getAsyncListBrand,
     getAsyncStatusBrand
 } from "../../feature/redux/BrandSlice.jsx";
-import AddBrand from "./AddBrand.jsx";
+import {getAsyncListOrder} from "../../feature/redux/OrderSlice.jsx";
 
 
-const BrandList = () => {
+const ListOrder = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -34,12 +31,12 @@ const BrandList = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_brand,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.brand);
+    const { list_order,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.order);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListBrand({ row, page}));
-            navigate(`/brand/list/${row}/${page}`);
+            dispatch(getAsyncListOrder({ row, page}));
+            navigate(`/order/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -111,20 +108,30 @@ const BrandList = () => {
         </div>
     );
     const columns = [
-        {
-            name: "تصویر",
-            selector: row =>
-                <div className="w-14 h-14 rounded-full shadow-lg shadow-cyan-300 ">
-                    <img
-                        src={row.logo ? Config.apiImage + row.logo : CategoryNotFound}
-                        className="w-full h-full rounded-b-4xl rounded-t-lg object-cover"
-                        alt="category"
-                    />
-                </div>,
-        },
+        // {
+        //     name: "تصویر",
+        //     selector: row =>
+        //         <div className="w-14 h-14 rounded-full shadow-lg shadow-cyan-300 ">
+        //             <img
+        //                 src={row.logo ? Config.apiImage + row.logo : CategoryNotFound}
+        //                 className="w-full h-full rounded-b-4xl rounded-t-lg object-cover"
+        //                 alt="category"
+        //             />
+        //         </div>,
+        // },
         {
             name: "نام برند",
-            selector: row => row.title,
+            selector: row => row.order_items.map((item)=>{
+                return (
+                    <div className="flex w-14 h-14 rounded-full shadow-lg shadow-cyan-300 ">
+                        <img
+                            src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                            className="w-full h-full rounded-bl-xl rounded-tr-4xl object-cover"
+                            alt="category"
+                        />
+                    </div>
+                    )
+            }),
         },
         {
             name: "url",
@@ -186,21 +193,21 @@ const BrandList = () => {
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_brand?.data}
-                numberPage={list_brand?.page}
+                data={list_order?.data}
+                numberPage={list_order?.page}
                 columns={columns}
             />
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddBrand
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListBrand({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_brand={list_brand.data}
-                    />
-                </div>
-            )}
+            {/*{openAdd.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AddBrand*/}
+            {/*            open_slider={openAdd.open}*/}
+            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListBrand({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            list_brand={list_brand.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
             {/*{openAtt.open && (*/}
             {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
             {/*        <AttributeCategory*/}
@@ -226,4 +233,4 @@ const BrandList = () => {
     );
 };
 
-export default BrandList;
+export default ListOrder;

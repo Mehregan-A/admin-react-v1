@@ -127,7 +127,8 @@ const AddArticle = () => {
         initialValues: list_info_article ||  initialValues,
         validationSchema,
         onSubmit,
-        validateOnMount : true
+        validateOnMount : true,
+        enableReinitialize: true
     })
 
     useEffect(() => {

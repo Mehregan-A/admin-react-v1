@@ -135,6 +135,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 18,
+        icon_fill: "PiShoppingCartSimpleFill",
+        icon_outline: "PiShoppingCartSimple",
+        label: "سفارشات",
+        link: "/order/list/50/1",
+        sub: [],
+    },
+    {
         id: 12,
         icon_fill: "PiCreditCardFill",
         icon_outline: "PiCreditCard",
