@@ -15,6 +15,8 @@ import {
     getAsyncStatusBrand
 } from "../../feature/redux/BrandSlice.jsx";
 import {getAsyncListOrder} from "../../feature/redux/OrderSlice.jsx";
+import DataTableOrder from "../../components/dataTable/DataTableOrder.jsx";
+import {persianDateNT} from "../../components/utility/persianDateNT.js";
 
 
 const ListOrder = () => {
@@ -120,26 +122,112 @@ const ListOrder = () => {
         //         </div>,
         // },
         {
-            name: "نام برند",
-            selector: row => row.order_items.map((item)=>{
+            name: "تصویر",
+            selector: (row) => {
+                const maxImages = 4;
+                const items = row.order_items || [];
+                const visibleItems = items.slice(0, maxImages);
+                const extraCount = items.length - maxImages;
+                const count = visibleItems.length;
+
+                if (count < 3) {
+                    return (
+                        <div className="flex items-center justify-start">
+                            {visibleItems.map((item, index) => (
+                                <div key={index} className="hexagon-shadow">
+                                    <img
+                                        src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                                        className="hexagon-img"
+                                        alt="category"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    );
+                }
                 return (
-                    <div className="flex w-14 h-14 rounded-full shadow-lg shadow-cyan-300 ">
-                        <img
-                            src={item.image ? Config.apiImage + item.image : CategoryNotFound}
-                            className="w-full h-full rounded-bl-xl rounded-tr-4xl object-cover"
-                            alt="category"
-                        />
+                    <div className="flex flex-col justify-start">
+                        <div className="flex gap-3 mb-[-40px] justify-start pl-0">
+                            {visibleItems.slice(2, 3).map((item, index) => (
+                                <div key={index} className="hexagon-shadow">
+                                    <img
+                                        src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                                        className="hexagon-img"
+                                        alt="category"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex justify-start mr-14">
+                            {visibleItems.slice(0, 1).map((item, index) => (
+                                <div key={index} className="hexagon-shadow">
+                                    <img
+                                        src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                                        className="hexagon-img"
+                                        alt="category"
+                                    />
+                                </div>
+                            ))}
+                            {extraCount > 0 && (
+                                <div className="w-5 h-5 mt-7 mr-1 flex items-center justify-center rounded-lg bg-cyan-400  text-gray-100">
+                                    +{extraCount}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex gap-3 mt-[-40px] justify-start  pl-0">
+                            {visibleItems.slice(1, 2).map((item, index) => (
+                                <div key={index} className="hexagon-shadow">
+                                    <img
+                                        src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                                        className="hexagon-img"
+                                        alt="category"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+
                     </div>
-                    )
-            }),
+                );
+            },
         },
         {
-            name: "url",
-            selector: row => row.url,
+            name: "شماره سفارش",
+            selector: row => row.order_no,
         },
         {
-            name: " وضعیت",
-            selector: row => row.status === "active" ? <div className={`text-green-500`}>فعال</div> :  <div className={`text-red-500`}>غیرفعال</div>
+            name: "جمع کل مبلغ نهایی",
+            selector: row => row.grand_total,
+        },
+        {
+            name: "هزینه ارسال",
+            selector: row => row.shipping_fee,
+        },
+        {
+            name: "زمان ثبت سفارش",
+            selector: row =>persianDateNT.date(row.placed_at) ,
+        },
+        {
+            name: "وضعیت",
+            selector: row => {
+                if (row.status === "basket") {
+                    return <div className={`text-white green-500 bg-cyan-400 rounded-lg p-1 w-14 text-xs`}>سبد خرید</div>
+                } else if (row.status === "shipped") {
+                    return <div className={`text-white green-500 bg-green-400 rounded-lg p-1 w-16 text-xs`}>ارسال شده</div>
+                } else if (row.status === "cancelled") {
+                    return <div className={`text-white green-500 bg-red-400 rounded-lg p-1 w-16 text-xs`}>کنسل شده</div>
+                }
+                else if (row.status === "paid") {
+                    return <div className={`text-white green-500 bg-yellow-400 rounded-lg p-1 w-17 text-xs`}>پرداخت شده</div>
+                }
+                else if (row.status === "pending") {
+                    return <div className={`text-white green-500 bg-purple-400 rounded-lg p-1 w-9 text-xs`}>انتظار</div>
+                }else {
+                    return <div className="text-red-500">ناموفق</div>;
+                }
+            }
         },
         {
             name: "عملیات",
@@ -188,7 +276,7 @@ const ListOrder = () => {
                     className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
 
             </div>
-            <DataTable
+            <DataTableOrder
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}

@@ -49,7 +49,7 @@ html {
 .hexagon-img {
     /* default controls */
     --r: 0.4;
-    --a: 30deg;
+    --a: 60deg;
     width: 100%;
     height: 100%;
     aspect-ratio: 1;
@@ -116,7 +116,7 @@ html {
 }
 
 .hexagon-img + .hexagon-img:hover {
-    --a: 60deg;
+    --a: 30deg;
 }
 .hexagon-shadow {
     position: relative;
