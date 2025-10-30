@@ -6,6 +6,7 @@ import Wave1 from "../../assets/image/wave.svg"
 import WaveDark from "../../assets/image/Wave2Dark.svg"
 import Wave2 from "../../assets/image/wave2.svg"
 import Wavedark2 from "../../assets/image/waveDark.svg"
+import shop from "../../assets/image/shop (2).svg"
 import {getAsyncCheck, getAsyncLoginIndex, loginClearResult, postAsyncLogin} from "../../feature/redux/LoginSlice.jsx";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
@@ -15,6 +16,7 @@ import {Toast} from "../../components/toast/Toast.jsx";
 import ToastContainer from "../../components/toast/ToastContainer.jsx";
 import {set_theme} from "../../feature/redux/ThemeSlice.jsx";
 import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
+import MyAnimation from "../../components/MyAnimation.jsx";
 
 
 const Login = () => {

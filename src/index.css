@@ -127,6 +127,11 @@ html {
     justify-content: center;
     @apply drop-shadow-lg drop-shadow-cyan-300
 }
+.bg-order{
+    background-color:hsla(187,87%,61%,0.1);
+    background-image:
+            radial-gradient(at 99% 100%, hsla(307,87%,61%,0.2) 0px, transparent 50%);
+}
 
 
 

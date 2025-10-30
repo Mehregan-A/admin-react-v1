@@ -17,6 +17,7 @@ import {
 import {getAsyncListOrder} from "../../feature/redux/OrderSlice.jsx";
 import DataTableOrder from "../../components/dataTable/DataTableOrder.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
+import {HiOutlineDocumentMagnifyingGlass} from "react-icons/hi2";
 
 
 const ListOrder = () => {
@@ -237,9 +238,9 @@ const ListOrder = () => {
             selector: row => (
                 <div className="flex lg:justify-center gap-0.5">
                     <ButtonWithTooltip
-                        onClick={() => setOpenId(row.id, "edit")}
-                        icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش برند"
+                        onClick={() => navigate(`/order/detail/${row.id}`)}
+                        icon={<HiOutlineDocumentMagnifyingGlass className="w-6 h-6" />}
+                        text="مشاهده جزئیات"
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
@@ -247,12 +248,6 @@ const ListOrder = () => {
                         icon={<IoBanOutline className="w-5 h-5" />}
                         text={`${row.status === "active"?"غیرفعال":"فعال"}`}
                         hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest("delete", row.id)}
-                        icon={<IoTrashOutline className="w-5 h-5" />}
-                        text="حذف"
-                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
                     />
                 </div>
             )
@@ -269,12 +264,8 @@ const ListOrder = () => {
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
                     <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">برند</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">سفارشات</div>
                 </div>
-                <button
-                    onClick={() => setOpenId("")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
-
             </div>
             <DataTableOrder
                 icon={''}

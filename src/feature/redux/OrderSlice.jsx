@@ -17,9 +17,9 @@ export const getAsyncSelectCategory = createAsyncThunk("category/getAsyncSelectC
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
+export const getAsyncInfoOrder = createAsyncThunk("order/getAsyncInfoOrder",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
+        const res = await http.get(`/admin/order/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -146,20 +146,20 @@ const OrderSlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
+        builder.addCase(getAsyncInfoOrder.fulfilled,(state, action)=>{
+            state.info_order = action.payload.data.result
             state.isLoading = false
             state.isError = false
             // const user = action.payload.data.result.user;
             // state.usersData[user.id] = user;
         })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
+        builder.addCase(getAsyncInfoOrder.pending,(state)=>{
+            state.info_order = false
             state.isLoading = true
             state.isError = false
         })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
+        builder.addCase(getAsyncInfoOrder.rejected,(state,action)=>{
+            state.info_order = action.payload
             state.isLoading = false
             state.isError = true
         })
