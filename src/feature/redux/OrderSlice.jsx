@@ -42,9 +42,9 @@ export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCateg
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusOrder = createAsyncThunk("order/getAsyncStatusOrder",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/order/status/change/cancelled/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -187,18 +187,18 @@ const OrderSlice = createSlice({
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
-            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusOrder.fulfilled,(state, action)=>{
+            const result = state.list_order.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
+        builder.addCase(getAsyncStatusOrder.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusOrder.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false

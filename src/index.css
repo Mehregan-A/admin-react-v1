@@ -132,6 +132,11 @@ html {
     background-image:
             radial-gradient(at 99% 100%, hsla(307,87%,61%,0.2) 0px, transparent 50%);
 }
+.pattern{
+    opacity: 0.75;
+    background: repeating-linear-gradient(135deg, #7EFCCC 0, #7EFCCC 10%, transparent 0, transparent 50%);
+    background-size: 2.5em 2.5em;
+}
 
 
 

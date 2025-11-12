@@ -58,83 +58,12 @@ const OrderDetail = () => {
                         <div className="text-cyan-700 dark:text-cyan-400">جزئیات</div>
                     </div>
                 </div>
-                <div className="flex gap-3">
-                    <div className="bg-order rounded-2xl w-full max-w-xl flex flex-col gap-5 px-4 sm:px-5 py-5 sm:py-6">
-                        <h3 className="text-gray-800 dark:text-gray-100 font-semibold text-base sm:text-lg text-center sm:text-right">
-                            اقلام سفارش
-                        </h3>
-                        <div className="flex flex-col gap-4">
-                            {info_order?.order_items?.map((item, index) => {
-                                const finalPrice = item.price_each - item.discount_each;
-                                const totalPrice = finalPrice * item.qty;
-
-                                return (
-                                    <div
-                                        key={index}
-                                        className="flex flex-col sm:flex-row justify-between sm:items-start gap-4
-                                      p-4 sm:p-5 rounded-2xl border bg-white/20 border-white/30 shadow-lg dark:shadow-gray-700
-                                      dark:bg-black/30 dark:backdrop-blur-md dark:border-white/20 backdrop-blur-md
-                                      hover:shadow-cyan-200/50 transition-all duration-300"
-                                    >
-                                        {/* ---------- تصویر و اطلاعات محصول ---------- */}
-                                        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 w-full">
-                                            <div className="w-20 h-20 sm:w-16 sm:h-16 rounded-xl overflow-hidden shadow-md flex-shrink-0">
-                                                <img
-                                                    src={item.image ? Config.apiImage + item.image : CategoryNotFound}
-                                                    alt={item.title}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </div>
-
-                                            <div className="flex flex-col text-gray-700 dark:text-gray-100 text-center sm:text-right">
-                                                <span className="font-medium">{item.title}</span>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                کد کالا: {item.sku_code}
-              </span>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-1 break-words">
-                url: {item.url}
-              </span>
-                                            </div>
-                                        </div>
-
-                                        {/* ---------- بخش قیمت ---------- */}
-                                        <div className="flex flex-col gap-1 text-sm w-full sm:w-1/3 text-center sm:text-right">
-                                            {item.price_each && (
-                                                <div className="flex items-center justify-center sm:justify-end gap-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400 line-through">
-                  {item.price_each.toLocaleString()} ریال
-                </span>
-                                                    <span className="bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 text-xs font-medium px-2 py-0.5 rounded-full">
-                  − {item.discount_each.toLocaleString()} ریال
-                </span>
-                                                </div>
-                                            )}
-
-                                            <div className="text-cyan-500 font-bold text-base mt-1 flex justify-center sm:justify-end">
-                                                {finalPrice.toLocaleString()} <span className="text-sm mr-1">ریال</span>
-                                            </div>
-
-                                            <div className="text-gray-700 dark:text-gray-200 font-semibold text-sm border-t border-gray-400/50 dark:border-gray-700/50 pt-2 mt-2 flex justify-center sm:justify-end">
-                                                {item.qty.toLocaleString()} × {finalPrice.toLocaleString()} ریال{" "}
-                                                <span className="text-gray-500 mx-1">=</span>
-                                                <span className="text-cyan-400 font-bold">
-                {totalPrice.toLocaleString()} ریال
-              </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                    <div className="w-full bg-white dark:bg-gray-900 shadow-lg rounded-2xl flex flex-col gap-6 p-6 sm:p-8">
+                <div className="flex flex-col md:flex-row gap-3">
+                    <div className="w-full bg-gray-100 dark:bg-gray-800 border border-cyan-300 shadow-lg rounded-2xl flex flex-col gap-6 p-6 sm:p-8">
                         <h3 className="text-gray-800 dark:text-gray-100 font-bold text-lg text-center sm:text-right">
                             خلاصه سفارش
                         </h3>
-
                         <div className="flex flex-col gap-5">
-
-                            {/* وضعیت سفارش */}
                             <div className="flex items-center gap-2">
                                 {(() => {
                                     const status = info_order?.status;
@@ -154,7 +83,6 @@ const OrderDetail = () => {
                                 })()}
                             </div>
 
-                            {/* مبلغ‌ها */}
                             <div className="flex flex-col gap-2">
                                 <div className="flex justify-between text-gray-700 dark:text-gray-300">
                                     <span>جمع مبلغ:</span>
@@ -184,7 +112,6 @@ const OrderDetail = () => {
 
                             <div className="border-t border-gray-200 dark:border-gray-700 my-3"></div>
 
-                            {/* مبلغ نهایی */}
                             <div className="flex justify-between items-center text-gray-900 dark:text-gray-100 font-bold text-lg">
                                 <span>مبلغ نهایی:</span>
                                 <span className="text-cyan-600">{info_order?.grand_total?.toLocaleString()} ریال</span>
@@ -192,7 +119,6 @@ const OrderDetail = () => {
 
                             <div className="border-t border-gray-200 dark:border-gray-700 my-3"></div>
 
-                            {/* پرداخت */}
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                                     <FiCreditCard /> روش پرداخت:
@@ -213,7 +139,6 @@ const OrderDetail = () => {
 
                             <div className="border-t border-gray-200 dark:border-gray-700 my-3"></div>
 
-                            {/* آدرس گیرنده */}
                             {/*<div className="flex flex-col gap-1 text-gray-700 dark:text-gray-300">*/}
                             {/*    <div className="flex items-center gap-2">*/}
                             {/*        <FiMapPin /> {info_order?.address_full_name}*/}
@@ -226,11 +151,106 @@ const OrderDetail = () => {
                             <OrderTimeline status={info_order?.status} />
                         </div>
                     </div>
+                    <div className="bg-gray-100 dark:bg-gray-800 border border-cyan-300 rounded-2xl w-full max-w-xl flex flex-col gap-5 px-4 sm:px-5 py-5 sm:py-6">
+                        <h3 className="text-gray-800 dark:text-gray-100 font-semibold text-base sm:text-lg text-center sm:text-right">
+                            اقلام سفارش
+                        </h3>
+                        <div className=" flex flex-col gap-4">
+                            {info_order?.order_items?.map((item, index) => {
+                                const finalPrice = item.price_each - item.discount_each;
+                                const totalPrice = finalPrice * item.qty;
 
+                                return (
+                                    <div
+                                        key={index}
+                                        className="flex flex-col justify-between gap-4
+                                      p-4 sm:p-5 rounded-2xl border bg-gray-100 border-white/30
+                                      dark:bg-gray-800 dark:backdrop-blur-md dark:border-white/20 backdrop-blur-md
+                                      drop-shadow-lg dark:drop-shadow-cyan-200 drop-shadow-cyan-300 transition-all duration-300"
+                                    >
+
+                                            <div
+                                                className="absolute inset-0 rounded-lg"
+                                                style={{
+                                                    backgroundImage: `
+                                                      repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px),
+                                                    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px)
+                                                    `,
+                                                    backgroundSize: "40px 40px",
+                                                    WebkitMaskImage:
+                                                        "radial-gradient(ellipse 80% 80% at 0% 0%, #000 25%, transparent 50%)",
+                                                    maskImage:
+                                                        "radial-gradient(ellipse 80% 80% at 0% 0%, #000 30%, transparent 67%)"
+                                                }}
+                                            />
+                                        <div className="flex flex-col sm:flex-row  items-center sm:items-start gap-3 w-full">
+                                            <div className="w-20 h-20  rounded-xl overflow-hidden shadow-md flex-shrink-0">
+                                                <img
+                                                    src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                                                    alt={item.title}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col text-gray-700 dark:text-gray-100 text-center sm:text-right">
+                                                <span className="font-medium">{item.title}</span>
+                                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                کد کالا: {item.sku_code}
+                                              </span>
+                                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-1 break-words">
+                                                    url: {item.url}
+                                                  </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="relative w-full flex flex-col gap-2 ">
+                                            <div className="w-full text-gray-700 dark:text-gray-200 font-semibold text-sm border-t border-cyan-200/80 dark:border-cyan-200/80 pt-2 mt-2 flex justify-center ">
+                                            </div>
+                                            <div className="flex left-0 top-5 gap-2 absolute">
+                                                <div className="flex items-center  gap-1">
+                                                    <span className="text-sm text-gray-800 dark:text-gray-100">تعداد:</span>
+                                                    <span className="text-sm text-gray-800 dark:text-gray-100">
+                                                          {item.qty}
+                                                        </span>
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-start gap-2 ">
+                                                {item.price_each && (
+                                                    <div className="flex flex-col gap-2">
+                                                        <div className="flex items-center  gap-1">
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">قیمت اولیه:</span>
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">
+                                                          {item.price_each.toLocaleString()} ریال
+                                                        </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">تخفیف:</span>
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">
+                                                          {item.discount_each.toLocaleString()} ریال
+                                                        </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">قیمت نهایی هر محصول:</span>
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">
+                                                          {finalPrice.toLocaleString()} ریال
+                                                        </span>
+                                                        </div>
+                                                        <div className="flex items-center  gap-1">
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">قیمت کل:</span>
+                                                            <span className="text-sm text-gray-800 dark:text-gray-100">
+                                                          {totalPrice.toLocaleString()} ریال
+                                                        </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
-
-
-
             </div>
         </>
 

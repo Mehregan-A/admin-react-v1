@@ -14,7 +14,7 @@ import {
     getAsyncListBrand,
     getAsyncStatusBrand
 } from "../../feature/redux/BrandSlice.jsx";
-import {getAsyncListOrder} from "../../feature/redux/OrderSlice.jsx";
+import {getAsyncListOrder, getAsyncStatusOrder} from "../../feature/redux/OrderSlice.jsx";
 import DataTableOrder from "../../components/dataTable/DataTableOrder.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import {HiOutlineDocumentMagnifyingGlass} from "react-icons/hi2";
@@ -74,9 +74,9 @@ const ListOrder = () => {
             if (actionType === "delete") {
                 await dispatch(deleteAsyncBrand({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusBrand({ Id: id }));
+                await dispatch(getAsyncStatusOrder({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusBrand({ Id: id }));
+                await dispatch(getAsyncStatusOrder({ Id: id }));
             }
 
             setShowModal(false);
@@ -84,18 +84,6 @@ const ListOrder = () => {
             console.error(err);
         }
     }, [modalData, dispatch]);
-    useEffect(() => {
-        if(result_delete && result_delete?.status){
-            if(result_delete.status === 200) {
-                Toast.success(`${result_delete.data.message}`);
-                dispatch(BrandClearResultDelete());
-            }else{
-                // toast
-                Toast.error(`${result_delete.data.message}`);
-                dispatch(BrandClearResultDelete())
-            }
-        }
-    }, [result_delete]);
     // Cancel modal
     const handleReject = useCallback(() => {
         setShowModal(false);
@@ -111,17 +99,6 @@ const ListOrder = () => {
         </div>
     );
     const columns = [
-        // {
-        //     name: "تصویر",
-        //     selector: row =>
-        //         <div className="w-14 h-14 rounded-full shadow-lg shadow-cyan-300 ">
-        //             <img
-        //                 src={row.logo ? Config.apiImage + row.logo : CategoryNotFound}
-        //                 className="w-full h-full rounded-b-4xl rounded-t-lg object-cover"
-        //                 alt="category"
-        //             />
-        //         </div>,
-        // },
         {
             name: "تصویر",
             selector: (row) => {
