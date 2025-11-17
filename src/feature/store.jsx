@@ -17,6 +17,7 @@ import PaymentSlice from "./redux/PaymentSlice.jsx";
 import SettingSlice from "./redux/SettingSlice.jsx";
 import SmsSlice from "./redux/SmsSlice.jsx";
 import OrderSlice from "./redux/OrderSlice.jsx";
+import ShippingMethodSlice from "./redux/ShippingMethodSlice.jsx";
 
 
 
@@ -40,6 +41,7 @@ export const store = configureStore({
         setting:SettingSlice,
         sms:SmsSlice,
         order:OrderSlice,
+        shippingMethod:ShippingMethodSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

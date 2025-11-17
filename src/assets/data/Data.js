@@ -143,6 +143,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 19,
+        icon_fill: "PiTruckFill",
+        icon_outline: "PiTruckLight",
+        label: "روش های ارسال",
+        link: "/shipping-methods/list/50/1",
+        sub: [],
+    },
+    {
         id: 12,
         icon_fill: "PiCreditCardFill",
         icon_outline: "PiCreditCard",

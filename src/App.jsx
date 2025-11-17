@@ -22,6 +22,7 @@ import SettingList from "./pages/setting/SettingList.jsx";
 import SmsSetting from "./pages/setting/SmsSetting.jsx";
 import ListOrder from "./pages/order/ListOrder.jsx";
 import OrderDetail from "./pages/order/OrderDetail.jsx";
+import ListShippingMethod from "./pages/shippingMethod/ListShippingMethod.jsx";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                     <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
                     <Route path="product/list/:row/:page" element={<ListProduct/>} />
                     <Route path="order/list/:row/:page" element={<ListOrder/>} />
+                    <Route path="shipping-methods/list/:row/:page" element={<ListShippingMethod/>} />
                     <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="article/add/:id" element={<AddArticle />} />
                     <Route path="order/detail/:id" element={<OrderDetail />} />
