@@ -9,6 +9,14 @@ export const getAsyncListShippingMethod = createAsyncThunk("shippingMethod/getAs
         return rejectWithValue(error.response, error.message)
     }
 })
+export const getAsyncListShippingMethodFree = createAsyncThunk("shippingMethod/getAsyncListShippingMethodFree",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.get(`/admin/free-shipping/list`,{})
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
 export const getAsyncSelectCategory = createAsyncThunk("category/getAsyncSelectCategory",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.get(`admin/category/select`,{})
@@ -29,6 +37,14 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
 export const postAsyncEditShippingMethod = createAsyncThunk("shippingMethod/postAsyncEditShippingMethod", async (payload, { rejectWithValue }) => {
     try {
         const res = await http.post(`/admin/shipping-methods/update/${payload.id}`, payload, {});
+        return res;
+    } catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+});
+export const postAsyncEditShippingMethodFree = createAsyncThunk("shippingMethod/postAsyncEditShippingMethodFree", async (payload, { rejectWithValue }) => {
+    try {
+        const res = await http.post(`/admin/free-shipping/update`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -93,6 +109,7 @@ const initialState = {
     isError_list:false,
     info_att: [],
     list_shipping_method:[],
+    list_shipping_method_free:[],
     list_category_select:[],
     list_info_user:[],
     usersData: {},
@@ -129,6 +146,21 @@ const ShippingMethodSlice = createSlice({
         })
         builder.addCase(getAsyncListShippingMethod.rejected,(state,action)=>{
             state.list_shipping_method = action.payload
+            state.isLoading_list = false
+            state.isError_list = true
+        })
+        builder.addCase(getAsyncListShippingMethodFree.fulfilled,(state, action)=>{
+            state.list_shipping_method_free = action.payload.data.result
+            state.isLoading_list = false
+            state.isError_list = false
+        })
+        builder.addCase(getAsyncListShippingMethodFree.pending,(state)=>{
+            state.list_shipping_method_free = false
+            state.isLoading_list = true
+            state.isError_list = false
+        })
+        builder.addCase(getAsyncListShippingMethodFree.rejected,(state,action)=>{
+            state.list_shipping_method_free = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
@@ -173,6 +205,18 @@ const ShippingMethodSlice = createSlice({
             state.isLoading = true
         })
         builder.addCase(postAsyncEditShippingMethod.rejected,(state,action)=>{
+            state.result = action.payload
+            state.isLoading = false
+        })
+        builder.addCase(postAsyncEditShippingMethodFree.fulfilled,(state, action)=>{
+            state.result = action.payload
+            state.isLoading = false
+        })
+        builder.addCase(postAsyncEditShippingMethodFree.pending,(state)=>{
+            state.result = false
+            state.isLoading = true
+        })
+        builder.addCase(postAsyncEditShippingMethodFree.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })

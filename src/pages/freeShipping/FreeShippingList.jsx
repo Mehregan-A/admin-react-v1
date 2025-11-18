@@ -24,22 +24,19 @@ import {
     putAsyncEditCoupon
 } from "../../feature/redux/CouponSlice.jsx";
 import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
+import {
+    getAsyncListShippingMethodFree,
+    postAsyncEditShippingMethodFree
+} from "../../feature/redux/ShippingMethodSlice.jsx";
 
 
 const FreeShippingList = () => {
-    const { id } = useParams();
     const dispatch = useDispatch();
-    const {list_category_select} = useSelector(state => state.category);
-    const {list_brand_select} = useSelector(state => state.brand);
     useEffect(() => {
-        dispatch(getAsyncSelectCategory())
-        dispatch(getAsyncSelectBrand())
-        if (id){
-            dispatch(getAsyncInfoCoupon({Id:id}))
-        }
+        dispatch(getAsyncListShippingMethodFree())
     },[])
 
-    const {result,isLoading,info_coupon} = useSelector(state => state.coupon);
+    const {result,isLoading,list_shipping_method_free} = useSelector(state => state.shippingMethod);
     // redux
     const initialValues = {
         enable_free_shipping: "",
@@ -104,19 +101,16 @@ const FreeShippingList = () => {
     });
 
     const onSubmit = (values) => {
-        console.log(values);
-        if (id) {
-            dispatch(putAsyncEditCoupon(values));
-        } else {
-            dispatch(postAsyncAddCoupon(values));
-        }
+            dispatch(postAsyncEditShippingMethodFree(values));
     };
 
     const formik = useFormik({
-        initialValues: info_coupon ||  initialValues,
+        initialValues: list_shipping_method_free ||  initialValues,
         validationSchema,
         onSubmit,
-        validateOnMount : true
+        validateOnMount : true,
+        enableReinitialize: true
+
     })
 
     useEffect(() => {
@@ -133,7 +127,7 @@ const FreeShippingList = () => {
             }
         }
     }, [result]);
-    console.log(formik.values.category_id)
+    console.log(list_shipping_method_free)
 
 
     return (
@@ -171,10 +165,10 @@ const FreeShippingList = () => {
                                         {isLoading ? (
                                             <>
                                                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                                <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                                                <span>در حال {"ویرایش"}...</span>
                                             </>
                                         ) : (
-                                            <span>{id ? "ویرایش" : "ثبت"}</span>
+                                            <span>{ "ویرایش"}</span>
                                         )}
                                     </button>
                                 </div>
