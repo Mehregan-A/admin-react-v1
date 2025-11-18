@@ -30,8 +30,15 @@ import {getAsyncListSubCategory} from "../../feature/redux/CategorySubSlice.jsx"
 // import AddSlider from "./AddSlider.jsx";
 import {MdPublishedWithChanges} from "react-icons/md";
 import PagingGetUrl from "../../components/PagingGetUrl.jsx";
-import {getAsyncListShippingMethod} from "../../feature/redux/ShippingMethodSlice.jsx";
+import {
+    deleteAsyncShippingMethod,
+    getAsyncListShippingMethod,
+    getAsyncStatusShippingMethod
+} from "../../feature/redux/ShippingMethodSlice.jsx";
 import AddShippingMethod from "./AddShippingMethod.jsx";
+import {TbTruckDelivery} from "react-icons/tb";
+import {CiDeliveryTruck} from "react-icons/ci";
+import {deleteAsyncAdmin, getAsyncStatusAdmin} from "../../feature/redux/AdminSlice.jsx";
 
 
 const ListShippingMethod = () => {
@@ -67,11 +74,11 @@ const ListShippingMethod = () => {
     };
     // Handle delete or deactivate action
     const handleActionRequest = useCallback((type, id) => {
-        if (type === "draft"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را منتشر کنید؟"
+        if (type === "active"){
+            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را غیرفعال کنید؟"
             setModalData({ actionType: type, id, text });
-        }else if (type === "published"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را پیش نویس کنید؟"
+        }else if (type === "inactive"){
+            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را فعال کنید؟"
             setModalData({ actionType: type, id, text });
         }else if (type === "delete"){
             const text = "آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟"
@@ -86,13 +93,12 @@ const ListShippingMethod = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncSlider({ del: id }));
-            } else if (actionType === "draft") {
-                await dispatch(getAsyncStatusSlider({Id: id,status:'published'}));
-            }else if (actionType === "published") {
-                await dispatch(getAsyncStatusSlider({Id: id,status:'draft'}));
+                await dispatch(deleteAsyncShippingMethod({ del: id }));
+            } else if (actionType === "inactive") {
+                await dispatch(getAsyncStatusShippingMethod({ Id: id }));
+            }else if (actionType === "active") {
+                await dispatch(getAsyncStatusShippingMethod({ Id: id }));
             }
-
             setShowModal(false);
         } catch (err) {
             console.error(err);
@@ -158,9 +164,12 @@ const ListShippingMethod = () => {
                         {list_shipping_method.data.map((item) => (
                             <div
                                 key={item.id}
-                                className="bg-white drop-shadow-lg drop-shadow-cyan-200 rounded-3xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+                                className="relative bg-white dark:bg-gray-800 drop-shadow-lg drop-shadow-cyan-200 rounded-3xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100"
                             >
-                                <div className="flex items-center justify-between relative w-full p-7 ">
+                                <div className="absolute -right-7 -bottom-10 leaf-4 -rotate-40 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
+                                <div className="absolute -right-7 -bottom-10 leaf-4 rotate-0 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
+                                <div className="absolute -right-7 -bottom-10 leaf-4 rotate-40 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
+                                <div className="flex items-center justify-between relative w-full p-7">
                                     <div className="flex flex-col">
                                         <div className="flex justify-between items-center">
                                             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 line-clamp-1">
@@ -183,37 +192,38 @@ const ListShippingMethod = () => {
                                             </span>
                                         </div>
                                     </div>
-                                    <img
-                                        src={shipping_methods}
-                                        alt={item.title}
-                                        className="w-28 h-20 object-cover"
-                                    />
+                                    {/*<img*/}
+                                    {/*    src={shipping_methods}*/}
+                                    {/*    alt={item.title}*/}
+                                    {/*    className="w-28 h-20 object-cover"*/}
+                                    {/*/>*/}
+                                    <CiDeliveryTruck size={100} className="dark:text-gray-200 text-gray-600" />
                                     <span
                                         className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
                                             item.status === "active"
-                                                ? "bg-green-100 dark:bg-gray-800 dark:text-green-500 text-green-700"
-                                                : "bg-gray-100 dark:bg-gray-800  text-red-500 dark:text-red-400"
+                                                ? "bg-green-100 dark:bg-gray-800 shadow shadow-cyan-300 dark:text-green-500 text-green-700"
+                                                : "bg-gray-100 dark:bg-gray-800 shadow shadow-cyan-300  text-red-500 dark:text-red-400"
                                         }`}
                                     >
                                 {item.status === "active" ? "فعال" : "غیرفعال"}
                               </span>
                                 </div>
-                                <div className="flex gap-1 justify-end p-6">
+                                <div className={`flex gap-1 justify-end p-6 pt-0`}>
                                     <ButtonWithTooltip
                                         onClick={() => setOpenId(item.id, "edit")}
-                                        icon={<IoCreateOutline className="w-5 h-5" />}
+                                        icon={<IoCreateOutline className="w-5 h-5"/>}
                                         text="ویرایش "
                                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                                     />
                                     <ButtonWithTooltip
                                         onClick={() => handleActionRequest(item.status, item.id)}
-                                        icon={<MdPublishedWithChanges className="w-5 h-5" />}
-                                        text={`${item.status === "active"?"فعال":"غیر فعال"}`}
+                                        icon={<IoBanOutline className="w-5 h-5" />}
+                                        text={`${item.status === "active"?"غیرفعال":"فعال"}`}
                                         hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                                     />
                                     <ButtonWithTooltip
                                         onClick={() => handleActionRequest("delete", item.id)}
-                                        icon={<IoTrashOutline className="w-5 h-5" />}
+                                        icon={<IoTrashOutline className="w-5 h-5"/>}
                                         text="حذف"
                                         hoverColor="hover:text-red-600 dark:hover:text-red-400"
                                     />

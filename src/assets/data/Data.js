@@ -210,4 +210,9 @@ export const options = [
     { value: 'active', label: 'فعال' },
     { value: 'inactive', label: 'غیرفعال' },
 ];
+export const optionsMethod = [
+    { value: 'prepaid', label: ' پس کرایه' },
+    { value: 'cash_on_delivery', label: 'پیش کرایه' },
+    { value: 'free', label: 'رایگان' },
+];
 

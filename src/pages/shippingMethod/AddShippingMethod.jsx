@@ -14,7 +14,7 @@ import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {options, optionsActive, status} from "../../assets/data/Data.js";
+import {options, optionsActive, optionsMethod, status} from "../../assets/data/Data.js";
 import {
     postAsyncAddSubCategory,
 
@@ -25,7 +25,7 @@ import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import InputRadioButton from "../../components/inputs/InputRadioButton.jsx";
 import {postAsyncAddSlider, putAsyncEditSlider, sliderClearResult} from "../../feature/redux/SliderSlice.jsx";
 import Media from "../../components/inputs/media/Media.jsx";
-import {postAsyncAddShippingMethod} from "../../feature/redux/ShippingMethodSlice.jsx";
+import {postAsyncAddShippingMethod, postAsyncEditShippingMethod} from "../../feature/redux/ShippingMethodSlice.jsx";
 
 
 const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slider}) => {
@@ -47,18 +47,17 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
         }, 300);
     }
 
-    const {result,isLoading} = useSelector(state => state.slider);
-    useEffect(() => {
-        dispatch(getAsyncSelectCategory())
-    }, []);
+    const {result,isLoading} = useSelector(state => state.shippingMethod);
     // redux
     const foundItem = list_shipping_method?.find(item => item.id === Id);
     const dispatch = useDispatch();
     const initialValues = {
-        body:"" ,
+        description:"" ,
         title: "",
-        url: "",
-        status : ""
+        max_weight: "",
+        min_weight: "",
+        status : "",
+        cod:"prepaid"
     }
     const validationSchema = yup.object({
         title: yup
@@ -70,7 +69,7 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
     });
     const onSubmit = (values) => {
         if (Id) {
-            dispatch(putAsyncEditSlider(values));
+            dispatch(postAsyncEditShippingMethod(values));
         } else {
             dispatch(postAsyncAddShippingMethod(values));
         }
@@ -158,28 +157,22 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
                         </div>
                         <div className='w-full h-px bg-cyan-300'></div>
                         <form onSubmit={formik.handleSubmit} className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
-                            <div className="flex flex-col md:flex-row md:gap-4 gap-6">
+                            <div className="flex flex-col md:gap-4 gap-6">
                                 {/* Inputs */}
-                                <div className="w-full flex flex-col items-center justify-center gap-3">
+                                <div className="w-full grid md:grid-cols-2 grid-cols-1 items-center justify-center gap-3">
                                     <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام روش ارسال" />
                                     <Input formik={formik} maxLength={25} name="description" onlyChar={true} label="توضیحات" />
                                     <Input formik={formik} maxLength={20} name="max_weight" onlyNum={true} label="حداکثر وزن" />
                                     <Input formik={formik} maxLength={20} name="min_weight" onlyNum={true} label="حداقل وزن" />
-                                </div>
-
-                                <div className="w-full md:w-[250px] flex flex-col justify-between gap-4 md:gap-3">
-                                    {/*<InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />*/}
-                                    <div className="flex items-center justify-center">
-                                        <InputRadioButton
-                                            formik={formik}
-                                            name="status"
-                                            label="وضعیت:"
-                                            list={options}
-                                        />
-                                    </div>
+                                    <SelectOption formik={formik} options={optionsMethod} formikAddress={formik.values.cod} name="cod" onlyNum={true} disabled={true} label="نوع پرداخت" />
+                                    <InputRadioButton
+                                        formik={formik}
+                                        name="status"
+                                        label="وضعیت:"
+                                        list={options}
+                                    />
                                 </div>
                             </div>
-
                             {/* Submit */}
                             <div className="flex justify-center">
                                 <button

@@ -26,9 +26,9 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const postAsyncEditShippingMethod = createAsyncThunk("shippingMethod/postAsyncEditShippingMethod", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/shipping-methods/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -164,15 +164,15 @@ const ShippingMethodSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditShippingMethod.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(postAsyncEditShippingMethod.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditShippingMethod.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
