@@ -161,76 +161,83 @@ const ListShippingMethod = () => {
                     <Reject />
                 ) : list_shipping_method?.data?.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-2 mt-4">
-                        {list_shipping_method.data.map((item) => (
-                            <div
-                                key={item.id}
-                                className="relative bg-white dark:bg-gray-800 drop-shadow-lg drop-shadow-cyan-200 rounded-3xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100"
-                            >
-                                <div className="absolute -right-7 -bottom-10 leaf-4 -rotate-40 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
-                                <div className="absolute -right-7 -bottom-10 leaf-4 rotate-0 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
-                                <div className="absolute -right-7 -bottom-10 leaf-4 rotate-40 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
-                                <div className="flex items-center justify-between relative w-full p-7">
-                                    <div className="flex flex-col">
-                                        <div className="flex justify-between items-center">
-                                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 line-clamp-1">
-                                                {item.title}
-                                            </h2>
-                                        </div>
-                                        <div className="flex justify-between items-center">
+                        {list_shipping_method.data.map((item) => {
+                            const isLocked = [1, 2, 3].includes(item.id);
+                            return (
+                                <div key={item.id} className="relative bg-white dark:bg-gray-800 drop-shadow-lg drop-shadow-cyan-200 rounded-3xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+                                    <div className="absolute -right-7 -bottom-10 leaf-4 -rotate-40 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
+                                    <div className="absolute -right-7 -bottom-10 leaf-4 rotate-0 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
+                                    <div className="absolute -right-7 -bottom-10 leaf-4 rotate-40 dark:bg-cyan-300/10 bg-cyan-300/20"></div>
+                                    <div className="flex items-center justify-between relative w-full p-7">
+                                        <div className="flex flex-col">
+                                            <div className="flex justify-between items-center">
+                                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 line-clamp-1">
+                                                    {item.title}
+                                                </h2>
+                                            </div>
+                                            <div className="flex justify-between items-center">
                                             <span className="  text-gray-800 dark:text-gray-100 line-clamp-1">
                                                 {item.description}
                                             </span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
+                                            </div>
+                                            <div className="flex justify-between items-center">
                                             <span className="text-sm  text-gray-800 dark:text-gray-100 line-clamp-1">
                                                 حداکثر وزن مجاز:{item.max_weight}
                                             </span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
+                                            </div>
+                                            <div className="flex justify-between items-center">
                                             <span className="text-sm  text-gray-800 dark:text-gray-100 line-clamp-1">
                                                 حداقل وزن مجاز:{item.min_weight}
                                             </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {/*<img*/}
-                                    {/*    src={shipping_methods}*/}
-                                    {/*    alt={item.title}*/}
-                                    {/*    className="w-28 h-20 object-cover"*/}
-                                    {/*/>*/}
-                                    <CiDeliveryTruck size={100} className="dark:text-gray-200 text-gray-600" />
-                                    <span
-                                        className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
-                                            item.status === "active"
-                                                ? "bg-green-100 dark:bg-gray-800 shadow shadow-cyan-300 dark:text-green-500 text-green-700"
-                                                : "bg-gray-100 dark:bg-gray-800 shadow shadow-cyan-300  text-red-500 dark:text-red-400"
-                                        }`}
-                                    >
+                                        {/*<img*/}
+                                        {/*    src={shipping_methods}*/}
+                                        {/*    alt={item.title}*/}
+                                        {/*    className="w-28 h-20 object-cover"*/}
+                                        {/*/>*/}
+                                        <CiDeliveryTruck size={100} className="dark:text-gray-200 text-gray-600" />
+                                        <span
+                                            className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
+                                                item.status === "active"
+                                                    ? "bg-green-100 dark:bg-gray-800 shadow shadow-cyan-300 dark:text-green-500 text-green-700"
+                                                    : "bg-gray-100 dark:bg-gray-800 shadow shadow-cyan-300  text-red-500 dark:text-red-400"
+                                            }`}
+                                        >
                                 {item.status === "active" ? "فعال" : "غیرفعال"}
                               </span>
-                                </div>
-                                <div className={`flex gap-1 justify-end p-6 pt-0`}>
-                                    <ButtonWithTooltip
-                                        onClick={() => setOpenId(item.id, "edit")}
-                                        icon={<IoCreateOutline className="w-5 h-5"/>}
-                                        text="ویرایش "
-                                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
-                                    />
-                                    <ButtonWithTooltip
-                                        onClick={() => handleActionRequest(item.status, item.id)}
-                                        icon={<IoBanOutline className="w-5 h-5" />}
-                                        text={`${item.status === "active"?"غیرفعال":"فعال"}`}
-                                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
-                                    />
-                                    <ButtonWithTooltip
-                                        onClick={() => handleActionRequest("delete", item.id)}
-                                        icon={<IoTrashOutline className="w-5 h-5"/>}
-                                        text="حذف"
-                                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                                    />
+                                    </div>
+                                    <div className={`flex gap-1 justify-end p-6 pt-0`}>
+                                        <ButtonWithTooltip
+                                            onClick={!isLocked ? () => setOpenId(item.id, "edit") : undefined}
+                                            disabled={isLocked}
+                                            icon={<IoCreateOutline className={`w-5 h-5 ${isLocked ? "opacity-40" : ""}`} />}
+                                            text="ویرایش"
+                                            hoverColor={!isLocked ? "hover:text-green-600 dark:hover:text-emerald-400" : ""}
+                                        />
+
+                                        {/* دکمه فعال / غیرفعال */}
+                                        <ButtonWithTooltip
+                                            onClick={() => handleActionRequest(item.status, item.id)}
+                                            icon={<IoBanOutline className="w-5 h-5" />}
+                                            text={`${item.status === "active" ? "غیرفعال" : "فعال"}`}
+                                            hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
+                                        />
+
+                                        {/* دکمه حذف */}
+                                        <ButtonWithTooltip
+                                            onClick={!isLocked ? () => handleActionRequest("delete", item.id) : undefined}
+                                            disabled={isLocked}
+                                            icon={<IoTrashOutline className={`w-5 h-5 ${isLocked ? "opacity-40" : ""}`} />}
+                                            text="حذف"
+                                            hoverColor={!isLocked ? "hover:text-red-600 dark:hover:text-red-400" : ""}
+                                        />
+                                    </div>
+
                                 </div>
 
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 ) : (
                     <div className="flex mt-20 flex-col gap-4 items-center justify-center">

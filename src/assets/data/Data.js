@@ -147,8 +147,20 @@ export const SideItem = [
         icon_fill: "PiTruckFill",
         icon_outline: "PiTruckLight",
         label: "روش های ارسال",
-        link: "/shipping-methods/list/50/1",
-        sub: [],
+        sub: [
+            {
+                id: 53,
+                icon: "PiCirclesThreeFill",
+                label: "روش های ارسال",
+                link: "/shipping-methods/list/50/1",
+            },
+            {
+                id: 54,
+                icon: "PiCirclesThreeFill",
+                label: "ارسال رایگان",
+                link: "/free-shipping/list",
+            },
+        ],
     },
     {
         id: 12,
