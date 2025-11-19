@@ -3,7 +3,7 @@ import CategoryNotFound from "../../assets/image/category_not_found.png"
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import shipping_methods from "../../assets/image/shipping-method.svg";
+import PostLogo from "../../assets/image/PostLogo.png";
 import {
     categoryClearResultDelete,
     deleteAsyncCategory,
@@ -191,12 +191,15 @@ const ListShippingMethod = () => {
                                             </span>
                                             </div>
                                         </div>
-                                        {/*<img*/}
-                                        {/*    src={shipping_methods}*/}
-                                        {/*    alt={item.title}*/}
-                                        {/*    className="w-28 h-20 object-cover"*/}
-                                        {/*/>*/}
-                                        <CiDeliveryTruck size={100} className="dark:text-gray-200 text-gray-600" />
+                                        {item.id ===1 || item.id ===2 || item.id ===3?
+                                            <img
+                                                src={PostLogo}
+                                                alt={item.title}
+                                                className="w-20 h-20 object-cover"
+                                            />
+                                            :
+                                            <CiDeliveryTruck size={100} className="dark:text-gray-200 text-gray-600" />
+                                        }
                                         <span
                                             className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
                                                 item.status === "active"

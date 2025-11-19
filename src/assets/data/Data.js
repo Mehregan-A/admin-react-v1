@@ -127,6 +127,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 20,
+        icon_fill: "PiPresentationChartFill",
+        icon_outline: "PiPresentationChart",
+        label: "سئو سایت",
+        link: "/seo-site",
+        sub: [],
+    },
+    {
         id: 4,
         icon_fill: "PiMedalFill",
         icon_outline: "PiMedalLight",

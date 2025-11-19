@@ -24,6 +24,7 @@ import ListOrder from "./pages/order/ListOrder.jsx";
 import OrderDetail from "./pages/order/OrderDetail.jsx";
 import ListShippingMethod from "./pages/shippingMethod/ListShippingMethod.jsx";
 import FreeShippingList from "./pages/freeShipping/FreeShippingList.jsx";
+import SeoList from "./pages/seo/SeoList.jsx";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
                     <Route path="order/list/:row/:page" element={<ListOrder/>} />
                     <Route path="shipping-methods/list/:row/:page" element={<ListShippingMethod/>} />
                     <Route path="free-shipping/list" element={<FreeShippingList/>} />
+                    <Route path="seo-site" element={<SeoList/>} />
                     <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="article/add/:id" element={<AddArticle />} />
                     <Route path="order/detail/:id" element={<OrderDetail />} />

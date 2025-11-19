@@ -1,17 +1,9 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 
-export const getAsyncListShippingMethod = createAsyncThunk("shippingMethod/getAsyncListShippingMethod",async (payload,{rejectWithValue})=>{
+export const getAsyncListSeo = createAsyncThunk("seo/getAsyncListSeo",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/shipping-methods/list/${payload.row}/${payload.page}`,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncListShippingMethodFree = createAsyncThunk("shippingMethod/getAsyncListShippingMethodFree",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/free-shipping/list`,{})
+        const res = await http.get(`/admin/seo-site/list`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -34,42 +26,34 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditShippingMethod = createAsyncThunk("shippingMethod/postAsyncEditShippingMethod", async (payload, { rejectWithValue }) => {
+export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/shipping-methods/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncEditShippingMethodFree = createAsyncThunk("shippingMethod/postAsyncEditShippingMethodFree", async (payload, { rejectWithValue }) => {
+export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post(`/admin/free-shipping/update`, payload, {});
-        return res;
-    } catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-});
-export const postAsyncAddShippingMethod = createAsyncThunk("shippingMethod/postAsyncAddShippingMethod",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post("/admin/shipping-methods/add",payload,{})
+        const res = await http.post("/admin/category/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusShippingMethod = createAsyncThunk("shippingMethod/getAsyncStatusShippingMethod",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/shipping-methods/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
         })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncShippingMethod = createAsyncThunk("shippingMethod/deleteAsyncShippingMethod",async (payload,{rejectWithValue})=>{
+export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/shipping-methods/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -106,26 +90,22 @@ const initialState = {
     result_delete:false,
     isLoading_action: false,
     isLoading_list:false,
-    isLoading_list_free:false,
     isError_list:false,
     info_att: [],
-    list_shipping_method:[],
-    list_shipping_method_free:[],
+    list_seo:[],
     list_category_select:[],
     list_info_user:[],
     usersData: {},
     result : false,
     isLoading: false,
     isError: false,
-    isError_list_free:false,
 }
 
-
-const ShippingMethodSlice = createSlice({
-    name: 'shippingMethod',
+const SeoSiteSlice = createSlice({
+    name: 'seo',
     initialState,
     reducers : {
-        shippingClearResult : (state) => {
+        categoryClearResult : (state) => {
             state.result = false
         },
         categoryClearResultDelete : (state) => {
@@ -136,35 +116,20 @@ const ShippingMethodSlice = createSlice({
         },
     },
     extraReducers : (builder)=>{
-        builder.addCase(getAsyncListShippingMethod.fulfilled,(state, action)=>{
-            state.list_shipping_method = action.payload.data.result
+        builder.addCase(getAsyncListSeo.fulfilled,(state, action)=>{
+            state.list_seo = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListShippingMethod.pending,(state)=>{
-            state.list_shipping_method = false
+        builder.addCase(getAsyncListSeo.pending,(state)=>{
+            state.list_seo = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListShippingMethod.rejected,(state,action)=>{
-            state.list_shipping_method = action.payload
+        builder.addCase(getAsyncListSeo.rejected,(state,action)=>{
+            state.list_seo = action.payload
             state.isLoading_list = false
             state.isError_list = true
-        })
-        builder.addCase(getAsyncListShippingMethodFree.fulfilled,(state, action)=>{
-            state.list_shipping_method_free = action.payload.data.result
-            state.isLoading_list_free = false
-            state.isError_list_free = false
-        })
-        builder.addCase(getAsyncListShippingMethodFree.pending,(state)=>{
-            state.list_shipping_method_free = false
-            state.isLoading_list_free = true
-            state.isError_list_free = false
-        })
-        builder.addCase(getAsyncListShippingMethodFree.rejected,(state,action)=>{
-            state.list_shipping_method_free = action.payload
-            state.isLoading_list_free = false
-            state.isError_list_free = true
         })
         builder.addCase(getAsyncSelectCategory.fulfilled,(state, action)=>{
             state.list_category_select = action.payload.data.result
@@ -198,70 +163,58 @@ const ShippingMethodSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditShippingMethod.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditShippingMethod.pending,(state)=>{
+        builder.addCase(postAsyncEditCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditShippingMethod.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditShippingMethodFree.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditShippingMethodFree.pending,(state)=>{
+        builder.addCase(postAsyncAddCategory.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditShippingMethodFree.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddShippingMethod.fulfilled,(state, action)=>{
-            state.result = action.payload
-            state.isLoading = false
-        })
-        builder.addCase(postAsyncAddShippingMethod.pending,(state)=>{
-            state.result = false
-            state.isLoading = true
-        })
-        builder.addCase(postAsyncAddShippingMethod.rejected,(state,action)=>{
-            state.result = action.payload
-            state.isLoading = false
-        })
-        builder.addCase(getAsyncStatusShippingMethod.fulfilled,(state, action)=>{
-            const result = state.list_shipping_method.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
+            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusShippingMethod.pending,(state)=>{
+        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusShippingMethod.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncShippingMethod.fulfilled,(state, action)=>{
-            state.list_shipping_method.data = state.list_shipping_method.data.filter(
-                method => method.id !== Number(action.payload.data.result)
+        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
+            state.list_category.data = state.list_category.data.filter(
+                driver => driver.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncShippingMethod.pending,(state)=>{
+        builder.addCase(deleteAsyncCategory.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncShippingMethod.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
@@ -306,6 +259,6 @@ const ShippingMethodSlice = createSlice({
         })
     }
 })
-export const { shippingClearResult,categoryClearInfo,categoryClearResultDelete} = ShippingMethodSlice.actions
+export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = SeoSiteSlice.actions
 
-export default ShippingMethodSlice.reducer
+export default SeoSiteSlice.reducer

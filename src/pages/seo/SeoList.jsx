@@ -18,22 +18,40 @@ import Reject from "../../components/loading/Reject.jsx";
 import {CiDeliveryTruck} from "react-icons/ci";
 import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {BiSolidError} from "react-icons/bi";
+import {getAsyncListSeo} from "../../feature/redux/SeoSiteSlice.jsx";
 
 
-const FreeShippingList = () => {
+const SeoList = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAsyncListShippingMethodFree())
+        dispatch(getAsyncListSeo())
     },[])
 
-    const {result,isLoading_list_free,list_shipping_method_free,isError_list_free,isLoading} = useSelector(state => state.shippingMethod);
+    const {result,list_seo,isLoading_list,isError_list,isLoading} = useSelector(state => state.seo);
     // redux
     const initialValues = {
-        enable_free_shipping: "",
-        min_order_for_free_shipping: "",
-        min_count_for_free_shipping: "",
-        min_weight_for_free_shipping: "",
-        max_weight_for_free_shipping: ""
+        index_title: "",
+        index_desc: "",
+        articles_title: "",
+        articles_desc: "",
+        contact_us_title: "",
+        contact_us_desc: "",
+        about_us_title: "",
+        about_us_desc: "",
+        purchase_and_payment_guide_title: "",
+        purchase_and_payment_guide_desc: "",
+        faq_title: "",
+        faq_desc: "",
+        privacy_policy_title: "",
+        privacy_policy_desc: "",
+        bug_report_title: "",
+        bug_report_desc: "",
+        shipping_method_title: "",
+        shipping_method_desc: "",
+        return_policy_title: "",
+        return_policy_desc: "",
+        rules_title: "",
+        rules_desc: ""
     }
     const validationSchema = yup.object({
         // title: yup
@@ -91,11 +109,11 @@ const FreeShippingList = () => {
     });
 
     const onSubmit = (values) => {
-            dispatch(postAsyncEditShippingMethodFree(values));
+        dispatch(postAsyncEditShippingMethodFree(values));
     };
 
     const formik = useFormik({
-        initialValues: list_shipping_method_free ||  initialValues,
+        initialValues: list_seo ||  initialValues,
         validationSchema,
         onSubmit,
         validateOnMount : true,
@@ -117,7 +135,6 @@ const FreeShippingList = () => {
             }
         }
     }, [result]);
-    console.log(isLoading_list_free,isError_list_free)
 
     return (
         <>
@@ -126,36 +143,43 @@ const FreeShippingList = () => {
                 <div className='flex justify-between items-center p-2'>
                     <div className='flex justify-start gap-2 p-5'>
                         <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-cyan-700 dark:text-cyan-400"> ارسال رایگان</div>
+                        <div className="text-cyan-700 dark:text-cyan-400">سئو سایت</div>
                     </div>
                 </div>
                 <form className="mt-7 " onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-6">
                         <div className="flex w-full gap-2 ">
-                            {isLoading_list_free ? (
+                            {isLoading_list ? (
                                 <Loading />
-                            ) : isError_list_free ? (
+                            ) : isError_list ? (
                                 <Reject />
-                            ) : Object.values(list_shipping_method_free).length  > 0 ? (
+                            ) : Object.values(list_seo).length  > 0 ? (
                                 <div className="flex flex-col w-4xl gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-2xl  p-10">
                                     <div className="flex items-center justify-between">
                                         <div className="w-1/2 flex-col flex gap-5">
-                                            <InputCheckbox
-                                                formik={formik}
-                                                name="enable_free_shipping"
-                                                label="روش ارسال رایگان فعال باشد؟"
-                                                value={true}
-                                            />
-                                            <Input formik={formik} maxLength={25} name="min_order_for_free_shipping" label="حداقل مبلغ سفارش برای ارسال رایگان:" />
-                                            <Input formik={formik} maxLength={25} name="min_count_for_free_shipping" label="حداقل تعداد سفارش برای ارسال رایگان:" />
-                                            <Input formik={formik} maxLength={25} name="min_weight_for_free_shipping" label="حداقل وزن سفارش برای ارسال رایگان:" />
-                                            <Input formik={formik} maxLength={25} name="max_weight_for_free_shipping" label="حداکثر وزن سفارش برای ارسال رایگان:" />
+                                            <Input formik={formik} maxLength={25} name="index_title" label="عنوان سئو" />
+                                            <Input formik={formik} maxLength={25} name="index_desc" label="توضیحات سئو" />
+                                            <Input formik={formik} maxLength={25} name="articles_title" label="عنوان مقاله" />
+                                            <Input formik={formik} maxLength={25} name="articles_desc" label="توضیحات مقاله" />
+                                            <Input formik={formik} maxLength={25} name="contact_us_title" label="عنوان ارتیاط با ما" />
+                                            <Input formik={formik} maxLength={25} name="contact_us_desc" label="توضیحات ارتباط با ما" />
+                                            <Input formik={formik} maxLength={25} name="about_us_title" label="عنوان درباره ما" />
+                                            <Input formik={formik} maxLength={25} name="about_us_desc" label="توضیحات درباره ما" />
+                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_title" label="عنوان راهنمای خرید و پرداخت" />
+                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_desc" label="توضیحات راهنمای خرید و پرداخت" />
+                                            <Input formik={formik} maxLength={25} name="faq_title" label="عنوان پرسش و پاسخ" />
+                                            <Input formik={formik} maxLength={25} name="faq_desc" label="توضیحات پرسش و پاسخ" />
+                                            <Input formik={formik} maxLength={25} name="privacy_policy_title" label="عنوان سیاست حفظ حریم خصوصی" />
+                                            <Input formik={formik} maxLength={25} name="privacy_policy_desc" label="توضیحات سیاست حفظ حریم خصوصی" />
+                                            <Input formik={formik} maxLength={25} name="bug_report_title" label="عنوان گزارش اشکال" />
+                                            <Input formik={formik} maxLength={25} name="bug_report_desc" label="توضیحات گزارش اشکال" />
+                                            <Input formik={formik} maxLength={25} name="shipping_method_title" label="عنوان روش های ارسال" />
+                                            <Input formik={formik} maxLength={25} name="shipping_method_desc" label="توضیحات روش های ارسال" />
+                                            <Input formik={formik} maxLength={25} name="return_policy_title" label="عنوان سیاست بازگشت کالا" />
+                                            <Input formik={formik} maxLength={25} name="return_policy_desc" label="توضیحات سیاست بازگشت کالا" />
+                                            <Input formik={formik} maxLength={25} name="rules_title" label="عنوان قوانین" />
+                                            <Input formik={formik} maxLength={25} name="rules_desc" label="توضیحات قوانین" />
                                         </div>
-                                        <img
-                                            src={freeShippingFreeIcon}
-                                            alt="free shipping icon"
-                                            className="w-56 h-56 object-cover"
-                                        />
                                     </div>
                                     {/* Submit */}
                                     <div className="flex justify-center">
@@ -193,4 +217,4 @@ const FreeShippingList = () => {
 
     );
 };
-export default FreeShippingList;
+export default SeoList;
