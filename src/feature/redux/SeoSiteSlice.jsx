@@ -26,9 +26,9 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const postAsyncEditSeo = createAsyncThunk("seo/postAsyncEditSeo", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/seo-site/update`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -105,7 +105,7 @@ const SeoSiteSlice = createSlice({
     name: 'seo',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        seoClearResult : (state) => {
             state.result = false
         },
         categoryClearResultDelete : (state) => {
@@ -163,15 +163,15 @@ const SeoSiteSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditSeo.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(postAsyncEditSeo.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditSeo.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -259,6 +259,6 @@ const SeoSiteSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = SeoSiteSlice.actions
+export const { seoClearResult,categoryClearInfo,categoryClearResultDelete} = SeoSiteSlice.actions
 
 export default SeoSiteSlice.reducer

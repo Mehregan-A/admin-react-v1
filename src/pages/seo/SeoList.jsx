@@ -18,11 +18,19 @@ import Reject from "../../components/loading/Reject.jsx";
 import {CiDeliveryTruck} from "react-icons/ci";
 import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {BiSolidError} from "react-icons/bi";
-import {getAsyncListSeo} from "../../feature/redux/SeoSiteSlice.jsx";
+import {getAsyncListSeo, postAsyncEditSeo, seoClearResult} from "../../feature/redux/SeoSiteSlice.jsx";
+import TextArea from "../../components/inputs/TextArea.jsx";
+import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
+import {NilfamEditor} from "nilfam-editor";
+import SelectOption from "../../components/inputs/SelectOption.jsx";
+import InputCalendar from "../../components/inputs/InputCalender.jsx";
+import {status} from "../../assets/data/Data.js";
+import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 
 
 const SeoList = () => {
     const dispatch = useDispatch();
+    const [activeTab, setActiveTab] = useState("1");
     useEffect(() => {
         dispatch(getAsyncListSeo())
     },[])
@@ -109,7 +117,7 @@ const SeoList = () => {
     });
 
     const onSubmit = (values) => {
-        dispatch(postAsyncEditShippingMethodFree(values));
+        dispatch(postAsyncEditSeo(values));
     };
 
     const formik = useFormik({
@@ -126,12 +134,12 @@ const SeoList = () => {
             if(result.status === 200) {
                 // toast
                 Toast.success(`${result.data.message}`);
-                dispatch(shippingClearResult())
+                dispatch(seoClearResult())
 
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(shippingClearResult())
+                dispatch(seoClearResult())
             }
         }
     }, [result]);
@@ -146,60 +154,242 @@ const SeoList = () => {
                         <div className="text-cyan-700 dark:text-cyan-400">سئو سایت</div>
                     </div>
                 </div>
-                <form className="mt-7 " onSubmit={formik.handleSubmit}>
-                    <div className="flex flex-col gap-6">
+                <div className="mt-7 ">
+                    <div className="flex w-full flex-col gap-6">
                         <div className="flex w-full gap-2 ">
                             {isLoading_list ? (
                                 <Loading />
                             ) : isError_list ? (
                                 <Reject />
                             ) : Object.values(list_seo).length  > 0 ? (
-                                <div className="flex flex-col w-4xl gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-2xl  p-10">
-                                    <div className="flex items-center justify-between">
-                                        <div className="w-1/2 flex-col flex gap-5">
-                                            <Input formik={formik} maxLength={25} name="index_title" label="عنوان سئو" />
-                                            <Input formik={formik} maxLength={25} name="index_desc" label="توضیحات سئو" />
-                                            <Input formik={formik} maxLength={25} name="articles_title" label="عنوان مقاله" />
-                                            <Input formik={formik} maxLength={25} name="articles_desc" label="توضیحات مقاله" />
-                                            <Input formik={formik} maxLength={25} name="contact_us_title" label="عنوان ارتیاط با ما" />
-                                            <Input formik={formik} maxLength={25} name="contact_us_desc" label="توضیحات ارتباط با ما" />
-                                            <Input formik={formik} maxLength={25} name="about_us_title" label="عنوان درباره ما" />
-                                            <Input formik={formik} maxLength={25} name="about_us_desc" label="توضیحات درباره ما" />
-                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_title" label="عنوان راهنمای خرید و پرداخت" />
-                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_desc" label="توضیحات راهنمای خرید و پرداخت" />
-                                            <Input formik={formik} maxLength={25} name="faq_title" label="عنوان پرسش و پاسخ" />
-                                            <Input formik={formik} maxLength={25} name="faq_desc" label="توضیحات پرسش و پاسخ" />
-                                            <Input formik={formik} maxLength={25} name="privacy_policy_title" label="عنوان سیاست حفظ حریم خصوصی" />
-                                            <Input formik={formik} maxLength={25} name="privacy_policy_desc" label="توضیحات سیاست حفظ حریم خصوصی" />
-                                            <Input formik={formik} maxLength={25} name="bug_report_title" label="عنوان گزارش اشکال" />
-                                            <Input formik={formik} maxLength={25} name="bug_report_desc" label="توضیحات گزارش اشکال" />
-                                            <Input formik={formik} maxLength={25} name="shipping_method_title" label="عنوان روش های ارسال" />
-                                            <Input formik={formik} maxLength={25} name="shipping_method_desc" label="توضیحات روش های ارسال" />
-                                            <Input formik={formik} maxLength={25} name="return_policy_title" label="عنوان سیاست بازگشت کالا" />
-                                            <Input formik={formik} maxLength={25} name="return_policy_desc" label="توضیحات سیاست بازگشت کالا" />
-                                            <Input formik={formik} maxLength={25} name="rules_title" label="عنوان قوانین" />
-                                            <Input formik={formik} maxLength={25} name="rules_desc" label="توضیحات قوانین" />
+                                    <div className="w-full">
+                                        <div className="w-full  p-1.5 flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
+                                            <button
+                                                onClick={() => setActiveTab("1")}
+                                                className={`w-full relative flex items-center justify-center rounded-xl p-2.5 md:text-[15px] text-gray-800 text-xs cursor-pointer transition-colors 
+              ${
+                                                    activeTab === "1"
+                                                        ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
+                                                        : "dark:text-gray-100"
+                                                }`}
+
+                                            >
+                                                    <div className={`${ activeTab === "1"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+                                                عنوان صفحه اول/مقاله
+                                            </button>
+
+                                            <button
+                                                onClick={() => setActiveTab("2")}
+                                                className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
+              ${
+                                                    activeTab === "2"
+                                                        ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
+                                                        : "dark:text-gray-100"
+                                                }`}
+
+                                            >
+                                                <div className={`${ activeTab === "2"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+                                                قوانین/ارتباط با ما</button>
+                                            <button
+                                                onClick={() => setActiveTab("3")}
+                                                className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
+              ${
+                                                    activeTab === "3"
+                                                        ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
+                                                        : "dark:text-gray-100"
+                                                }`}
+
+                                            >
+                                                <div className={`${ activeTab === "3"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+
+                                                درباره ما/یازگشت کالا</button>
+                                            <button
+                                                onClick={() => setActiveTab("4")}
+                                                className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
+              ${
+                                                    activeTab === "4"
+                                                        ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
+                                                        : "dark:text-gray-100"
+                                                }`}
+
+                                            >
+                                                <div className={`${ activeTab === "4"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+
+                                                راهنمای خرید و پرداخت/روش ارسال</button>
+                                            <button
+                                                onClick={() => setActiveTab("5")}
+                                                className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
+              ${
+                                                    activeTab === "5"
+                                                        ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
+                                                        : "dark:text-gray-100"
+                                                }`}
+
+                                            >
+                                                <div className={`${ activeTab === "5"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+
+                                                پرسش و پاسخ/حریم خصوصی</button>
+                                            <button
+                                                onClick={() => setActiveTab("6")}
+                                                className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
+              ${
+                                                    activeTab === "6"
+                                                        ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
+                                                        : "dark:text-gray-100"
+                                                }`}
+
+                                            >
+                                                <div className={`${ activeTab === "6"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+
+                                                گزارش اشکال</button>
                                         </div>
-                                    </div>
-                                    {/* Submit */}
-                                    <div className="flex justify-center">
-                                        <button
-                                            disabled={!formik.isValid || isLoading}
-                                            type="submit"
-                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
+                                        <form className="mt-7" onSubmit={formik.handleSubmit}>
+                                            {activeTab==="1" &&
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-col w-full gap-2 ">
+                                                        <div className="flex  w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={25} name="index_title" label="عنوان صفحه اول" />
+                                                            <Input formik={formik} maxLength={25} name="index_desc" label="توضیحات صفحه اول" />
+                                                        </div>
+                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={25} name="articles_title" label="عنوان مقاله" />
+                                                            <Input formik={formik} maxLength={25} name="articles_desc" label="توضیحات مقاله" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            onClick={() => setActiveTab("1")}
+                                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
                                             text-gray-50 text-sm transition-colors`}
-                                        >
-                                            {isLoading ? (
-                                                <>
-                                                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                                    <span>در حال {"ویرایش"}...</span>
-                                                </>
-                                            ) : (
-                                                <span>{ "ویرایش"}</span>
-                                            )}
-                                        </button>
+                                                        >
+                                                            ادامه
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            {activeTab==="2" &&
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-col w-full gap-2 ">
+                                                        <div className="flex  w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={25} name="rules_title" label="عنوان قوانین" />
+                                                            <Input formik={formik} maxLength={25} name="rules_desc" label="توضیحات قوانین" />
+                                                        </div>
+                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={25} name="contact_us_title" label="عنوان ارتیاط با ما" />
+                                                            <Input formik={formik} maxLength={25} name="contact_us_desc" label="توضیحات ارتباط با ما" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            onClick={() => setActiveTab("2")}
+                                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                                                        >
+                                                            ادامه
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            }
+                                            {activeTab==="3" &&
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-col gap-2 ">
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={25} name="about_us_title" label="عنوان درباره ما" />
+                                                            <Input formik={formik} maxLength={25} name="about_us_desc" label="توضیحات درباره ما" />
+                                                        </div>
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={25} name="return_policy_title" label="عنوان سیاست بازگشت کالا" />
+                                                            <Input formik={formik} maxLength={25} name="return_policy_desc" label="توضیحات سیاست بازگشت کالا" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            onClick={() => setActiveTab("3")}
+                                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                                                        >
+                                                            ادامه
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            {activeTab==="4" &&
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-col gap-2 ">
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_title" label="عنوان راهنمای خرید و پرداخت" />
+                                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_desc" label="توضیحات راهنمای خرید و پرداخت" />
+                                                        </div>
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={25} name="shipping_method_title" label="عنوان روش های ارسال" />
+                                                            <Input formik={formik} maxLength={25} name="shipping_method_desc" label="توضیحات روش های ارسال" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            onClick={() => setActiveTab("4")}
+                                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                                                        >
+                                                            ادامه
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            {activeTab==="5" &&
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-col gap-2 ">
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={25} name="faq_title" label="عنوان پرسش و پاسخ" />
+                                                            <Input formik={formik} maxLength={25} name="faq_desc" label="توضیحات پرسش و پاسخ" />
+                                                        </div>
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={25} name="privacy_policy_title" label="عنوان سیاست حفظ حریم خصوصی" />
+                                                            <Input formik={formik} maxLength={25} name="privacy_policy_desc" label="توضیحات سیاست حفظ حریم خصوصی" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            onClick={() => setActiveTab("5")}
+                                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                                                        >
+                                                            ادامه
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            {activeTab==="6" &&
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex gap-2 ">
+                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={25} name="bug_report_title" label="عنوان گزارش اشکال" />
+                                                            <Input formik={formik} maxLength={25} name="bug_report_desc" label="توضیحات گزارش اشکال" />
+                                                        </div>
+                                                    </div>
+                                                    {/* Submit */}
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            disabled={!formik.isValid || isLoading}
+                                                            type="submit"
+                                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500}
+                                                            text-gray-50 text-sm transition-colors`}
+                                                        >
+                                                            {isLoading ? (
+                                                                <>
+                                                                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                                    <span>در حال {"ویرایش"}...</span>
+                                                                </>
+                                                            ) : (
+                                                                <span>{ "ویرایش"}</span>
+                                                            )}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </form>
                                     </div>
-                                </div>
                             ) : (
                                 <div className="flex mt-20 flex-col gap-4 items-center justify-center">
                                     <BiSolidError
@@ -211,7 +401,7 @@ const SeoList = () => {
                             )}
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </>
 
