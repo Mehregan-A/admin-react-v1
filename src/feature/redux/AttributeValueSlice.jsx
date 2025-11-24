@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
+import {deleteAsyncAdmin} from "./AdminSlice.jsx";
 
 export const getAsyncListAttributeVal = createAsyncThunk("attributeVal/getAsyncListAttributeVal",async (payload,{rejectWithValue})=>{
     try {
@@ -10,9 +11,9 @@ export const getAsyncListAttributeVal = createAsyncThunk("attributeVal/getAsyncL
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const getAsyncAddAttributeVal = createAsyncThunk("attributeVal/getAsyncAddAttributeVal", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/attribute/value/add/${payload.Id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -35,9 +36,9 @@ export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusC
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategory = createAsyncThunk("attribute/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
+export const deleteAsyncAttributeVal = createAsyncThunk("attributeVal/deleteAsyncAttributeVal",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
+        const res = await http.post(`/admin/attribute/value/remove/${payload.del}`,payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -73,10 +74,10 @@ const AttributeValueSlice = createSlice({
     name: 'attributeVal',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        attributeValClearResult : (state) => {
             state.result = false
         },
-        categoryClearResultDelete : (state) => {
+        attributeValClearDelete : (state) => {
             state.result_delete = false
         },
         categoryClearInfo : (state) => {
@@ -99,15 +100,15 @@ const AttributeValueSlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(getAsyncAddAttributeVal.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(getAsyncAddAttributeVal.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(getAsyncAddAttributeVal.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -139,20 +140,23 @@ const AttributeValueSlice = createSlice({
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
-            state.list_category.data = state.list_category.data.filter(
-                driver => driver.id !== Number(action.payload.data.result)
+        builder.addCase(deleteAsyncAttributeVal.fulfilled,(state, action)=>{
+            state.list_attribute_val.data = state.list_attribute_val.data.filter(
+                del => del.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
+            state.isError = false
         })
-        builder.addCase(deleteAsyncCategory.pending,(state)=>{
+        builder.addCase(deleteAsyncAttributeVal.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
+            state.isError = false
         })
-        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncAttributeVal.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
+            state.isError = true
         })
         builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
             state.list_info_user = action.payload.data.result
@@ -171,6 +175,6 @@ const AttributeValueSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = AttributeValueSlice.actions
+export const { attributeValClearResult,categoryClearInfo,attributeValClearDelete} = AttributeValueSlice.actions
 
 export default AttributeValueSlice.reducer

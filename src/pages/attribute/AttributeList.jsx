@@ -42,6 +42,9 @@ import {deleteAsyncAdmin, getAsyncStatusAdmin} from "../../feature/redux/AdminSl
 import {getAsyncListAttribute} from "../../feature/redux/AttributeSlice.jsx";
 import {FaListUl} from "react-icons/fa";
 import {BsListUl} from "react-icons/bs";
+import AttributeCategory from "../category/AttributeCategory.jsx";
+import AttributeValue from "./AttributeValue.jsx";
+import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
 
 
 const AttributeList = () => {
@@ -172,9 +175,9 @@ const AttributeList = () => {
                                     className="relative shadow-md shadow-cyan-300  attribute dark:bg-gray-800 rounded-3xl overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
                                 >
                                     {/* Header */}
-                                    <div className="flex items-start justify-between p-6 pb-4 relative">
+                                    <div className="flex items-start justify-between  p-6 pb-4 relative">
                                         <div className="flex flex-col gap-2 w-full">
-                                            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                            <h2 className="text-lg mt-2 text-nowrap font-semibold text-gray-900 dark:text-gray-100">
                                                 {item.title}
                                             </h2>
 
@@ -227,7 +230,7 @@ const AttributeList = () => {
                                             hoverColor="hover:text-red-600 dark:hover:text-red-400"
                                         />
                                         <ButtonWithTooltip
-                                            onClick={ () => setOpenId(item.id, "edit")}
+                                            onClick={() => setOpenIdAtt(item.id, "att")}
                                             icon={<BsListUl className={`w-5.5 h-5.5 `} />}
                                             text="مقادیر ویژگی"
                                             hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
@@ -258,6 +261,17 @@ const AttributeList = () => {
             {/*        />*/}
             {/*    </div>*/}
             {/*)}*/}
+            {openAtt.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AttributeValue
+                        open_slider={openAtt.open}
+                        open_close={() => setOpenAtt({ open: !openAtt.open })}
+                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
+                        Id={isIdsEdit.id}
+                        list_attribute={list_attribute.data}
+                    />
+                </div>
+            )}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

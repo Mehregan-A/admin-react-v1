@@ -45,7 +45,7 @@ export const store = configureStore({
         order:OrderSlice,
         shippingMethod:ShippingMethodSlice,
         seo:SeoSiteSlice,
-        attibuteVal:AttributeValueSlice
+        attributeVal:AttributeValueSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })
