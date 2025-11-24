@@ -1,25 +1,9 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 
-export const getAsyncListAttributeSelect = createAsyncThunk("attribute/getAsyncListAttributeSelect",async (payload,{rejectWithValue})=>{
+export const getAsyncListAttributeVal = createAsyncThunk("attributeVal/getAsyncListAttributeVal",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/attribute/select`,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncListAttribute = createAsyncThunk("attribute/getAsyncListAttribute",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`admin/attribute/list/${payload.row}/${payload.page}`,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
+        const res = await http.get(`/admin/attribute/value/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -77,7 +61,7 @@ const initialState = {
     isError_list:false,
     info_att: [],
     list_attribute:[],
-    list_attribute_select:[],
+    list_attribute_val:[],
     list_info_user:[],
     usersData: {},
     result : false,
@@ -85,8 +69,8 @@ const initialState = {
     isError: false,
 }
 
-const AttributeSlice = createSlice({
-    name: 'attribute',
+const AttributeValueSlice = createSlice({
+    name: 'attributeVal',
     initialState,
     reducers : {
         categoryClearResult : (state) => {
@@ -100,52 +84,20 @@ const AttributeSlice = createSlice({
         },
     },
     extraReducers : (builder)=>{
-        builder.addCase(getAsyncListAttributeSelect.fulfilled,(state, action)=>{
-            state.list_attribute_select = action.payload.data.result
+        builder.addCase(getAsyncListAttributeVal.fulfilled,(state, action)=>{
+            state.list_attribute_val = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListAttributeSelect.pending,(state)=>{
-            state.list_attribute_select = false
+        builder.addCase(getAsyncListAttributeVal.pending,(state)=>{
+            state.list_attribute_val = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListAttributeSelect.rejected,(state,action)=>{
-            state.list_attribute_select = action.payload
+        builder.addCase(getAsyncListAttributeVal.rejected,(state,action)=>{
+            state.list_attribute_val = action.payload
             state.isLoading_list = false
             state.isError_list = true
-        })
-        builder.addCase(getAsyncListAttribute.fulfilled,(state, action)=>{
-            state.list_attribute = action.payload.data.result
-            state.isLoading_list = false
-            state.isError_list = false
-        })
-        builder.addCase(getAsyncListAttribute.pending,(state)=>{
-            state.list_attribute = false
-            state.isLoading_list = true
-            state.isError_list = false
-        })
-        builder.addCase(getAsyncListAttribute.rejected,(state,action)=>{
-            state.list_attribute = action.payload
-            state.isLoading_list = false
-            state.isError_list = true
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-            // const user = action.payload.data.result.user;
-            // state.usersData[user.id] = user;
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
-            state.isLoading = false
-            state.isError = true
         })
         builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
             state.result = action.payload
@@ -219,6 +171,6 @@ const AttributeSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = AttributeSlice.actions
+export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = AttributeValueSlice.actions
 
-export default AttributeSlice.reducer
+export default AttributeValueSlice.reducer

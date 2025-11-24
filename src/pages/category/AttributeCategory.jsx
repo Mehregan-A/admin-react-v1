@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { HiMiniXMark } from "react-icons/hi2";
 import { PiChartPieSlice } from "react-icons/pi";
-import { getAsyncListAttribute } from "../../feature/redux/AttributeSlice.jsx";
+import { getAsyncListAttributeSelect } from "../../feature/redux/AttributeSlice.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
 import {deleteAsyncCategoryAtt, postAsyncCategoryAddAtt} from "../../feature/redux/CategorySlice.jsx";
 
@@ -27,11 +27,11 @@ const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider 
     }
 
     useEffect(() => {
-        dispatch(getAsyncListAttribute());
+        dispatch(getAsyncListAttributeSelect());
     }, [dispatch]);
 
     const { isLoading } = useSelector(state => state.category);
-    const { list_attribute } = useSelector(state => state.attribute);
+    const { list_attribute_select } = useSelector(state => state.attribute);
 
     const foundItem = list_category?.find(item => item.id === Id);
 
@@ -149,7 +149,7 @@ const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider 
                         <div className="w-full flex flex-col items-center justify-center gap-10">
                             <SelectOption
                                 formik={formik}
-                                options={list_attribute}
+                                options={list_attribute_select}
                                 name="value"
                                 label="ویژگی جدید"
                                 onChange={handleAddAttribute}

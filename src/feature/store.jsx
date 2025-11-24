@@ -19,6 +19,7 @@ import SmsSlice from "./redux/SmsSlice.jsx";
 import OrderSlice from "./redux/OrderSlice.jsx";
 import ShippingMethodSlice from "./redux/ShippingMethodSlice.jsx";
 import SeoSiteSlice from "./redux/SeoSiteSlice.jsx";
+import AttributeValueSlice from "./redux/AttributeValueSlice.jsx";
 
 
 
@@ -43,7 +44,8 @@ export const store = configureStore({
         sms:SmsSlice,
         order:OrderSlice,
         shippingMethod:ShippingMethodSlice,
-        seo:SeoSiteSlice
+        seo:SeoSiteSlice,
+        attibuteVal:AttributeValueSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

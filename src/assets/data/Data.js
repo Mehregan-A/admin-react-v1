@@ -95,6 +95,14 @@ export const SideItem = [
         ],
     },
     {
+        id: 22,
+        icon_fill: "PiSwatchesFill",
+        icon_outline: "PiSwatches",
+        label: "ویژگی ها",
+        link: "/attribute/list/10/1",
+        sub: [],
+    },
+    {
         id: 2,
         icon_fill: "PiUsersFill",
         icon_outline: "PiUsers",
