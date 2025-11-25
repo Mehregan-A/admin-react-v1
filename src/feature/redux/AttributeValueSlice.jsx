@@ -19,6 +19,14 @@ export const getAsyncAddAttributeVal = createAsyncThunk("attributeVal/getAsyncAd
         return rejectWithValue(error.response, error.message)
     }
 });
+export const postAsyncSearchAttributeVal = createAsyncThunk("attributeVal/postAsyncSearchAttributeVal", async (payload, { rejectWithValue }) => {
+    try {
+        const res = await http.post(`/admin/attribute/value/search/${payload.Id}`, payload, {});
+        return res;
+    } catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+});
 export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.post("/admin/category/add",payload,{})
@@ -68,12 +76,16 @@ const initialState = {
     result : false,
     isLoading: false,
     isError: false,
+    search:false
 }
 
 const AttributeValueSlice = createSlice({
     name: 'attributeVal',
     initialState,
     reducers : {
+        attributeValClearSearch : (state) => {
+            state.search = false
+        },
         attributeValClearResult : (state) => {
             state.result = false
         },
@@ -112,6 +124,18 @@ const AttributeValueSlice = createSlice({
             state.result = action.payload
             state.isLoading = false
         })
+        builder.addCase(postAsyncSearchAttributeVal.fulfilled,(state, action)=>{
+            state.search = action.payload
+            state.isLoading = false
+        })
+        builder.addCase(postAsyncSearchAttributeVal.pending,(state)=>{
+            state.search = false
+            state.isLoading = true
+        })
+        builder.addCase(postAsyncSearchAttributeVal.rejected,(state,action)=>{
+            state.search = action.payload
+            state.isLoading = false
+        })
         builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
@@ -140,14 +164,19 @@ const AttributeValueSlice = createSlice({
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncAttributeVal.fulfilled,(state, action)=>{
-            state.list_attribute_val.data = state.list_attribute_val.data.filter(
-                del => del.id !== Number(action.payload.data.result)
-            );
-            state.result_delete = action.payload
-            state.isLoading_action = false
-            state.isError = false
-        })
+        builder.addCase(deleteAsyncAttributeVal.fulfilled, (state, action) => {
+            const deletedValue = action.payload?.result; // فرض می‌کنیم اینجا id/value حذف شده برمی‌گرده
+
+            if (deletedValue !== undefined) {
+                state.list_attribute_val.data = state.list_attribute_val.data.filter(
+                    item => String(item.value) !== String(deletedValue)
+                );
+            }
+
+            state.result_delete = action.payload;
+            state.isLoading_action = false;
+            state.isError = false;
+        });
         builder.addCase(deleteAsyncAttributeVal.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
@@ -175,6 +204,6 @@ const AttributeValueSlice = createSlice({
         })
     }
 })
-export const { attributeValClearResult,categoryClearInfo,attributeValClearDelete} = AttributeValueSlice.actions
+export const { attributeValClearSearch,attributeValClearResult,categoryClearInfo,attributeValClearDelete} = AttributeValueSlice.actions
 
 export default AttributeValueSlice.reducer

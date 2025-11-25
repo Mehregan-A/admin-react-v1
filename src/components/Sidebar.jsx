@@ -16,18 +16,10 @@ const Sidebar = ({ open_close, open_slider }) => {
     const {logout} = useSelector(state => state.login)
     const navigation = useNavigate()
     const dispatch = useDispatch();
-    const {theme}=useSelector(state => state.theme)
     const location = useLocation();
     const sidebarRef = useRef();
     const [subId, setSubId] = useState(0);
     const [childId, setChildId] = useState(0);
-    const [isTheme, setIsTheme] = useState('light');
-
-    useEffect(() => {
-        if (theme === true){
-            setIsTheme((isTheme === "light")?"dark":"light");
-        }
-    }, [theme]);
 
 
     useEffect(() => {
@@ -117,22 +109,6 @@ const Sidebar = ({ open_close, open_slider }) => {
         };
     }, []);
 
-    useEffect(()=>{
-        if(JSON.parse(localStorage.getItem("theme")) == null){
-            document.documentElement.classList.add('dark');
-            localStorage.setItem("theme", JSON.stringify('dark'));
-        }else {
-            if(JSON.parse(localStorage.getItem("theme")) === 'dark'){
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem("theme", JSON.stringify('light'));
-            }else {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-                localStorage.setItem("theme", JSON.stringify('dark'));
-            }
-        }
-    },[theme])
     useEffect(() => {
         if(logout && logout.status){
             if(logout.status === 200){
@@ -316,27 +292,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     )
                             )}
                         </ul>
-                        <button
-                            onClick={() => dispatch(set_theme(!theme))}
-                            className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 cursor-pointer rounded-full p-1 transition-colors"
-                        >
-                            <span
-                                className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
-                                    theme ? "translate-x-6" : "translate-x-0"
-                                }`}
-                            ></span>
 
-                            <PiMoonThin
-                                className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
-                                    theme ? "opacity-100" : "opacity-0"
-                                }`}
-                            />
-                            <PiSunDimThin
-                                className={`absolute right-1 w-6 h-6 text-orange-400 transition-opacity ${
-                                    theme ? "opacity-0" : "opacity-100"
-                                }`}
-                            />
-                        </button>
                     </div>
 
                 </div>
@@ -395,27 +351,6 @@ const Sidebar = ({ open_close, open_slider }) => {
                     </div>
 
                 ))}
-                <button
-                    onClick={() => dispatch(set_theme(!theme))}
-                    className="relative w-14 h-8 flex items-center bg-gray-100 shadow dark:bg-gray-700 rounded-full p-1 transition-colors"
-                >
-                    <span
-                        className={`absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md transform transition-transform ${
-                            theme ? "translate-x-6" : "translate-x-0"
-                        }`}
-                    ></span>
-
-                    <PiMoonThin
-                        className={`absolute left-1 w-6 h-6 text-cyan-300 transition-opacity ${
-                            theme ? "opacity-100" : "opacity-0"
-                        }`}
-                    />
-                    <PiSunDimThin
-                        className={`absolute right-1 w-6 h-6 text-orange-400 transition-opacity ${
-                            theme ? "opacity-0" : "opacity-100"
-                        }`}
-                    />
-                </button>
             </div>
         </>
     );

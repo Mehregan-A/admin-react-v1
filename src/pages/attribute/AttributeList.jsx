@@ -39,7 +39,12 @@ import {
 import {TbTruckDelivery} from "react-icons/tb";
 import {CiDeliveryTruck} from "react-icons/ci";
 import {deleteAsyncAdmin, getAsyncStatusAdmin} from "../../feature/redux/AdminSlice.jsx";
-import {getAsyncListAttribute} from "../../feature/redux/AttributeSlice.jsx";
+import {
+    attributeClearResultDelete,
+    deleteAsyncAttribute,
+    getAsyncListAttribute,
+    getAsyncStatusAttribute
+} from "../../feature/redux/AttributeSlice.jsx";
 import {FaListUl} from "react-icons/fa";
 import {BsListUl} from "react-icons/bs";
 import AttributeCategory from "../category/AttributeCategory.jsx";
@@ -99,11 +104,11 @@ const AttributeList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncShippingMethod({ del: id }));
+                await dispatch(deleteAsyncAttribute({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusShippingMethod({ Id: id }));
+                await dispatch(getAsyncStatusAttribute({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusShippingMethod({ Id: id }));
+                await dispatch(getAsyncStatusAttribute({ Id: id }));
             }
             setShowModal(false);
         } catch (err) {
@@ -114,11 +119,11 @@ const AttributeList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(sliderClearResultDelete());
+                dispatch(attributeClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(sliderClearResultDelete())
+                dispatch(attributeClearResultDelete())
             }
         }
     }, [result_delete]);

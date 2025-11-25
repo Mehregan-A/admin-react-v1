@@ -42,18 +42,18 @@ export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCateg
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusAttribute = createAsyncThunk("attribute/getAsyncStatusAttribute",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
+        const res = await http.get(`/admin/attribute/status/change/${payload.Id}`,{
         })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategory = createAsyncThunk("attribute/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
+export const deleteAsyncAttribute = createAsyncThunk("attribute/deleteAsyncAttribute",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/attribute/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -89,10 +89,10 @@ const AttributeSlice = createSlice({
     name: 'attribute',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        attributeClearResult : (state) => {
             state.result = false
         },
-        categoryClearResultDelete : (state) => {
+        attributeClearResultDelete : (state) => {
             state.result_delete = false
         },
         categoryClearInfo : (state) => {
@@ -171,34 +171,34 @@ const AttributeSlice = createSlice({
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
-            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusAttribute.fulfilled,(state, action)=>{
+            const result = state.list_attribute.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
+        builder.addCase(getAsyncStatusAttribute.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusAttribute.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
-            state.list_category.data = state.list_category.data.filter(
-                driver => driver.id !== Number(action.payload.data.result)
+        builder.addCase(deleteAsyncAttribute.fulfilled,(state, action)=>{
+            state.list_attribute.data = state.list_attribute.data.filter(
+                att => att.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.pending,(state)=>{
+        builder.addCase(deleteAsyncAttribute.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncAttribute.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
@@ -219,6 +219,6 @@ const AttributeSlice = createSlice({
         })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = AttributeSlice.actions
+export const { attributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = AttributeSlice.actions
 
 export default AttributeSlice.reducer
