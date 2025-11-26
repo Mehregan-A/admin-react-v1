@@ -47,7 +47,7 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
         dispatch(getAsyncListAttributeVal({Id}));
     }, []);
 
-    const { list_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,search } = useSelector(state => state.attributeVal);
+    const { list_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,search,isLoading_search } = useSelector(state => state.attributeVal);
 
     useEffect(() => {
         if (foundItem?.attribute) {
@@ -79,17 +79,6 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
         validateOnMount: true
     });
 
-    const handleAddAttribute = (attr) => {
-        if (!attr) return;
-
-        if (!selectedAttributes.some(a => a.value === attr.value)) {
-            setSelectedAttributes([...selectedAttributes, attr]);
-            if(Id){
-                dispatch(postAsyncCategoryAddAtt({ del: Id, value: attr }));
-            }
-        }
-
-    };
 
     const handleRemoveAttribute = (value) => {
         if(Id){
@@ -202,7 +191,6 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
 
                     <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
 
-                        {/* 🔍 فرم جستجو */}
                         <form onSubmit={formik.handleSubmit} className="flex w-full items-center gap-2">
                             <div className="w-full relative">
                                 <Input
@@ -210,13 +198,13 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                     type="search"
                                     name="search"
                                     maxLength={30}
-                                    minLength={2}
+                                    minLength={1}
                                     label=""
                                     formikAddress={formik.values.search}
                                     placeholder={""}
                                 />
 
-                                <FaMagnifyingGlass className="absolute right-5 -translate-y-6.5 text-sm text-gray-400" />
+                                <FaMagnifyingGlass className="absolute right-1.5 -translate-y-6.5 text-sm text-gray-400" />
 
                                 {/* clean search */}
                                 <button
@@ -231,11 +219,11 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
 
                             {/* search button */}
                             <button
-                                disabled={!formik.values.search || isLoading}
+                                disabled={!formik.values.search || isLoading_search}
                                 type="submit"
-                                className="w-full md:w-auto flex justify-center items-center gap-x-1 mt-1 md:px-3 px-2 md:py-2 py-2 rounded-lg md:rounded-xl disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors"
+                                className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors"
                             >
-                                {isLoading ? (
+                                {isLoading_search ? (
                                     <>
                                         <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
                                         <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
@@ -246,7 +234,6 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                             </button>
                         </form>
 
-                        {/* 📌 لیست attributeها (فرم نیست → فقط نمایش) */}
                         <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
 
                             {isLoading_list ? (
@@ -268,14 +255,13 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                     ))}
                                 </div>
                             ) : (
-                                <div className="flex mt-20 flex-col gap-4 items-center justify-center">
-                                    <BiSolidError size={35} className="text-cyan-400 animate-pulse" />
-                                    <span className="font-semibold">موردی برای نمایش وجود ندارد.</span>
+                                <div className="flex mx-auto flex-col gap-4 items-center justify-center">
+                                    <BiSolidError size={35} className="text-cyan-400 dark:text-cyan-300 animate-pulse" />
+                                    <span className="font-semibold dark:text-green-100">موردی برای نمایش وجود ندارد.</span>
                                 </div>
                             )}
                         </div>
 
-                        {/* ➕ افزودن ویژگی جدید */}
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
@@ -294,12 +280,12 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                             <button
                                 disabled={!formik.values.title || isLoading}
                                 type="submit"
-                                className="flex mt-3.5 justify-center items-center gap-x-2 px-5 py-3 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
+                                className="flex mt-4 justify-center items-center gap-x-2 px-5 py-2.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
                             >
                                 {isLoading ? (
                                     <>
                                         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                        <span>در حال افزودن...</span>
+                                        <span>افزودن...</span>
                                     </>
                                 ) : (
                                     <span>افزودن</span>

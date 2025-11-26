@@ -243,4 +243,18 @@ export const optionsMethod = [
     { value: 'cash_on_delivery', label: 'پیش کرایه' },
     { value: 'free', label: 'رایگان' },
 ];
+export const data_type = [
+    { value: 'text', label: 'نوشتاری' },
+    { value: 'decimal', label: 'عددی' },
+    { value: 'bool', label: 'دو گزینه ای' },
+];
+export const filter = [
+    { value: "1", label: 'فعال' },
+    { value: "0", label: 'غیرفعال' },
+];
+export const is_spec = [
+    { value: "1", label: 'فعال' },
+    { value: "0", label: 'غیرفعال' },
+];
+
 

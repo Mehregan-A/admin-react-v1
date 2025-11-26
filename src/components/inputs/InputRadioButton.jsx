@@ -16,6 +16,7 @@ const InputRadioButton = ({formik, name, label, list, defaultValue = false}) => 
 
 
     }, [defaultValue])
+    console.log(typeof formik.values[name])
 
     return (
         <div className="flex flex-col w-full ">

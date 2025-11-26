@@ -23,8 +23,6 @@ const Input = ({
                    minLength = 0,
                    type_error = "1",
                    error = "left-1",
-
-                   // 🔹 حالت‌های جدید
                    isPercent = false,
                    isAmount = false,
                }) => {
@@ -45,17 +43,14 @@ const Input = ({
         if (noPersian && persianRegex.test(e.key)) e.preventDefault();
     };
 
-    // 🔹 تابع فرمت برای مبلغ
     const formatAmount = (value) => {
         if (!value) return "";
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
 
-    // 🔹 هندل تغییر مقدار
     const handleChange = (e) => {
         let value = e.target.value.replace(/,/g, "");
 
-        // درصدی
         if (isPercent) {
             const num = Math.max(0, Math.min(100, Number(value)));
             value = num ? num.toString() : "";
@@ -64,7 +59,6 @@ const Input = ({
             return;
         }
 
-        // مبلغ ثابت
         if (isAmount) {
             if (!/^\d*$/.test(value)) return;
             const formatted = formatAmount(value);
@@ -73,12 +67,10 @@ const Input = ({
             return;
         }
 
-        // حالت عادی
         formik.handleChange(e);
         setDisplayValue(value);
     };
 
-    // 🔹 همگام‌سازی مقدار اولیه فرمیک
     useEffect(() => {
         const formikValue = getIn(formik.values, name) || "";
         if (isAmount) {
@@ -125,7 +117,7 @@ const Input = ({
                         getIn(formik.errors, name) && getIn(formik.touched, name)
                             ? "border-red-500"
                             : "border-gray-300"
-                    } focus-visible:border-cyan-300 border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus-visible:outline-0 block w-full p-2 px-2 pr-2`}
+                    } ${type === "search"?"pr-5.5":""} focus-visible:border-cyan-300 border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus-visible:outline-0 block w-full p-2 px-2 pr-2`}
                     placeholder={placeholder || ""}
                 />
 

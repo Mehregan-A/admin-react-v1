@@ -76,7 +76,8 @@ const initialState = {
     result : false,
     isLoading: false,
     isError: false,
-    search:false
+    search:false,
+    isLoading_search:false
 }
 
 const AttributeValueSlice = createSlice({
@@ -126,15 +127,15 @@ const AttributeValueSlice = createSlice({
         })
         builder.addCase(postAsyncSearchAttributeVal.fulfilled,(state, action)=>{
             state.search = action.payload
-            state.isLoading = false
+            state.isLoading_search = false
         })
         builder.addCase(postAsyncSearchAttributeVal.pending,(state)=>{
             state.search = false
-            state.isLoading = true
+            state.isLoading_search = true
         })
         builder.addCase(postAsyncSearchAttributeVal.rejected,(state,action)=>{
             state.search = action.payload
-            state.isLoading = false
+            state.isLoading_search = false
         })
         builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
             state.result = action.payload

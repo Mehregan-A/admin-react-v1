@@ -26,17 +26,17 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const putAsyncEditAttribute = createAsyncThunk("attribute/putAsyncEditAttribute", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.put(`/admin/attribute/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
+export const postAsyncAddAttribute = createAsyncThunk("attribute/postAsyncAddAttribute",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/category/add",payload,{})
+        const res = await http.post("/admin/attribute/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -147,27 +147,27 @@ const AttributeSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditAttribute.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(putAsyncEditAttribute.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditAttribute.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddAttribute.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddCategory.pending,(state)=>{
+        builder.addCase(postAsyncAddAttribute.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddAttribute.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
@@ -219,6 +219,6 @@ const AttributeSlice = createSlice({
         })
     }
 })
-export const { attributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = AttributeSlice.actions
+export const {attributeClearResult, attributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = AttributeSlice.actions
 
 export default AttributeSlice.reducer

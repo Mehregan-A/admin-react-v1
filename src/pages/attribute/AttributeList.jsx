@@ -50,6 +50,7 @@ import {BsListUl} from "react-icons/bs";
 import AttributeCategory from "../category/AttributeCategory.jsx";
 import AttributeValue from "./AttributeValue.jsx";
 import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
+import AddAttribute from "./AddAttribute.jsx";
 
 
 const AttributeList = () => {
@@ -187,16 +188,16 @@ const AttributeList = () => {
                                             </h2>
 
                                             <span className="text-sm text-gray-500 dark:text-gray-300">
-                            نوع داده: <span className="font-semibold">{item.data_type}</span>
+                            نوع ویژگی: <span className="font-semibold">{item.data_type==="bool"?"دو گزینه ای":item.data_type==="text"?"نوشتاری":"عددی"}</span>
                         </span>
 
                                             <div className="flex gap-3 mt-1">
-                            <span className={`px-2 py-1 rounded-lg text-xs font-medium ${item.is_filter ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                فیلتر: {item.is_filter ? "دارد" : "ندارد"}
+                            <span className={`px-2 py-1 rounded-lg text-xs font-medium text-nowrap ${item.is_filter ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
+                                فیلتر بر جست و جو: {item.is_filter ? "فعال" : "غیرفعال"}
                             </span>
 
-                                                <span className={`px-2 py-1 rounded-lg text-xs font-medium ${item.is_spec ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                مشخصات: {item.is_spec ? "نمایش" : "عدم نمایش"}
+                                                <span className={`px-2 py-1 rounded-lg text-xs text-nowrap font-medium ${item.is_spec ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
+                                 نمایش در مشخصات: {item.is_spec ? "نمایش" : "عدم نمایش"}
                             </span>
                                             </div>
                                         </div>
@@ -255,17 +256,17 @@ const AttributeList = () => {
                     </div>
                 )}
             </div>
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddShippingMethod*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListShippingMethod({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_shipping_method={list_shipping_method.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddAttribute
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
+                        Id={isIdsEdit.id}
+                        list_attribute={list_attribute.data}
+                    />
+                </div>
+            )}
             {openAtt.open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center">
                     <AttributeValue
