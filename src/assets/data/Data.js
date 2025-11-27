@@ -98,8 +98,16 @@ export const SideItem = [
         id: 22,
         icon_fill: "PiSwatchesFill",
         icon_outline: "PiSwatches",
-        label: "ویژگی ها",
+        label: "ویژگی های غیر موثر برقیمت",
         link: "/attribute/list/10/1",
+        sub: [],
+    },
+    {
+        id: 23,
+        icon_fill: "PiTagFill",
+        icon_outline: "PiTag",
+        label: "ویژگی های موثر برقیمت",
+        link: "/variant-attribute/list/10/1",
         sub: [],
     },
     {

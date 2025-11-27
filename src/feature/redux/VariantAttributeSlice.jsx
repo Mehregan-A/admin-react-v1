@@ -9,9 +9,9 @@ export const getAsyncListAttributeSelect = createAsyncThunk("attribute/getAsyncL
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncListAttribute = createAsyncThunk("attribute/getAsyncListAttribute",async (payload,{rejectWithValue})=>{
+export const getAsyncListVariantAttribute = createAsyncThunk("variantAttribute/getAsyncListVariantAttribute",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/attribute/list/${payload.row}/${payload.page}`,{})
+        const res = await http.get(`admin/variant-attribute/list/${payload.row}/${payload.page}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -84,7 +84,7 @@ const initialState = {
     isLoading_list:false,
     isError_list:false,
     info_att: [],
-    list_attribute:[],
+    variantAttribute_list:[],
     list_attribute_select:[],
     list_info_user:[],
     usersData: {},
@@ -95,8 +95,8 @@ const initialState = {
     isLoading_search:false
 }
 
-const AttributeSlice = createSlice({
-    name: 'attribute',
+const VariantAttributeSlice = createSlice({
+    name: 'variantAttribute',
     initialState,
     reducers : {
         attributeClearResult : (state) => {
@@ -125,18 +125,18 @@ const AttributeSlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(getAsyncListAttribute.fulfilled,(state, action)=>{
-            state.list_attribute = action.payload.data.result
+        builder.addCase(getAsyncListVariantAttribute.fulfilled,(state, action)=>{
+            state.variantAttribute_list = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListAttribute.pending,(state)=>{
-            state.list_attribute = false
+        builder.addCase(getAsyncListVariantAttribute.pending,(state)=>{
+            state.variantAttribute_list = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListAttribute.rejected,(state,action)=>{
-            state.list_attribute = action.payload
+        builder.addCase(getAsyncListVariantAttribute.rejected,(state,action)=>{
+            state.variantAttribute_list = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
@@ -241,6 +241,6 @@ const AttributeSlice = createSlice({
         })
     }
 })
-export const {attributeClearResult, attributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = AttributeSlice.actions
+export const {attributeClearResult, attributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = VariantAttributeSlice.actions
 
-export default AttributeSlice.reducer
+export default VariantAttributeSlice.reducer

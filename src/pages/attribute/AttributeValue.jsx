@@ -61,7 +61,8 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
 
     const initialValues = {
         title: '',
-        search:""
+        search:"",
+        extra_data:""
     };
 
     const onSubmit = (values) => {
@@ -247,7 +248,10 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                             key={att.value}
                                             className="flex items-center gap-2 dark:bg-gray-800 dark:text-gray-100 bg-gray-50 drop-shadow-xl dark:drop-shadow-none p-2 rounded-xl h-10"
                                         >
-                                            <span>{att.label}</span>
+                                            <div className="flex flex-col gap-0.5">
+                                                <span>{att.label}</span>
+                                                <span className="text-sm">{att.extra_data}</span>
+                                            </div>
                                             <button type="button" onClick={() => handleRemoveAttribute(att.value)}>
                                                 <HiMiniXMark className="w-5 h-5 text-red-500 cursor-pointer" />
                                             </button>
@@ -269,14 +273,20 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                     dispatch(getAsyncAddAttributeVal({ title: formik.values.title, Id }));
                                 }
                             }}
-                            className="w-full flex items-center justify-center gap-2"
+                            className="w-full flex items-center justify-end gap-2"
                         >
-                            <Input
-                                formik={formik}
-                                name="title"
-                                label="افزودن ویژگی جدید"
-                            />
-
+                            <div className="flex flex-col w-full gap-3">
+                                <Input
+                                    formik={formik}
+                                    name="title"
+                                    label="افزودن ویژگی جدید"
+                                />
+                                <Input
+                                    formik={formik}
+                                    name="extra_data"
+                                    label="اطلاعات بیشتر"
+                                />
+                            </div>
                             <button
                                 disabled={!formik.values.title || isLoading}
                                 type="submit"

@@ -20,6 +20,7 @@ import OrderSlice from "./redux/OrderSlice.jsx";
 import ShippingMethodSlice from "./redux/ShippingMethodSlice.jsx";
 import SeoSiteSlice from "./redux/SeoSiteSlice.jsx";
 import AttributeValueSlice from "./redux/AttributeValueSlice.jsx";
+import VariantAttributeSlice from "./redux/VariantAttributeSlice.jsx";
 
 
 
@@ -45,7 +46,8 @@ export const store = configureStore({
         order:OrderSlice,
         shippingMethod:ShippingMethodSlice,
         seo:SeoSiteSlice,
-        attributeVal:AttributeValueSlice
+        attributeVal:AttributeValueSlice,
+        variantAttribute:VariantAttributeSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

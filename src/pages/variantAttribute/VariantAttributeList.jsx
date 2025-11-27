@@ -27,34 +27,19 @@ import {BiSolidError} from "react-icons/bi";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import AddSubCategory from "../subCategory/AddSubCategory.jsx";
 import {getAsyncListSubCategory} from "../../feature/redux/CategorySubSlice.jsx";
-// import AddSlider from "./AddSlider.jsx";
-import {MdPublishedWithChanges} from "react-icons/md";
 import PagingGetUrl from "../../components/PagingGetUrl.jsx";
-import {
-    deleteAsyncShippingMethod,
-    getAsyncListShippingMethod,
-    getAsyncStatusShippingMethod
-} from "../../feature/redux/ShippingMethodSlice.jsx";
-// import AddShippingMethod from "./AddShippingMethod.jsx";
-import {TbTruckDelivery} from "react-icons/tb";
-import {CiDeliveryTruck} from "react-icons/ci";
-import {deleteAsyncAdmin, getAsyncStatusAdmin} from "../../feature/redux/AdminSlice.jsx";
 import {
     attributeClearResultDelete,
     deleteAsyncAttribute,
     getAsyncListAttribute,
     getAsyncStatusAttribute
 } from "../../feature/redux/AttributeSlice.jsx";
-import {FaListUl} from "react-icons/fa";
 import {BsListUl} from "react-icons/bs";
-import AttributeCategory from "../category/AttributeCategory.jsx";
-import AttributeValue from "./AttributeValue.jsx";
-import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
-import AddAttribute from "./AddAttribute.jsx";
 import PerPageSelector from "../../components/RowSelector.jsx";
+import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttributeSlice.jsx";
 
 
-const AttributeList = () => {
+const VariantAttributeList = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -68,14 +53,15 @@ const AttributeList = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_attribute,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.attribute);
+    const { variantAttribute_list,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.variantAttribute);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListAttribute({ row, page}));
-            navigate(`/attribute/list/${row}/${page}`);
+            dispatch(getAsyncListVariantAttribute({ row, page}));
+            navigate(`/variant-attribute/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
+    console.log(variantAttribute_list)
     // Open user form with selected id
     const setOpenId = (id,action) => {
         setOpenAdd({ open: true });
@@ -175,13 +161,13 @@ const AttributeList = () => {
                     <Loading />
                 ) : isError_list ? (
                     <Reject />
-                ) : list_attribute?.data?.length > 0 ? (
+                ) : variantAttribute_list?.data?.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-2 mt-4">
-                        {list_attribute.data.map((item) => {
+                        {variantAttribute_list.data.map((item) => {
                             return (
                                 <div
                                     key={item.id}
-                                    className="relative shadow-md shadow-cyan-300  attribute dark:bg-gray-800 rounded-3xl overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
+                                    className="relative shadow-md shadow-cyan-300  variant-attribute dark:bg-gray-800 rounded-3xl overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
                                 >
                                     {/* Header */}
                                     <div className="flex items-start justify-between  p-6 pb-4 relative">
@@ -259,28 +245,28 @@ const AttributeList = () => {
                     </div>
                 )}
             </div>
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddAttribute
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_attribute={list_attribute.data}
-                    />
-                </div>
-            )}
-            {openAtt.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AttributeValue
-                        open_slider={openAtt.open}
-                        open_close={() => setOpenAtt({ open: !openAtt.open })}
-                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_attribute={list_attribute.data}
-                    />
-                </div>
-            )}
+            {/*{openAdd.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AddAttribute*/}
+            {/*            open_slider={openAdd.open}*/}
+            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            variantAttribute_list={variantAttribute_list.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
+            {/*{openAtt.open && (*/}
+            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
+            {/*        <AttributeValue*/}
+            {/*            open_slider={openAtt.open}*/}
+            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
+            {/*            reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}*/}
+            {/*            Id={isIdsEdit.id}*/}
+            {/*            variantAttribute_list={variantAttribute_list.data}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}
@@ -292,11 +278,11 @@ const AttributeList = () => {
                 />
             )}
             <div className='flex justify-end p-2 rounded-3xl mt-3'>
-                <PagingGetUrl total_page={list_attribute?.page} />
+                <PagingGetUrl total_page={variantAttribute_list?.page} />
             </div>
         </div>
 
     );
 };
 
-export default AttributeList;
+export default VariantAttributeList;
