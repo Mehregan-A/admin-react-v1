@@ -1,42 +1,29 @@
 import {useLocation, useParams} from "react-router-dom";
-import CategoryNotFound from "../../assets/image/category_not_found.png"
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import PostLogo from "../../assets/image/PostLogo.png";
-import {
-    categoryClearResultDelete,
-    deleteAsyncCategory,
-    getAsyncListCategory, getAsyncStatusCategory,
-} from "../../feature/redux/CategorySlice.jsx";
-import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
-import DataTable from "../../components/dataTable/DataTable.jsx";
-import {IoBanOutline, IoCreateOutline, IoKeyOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
+import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
-import {PiChartPieSlice} from "react-icons/pi";
-import {
-    deleteAsyncSlider,
-    getAsyncListSlider,
-    getAsyncStatusSlider,
-    sliderClearResultDelete
-} from "../../feature/redux/SliderSlice.jsx";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
 import {BiSolidError} from "react-icons/bi";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
-import AddSubCategory from "../subCategory/AddSubCategory.jsx";
-import {getAsyncListSubCategory} from "../../feature/redux/CategorySubSlice.jsx";
 import PagingGetUrl from "../../components/PagingGetUrl.jsx";
 import {
     attributeClearResultDelete,
     deleteAsyncAttribute,
-    getAsyncListAttribute,
     getAsyncStatusAttribute
 } from "../../feature/redux/AttributeSlice.jsx";
 import {BsListUl} from "react-icons/bs";
 import PerPageSelector from "../../components/RowSelector.jsx";
-import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttributeSlice.jsx";
+import {
+    deleteAsyncVariantAttribute,
+    getAsyncListVariantAttribute,
+    getAsyncStatusVariantAttribute, variantAttributeClearResultDelete
+} from "../../feature/redux/VariantAttributeSlice.jsx";
+import VariantAttributeValue from "./VariantAttributeValue.jsx";
+import AddVariantAttribute from "./AddVariantAttribute.jsx";
 
 
 const VariantAttributeList = () => {
@@ -53,7 +40,7 @@ const VariantAttributeList = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { variantAttribute_list,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.variantAttribute);
+    const { variant_attribute_list,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.variantAttribute);
 // Effects
     useEffect(() => {
         if (page) {
@@ -61,7 +48,6 @@ const VariantAttributeList = () => {
             navigate(`/variant-attribute/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
-    console.log(variantAttribute_list)
     // Open user form with selected id
     const setOpenId = (id,action) => {
         setOpenAdd({ open: true });
@@ -92,11 +78,11 @@ const VariantAttributeList = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncAttribute({ del: id }));
+                await dispatch(deleteAsyncVariantAttribute({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusAttribute({ Id: id }));
+                await dispatch(getAsyncStatusVariantAttribute({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusAttribute({ Id: id }));
+                await dispatch(getAsyncStatusVariantAttribute({ Id: id }));
             }
             setShowModal(false);
         } catch (err) {
@@ -107,11 +93,11 @@ const VariantAttributeList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(attributeClearResultDelete());
+                dispatch(variantAttributeClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(attributeClearResultDelete())
+                dispatch(variantAttributeClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -141,9 +127,8 @@ const VariantAttributeList = () => {
             <div className="flex justify-between items-center p-2">
                 <div className="flex justify-start gap-2 p-5">
                     <div className="text-gray-400 dark:text-gray-300">داشبورد |</div>
-                    <div className="text-cyan-700 dark:text-cyan-400">ویژگی ها</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">ویژگی های موثر</div>
                 </div>
-
                 <button
                     onClick={() => setOpenId("")}
                     className="flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400 drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm"
@@ -161,9 +146,9 @@ const VariantAttributeList = () => {
                     <Loading />
                 ) : isError_list ? (
                     <Reject />
-                ) : variantAttribute_list?.data?.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-2 mt-4">
-                        {variantAttribute_list.data.map((item) => {
+                ) : variant_attribute_list?.data?.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-2 mt-4">
+                        {variant_attribute_list.data.map((item) => {
                             return (
                                 <div
                                     key={item.id}
@@ -173,22 +158,13 @@ const VariantAttributeList = () => {
                                     <div className="flex items-start justify-between  p-6 pb-4 relative">
                                         <div className="flex flex-col gap-2 w-full">
                                             <h2 className="text-lg mt-2 text-nowrap font-semibold text-gray-900 dark:text-gray-100">
-                                                {item.title}
+                                                نام ویژگی:{item.title}
                                             </h2>
 
                                             <span className="text-sm text-gray-500 dark:text-gray-300">
-                            نوع ویژگی: <span className="font-semibold">{item.data_type==="bool"?"دو گزینه ای":item.data_type==="text"?"نوشتاری":"عددی"}</span>
+                            تاریخ انتشار: <span className="font-semibold">{persianDateNT.date(item.create_at)}</span>
                         </span>
 
-                                            <div className="flex gap-3 mt-1">
-                            <span className={`px-2 py-1 rounded-lg text-xs font-medium text-nowrap ${item.is_filter ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                فیلتر بر جست و جو: {item.is_filter ? "فعال" : "غیرفعال"}
-                            </span>
-
-                                                <span className={`px-2 py-1 rounded-lg text-xs text-nowrap font-medium ${item.is_spec ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                 نمایش در مشخصات: {item.is_spec ? "نمایش" : "عدم نمایش"}
-                            </span>
-                                            </div>
                                         </div>
 
                                         <span
@@ -241,32 +217,32 @@ const VariantAttributeList = () => {
                             size={35}
                             className="text-cyan-400 animate-pulse"
                         />
-                        <span className="font-semibold">موردی برای نمایش وجود ندارد.</span>
+                        <span className="font-semibold dark:text-green-100">موردی برای نمایش وجود ندارد.</span>
                     </div>
                 )}
             </div>
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddAttribute*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            variantAttribute_list={variantAttribute_list.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
-            {/*{openAtt.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AttributeValue*/}
-            {/*            open_slider={openAtt.open}*/}
-            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            variantAttribute_list={variantAttribute_list.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddVariantAttribute
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListVariantAttribute({ row, page }))}
+                        Id={isIdsEdit.id}
+                        variantAttribute_list={variant_attribute_list.data}
+                    />
+                </div>
+            )}
+            {openAtt.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <VariantAttributeValue
+                        open_slider={openAtt.open}
+                        open_close={() => setOpenAtt({ open: !openAtt.open })}
+                        reload={() => dispatch(getAsyncListVariantAttribute({ row, page }))}
+                        Id={isIdsEdit.id}
+                        variantAttribute_list={variant_attribute_list.data}
+                    />
+                </div>
+            )}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}
@@ -278,7 +254,7 @@ const VariantAttributeList = () => {
                 />
             )}
             <div className='flex justify-end p-2 rounded-3xl mt-3'>
-                <PagingGetUrl total_page={variantAttribute_list?.page} />
+                <PagingGetUrl total_page={variant_attribute_list?.page} />
             </div>
         </div>
 

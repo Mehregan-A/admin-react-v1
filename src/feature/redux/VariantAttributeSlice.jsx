@@ -26,31 +26,23 @@ export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCa
         return rejectWithValue(error.response, error.message)
     }
 })
-export const putAsyncEditAttribute = createAsyncThunk("attribute/putAsyncEditAttribute", async (payload, { rejectWithValue }) => {
+export const putAsyncEditVariantAttribute = createAsyncThunk("variantAttribute/putAsyncEditVariantAttribute", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.put(`/admin/attribute/update/${payload.id}`, payload, {});
+        const res = await http.put(`/admin/variant-attribute/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddAttribute = createAsyncThunk("attribute/postAsyncAddAttribute",async (payload,{rejectWithValue})=>{
+export const postAsyncAddVariantAttribute = createAsyncThunk("variantAttribute/postAsyncAddVariantAttribute",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/attribute/add",payload,{})
+        const res = await http.post("/admin/variant-attribute/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncSearchAttribute = createAsyncThunk("attribute/postAsyncSearchAttribute",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post("/admin/attribute/search",payload,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncStatusAttribute = createAsyncThunk("attribute/getAsyncStatusAttribute",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusVariantAttribute = createAsyncThunk("variantAttribute/getAsyncStatusVariantAttribute",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.get(`/admin/attribute/status/change/${payload.Id}`,{
         })
@@ -59,23 +51,15 @@ export const getAsyncStatusAttribute = createAsyncThunk("attribute/getAsyncStatu
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncAttribute = createAsyncThunk("attribute/deleteAsyncAttribute",async (payload,{rejectWithValue})=>{
+export const deleteAsyncVariantAttribute = createAsyncThunk("variantAttribute/deleteAsyncVariantAttribute",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/attribute/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/variant-attribute/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
+
 
 
 const initialState = {
@@ -84,7 +68,7 @@ const initialState = {
     isLoading_list:false,
     isError_list:false,
     info_att: [],
-    variantAttribute_list:[],
+    variant_attribute_list:[],
     list_attribute_select:[],
     list_info_user:[],
     usersData: {},
@@ -99,10 +83,10 @@ const VariantAttributeSlice = createSlice({
     name: 'variantAttribute',
     initialState,
     reducers : {
-        attributeClearResult : (state) => {
+        variantAttributeClearResult : (state) => {
             state.result = false
         },
-        attributeClearResultDelete : (state) => {
+        variantAttributeClearResultDelete : (state) => {
             state.result_delete = false
         },
         categoryClearInfo : (state) => {
@@ -126,17 +110,17 @@ const VariantAttributeSlice = createSlice({
             state.isError_list = true
         })
         builder.addCase(getAsyncListVariantAttribute.fulfilled,(state, action)=>{
-            state.variantAttribute_list = action.payload.data.result
+            state.variant_attribute_list = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
         builder.addCase(getAsyncListVariantAttribute.pending,(state)=>{
-            state.variantAttribute_list = false
+            state.variant_attribute_list = false
             state.isLoading_list = true
             state.isError_list = false
         })
         builder.addCase(getAsyncListVariantAttribute.rejected,(state,action)=>{
-            state.variantAttribute_list = action.payload
+            state.variant_attribute_list = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
@@ -157,90 +141,63 @@ const VariantAttributeSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(putAsyncEditAttribute.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditVariantAttribute.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(putAsyncEditAttribute.pending,(state)=>{
+        builder.addCase(putAsyncEditVariantAttribute.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(putAsyncEditAttribute.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditVariantAttribute.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncSearchAttribute.fulfilled,(state, action)=>{
-            state.search = action.payload
-            state.isLoading_search = false
-        })
-        builder.addCase(postAsyncSearchAttribute.pending,(state)=>{
-            state.search = false
-            state.isLoading_search = true
-        })
-        builder.addCase(postAsyncSearchAttribute.rejected,(state,action)=>{
-            state.search = action.payload
-            state.isLoading_search = false
-        })
-        builder.addCase(postAsyncAddAttribute.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddVariantAttribute.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddAttribute.pending,(state)=>{
+        builder.addCase(postAsyncAddVariantAttribute.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddAttribute.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddVariantAttribute.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusAttribute.fulfilled,(state, action)=>{
-            const result = state.list_attribute.data.find(val => val.id == action.payload.data.result.id)
+        builder.addCase(getAsyncStatusVariantAttribute.fulfilled,(state, action)=>{
+            const result = state.variant_attribute_list.data.find(val => val.id == action.payload.data.result.id)
             result.status = action.payload.data.result.status
             state.isError = false
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncStatusAttribute.pending,(state)=>{
+        builder.addCase(getAsyncStatusVariantAttribute.pending,(state)=>{
             state.result = false
             state.isError = false
             state.isLoading_action = true
         })
-        builder.addCase(getAsyncStatusAttribute.rejected,(state,action)=>{
+        builder.addCase(getAsyncStatusVariantAttribute.rejected,(state,action)=>{
             state.result = action.payload
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncAttribute.fulfilled,(state, action)=>{
-            state.list_attribute.data = state.list_attribute.data.filter(
+        builder.addCase(deleteAsyncVariantAttribute.fulfilled,(state, action)=>{
+            state.variant_attribute_list.data = state.variant_attribute_list.data.filter(
                 att => att.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncAttribute.pending,(state)=>{
+        builder.addCase(deleteAsyncVariantAttribute.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncAttribute.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncVariantAttribute.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
-            state.isLoading = false
-            state.isError = true
-        })
     }
 })
-export const {attributeClearResult, attributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = VariantAttributeSlice.actions
+export const {variantAttributeClearResult, variantAttributeClearResultDelete,categoryClearInfo,categoryClearResultDelete} = VariantAttributeSlice.actions
 
 export default VariantAttributeSlice.reducer
