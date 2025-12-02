@@ -51,7 +51,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
         dispatch(getAsyncListVariantAttributeVal({Id}));
     }, []);
 
-    const { list_variant_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list } = useSelector(state => state.variantAttributeValue);
+    const { list_variant_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.variantAttributeValue);
 
 
     const initialValues = {
@@ -82,7 +82,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
                 // toast
                 Toast.success(`${result.data.message}`);
                 dispatch(variantAttributeValClearResult())
-                dispatch(getAsyncListVariantAttribute({Id}));
+                dispatch(getAsyncListVariantAttributeVal({Id}));
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
@@ -96,7 +96,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
                 dispatch(variantAttributeValClearDelete());
-                dispatch(getAsyncListVariantAttribute({Id}));
+                dispatch(getAsyncListVariantAttributeVal({Id}));
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
@@ -171,7 +171,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
 
                         <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
 
-                            {isLoading_list ? (
+                            {isLoading_action || isLoading_list ? (
                                 <Loading />
                             ) : isError_list ? (
                                 <Reject />

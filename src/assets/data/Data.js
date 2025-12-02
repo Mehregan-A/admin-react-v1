@@ -194,14 +194,14 @@ export const SideItem = [
         link: "/payment/list/50/1",
         sub: [],
     },
-    {
-        id: 8,
-        icon_fill: "PiUserGearFill",
-        icon_outline: "PiUserGearLight",
-        link: "/profile",
-        label: "پروفایل",
-        sub: [],
-    },
+    // {
+    //     id: 8,
+    //     icon_fill: "PiUserGearFill",
+    //     icon_outline: "PiUserGearLight",
+    //     link: "/profile",
+    //     label: "پروفایل",
+    //     sub: [],
+    // },
     // {
     //     id: 10,
     //     icon: "MdOutlineLock",

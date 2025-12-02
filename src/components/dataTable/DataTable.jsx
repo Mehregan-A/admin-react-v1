@@ -7,12 +7,12 @@ import Loading from "../loading/Loading.jsx";
 import Reject from "../loading/Reject.jsx";
 
 
-const DataTable = ({title,columns,isError, data,isLoading, numberPage,icon,perPage=true,searchParams}) => {
+const DataTable = ({title,columns,isError, data,isLoading, numberPage,icon,perPage=true,searchParams,user}) => {
     const {width} = useWindowSize();
     const [typeDataTable, setTypeDataTable] = useState(<PcMode data={data} columns={columns}/>);
     useEffect(() => {
         if (width < 1024) setTypeDataTable(<MobileMode key="1234" data={data} columns={columns} numberPage={numberPage} searchParams={searchParams}/>);
-        else setTypeDataTable(<PcMode key="1234" data={data} columns={columns} numberPage={numberPage} searchParams={searchParams}/>);
+        else setTypeDataTable(<PcMode key="1234" data={data} columns={columns} numberPage={numberPage} searchParams={searchParams} user={user}/>);
     }, [width, data])
 
     return (
@@ -75,50 +75,65 @@ const MobileMode = ({data, columns,numberPage,searchParams}) => {
     )
 }
 
-const PcMode = ({columns, data,numberPage,searchParams}) => {
+const PcMode = ({columns, data, numberPage, searchParams,user}) => {
+
+    const colors = [
+        "#3b82f6",
+        "#ef4444",
+        "#10b981",
+        "#f59e0b",
+        "#8b5cf6",
+        "#14b8a6",
+    ];
+
     return (
         <>
-            <div className="sticky top-0 z-10 bg-cyan-400  rounded-t-lg h-2"></div>
-            <table className="w-full text-sm text-right text-gray-500  dark:text-gray-200  border-t-4 border-t-cyan-300 rounded">
-                <thead className="sticky top-1 z-10 text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-200  dark:bg-gray-700 ">
+            <div className="sticky top-0 z-10 bg-cyan-400 rounded-t-lg h-2"></div>
+
+            <table className="w-full text-sm text-right text-gray-500 dark:text-gray-200 border-t-4 border-t-cyan-300 rounded">
+                <thead className="sticky top-1 z-10 text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-200 dark:bg-gray-700">
                 <tr>
-                    {columns && columns.length > 0 && columns.map((item, index) => {
-                        if (item?.name) {
-                            return (
-                                <th key={index + 312} scope="col" className="last:flex last:justify-center py-4 px-6 text-nowrap ">{item.name}</th>
-                            )
-                        } else {
-                            return (
-                                <th key={index + Math.floor(Math.random() * 1) + 1} scope="col" className="hidden"></th>
-                            )
-                        }
-                    })}
+                    {columns.map((item, index) =>
+                        item?.name ? (
+                            <th key={index} className="py-4 px-6 text-nowrap">{item.name}</th>
+                        ) : (
+                            <th key={index} className="hidden"></th>
+                        )
+                    )}
                 </tr>
                 </thead>
+
                 <tbody>
-                {data && data.length > 0 && data.map((row, index) => {
-                    return (
-                        <tr key={index + 2000} className={`even:bg-gray-100 bgclass  dark:even:bg-gray-800 odd:bg-gray-50 dark:odd:bg-gray-900/60 border-b border-cyan-300 dark:border-gray-300`}>
-                            {columns && columns.length > 0 && columns.map((itemColumns, indexColumns) => {
-                                if (itemColumns?.name !== undefined) {
-                                    return (
-                                        <td key={indexColumns + 313} className="py-4 px-5 text-[13px]" style={itemColumns.style}>
-                                            {[row].map(itemColumns.selector)}
-                                        </td>
-                                    )
-                                } else {
-                                    // return <th key={index + 3 * Math.floor(Math.random() * 10)} scope="col" className="hidden"></th>
-                                    return null
-                                }
-                            })}
-                        </tr>
-                    )
-                })}
+                {data && data.map((row, rowIndex) => (
+                    <tr
+                        key={rowIndex}
+                        className="
+                        even:bg-gray-100
+                        dark:even:bg-gray-800
+                        odd:bg-gray-50
+                        dark:odd:bg-gray-900/60
+                        border-b border-gray-300 dark:border-gray-700
+                    "
+                        style={{
+                            borderRight: user === 1 ? `5px solid ${colors[rowIndex % colors.length]}` : "none"
+                        }}
+                    >
+
+                    {columns.map((col, colIndex) =>
+                            col?.name !== undefined ? (
+                                <td key={colIndex} className="py-4 px-5 text-[13px]">
+                                    {[row].map(col.selector)}
+                                </td>
+                            ) : null
+                        )}
+                    </tr>
+                ))}
                 </tbody>
             </table>
+
             <div className='flex justify-end p-2 rounded-3xl mt-3'>
                 <PagingGetUrl total_page={numberPage} searchParams={searchParams}/>
             </div>
         </>
-    )
-}
+    );
+};

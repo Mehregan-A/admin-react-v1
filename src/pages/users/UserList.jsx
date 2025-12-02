@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     categoryClearResultDelete,
     deleteAsyncCategory,
-    getAsyncListCategory, getAsyncStatusCategory,
+    getAsyncStatusCategory,
 } from "../../feature/redux/CategorySlice.jsx";
 import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
@@ -110,17 +110,6 @@ const UserList = () => {
     );
     const columns = [
         {
-            name: "تصویر",
-            selector: row =>
-                <div className="w-14 h-14 rounded-full border-2 border-cyan-400">
-                    <img
-                        src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                        className="w-full h-full rounded-full object-cover"
-                        alt="category"
-                    />
-                </div>,
-        },
-        {
             name: "نام ",
             selector: row => row.name,
         },
@@ -194,6 +183,7 @@ const UserList = () => {
 
             </div>
             <DataTable
+                user={1}
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { FaSearch, FaUserCircle} from "react-icons/fa";
 import {FaAlignRight} from "react-icons/fa";
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from "react-router";
+import {redirect, useNavigate} from "react-router";
 import {getAsyncLogout, loginClearResult} from "../feature/redux/LoginSlice.jsx";
 import {Toast} from "./toast/Toast.jsx";
 import {FaRightFromBracket} from "react-icons/fa6";
@@ -16,6 +16,7 @@ import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 const Navbar = ({open_close}) => {
     const {logout} = useSelector(state => state.login);
     const {theme}=useSelector(state => state.theme)
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getAsyncProfile())
@@ -99,7 +100,9 @@ const Navbar = ({open_close}) => {
                     </div>
 
                 </div>
-                <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
+                <div
+                    onClick={() => navigate(`/profile`)}
+                    className="w-12 h-12 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
                     <img
                         src={profile.image ? Config.apiImage + profile.image : CategoryNotFound}
                         className="w-full h-full rounded-full object-cover"
