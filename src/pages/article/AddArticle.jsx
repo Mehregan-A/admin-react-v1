@@ -1,25 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
-import {HiMiniXMark} from "react-icons/hi2";
-import {HiOutlinePencilAlt} from "react-icons/hi";
 import {Toast} from "../../components/toast/Toast.jsx";
-import {
-    categoryClearResult,
-    getAsyncSelectCategory,
-    postAsyncAddCategory,
-    postAsyncEditCategory
-} from "../../feature/redux/CategorySlice.jsx";
 import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
-import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {optionsActive, status} from "../../assets/data/Data.js";
-import {getAsyncInfoProduct} from "../../feature/redux/ProductSlice.jsx";
+import {status} from "../../assets/data/Data.js";
 import {useParams} from "react-router-dom";
-import {Config} from "../../config/Config.jsx";
-import CategoryNotFound from "../../assets/image/category_not_found.png";
 import TextArea from "../../components/inputs/TextArea.jsx";
 import { NilfamEditor } from 'nilfam-editor';
 import 'nilfam-editor/nilfam-editor.css';
@@ -31,21 +19,24 @@ import {
     putAsyncEditArticle
 } from "../../feature/redux/ArticleSlice.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
+import {getAsyncSelectCategory} from "../../feature/redux/CategorySlice.jsx";
 
 
 const AddArticle = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
-    const [activeTab, setActiveTab] = useState("1");
+    const {theme}=useSelector(state => state.theme)
     useEffect(() => {
+        dispatch(getAsyncSelectCategory())
+        dispatch(getAsyncSelectCategory())
         if (id){
             dispatch(getAsyncGetInfoArticle({Id:id}))
         }
     },[])
 
     const {result,isLoading,list_info_article} = useSelector(state => state.article);
-    console.log(list_info_article)
+    console.log(list_category_select)
     // redux
     const initialValues = {
         url:'',
@@ -157,7 +148,7 @@ const AddArticle = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
+                    <div className='flex justify-start gap-2 p-2'>
                         <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
                         <div className="text-gray-400 dark:text-gray-300"> مقاله |</div>
                         {!id &&
@@ -168,169 +159,97 @@ const AddArticle = () => {
                         }
                     </div>
                 </div>
-                <div className="flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-800 inset-shadow-sm inset-shadow-cyan-300  rounded-xl shadow-lg items-center">
-                    <button
-                        onClick={() => setActiveTab("1")}
-                        className={`w-full flex items-center justify-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
-              ${
-                            activeTab === "1"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
-                                : "dark:text-gray-100"
-                        }`}
-                    >نام مقاله/url/چکیده/تصویر</button>
+                 <form className="" onSubmit={formik.handleSubmit}>
+                     <div className="flex w-full  items-start gap-5">
+                         <div className="bg-gray-100/50 p-5 dark:bg-gray-700/40 rounded-2xl flex w-4/6 flex-col gap-5">
+                             <div className="flex flex-col">
+                                 <div className="flex w-full bg-gray-100 rounded-xl  dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
+                                     <div className="flex w-3/4 flex-col gap-4 p-4">
+                                         <Input formik={formik} maxLength={25} name="url" label="url" />
+                                         <Input formik={formik} maxLength={25} name="title" label="نام مقاله" />
+                                         <TextArea formik={formik} maxLength={25} name="abstract" label="چکیده" />
+                                     </div>
+                                     <div className="flex w-1/4 flex-col rounded-xl p-4">
+                                         <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
+                                     </div>
+                                 </div>
+                                 <div className="flex justify-center">
+                                 </div>
+                             </div>
+                             <div className="flex flex-col w-full shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl">
+                                 <NilfamEditor value={formik.values.body} isDark={theme} lang="fa"
+                                               onChange={newContent => formik.setFieldValue("body", newContent)} />
+                             </div>
+                         </div>
 
-                    <button
-                        onClick={() => setActiveTab("2")}
-                        className={`w-full flex justify-center items-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
-              ${
-                            activeTab === "2"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
-                                : "dark:text-gray-100"
-                        }`}
-                    >body</button>
-                    <button
-                        onClick={() => setActiveTab("3")}
-                        className={`w-full flex justify-center items-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
-              ${
-                            activeTab === "3"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
-                                : "dark:text-gray-100"
-                        }`}
-                    >انتخاب دسته/زیر دسته/زمان مطالعه/تاریخ انتشار</button>
-                    <button
-                        onClick={() => setActiveTab("4")}
-                        className={`w-full flex justify-center items-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
-              ${
-                            activeTab === "4"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
-                                : "dark:text-gray-100"
-                        }`}
-                    >عنوان سئو/توضیحات سئو/وضعیت</button>
-                </div>
-                 <form className="mt-7" onSubmit={formik.handleSubmit}>
-                    {activeTab==="1" &&
-                        <div className="flex flex-col gap-6">
-                            <div className="flex w-full gap-2 h-80">
-                                <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                    <Input formik={formik} maxLength={25} name="title" label="نام مقاله" />
-                                    <Input formik={formik} maxLength={25} name="url" label="url" />
-                                    <TextArea formik={formik} maxLength={25} name="abstract" label="چکیده" />
-                                </div>
-                                <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
-                                    <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
-                                </div>
-                            </div>
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={() => setActiveTab("2")}
-                                    className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
+                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 w-2/6 flex flex-col gap-5">
+                             <div className="flex gap-2 ">
+                                     <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
+                                         <Input formik={formik} maxLength={4} name="read_time" label="زمان مطالعه" />
+                                         <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
+                                         <div className="w-full h-px bg-gray-300 dark:bg-cyan-200 my-3"></div>
+                                         <SelectOption
+                                             formik={formik}
+                                             options={list_category_select}
+                                             name="category_id"
+                                             label="انتخاب دسته"
+                                         />
+                                         <SelectOption
+                                             formik={formik}
+                                             options={subCategories}
+                                             name="sub_category_id"
+                                             label="انتخاب زیر دسته"
+                                         />
+                                         {!id &&
+                                             <SelectOption
+                                                 formik={formik}
+                                                 options={status}
+                                                 name="status"
+                                                 label="وضعیت"
+                                             />
+                                         }
+                                         {id &&
+                                             <InputSelectStatus
+                                                 formik={formik}
+                                                 optionEnter={list_info_article?.status}
+                                                 options={status}
+                                                 name="status"
+                                                 label="وضعیت"
+                                             />
+                                         }
+                                     </div>
+                                 </div>
+                             <div className="flex flex-col gap-6">
+                             <div className="flex gap-2 ">
+                                     <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
+                                         <Input formik={formik} maxLength={25} name="seo_title" label="عنوان سئو" />
+                                         <TextArea formik={formik} maxLength={25} name="seo_desc" label="توضیحات سئو" />
+                                     </div>
+                                 </div>
+                             </div>
+                             {/* Submit */}
+                             <div className="flex justify-center">
+                                 <button
+                                     disabled={!formik.isValid || isLoading}
+                                     type="submit"
+                                     className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
                                             text-gray-50 text-sm transition-colors`}
-                                >
-                                   ادامه
-                                </button>
-                            </div>
-                        </div>
-                    }
-                    {activeTab==="2" &&
-                        <div className="flex flex-col gap-6">
-                            <div className="flex flex-col w-full shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl ">
-                                <NilfamEditor value={formik.values.body} dark={true} lang="fa"
-                                              onChange={newContent => formik.setFieldValue("body", newContent)} />
-                            </div>
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={() => setActiveTab("3")}
-                                    className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
-                                            text-gray-50 text-sm transition-colors`}
-                                >
-                                    ادامه
-                                </button>
-                            </div>
-                        </div>
-
-                    }
-                    {activeTab==="3" &&
-                        <div className="flex flex-col gap-6">
-                            <div className="flex gap-2 ">
-                            <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                <SelectOption
-                                    formik={formik}
-                                    options={list_category_select}
-                                    name="category_id"
-                                    label="انتخاب دسته"
-                                />
-                                <SelectOption
-                                    formik={formik}
-                                    options={subCategories}
-                                    name="sub_category_id"
-                                    label="انتخاب زیر دسته"
-                                />
-                            </div>
-                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                <Input formik={formik} maxLength={4} name="read_time" label="زمان مطالعه" />
-                                <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
-                            </div>
-                        </div>
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={() => setActiveTab("4")}
-                                    className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
-                                            text-gray-50 text-sm transition-colors`}
-                                >
-                                    ادامه
-                                </button>
-                            </div>
-                        </div>
-                    }
-                    {activeTab==="4" &&
-                        <div className="flex flex-col gap-6">
-                            <div className="flex gap-2 ">
-                                <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                    <Input formik={formik} maxLength={25} name="seo_title" label="عنوان سئو" />
-                                    <TextArea formik={formik} maxLength={25} name="seo_desc" label="توضیحات سئو" />
-                                    {!id &&
-                                        <SelectOption
-                                            formik={formik}
-                                            options={status}
-                                            name="status"
-                                            label="وضعیت"
-                                        />
-                                    }
-                                    {id &&
-                                        <InputSelectStatus
-                                            formik={formik}
-                                            optionEnter={list_info_article?.status}
-                                            options={status}
-                                            name="status"
-                                            label="وضعیت"
-                                        />
-                                    }
-                                </div>
-                            </div>
-                            {/* Submit */}
-                            <div className="flex justify-center">
-                                <button
-                                    disabled={!formik.isValid || isLoading}
-                                    type="submit"
-                                    className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
-                                            text-gray-50 text-sm transition-colors`}
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                            <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
-                                        </>
-                                    ) : (
-                                        <span>{id ? "ویرایش" : "ثبت"}</span>
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-                    }
+                                 >
+                                     {isLoading ? (
+                                         <>
+                                             <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                             <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                                         </>
+                                     ) : (
+                                         <span>{id ? "ویرایش" : "ثبت"}</span>
+                                     )}
+                                 </button>
+                             </div>
+                         </div>
+                     </div>
                 </form>
             </div>
         </>
-
     );
 };
 export default AddArticle;

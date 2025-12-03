@@ -63,7 +63,7 @@ const Navbar = ({open_close}) => {
     },[theme])
 
     return (
-        <div className="w-full h-18 p-4 m-2 shadow-lg shadow-gray-300 dark:shadow-gray-600 bg-gray-50 dark:bg-gray-800 rounded-xl items-center">
+        <div className="w-full h-[77px] px-4 py-2 m-2 shadow-lg shadow-gray-300 dark:shadow-gray-600 bg-gray-50 dark:bg-gray-800 rounded-xl items-center">
             <div className='flex items-center justify-between'>
                 <div className='flex items-center justify-start gap-3'>
                     <button
@@ -102,12 +102,19 @@ const Navbar = ({open_close}) => {
                 </div>
                 <div
                     onClick={() => navigate(`/profile`)}
-                    className="w-12 h-12 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
-                    <img
-                        src={profile.image ? Config.apiImage + profile.image : CategoryNotFound}
-                        className="w-full h-full rounded-full object-cover"
-                        alt="profile"
-                    />
+                    className="flex items-center justify-center gap-3 shadow-md dark:shadow-gray-500 dark:bg-gray-800 rounded-3xl px-2 py-1.5 cursor-pointer">
+                    <div className="flex dark:text-gray-100 text-sm text-gray-700 font-semibold">
+                        <span>{profile.name}</span>
+                        <span>{profile.family}</span>
+                    </div>
+                    <div
+                        className="w-12 h-12 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
+                        <img
+                            src={profile.image ? Config.apiImage + profile.image : CategoryNotFound}
+                            className="w-full h-full rounded-full object-cover"
+                            alt="profile"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
