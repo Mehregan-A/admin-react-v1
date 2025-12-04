@@ -92,7 +92,7 @@ const Navbar = ({open_close}) => {
                                 }`}
                             />
                             <PiSunDimThin
-                                className={`absolute right-1 w-6 h-6 text-yellow-300 transition-opacity ${
+                                className={`absolute right-1 w-6 h-6 text-yellow-400 transition-opacity ${
                                     theme ? "opacity-0" : "opacity-100"
                                 }`}
                             />

@@ -53,7 +53,7 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
                     <div className={`flex flex-col gap-2 items-center justify-center size-56  rounded-md mt-3 py-4 ${classDiv}`}>
                         <div className="w-full flex items-center justify-center">
                             {formikAddress && formikAddress !== null && formikAddress !== undefined ? (
-                                <div className="bg-gray-300 rounded-lg max-h-20 w-full overflow-hidden relative">
+                                <div className="bg-gray-300 rounded-lg max-h-20 w-28 overflow-hidden relative">
                                     {typeof formikAddress !== "object" ? (
                                         <img src={Config.apiImage + formikAddress} alt="تصویر آپلود شده" className="w-full h-full object-cover" />
                                     ) : (
@@ -70,7 +70,7 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
                                     )}
                                 </div>
                             ) : (
-                                <div className="bg-gray-100 dark:bg-gray-800 drop-shadow-md drop-shadow-cyan-500 rounded-2xl h-20 w-28 overflow-hidden flex flex-col items-center justify-center text-gray-500 text-xs">
+                                <div className="bg-gray-100 dark:bg-gray-800 drop-shadow-md drop-shadow-cyan-500 rounded-2xl  w-28 h-20 overflow-hidden flex flex-col items-center justify-center text-gray-500 text-xs">
                                     <FaCloudUploadAlt className="text-2xl animate-bounce mb-1 text-cyan-500" />
                                     <span  className='text-[10px] dark:text-gray-200 text-gray-800'>تصویر بارگذاری کنید</span>
                                 </div>

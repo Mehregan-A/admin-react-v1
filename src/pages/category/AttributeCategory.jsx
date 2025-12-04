@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,14 +6,39 @@ import { HiMiniXMark } from "react-icons/hi2";
 import { PiChartPieSlice } from "react-icons/pi";
 import { getAsyncListAttributeSelect } from "../../feature/redux/AttributeSlice.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {deleteAsyncCategoryAtt, postAsyncCategoryAddAtt} from "../../feature/redux/CategorySlice.jsx";
+import {
+    deleteAsyncCategoryAtt,
+    getAsyncInfoCategoryAtt,
+    postAsyncCategoryAddAtt
+} from "../../feature/redux/CategorySlice.jsx";
+import {
+    attributeValClearDelete,
+    attributeValClearResult, attributeValClearSearch, deleteAsyncAttributeVal,
+    getAsyncAddAttributeVal,
+    getAsyncListAttributeVal, postAsyncSearchAttributeVal
+} from "../../feature/redux/AttributeValueSlice.jsx";
+import Input from "../../components/inputs/Input.jsx";
+import {adminClearResult, adminClearResultDelete, putAsyncEditAdmin} from "../../feature/redux/AdminSlice.jsx";
+import {Toast} from "../../components/toast/Toast.jsx";
+import {BsListUl} from "react-icons/bs";
+import Loading from "../../components/loading/Loading.jsx";
+import Reject from "../../components/loading/Reject.jsx";
+import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
+import {BiSolidError} from "react-icons/bi";
+import {FaMagnifyingGlass, FaXmark} from "react-icons/fa6";
+import {
+    deleteAsyncVariantAttributeVal,
+    getAsyncListVariantAttributeVal,
+    postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
+} from "../../feature/redux/VariantAttributeValueSlice.jsx";
+import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttributeSlice.jsx";
 
-const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider }) => {
+const AttributeCategory = ({ Id, variantAttribute_list, open_close, reload, open_slider }) => {
     const dispatch = useDispatch();
     const myElementRef = useRef(null);
 
+
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [selectedAttributes, setSelectedAttributes] = useState([]);
 
     useEffect(() => {
         if (open_slider) {
@@ -26,51 +51,64 @@ const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider 
         setTimeout(() => open_close(), 300);
     }
 
-    useEffect(() => {
-        dispatch(getAsyncListAttributeSelect());
-    }, [dispatch]);
 
-    const { isLoading } = useSelector(state => state.category);
+    useEffect(() => {
+        dispatch(getAsyncInfoCategoryAtt({Id}));
+        dispatch(getAsyncListAttributeSelect());
+    }, []);
+    const { info_att,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.category);
     const { list_attribute_select } = useSelector(state => state.attribute);
 
-    const foundItem = list_category?.find(item => item.id === Id);
 
-    useEffect(() => {
-        if (foundItem?.attribute) {
-            setSelectedAttributes(foundItem.attribute);
-        }
-    }, [foundItem]);
+    const initialValues = {
+        value:''
+    };
 
-    const initialValues = { value: '' };
-
-    const onSubmit = () => {
-        console.log("ویژگی‌های انتخاب‌شده: ", selectedAttributes);
+    const onSubmit = (values) => {
+        dispatch(postAsyncCategoryAddAtt({ value:values.value, Id }));
     };
 
     const formik = useFormik({
-        initialValues: foundItem || initialValues,
+        initialValues: initialValues,
         onSubmit,
         validateOnMount: true
     });
 
-    const handleAddAttribute = (attr) => {
-        if (!attr) return;
-
-        if (!selectedAttributes.some(a => a.value === attr.value)) {
-            setSelectedAttributes([...selectedAttributes, attr]);
-            if(Id){
-                dispatch(postAsyncCategoryAddAtt({ del: Id, value: attr }));
-            }
-        }
-
-    };
 
     const handleRemoveAttribute = (value) => {
-        setSelectedAttributes(selectedAttributes.filter(att => att.value !== value));
         if(Id){
-            dispatch(deleteAsyncCategoryAtt({ del: Id, value: value }));
+            dispatch(deleteAsyncVariantAttributeVal({ del: Id, variant_option_id: value }));
         }
     };
+    console.log(result);
+    useEffect(() => {
+        if(result && result?.status){
+            if(result.status === 200) {
+                // toast
+                Toast.success(`${result.data.message}`);
+                dispatch(variantAttributeValClearResult())
+                dispatch(getAsyncListVariantAttributeVal({Id}));
+            }else{
+                // toast
+                Toast.error(`${result.data.message}`);
+                dispatch(variantAttributeValClearResult())
+            }
+        }
+    }, [result]);
+
+    useEffect(() => {
+        if(result_delete && result_delete?.status){
+            if(result_delete.status === 200) {
+                Toast.success(`${result_delete.data.message}`);
+                dispatch(variantAttributeValClearDelete());
+                dispatch(getAsyncListVariantAttributeVal({Id}));
+            }else{
+                // toast
+                Toast.error(`${result_delete.data.message}`);
+                dispatch(variantAttributeValClearDelete())
+            }
+        }
+    }, [result_delete]);
 
     useEffect(() => {
         const scrollBar = document.querySelector('.scroll-bar');
@@ -103,16 +141,23 @@ const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider 
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [myElementRef]);
 
+
     return (
         <div className="fixed inset-0 z-20 flex items-center justify-center overflow-auto p-4">
             <div
-                className={`absolute inset-0 bg-black/20 backdrop-blur-[3px] transition-opacity duration-300 z-0 ${isOpenModal ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`absolute inset-0 bg-black/20 backdrop-blur-[3px] transition-opacity duration-300 z-0 ${
+                    isOpenModal ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
             />
+
             <div ref={myElementRef} className="flex flex-col gap-2 w-full items-center">
+                <div
+                    className={`relative md:max-w-2xl w-full rounded-tr-4xl dark:shadow-gray-600 rounded-bl-4xl shadow-lg bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 pt-1 ${
+                        isOpenModal ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+                    } z-10`}
+                >
 
-
-                <div className={`relative md:max-w-2xl w-full rounded-tr-4xl dark:shadow-gray-600 rounded-bl-4xl shadow-lg bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 pt-1 ${isOpenModal ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} z-10`}>
-
+                    {/* Header */}
                     <div className="h-8 flex items-center justify-between text-gray-800 m-2">
                         <button
                             className="cursor-pointer hover:text-cyan-300 dark:text-gray-200 transition-colors"
@@ -121,63 +166,75 @@ const AttributeCategory = ({ Id, list_category, open_close, reload, open_slider 
                             <HiMiniXMark className="w-6 h-6 cursor-pointer" />
                         </button>
                         <div className="flex gap-2 items-center dark:text-gray-200 rounded-3xl">
-                            <PiChartPieSlice className="w-5 h-5" />
-                            <span className="text-sm">ویژگی دسته</span>
+                            <BsListUl className="w-5 h-5" />
+                            <span className="text-sm">ویژگی ها</span>
                         </div>
                     </div>
+                    <div className="w-full h-px bg-cyan-300"></div>
 
-                    <div className='w-full h-px bg-cyan-300'></div>
-
-                    <form onSubmit={formik.handleSubmit} className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
 
                         <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
-                            <div className="flex flex-wrap gap-2">
-                                {selectedAttributes.map((att) =>
-                                    <div
-                                        key={att.value}
-                                        className="flex items-center gap-2 dark:bg-gray-800 dark:text-gray-100 bg-gray-50 drop-shadow-xl dark:drop-shadow-none p-2 rounded-xl h-10"
-                                    >
-                                        <span>{att.label}</span>
-                                        <button type="button" onClick={() => handleRemoveAttribute(att.value)}>
-                                            <HiMiniXMark className="w-4 h-4 text-red-500" />
-                                        </button>
-                                    </div>
-                                )}
+
+                            {isLoading_action || isLoading_list ? (
+                                <Loading />
+                            ) : isError_list ? (
+                                <Reject />
+                            ) : info_att.length > 0 ? (
+                                <div className="flex flex-wrap gap-2">
+                                    {info_att.map((att) => (
+                                        <div
+                                            key={att.value}
+                                            className="flex items-center gap-2 dark:bg-gray-800 dark:text-gray-100 bg-gray-50 drop-shadow-xl dark:drop-shadow-none p-2 rounded-xl h-10"
+                                        >
+                                            <div className="flex flex-col gap-0.5">
+                                                <span>{att.label}</span>
+                                            </div>
+                                            <button type="button" onClick={() => handleRemoveAttribute(att.id)}>
+                                                <HiMiniXMark className="w-5 h-5 text-red-500 cursor-pointer" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex mx-auto flex-col gap-4 items-center justify-center">
+                                    <BiSolidError size={35} className="text-cyan-400 dark:text-cyan-300 animate-pulse" />
+                                    <span className="font-semibold dark:text-green-100">موردی برای نمایش وجود ندارد.</span>
+                                </div>
+                            )}
+                        </div>
+
+                        <form onSubmit={formik.handleSubmit} className="w-full flex items-center justify-end gap-2"
+                        >
+                            <div className="flex flex-col w-full gap-3">
+                                <SelectOption
+                                    formik={formik}
+                                    options={list_attribute_select}
+                                    name="value"
+                                    label="انتخاب ویژگی"
+                                />
                             </div>
-                        </div>
-
-                        <div className="w-full flex flex-col items-center justify-center gap-10">
-                            <SelectOption
-                                formik={formik}
-                                options={list_attribute_select}
-                                name="value"
-                                label="ویژگی جدید"
-                                onChange={handleAddAttribute}
-                            />
-                        </div>
-
-                        <div className="flex justify-center">
                             <button
-                                disabled={!formik.isValid || isLoading}
+                                disabled={!formik.values.value || isLoading}
                                 type="submit"
-                                className="w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
+                                className="flex mt-4 justify-center items-center gap-x-2 px-5 py-2.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
                             >
                                 {isLoading ? (
                                     <>
                                         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                        <span>در حال {Id ? "ویرایش" : "ثبت"}...</span>
+                                        <span>افزودن...</span>
                                     </>
                                 ) : (
-                                    <span>{Id ? "ویرایش" : "ثبت"}</span>
+                                    <span>افزودن</span>
                                 )}
                             </button>
-                        </div>
-
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     );
+
 };
 
 export default AttributeCategory;

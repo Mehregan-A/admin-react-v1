@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
+import {deleteAsyncAttributeVal} from "./AttributeValueSlice.jsx";
 
 export const getAsyncListCategory = createAsyncThunk("category/getAsyncListCategory",async (payload,{rejectWithValue})=>{
     try {
@@ -69,7 +70,7 @@ export const deleteAsyncCategoryAtt = createAsyncThunk("category/deleteAsyncCate
 })
 export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCategoryAddAtt",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post(`/admin/category/attribute/add/${payload.del}`, { value: payload.value })
+        const res = await http.post(`/admin/category/attribute/add/${payload.Id}`, { value: payload.value })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -207,13 +208,19 @@ const categorySlice = createSlice({
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
-            state.list_category.data = state.list_category.data.filter(
-                driver => driver.id !== Number(action.payload.data.result)
-            );
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
+        builder.addCase(deleteAsyncAttributeVal.fulfilled, (state, action) => {
+            const deletedValue = action.payload?.result;
+
+            if (deletedValue !== undefined) {
+                state.list_category.data = state.list_category.data.filter(
+                    item => String(item.value) !== String(deletedValue)
+                );
+            }
+
+            state.result_delete = action.payload;
+            state.isLoading_action = false;
+            state.isError = false;
+        });
         builder.addCase(deleteAsyncCategory.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true

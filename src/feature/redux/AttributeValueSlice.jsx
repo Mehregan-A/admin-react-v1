@@ -166,7 +166,7 @@ const AttributeValueSlice = createSlice({
             state.isLoading_action = false
         })
         builder.addCase(deleteAsyncAttributeVal.fulfilled, (state, action) => {
-            const deletedValue = action.payload?.result; // فرض می‌کنیم اینجا id/value حذف شده برمی‌گرده
+            const deletedValue = action.payload?.result;
 
             if (deletedValue !== undefined) {
                 state.list_attribute_val.data = state.list_attribute_val.data.filter(

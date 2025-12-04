@@ -16,6 +16,10 @@ import AcceptMessage from "../../AcceptMessage.jsx";
 import AddCategory from "./AddCategory.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
 import AttributeCategory from "./AttributeCategory.jsx";
+import AttributeValue from "../attribute/AttributeValue.jsx";
+import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
+import VariantAttributeValue from "../variantAttribute/VariantAttributeValue.jsx";
+import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttributeSlice.jsx";
 
 
 const CategoryList = () => {
@@ -129,6 +133,10 @@ const CategoryList = () => {
             selector: row => row.url,
         },
         {
+            name: "نمایش در صفحه اول",
+            selector: row => row.is_featured=="1"?"بله":"خیر",
+        },
+        {
             name: "ویژگی",
             selector: row => row.attribute?.map(a => a.label).join("، ") || "-",
         },
@@ -214,9 +222,9 @@ const CategoryList = () => {
                     <AttributeCategory
                         open_slider={openAtt.open}
                         open_close={() => setOpenAtt({ open: !openAtt.open })}
-                        reload={() => dispatch(getAsyncListCategory({ row, page }))}
+                        reload={() => dispatch(getAsyncListVariantAttribute({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_category={list_category.data}
+                        variantAttribute_list={list_category.data}
                     />
                 </div>
             )}

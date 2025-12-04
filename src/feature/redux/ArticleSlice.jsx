@@ -113,7 +113,7 @@ const ArticleSlice = createSlice({
             state.result_delete = false
         },
         articleClearInfo : (state) => {
-            state.info_edit = false
+            state.list_info_article = false
         },
     },
     extraReducers : (builder)=>{

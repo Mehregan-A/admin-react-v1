@@ -167,12 +167,6 @@ const ArticleList = () => {
                         text="حذف"
                         hoverColor="hover:text-red-600 dark:hover:text-red-400"
                     />
-                    <ButtonWithTooltip
-                        onClick={() => setOpenIdAtt(row.id, "att")}
-                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
-                        text="ویژگی"
-                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
-                    />
                 </div>
             )
         }
@@ -204,28 +198,6 @@ const ArticleList = () => {
                 numberPage={list_article?.page}
                 columns={columns}
             />
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddCategory*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_article={list_article.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
-            {/*{openAtt.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AttributeCategory*/}
-            {/*            open_slider={openAtt.open}*/}
-            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_article={list_article.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

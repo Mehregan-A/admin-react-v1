@@ -13,6 +13,7 @@ import { NilfamEditor } from 'nilfam-editor';
 import 'nilfam-editor/nilfam-editor.css';
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import {
+    articleClearInfo,
     articleClearResult,
     getAsyncGetInfoArticle,
     postAsyncAddArticle,
@@ -20,6 +21,7 @@ import {
 } from "../../feature/redux/ArticleSlice.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 import {getAsyncSelectCategory} from "../../feature/redux/CategorySlice.jsx";
+import Media from "../../components/inputs/media/Media.jsx";
 
 
 const AddArticle = () => {
@@ -32,11 +34,13 @@ const AddArticle = () => {
         dispatch(getAsyncSelectCategory())
         if (id){
             dispatch(getAsyncGetInfoArticle({Id:id}))
+        }else{
+                dispatch(articleClearInfo())
         }
     },[])
+    console.log(window.location.href)
 
     const {result,isLoading,list_info_article} = useSelector(state => state.article);
-    console.log(list_category_select)
     // redux
     const initialValues = {
         url:'',
@@ -50,60 +54,55 @@ const AddArticle = () => {
         publish_at:"",
         seo_title:"",
         seo_desc:"",
+        seo_keywords:""
     }
     const validationSchema = yup.object({
-        // title: yup
-        //     .string()
-        //     .required('عنوان مقاله الزامی است')
-        //     .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
-        //     .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // url: yup
-        //     .string()
-        //     .required('آدرس URL الزامی است')
-        //     .matches(/^[a-z0-9-]+$/, 'فقط حروف کوچک، عدد و خط تیره مجاز است')
-        //     .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // abstract: yup
-        //     .string()
-        //     .required('چکیده مقاله الزامی است')
-        //     // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
-        //
-        // body: yup
-        //     .string()
-        //     .required('متن مقاله الزامی است')
-        //     .min(50, 'مقاله حداقل ۵۰ کاراکتر داشته باشد'),
-        //
-        // // image: yup
-        // //     .mixed()
-        // //     .required('تصویر مقاله الزامی است'),
-        //
-        // category_id: yup
-        //     .string()
-        //     .required('انتخاب دسته الزامی است'),
-        //
-        // sub_category_id: yup
-        //     .string()
-        //     .required('انتخاب زیر دسته الزامی است'),
-        //
-        // read_time: yup
-        //     .number()
-        //     .typeError('زمان مطالعه باید عدد باشد')
-        //     .positive('عدد مثبت وارد کنید')
-        //     .integer('عدد صحیح وارد کنید')
-        //     .required('زمان مطالعه الزامی است'),
-        // seo_title: yup
-        //     .string()
-        //     .required('عنوان سئو الزامی است')
-        //     .min(3, 'عنوان سئو باید حداقل ۳ کاراکتر باشد')
-        //     .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // seo_desc: yup
-        //     .string()
-        //     .required('توضیحات سئو الزامی است')
-        //     .min(10, 'توضیحات باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(300, 'توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد'),
+        title: yup
+            .string()
+            .required('عنوان مقاله الزامی است')
+            .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+
+        url: yup
+            .string()
+            .required('آدرس URL الزامی است')
+            .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+
+        abstract: yup
+            .string()
+            .required('چکیده مقاله الزامی است')
+            // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
+            .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
+
+        body: yup
+            .string()
+            .required('متن مقاله الزامی است'),
+
+        image: yup
+            .mixed()
+            .required('تصویر مقاله الزامی است'),
+
+        category_id: yup
+            .number()
+            .required('انتخاب دسته الزامی است'),
+
+        sub_category_id: yup
+            .number()
+            .required('انتخاب زیر دسته الزامی است'),
+
+        read_time: yup
+            .number()
+            .required('زمان مطالعه الزامی است'),
+        seo_title: yup
+            .string()
+            .required('عنوان سئو الزامی است')
+            .min(2, 'عنوان سئو باید حداقل 2 کاراکتر باشد')
+            .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        seo_desc: yup
+            .string()
+            .required('توضیحات سئو الزامی است')
+            .min(2, 'توضیحات باید حداقل 2 کاراکتر باشد')
+            .max(300, 'توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد'),
     });
 
     const onSubmit = (values) => {
@@ -160,17 +159,23 @@ const AddArticle = () => {
                     </div>
                 </div>
                  <form className="" onSubmit={formik.handleSubmit}>
-                     <div className="flex w-full  items-start gap-5">
-                         <div className="bg-gray-100/50 p-5 dark:bg-gray-700/40 rounded-2xl flex w-4/6 flex-col gap-5">
+                     <div className="md:flex-row flex flex-col w-full  items-start gap-5">
+                         <div className="bg-gray-100/50 p-5 dark:bg-gray-700/40 rounded-2xl flex xl:w-4/6 w-full flex-col gap-5">
                              <div className="flex flex-col">
-                                 <div className="flex w-full bg-gray-100 rounded-xl  dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
-                                     <div className="flex w-3/4 flex-col gap-4 p-4">
-                                         <Input formik={formik} maxLength={25} name="url" label="url" />
-                                         <Input formik={formik} maxLength={25} name="title" label="نام مقاله" />
-                                         <TextArea formik={formik} maxLength={25} name="abstract" label="چکیده" />
+                                 <div className="flex flex-col xl:flex-row w-full bg-gray-100 rounded-xl  dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
+                                     <div className="flex xl:w-3/4 w-full flex-col gap-4 p-4">
+                                         <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />
+                                         <Input formik={formik} maxLength={40} name="title" label="نام مقاله" />
+                                         <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />
                                      </div>
-                                     <div className="flex w-1/4 flex-col rounded-xl p-4">
-                                         <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
+                                     <div className="flex xl:w-1/4  w-full flex-col rounded-xl p-4">
+                                         <Media
+                                             single={true}
+                                             label="تصویر"
+                                             desc="تصویر"
+                                             name="image"
+                                             formik={formik}
+                                             formikAddress={formik.values.image}/>
                                      </div>
                                  </div>
                                  <div className="flex justify-center">
@@ -182,7 +187,7 @@ const AddArticle = () => {
                              </div>
                          </div>
 
-                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 w-2/6 flex flex-col gap-5">
+                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 xl:w-2/6 md:w-3/6 w-full flex flex-col gap-5">
                              <div className="flex gap-2 ">
                                      <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
                                          <Input formik={formik} maxLength={4} name="read_time" label="زمان مطالعه" />
@@ -223,6 +228,7 @@ const AddArticle = () => {
                              <div className="flex gap-2 ">
                                      <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
                                          <Input formik={formik} maxLength={25} name="seo_title" label="عنوان سئو" />
+                                         <Input formik={formik} maxLength={25} name="seo_keywords" label="کلمات کلیدی" />
                                          <TextArea formik={formik} maxLength={25} name="seo_desc" label="توضیحات سئو" />
                                      </div>
                                  </div>
