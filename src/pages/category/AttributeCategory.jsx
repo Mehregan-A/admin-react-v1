@@ -1,39 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from "formik";
-import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { HiMiniXMark } from "react-icons/hi2";
-import { PiChartPieSlice } from "react-icons/pi";
 import { getAsyncListAttributeSelect } from "../../feature/redux/AttributeSlice.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {
-    deleteAsyncCategoryAtt,
-    getAsyncInfoCategoryAtt,
-    postAsyncCategoryAddAtt
-} from "../../feature/redux/CategorySlice.jsx";
-import {
-    attributeValClearDelete,
-    attributeValClearResult, attributeValClearSearch, deleteAsyncAttributeVal,
-    getAsyncAddAttributeVal,
-    getAsyncListAttributeVal, postAsyncSearchAttributeVal
-} from "../../feature/redux/AttributeValueSlice.jsx";
-import Input from "../../components/inputs/Input.jsx";
-import {adminClearResult, adminClearResultDelete, putAsyncEditAdmin} from "../../feature/redux/AdminSlice.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import {BsListUl} from "react-icons/bs";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
-import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {BiSolidError} from "react-icons/bi";
-import {FaMagnifyingGlass, FaXmark} from "react-icons/fa6";
-import {
-    deleteAsyncVariantAttributeVal,
-    getAsyncListVariantAttributeVal,
-    postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
-} from "../../feature/redux/VariantAttributeValueSlice.jsx";
-import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttributeSlice.jsx";
+import {categoryAttClearResult, categoryAttClearResultDelete,getAsyncInfoCategoryAtt,postAsyncCategoryAddAtt,deleteAsyncCategoryAtt} from "../../feature/redux/CategoryAttSlice.jsx";
 
-const AttributeCategory = ({ Id, variantAttribute_list, open_close, reload, open_slider }) => {
+const AttributeCategory = ({ Id, open_close, open_slider }) => {
     const dispatch = useDispatch();
     const myElementRef = useRef(null);
 
@@ -56,7 +34,7 @@ const AttributeCategory = ({ Id, variantAttribute_list, open_close, reload, open
         dispatch(getAsyncInfoCategoryAtt({Id}));
         dispatch(getAsyncListAttributeSelect());
     }, []);
-    const { info_att,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.category);
+    const { info_att,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.categoryAtt);
     const { list_attribute_select } = useSelector(state => state.attribute);
 
 
@@ -77,21 +55,20 @@ const AttributeCategory = ({ Id, variantAttribute_list, open_close, reload, open
 
     const handleRemoveAttribute = (value) => {
         if(Id){
-            dispatch(deleteAsyncVariantAttributeVal({ del: Id, variant_option_id: value }));
+            dispatch(deleteAsyncCategoryAtt({ del: Id, value:value }));
         }
     };
-    console.log(result);
     useEffect(() => {
         if(result && result?.status){
             if(result.status === 200) {
                 // toast
                 Toast.success(`${result.data.message}`);
-                dispatch(variantAttributeValClearResult())
-                dispatch(getAsyncListVariantAttributeVal({Id}));
+                dispatch(categoryAttClearResult())
+                dispatch(getAsyncInfoCategoryAtt({Id}));
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(variantAttributeValClearResult())
+                dispatch(categoryAttClearResult())
             }
         }
     }, [result]);
@@ -100,12 +77,12 @@ const AttributeCategory = ({ Id, variantAttribute_list, open_close, reload, open
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(variantAttributeValClearDelete());
-                dispatch(getAsyncListVariantAttributeVal({Id}));
+                dispatch(categoryAttClearResultDelete());
+                dispatch(getAsyncInfoCategoryAtt({Id}));
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(variantAttributeValClearDelete())
+                dispatch(categoryAttClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -190,7 +167,7 @@ const AttributeCategory = ({ Id, variantAttribute_list, open_close, reload, open
                                             <div className="flex flex-col gap-0.5">
                                                 <span>{att.label}</span>
                                             </div>
-                                            <button type="button" onClick={() => handleRemoveAttribute(att.id)}>
+                                            <button type="button" onClick={() => handleRemoveAttribute(att.value)}>
                                                 <HiMiniXMark className="w-5 h-5 text-red-500 cursor-pointer" />
                                             </button>
                                         </div>

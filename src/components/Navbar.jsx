@@ -25,13 +25,7 @@ const Navbar = ({open_close}) => {
 // List article selector
     const { profile } = useSelector(state => state.profile);
     const navigation = useNavigate();
-    const [isTheme, setIsTheme] = useState('light');
 
-    useEffect(() => {
-        if (theme === true){
-            setIsTheme((isTheme === "light")?"dark":"light");
-        }
-    }, [theme]);
 
     useEffect(() => {
         if (logout && logout.status) {
@@ -45,22 +39,16 @@ const Navbar = ({open_close}) => {
             }
         }
     }, [logout]);
-    useEffect(()=>{
-        if(JSON.parse(localStorage.getItem("theme")) == null){
-            document.documentElement.classList.add('dark');
-            localStorage.setItem("theme", JSON.stringify('dark'));
-        }else {
-            if(JSON.parse(localStorage.getItem("theme")) === 'dark'){
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem("theme", JSON.stringify('light'));
-            }else {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-                localStorage.setItem("theme", JSON.stringify('dark'));
-            }
+    useEffect(() => {
+        if (theme) {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+        } else {
+            document.documentElement.classList.add("light");
+            document.documentElement.classList.remove("dark");
         }
-    },[theme])
+    }, [theme]);
+
 
     return (
         <div className="w-full h-[77px] px-4 py-2 m-2 shadow-lg shadow-gray-300 dark:shadow-gray-600 bg-gray-50 dark:bg-gray-800 rounded-xl items-center">

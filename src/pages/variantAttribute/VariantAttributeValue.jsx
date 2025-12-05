@@ -6,7 +6,7 @@ import { HiMiniXMark } from "react-icons/hi2";
 import { PiChartPieSlice } from "react-icons/pi";
 import { getAsyncListAttributeSelect } from "../../feature/redux/AttributeSlice.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {deleteAsyncCategoryAtt, postAsyncCategoryAddAtt} from "../../feature/redux/CategorySlice.jsx";
+import {deleteAsyncCategoryAtt, postAsyncCategoryAddAtt} from "../../feature/redux/CategoryAttSlice.jsx";
 import {
     attributeValClearDelete,
     attributeValClearResult, attributeValClearSearch, deleteAsyncAttributeVal,

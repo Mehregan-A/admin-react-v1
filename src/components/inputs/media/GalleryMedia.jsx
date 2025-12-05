@@ -122,8 +122,8 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
 
 
     return (
-        <div className={`fixed  inset-0 z-50  bg-gray-800 backdrop-blur flex flex-col items-center justify-center`}>
-            <div className="bg-gray-100 rounded-tr-4xl rounded-bl-4xl dark:bg-gray-800 rounded p-5 max-w-[780px] lg:w-[780px] md:m-10 ">
+        <div className={`fixed  inset-0 z-50   backdrop-blur flex flex-col items-center justify-center`}>
+            <div className="bg-gray-50 shadow-lg dark:shadow-gray-500 rounded-tr-4xl rounded-bl-4xl dark:bg-gray-800 rounded p-5 max-w-[780px] lg:w-[780px] md:m-10 ">
                 <div className="h-8 flex items-center justify-between text-gray-800 m-2">
                     <button
                         className="cursor-pointer hover:text-cyan-300 dark:text-gray-200 transition-colors"

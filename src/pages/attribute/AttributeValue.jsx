@@ -3,10 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { HiMiniXMark } from "react-icons/hi2";
-import { PiChartPieSlice } from "react-icons/pi";
-import { getAsyncListAttributeSelect } from "../../feature/redux/AttributeSlice.jsx";
-import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {deleteAsyncCategoryAtt, postAsyncCategoryAddAtt} from "../../feature/redux/CategorySlice.jsx";
+
 import {
     attributeValClearDelete,
     attributeValClearResult, attributeValClearSearch, deleteAsyncAttributeVal,

@@ -18,15 +18,7 @@ export const getAsyncSelectCategory = createAsyncThunk("category/getAsyncSelectC
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
+
 export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
     try {
         const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
@@ -60,31 +52,8 @@ export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategor
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategoryAtt = createAsyncThunk("category/deleteAsyncCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/remove/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCategoryAddAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/add/${payload.Id}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
+
+
 
 
 const initialState = {
@@ -101,10 +70,6 @@ const initialState = {
     isLoading: false,
     isError: false,
 }
-
-//get / list / result / isLoading / isError / select
-
-
 
 const categorySlice = createSlice({
     name: 'category',
@@ -151,23 +116,6 @@ const categorySlice = createSlice({
             state.isLoading_list = false
             state.isError_list = true
         })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-            // const user = action.payload.data.result.user;
-            // state.usersData[user.id] = user;
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
-            state.isLoading = false
-            state.isError = true
-        })
         builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
@@ -208,7 +156,7 @@ const categorySlice = createSlice({
             state.isError = true
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncAttributeVal.fulfilled, (state, action) => {
+        builder.addCase(deleteAsyncCategory.fulfilled, (state, action) => {
             const deletedValue = action.payload?.result;
 
             if (deletedValue !== undefined) {
@@ -228,45 +176,6 @@ const categorySlice = createSlice({
         builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(deleteAsyncCategoryAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(postAsyncCategoryAddAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
-            state.isLoading = false
-            state.isError = true
         })
     }
 })

@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
-import {getAsyncInfoCategoryAtt} from "./CategorySlice.jsx";
 
 export const getAsyncListCoupon = createAsyncThunk("coupon/getAsyncListCoupon",async (payload,{rejectWithValue})=>{
     try {

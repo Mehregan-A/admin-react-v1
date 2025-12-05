@@ -22,6 +22,7 @@ import SeoSiteSlice from "./redux/SeoSiteSlice.jsx";
 import AttributeValueSlice from "./redux/AttributeValueSlice.jsx";
 import VariantAttributeSlice from "./redux/VariantAttributeSlice.jsx";
 import VariantAttributeValueSlice from "./redux/VariantAttributeValueSlice.jsx";
+import CategoryAttSlice from "./redux/CategoryAttSlice.jsx";
 
 
 
@@ -30,6 +31,7 @@ export const store = configureStore({
         theme: ThemeSlice,
         login: LoginSlice,
         category:CategorySlice,
+        categoryAtt:CategoryAttSlice,
         attribute:AttributeSlice,
         admin:AdminSlice,
         user:UserSlice,
