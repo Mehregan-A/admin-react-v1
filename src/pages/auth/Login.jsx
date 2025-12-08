@@ -24,13 +24,7 @@ const Login = () => {
     const {theme}=useSelector(state => state.theme)
     const { login,login_index,isLoading_enter } = useSelector(state => state.login);
     const navigation = useNavigate();
-    const [isTheme, setIsTheme] = useState('light');
 
-    useEffect(() => {
-        if (theme === true){
-            setIsTheme((isTheme === "light")?"dark":"light");
-        }
-    }, [theme]);
     // const location = useLocation();
     // useEffect(() => {
     //     dispatch(getAsyncLoginIndex());
@@ -74,22 +68,15 @@ const Login = () => {
             }
         }
     }, [login]);
-    useEffect(()=>{
-        if(JSON.parse(localStorage.getItem("theme")) == null){
-            document.documentElement.classList.add('dark');
-            localStorage.setItem("theme", JSON.stringify('dark'));
-        }else {
-            if(JSON.parse(localStorage.getItem("theme")) === 'dark'){
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem("theme", JSON.stringify('light'));
-            }else {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-                localStorage.setItem("theme", JSON.stringify('dark'));
-            }
+    useEffect(() => {
+        if (theme) {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+        } else {
+            document.documentElement.classList.add("light");
+            document.documentElement.classList.remove("dark");
         }
-    },[theme])
+    }, [theme]);
 
     return (
         <>
@@ -100,7 +87,7 @@ const Login = () => {
                         onClick={() => dispatch(set_theme(!theme))}
                         className="fixed top-5 right-5 z-50 bg-gray-50  dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-3 rounded-full shadow-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors cursor-pointer"
                     >
-                        {theme ? <PiMoonThin className='text-cyan-400' size={20} /> : <PiSunDimThin className='text-yellow-500' size={20}/>}
+                        {theme ? <PiMoonThin className='text-cyan-400' size={20} /> : <PiSunDimThin className='text-orange-500' size={20}/>}
                     </button>
 
                     <div className="relative w-full min-h-screen flex items-center justify-around bg-gray-50 dark:bg-gray-800 p-10">

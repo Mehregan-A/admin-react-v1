@@ -11,7 +11,7 @@ import Reject from "../../components/loading/Reject.jsx";
 import {BiSolidError} from "react-icons/bi";
 import {categoryAttClearResult, categoryAttClearResultDelete,getAsyncInfoCategoryAtt,postAsyncCategoryAddAtt,deleteAsyncCategoryAtt} from "../../feature/redux/CategoryAttSlice.jsx";
 
-const AttributeCategory = ({ Id, open_close, open_slider }) => {
+const AttributeCategory = ({ Id, open_close, open_slider,reload }) => {
     const dispatch = useDispatch();
     const myElementRef = useRef(null);
 
@@ -27,6 +27,7 @@ const AttributeCategory = ({ Id, open_close, open_slider }) => {
     function closeModal() {
         setIsOpenModal(false);
         setTimeout(() => open_close(), 300);
+        reload()
     }
 
 

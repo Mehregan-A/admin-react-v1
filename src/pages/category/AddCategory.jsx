@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,6 +11,7 @@ import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
 import {optionsActive} from "../../assets/data/Data.js";
+import Media from "../../components/inputs/media/Media.jsx";
 
 
 const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
@@ -38,6 +39,7 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
     const dispatch = useDispatch();
     const initialValues = {
         title:'',
+        url:"",
         image:'',
         status:'',
         is_featured:""
@@ -45,9 +47,13 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
     const validationSchema = yup.object({
         title: yup
             .string()
-            .required('نام الزامی است')
-            .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
-            .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
+            .required('عنوان مقاله الزامی است')
+            .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        url: yup
+            .string()
+            .required('آدرس URL الزامی است')
+            .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
 
     });
     const onSubmit = (values) => {
@@ -143,8 +149,8 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
                             <div className="flex flex-col md:flex-row md:gap-4 gap-6">
                                 {/* Inputs */}
                                 <div className="w-full flex flex-col items-center justify-center gap-10">
-                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام دسته بندی" />
-                                    <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
+                                    <Input formik={formik} maxLength={100} name="title" label="نام دسته بندی" />
+                                    <Input formik={formik} maxLength={100} name="url" noPersian={true} label="url" />
                                     {!foundItem && (
                                         <SelectOption
                                             formik={formik}
@@ -156,7 +162,15 @@ const AddCategory = ({Id,list_category,open_close,reload,open_slider}) => {
                                 </div>
 
                                 <div className="w-full md:w-[200px] flex flex-col justify-between gap-4 md:gap-7">
-                                    <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
+                                    <div className="">
+                                        <Media
+                                            single={true}
+                                            label="تصویر"
+                                            desc="تصویر"
+                                            name="image"
+                                            formik={formik}
+                                            formikAddress={formik.values.image}/>
+                                    </div>
 
                                         <div className="flex items-center justify-center">
                                             <InputCheckbox

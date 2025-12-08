@@ -68,18 +68,31 @@ const Sidebar = ({ open_close, open_slider }) => {
                 >
                     {item.sub.map((sub) => (
                         <li key={sub.id} className="relative flex items-center py-2">
+                            <span className="absolute left-full top-0 bottom-0 w-6 pointer-events-none" aria-hidden="true">
+                                                                  <svg
+                                                                      viewBox="0 0 24 100"
+                                                                      preserveAspectRatio="none"
+                                                                      className="absolute inset-0 h-full w-full stroke-gray-300 transform -rotate-90"
+                                                                  >
+                                                                    <path d="M50,18 Q5,50 10,10" fill="none" strokeWidth="1" />
+                                                                  </svg>
+                                                                </span>
                             <NavLink
                                 to={sub.link}
-                                onClick={handleItemClick}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleItemClick();
+                                }}
                                 className={({ isActive }) =>
-                                    `flex items-center gap-2 px-1 py-1 transition-all duration-500 ease-in-out w-full ${
+                                    `flex items-center mr-3 gap-2 px-1 py-1 transition-all duration-500 ease-in-out w-full ${
                                         isActive
-                                            ? "font-semibold text-cyan-600 dark:text-cyan-400 bg-cyan-300/50 dark:bg-cyan-900/50 rounded-lg"
+                                            ? "font-semibold text-cyan-600 dark:text-cyan-400 bg-cyan-300/50 dark:bg-cyan-900/50 rounded-lg mr-1"
                                             : "text-gray-700 dark:text-gray-300"
                                     }`
                                 }
                             >
-                                <div className="w-full py-2.5 px-2 rounded-lg transition-all duration-500 ease-in-out hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transform hover:scale-105">
+                                <div
+                                    className="w-full py-2.5 px-2 rounded-lg mr-1 transition-all duration-500 ease-in-out hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transform hover:scale-105">
                                     {sub.label}
                                 </div>
                             </NavLink>
@@ -92,15 +105,12 @@ const Sidebar = ({ open_close, open_slider }) => {
 
     return (
         <>
-            {/* Overlay موبایل */}
             <div
                 onClick={open_close}
                 className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden transition-opacity duration-300 ${
                     open_slider ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                 }`}
             />
-
-            {/* دسکتاپ */}
             <div
                 ref={sidebarRef}
                 className="your-scroll-container mx-3 my-2 rounded-2xl flex-shrink-0 fixed h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto backdrop-blur-md w-64 transition-transform duration-500 ease-in-out
@@ -197,14 +207,12 @@ const Sidebar = ({ open_close, open_slider }) => {
                     </div>
                 </div>
             </div>
-
-            {/* موبایل */}
+            {/*mobile*/}
             <div
                 ref={sidebarRef}
                 className={`your-scroll-container fixed top-0 right-0 h-screen w-64 bg-gradient-to-br from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 z-40 flex flex-col py-5 px-3 shadow-lg rounded-l-2xl overflow-y-auto transition-transform duration-300 lg:hidden
           ${open_slider ? "translate-x-0" : "translate-x-full"} thin-scrollbar`}
             >
-                {/* دکمه بستن */}
                 <button
                     onClick={open_close}
                     className="self-end p-2 mb-4 rounded-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
@@ -212,7 +220,6 @@ const Sidebar = ({ open_close, open_slider }) => {
                     ✕
                 </button>
 
-                {/* محتوای Sidebar موبایل مثل دسکتاپ */}
                 <div className="flex flex-col h-full justify-between">
                     <div className="mx-3 flex flex-col items-center justify-center text-sm">
                         <MyAnimation />

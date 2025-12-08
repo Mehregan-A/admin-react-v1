@@ -222,7 +222,7 @@ const CategoryList = () => {
                     <AttributeCategory
                         open_slider={openAtt.open}
                         open_close={() => setOpenAtt({ open: !openAtt.open })}
-                        reload={() => dispatch(getAsyncListVariantAttribute({ row, page }))}
+                        reload={() => dispatch(getAsyncListCategory({ row, page }))}
                         Id={isIdsEdit.id}
                         variantAttribute_list={list_category.data}
                     />

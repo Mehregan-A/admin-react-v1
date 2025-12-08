@@ -58,9 +58,13 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
     const validationSchema = yup.object({
         title: yup
             .string()
-            .required('نام الزامی است')
-            .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
-            .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
+            .required('عنوان مقاله الزامی است')
+            .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        url: yup
+            .string()
+            .required('آدرس URL الزامی است')
+            .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
 
     });
     const onSubmit = (values) => {
@@ -156,8 +160,8 @@ const AddSubCategory = ({Id,list_sub_category,open_close,reload,open_slider}) =>
                             <div className="flex flex-col md:gap-4 gap-6">
                                 {/* Inputs */}
                                 <div className="w-full flex flex-col items-center justify-center gap-10">
-                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام زیر دسته" />
-                                    <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
+                                    <Input formik={formik} maxLength={100} name="title" label="نام زیر دسته" />
+                                    <Input formik={formik} maxLength={100} name="url" noPersian={true} label="url" />
                                     <SelectOption
                                         formik={formik}
                                         options={list_category_select}
