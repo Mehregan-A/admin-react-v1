@@ -31,7 +31,6 @@ const AddArticle = () => {
     const {theme}=useSelector(state => state.theme)
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
-        dispatch(getAsyncSelectCategory())
         if (id){
             dispatch(getAsyncGetInfoArticle({Id:id}))
         }else{

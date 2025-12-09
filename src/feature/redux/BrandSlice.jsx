@@ -17,15 +17,6 @@ export const getAsyncSelectBrand = createAsyncThunk("brand/getAsyncSelectBrand",
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
 export const postAsyncEditBrand = createAsyncThunk("brand/postAsyncEditBrand", async (payload, { rejectWithValue }) => {
     try {
         const res = await http.put(`/admin/brand/update/${payload.id}`, payload, {});
@@ -59,31 +50,6 @@ export const deleteAsyncBrand = createAsyncThunk("brand/deleteAsyncBrand",async 
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategoryAtt = createAsyncThunk("category/deleteAsyncCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/remove/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCategoryAddAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/add/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
 
 
 const initialState = {
@@ -100,8 +66,6 @@ const initialState = {
     isLoading: false,
     isError: false,
 }
-
-
 
 
 const BrandSlice = createSlice({
@@ -148,23 +112,6 @@ const BrandSlice = createSlice({
             state.list_brand_select = action.payload
             state.isLoading_list = false
             state.isError_list = true
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-            // const user = action.payload.data.result.user;
-            // state.usersData[user.id] = user;
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
-            state.isLoading = false
-            state.isError = true
         })
         builder.addCase(postAsyncEditBrand.fulfilled,(state, action)=>{
             state.result = action.payload
@@ -220,45 +167,6 @@ const BrandSlice = createSlice({
         builder.addCase(deleteAsyncBrand.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(deleteAsyncCategoryAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(postAsyncCategoryAddAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
-            state.isLoading = false
-            state.isError = true
         })
     }
 })

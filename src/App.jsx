@@ -47,8 +47,8 @@ function App() {
                     <Route path="free-shipping/list" element={<FreeShippingList/>} />
                     <Route path="seo-site" element={<SeoList/>} />
                     <Route path="product/add/:id" element={<AddProduct />} />
+                    <Route path="product/add" element={<AddProduct />} />
                     <Route path="article/add/:id" element={<AddArticle />} />
-                    <Route path="order/detail/:id" element={<OrderDetail />} />
                     <Route path="article/add" element={<AddArticle />} />
                     <Route path="setting" element={<SettingList />} />
                     <Route path="sms-setting" element={<SmsSetting />} />

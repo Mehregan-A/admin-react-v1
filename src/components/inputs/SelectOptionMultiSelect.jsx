@@ -14,11 +14,9 @@ const SelectOptionMultiSelect = ({
     const [value, setValue] = useState([]);
     const [dropdown, setDropdown] = useState(false);
 
-    // 🟢 انتخاب یا حذف آیتم
     const selectHandler = (input) => {
         if (!formik || !formik.setFieldValue) return;
 
-        // تبدیل همه مقادیر به string برای تطابق مطمئن
         const current = Array.isArray(formikAddress)
             ? formikAddress.map(String)
             : [];
@@ -34,7 +32,6 @@ const SelectOptionMultiSelect = ({
 
         formik.setFieldValue(name, newValues);
 
-        // بروزرسانی لیبل‌ها
         const newLabels = options
             .filter((item) => newValues.includes(String(item.value)))
             .map((x) => x.label);
@@ -42,7 +39,6 @@ const SelectOptionMultiSelect = ({
         setValue(newLabels);
     };
 
-    // 🟢 بروزرسانی وقتی options یا formikAddress تغییر کرد
     useEffect(() => {
         if (Array.isArray(formikAddress) && Array.isArray(options)) {
             const initialLabels = options
@@ -54,7 +50,7 @@ const SelectOptionMultiSelect = ({
         }
     }, [formikAddress, options]);
 
-    // 🟢 بستن دراپ‌دان هنگام کلیک بیرون از کامپوننت
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (!event.target.closest(`[data-select="${name}"]`)) {

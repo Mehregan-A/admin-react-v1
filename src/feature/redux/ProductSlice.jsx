@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
+import {putAsyncEditArticle} from "./ArticleSlice.jsx";
 
 export const getAsyncListProduct = createAsyncThunk("product/getAsyncListProduct",async (payload,{rejectWithValue})=>{
     try {
@@ -18,14 +19,15 @@ export const getAsyncInfoProduct = createAsyncThunk("product/getAsyncInfoProduct
         return rejectWithValue(error.response, error.message)
     }
 })
-export const postAsyncEditCategory = createAsyncThunk("category/postAsyncEditCategory", async (payload, { rejectWithValue }) => {
+export const putAsyncEditProduct = createAsyncThunk("product/putAsyncEditProduct", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.post(`/admin/category/update/${payload.id}`, payload, {});
+        const res = await http.put(`/admin/products/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 });
+
 export const postAsyncAddProduct = createAsyncThunk("product/postAsyncAddProduct",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.post("/admin/products/add",payload,{})
@@ -51,31 +53,7 @@ export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategor
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategoryAtt = createAsyncThunk("category/deleteAsyncCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/remove/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCategoryAddAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/add/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
+
 
 
 const initialState = {
@@ -83,30 +61,24 @@ const initialState = {
     isLoading_action: false,
     isLoading_list:false,
     isError_list:false,
-    info_product: [],
+    info_product: false,
     list_product:[],
-    list_category_select:[],
-    list_info_user:[],
-    usersData: {},
     result : false,
     isLoading: false,
     isError: false,
 }
 
-
-
-
 const ProductSlice = createSlice({
     name: 'product',
     initialState,
     reducers : {
-        categoryClearResult : (state) => {
+        productClearResult : (state) => {
             state.result = false
         },
-        categoryClearResultDelete : (state) => {
+        productClearResultDelete : (state) => {
             state.result_delete = false
         },
-        categoryClearInfo : (state) => {
+        productClearInfo : (state) => {
             state.info_edit = false
         },
     },
@@ -143,18 +115,19 @@ const ProductSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(postAsyncEditCategory.fulfilled,(state, action)=>{
+        builder.addCase(putAsyncEditProduct.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncEditCategory.pending,(state)=>{
+        builder.addCase(putAsyncEditProduct.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncEditCategory.rejected,(state,action)=>{
+        builder.addCase(putAsyncEditProduct.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
+
         builder.addCase(postAsyncAddProduct.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
@@ -198,47 +171,8 @@ const ProductSlice = createSlice({
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategoryAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(deleteAsyncCategoryAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(postAsyncCategoryAddAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
-            state.isLoading = false
-            state.isError = true
-        })
     }
 })
-export const { categoryClearResult,categoryClearInfo,categoryClearResultDelete} = ProductSlice.actions
+export const { productClearResult,productClearInfo,productClearResultDelete} = ProductSlice.actions
 
 export default ProductSlice.reducer

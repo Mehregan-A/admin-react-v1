@@ -17,7 +17,6 @@ const Sidebar = ({ open_close, open_slider }) => {
     const sidebarRef = useRef();
     const [subId, setSubId] = useState(0);
 
-    // تعیین آیتم فعال
     useEffect(() => {
         const activeSubId =
             SideItem.find(
