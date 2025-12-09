@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
@@ -34,6 +34,7 @@ import {getAsyncListAttributeSelect} from "../../feature/redux/AttributeSlice.js
 import {AnimatePresence, motion} from "framer-motion";
 import FaIcons from "../../components/Icon.jsx";
 import {HiOutlineChevronDown} from "react-icons/hi";
+import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
 
 
 const AddProduct = () => {
@@ -42,7 +43,10 @@ const AddProduct = () => {
     const {list_category_select} = useSelector(state => state.category);
     const {list_brand_select} = useSelector(state => state.brand);
     const {list_attribute_select} = useSelector(state => state.attribute);
+    const { list_attribute_val,isError_list,result_delete,isLoading_list,search,isLoading_search } = useSelector(state => state.attributeVal);
     const {theme}=useSelector(state => state.theme)
+    const [openAttribute, setOpenAttribute] = useState(null);
+
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
         dispatch(getAsyncSelectBrand())
@@ -256,78 +260,69 @@ const AddProduct = () => {
                             <div className="flex flex-col gap-6">
                                 <div className="flex gap-2 ">
                                     <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
-                                        {list_attribute_select?.length>0 && list_attribute_select?.map((att) => (
-                                            <li
-                                                key={att.value}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    subMenu(item.id);
-                                                }}
-                                                className={`relative group border border-gray-300 cursor-pointer p-2 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
-                                                hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
-                                            >
-                                                <div
-                                                    className={`
-                                                     absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}
+                                        {list_attribute_select?.length > 0 &&
+                                            list_attribute_select.map((att) => (
+                                                <li
+                                                    key={att.value}
+                                                    onClick={() => {
+                                                        dispatch(getAsyncListAttributeVal({ Id: att.value }));
+                                                        setOpenAttribute(openAttribute === att.value ? null : att.value);
+                                                    }}
+                                                    className={`relative group border border-gray-300 cursor-pointer p-2 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
+                hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                                 >
-                                                </div>
+                                                    <div className="flex justify-between items-center w-full">
+                <span className="dark:text-stone-100 text-sm text-gray-800 mr-1">
+                    {att.label}
+                </span>
 
-                                                <div className="flex justify-between items-center w-full">
-                                            <span className="dark:text-stone-100 text-sm text-cyan-700 mr-1">
-                                                {att.label}
-                                            </span>
-                                                    <HiOutlineChevronDown
-                                                        className={`flex justify-end text-cyan-300 transition-transform duration-300 animate-bounce 
-                                  
-                                                       `}
-                                                    />
-                                                </div>
-                                                {/*<AnimatePresence>*/}
-                                                {/*    <motion.ul*/}
-                                                {/*        layout*/}
-                                                {/*        initial={{ height: 0, opacity: 0 }}*/}
-                                                {/*        animate={{ height: "auto", opacity: 1 }}*/}
-                                                {/*        exit={{ height: 0, opacity: 0 }}*/}
-                                                {/*        transition={{ duration: 0.3, ease: "easeInOut" }}*/}
-                                                {/*        className="w-full mt-2 flex flex-col border-r-2 border-gray-200 overflow-hidden"*/}
-                                                {/*    >*/}
-                                                {/*        {item.sub.map((sub) => (*/}
-                                                {/*            <li key={sub.id} className="relative flex items-center py-2">*/}
-                                                {/*             <span className="absolute left-full top-0 bottom-0 w-6 pointer-events-none" aria-hidden="true">*/}
-                                                {/*                  <svg*/}
-                                                {/*                      viewBox="0 0 24 100"*/}
-                                                {/*                      preserveAspectRatio="none"*/}
-                                                {/*                      className="absolute inset-0 h-full w-full stroke-gray-300 transform -rotate-90"*/}
-                                                {/*                  >*/}
-                                                {/*                    <path d="M50,18 Q5,50 10,10" fill="none" strokeWidth="1" />*/}
-                                                {/*                  </svg>*/}
-                                                {/*                </span>*/}
-                                                {/*                <NavLink*/}
-                                                {/*                    to={sub.link}*/}
-                                                {/*                    onClick={(e) => {*/}
-                                                {/*                        e.stopPropagation();*/}
-                                                {/*                        handleItemClick();*/}
-                                                {/*                    }}*/}
-                                                {/*                    className={({ isActive }) =>*/}
-                                                {/*                        `flex items-center mr-3 gap-2 px-1 py-1 transition-all duration-500 ease-in-out w-full ${*/}
-                                                {/*                            isActive*/}
-                                                {/*                                ? "font-semibold text-cyan-600 dark:text-cyan-400 bg-cyan-300/50 dark:bg-cyan-900/50 rounded-lg mr-1"*/}
-                                                {/*                                : "text-gray-700 dark:text-gray-300"*/}
-                                                {/*                        }`*/}
-                                                {/*                    }*/}
-                                                {/*                >*/}
-                                                {/*                    <div*/}
-                                                {/*                        className="w-full py-2.5 px-2 rounded-lg mr-1 transition-all duration-500 ease-in-out hover:bg-cyan-300/50 dark:hover:bg-cyan-900/50 transform hover:scale-105">*/}
-                                                {/*                        {sub.label}*/}
-                                                {/*                    </div>*/}
-                                                {/*                </NavLink>*/}
-                                                {/*            </li>*/}
-                                                {/*        ))}*/}
-                                                {/*    </motion.ul>*/}
-                                                {/*</AnimatePresence>*/}
-                                            </li>
+                                                        <HiOutlineChevronDown
+                                                            className={`text-cyan-300 transition-transform duration-300 
+                        ${openAttribute === att.value ? "rotate-180" : ""}`}
+                                                        />
+                                                    </div>
 
-                                        ))}
+                                                    {/* Attribute Value Dropdown */}
+                                                    <AnimatePresence>
+                                                        {openAttribute === att.value && (
+                                                            <motion.ul
+                                                                initial={{ height: 0, opacity: 0 }}
+                                                                animate={{ height: "auto", opacity: 1 }}
+                                                                exit={{ height: 0, opacity: 0 }}
+                                                                transition={{ duration: 0.25 }}
+                                                                className="w-full bg-cyan-50 dark:bg-cyan-900/30 mt-2 rounded-lg p-2 overflow-hidden border border-cyan-100 dark:border-cyan-800"
+                                                            >
+                                                                {/* loading state */}
+                                                                {isLoading_list && (
+                                                                    <li className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
+                                                                        در حال بارگذاری...
+                                                                    </li>
+                                                                )}
+
+                                                                {/* list of attribute values */}
+                                                                {!isLoading_list &&
+                                                                    list_attribute_val?.map((val) => (
+                                                                        <li
+                                                                            key={val.value}
+                                                                            className="py-2 px-2 rounded hover:bg-cyan-200/40 dark:hover:bg-cyan-700/40 transition cursor-pointer text-sm text-gray-700 dark:text-gray-300"
+                                                                        >
+                                                                            {val.label}
+                                                                        </li>
+                                                                    ))}
+
+                                                                {/* error state */}
+                                                                {isError_list && (
+                                                                    <li className="py-2 px-2 text-red-500 text-sm">
+                                                                        خطا در دریافت مقدارها
+                                                                    </li>
+                                                                )}
+                                                            </motion.ul>
+                                                        )}
+                                                    </AnimatePresence>
+                                                </li>
+                                            ))
+                                        }
+
                                         {/*<SelectOptionMultiSelect*/}
                                         {/*    formik={formik}*/}
                                         {/*    formikAddress={formik.values.attribute}*/}
