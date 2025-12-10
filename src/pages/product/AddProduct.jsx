@@ -166,7 +166,7 @@ const AddProduct = () => {
         )
         : undefined;
     const subCategories = selectedSubCategory?.sub_category || [];
-    console.log(list_attribute_select)
+    console.log(formik.values.attribute)
 
     return (
         <>
@@ -261,67 +261,130 @@ const AddProduct = () => {
                                 <div className="flex gap-2 ">
                                     <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
                                         {list_attribute_select?.length > 0 &&
-                                            list_attribute_select.map((att) => (
-                                                <li
-                                                    key={att.value}
-                                                    onClick={() => {
-                                                        dispatch(getAsyncListAttributeVal({ Id: att.value }));
-                                                        setOpenAttribute(openAttribute === att.value ? null : att.value);
-                                                    }}
-                                                    className={`relative group border border-gray-300 cursor-pointer p-2 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
-                hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
-                                                >
-                                                    <div className="flex justify-between items-center w-full">
-                <span className="dark:text-stone-100 text-sm text-gray-800 mr-1">
-                    {att.label}
-                </span>
+                                            list_attribute_select.map((att) => {
+                                                const exists = formik.values.attribute.some(a => a.id === att.value);
 
-                                                        <HiOutlineChevronDown
-                                                            className={`text-cyan-300 transition-transform duration-300 
-                        ${openAttribute === att.value ? "rotate-180" : ""}`}
-                                                        />
-                                                    </div>
+                                                return (
+                                                    <li
+                                                        key={att.value}
+                                                        onClick={() => {
+                                                            dispatch(getAsyncListAttributeVal({ Id: att.value }));
+                                                            setOpenAttribute(
+                                                                openAttribute === att.value ? null : att.value
+                                                            );
 
-                                                    {/* Attribute Value Dropdown */}
-                                                    <AnimatePresence>
-                                                        {openAttribute === att.value && (
-                                                            <motion.ul
-                                                                initial={{ height: 0, opacity: 0 }}
-                                                                animate={{ height: "auto", opacity: 1 }}
-                                                                exit={{ height: 0, opacity: 0 }}
-                                                                transition={{ duration: 0.25 }}
-                                                                className="w-full bg-cyan-50 dark:bg-cyan-900/30 mt-2 rounded-lg p-2 overflow-hidden border border-cyan-100 dark:border-cyan-800"
-                                                            >
-                                                                {/* loading state */}
-                                                                {isLoading_list && (
-                                                                    <li className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
-                                                                        در حال بارگذاری...
-                                                                    </li>
-                                                                )}
+                                                            // ❗ از تکرار جلوگیری می‌کنیم
+                                                            if (!exists) {
+                                                                formik.setFieldValue("attribute", [
+                                                                    ...formik.values.attribute,
+                                                                    {
+                                                                        id: att.value,
+                                                                        title: att.label,
+                                                                        data_type: att.data_type,
+                                                                        value: []
+                                                                    }
+                                                                ]);
+                                                            }
+                                                        }}
+                                                        className={`relative group border border-gray-300 cursor-pointer p-2 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
+                  hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
+                                                    >
+                                                        <div className="flex justify-between items-center w-full">
+                    <span className="dark:text-stone-100 text-sm text-gray-800 mr-1">
+                        {att.label}
+                    </span>
 
-                                                                {/* list of attribute values */}
-                                                                {!isLoading_list &&
-                                                                    list_attribute_val?.map((val) => (
-                                                                        <li
-                                                                            key={val.value}
-                                                                            className="py-2 px-2 rounded hover:bg-cyan-200/40 dark:hover:bg-cyan-700/40 transition cursor-pointer text-sm text-gray-700 dark:text-gray-300"
-                                                                        >
-                                                                            {val.label}
+                                                            <HiOutlineChevronDown
+                                                                className={`text-cyan-300 transition-transform duration-300 
+                         ${openAttribute === att.value ? "rotate-180" : ""}`}
+                                                            />
+                                                        </div>
+
+                                                        {/* Attribute Value Dropdown */}
+                                                        <AnimatePresence>
+                                                            {openAttribute === att.value && (
+                                                                <motion.ul
+                                                                    initial={{ height: 0, opacity: 0 }}
+                                                                    animate={{ height: "auto", opacity: 1 }}
+                                                                    exit={{ height: 0, opacity: 0 }}
+                                                                    transition={{ duration: 0.25 }}
+                                                                    className="w-full bg-gray-50 dark:bg-cyan-900/30 mt-2 rounded-lg p-2 overflow-hidden dark:border-cyan-800"
+                                                                >
+                                                                    {isLoading_list && (
+                                                                        <li className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
+                                                                            در حال بارگذاری...
                                                                         </li>
-                                                                    ))}
+                                                                    )}
 
-                                                                {/* error state */}
-                                                                {isError_list && (
-                                                                    <li className="py-2 px-2 text-red-500 text-sm">
-                                                                        خطا در دریافت مقدارها
-                                                                    </li>
-                                                                )}
-                                                            </motion.ul>
-                                                        )}
-                                                    </AnimatePresence>
-                                                </li>
-                                            ))
-                                        }
+                                                                    {!isLoading_list &&
+                                                                        list_attribute_val?.map((val) => (
+                                                                            <li
+                                                                                onClick={(e) => {
+                                                                                    e.stopPropagation(); // مانع بسته شدن dropdown
+
+                                                                                    const attributeId = att.value;
+
+                                                                                    // همه valueها را آماده می‌کنیم
+                                                                                    const allValues = list_attribute_val.map(v => ({
+                                                                                        id: v.value,
+                                                                                        title: v.label,
+                                                                                        select: false
+                                                                                    }));
+
+                                                                                    const updated = formik.values.attribute.map(attr => {
+                                                                                        if (attr.id === attributeId) {
+
+                                                                                            const newValues = allValues.map(v => {
+                                                                                                const existing = attr.value.find(item => item.id === v.id);
+
+                                                                                                // اگر روی همین value کلیک شده → toggle select
+                                                                                                if (v.id === val.value) {
+                                                                                                    return {
+                                                                                                        ...v,
+                                                                                                        select: existing ? !existing.select : true
+                                                                                                    };
+                                                                                                }
+
+                                                                                                // اگر قبلاً در value بوده → همان را نگه دار
+                                                                                                if (existing) {
+                                                                                                    return existing;
+                                                                                                }
+
+                                                                                                // بقیه مقدارها select:false باشند
+                                                                                                return v;
+                                                                                            });
+
+                                                                                            return {
+                                                                                                ...attr,
+                                                                                                value: newValues
+                                                                                            };
+                                                                                        }
+
+                                                                                        return attr;
+                                                                                    });
+
+                                                                                    formik.setFieldValue("attribute", updated);
+                                                                                }}
+
+                                                                                key={val.value}
+                                                                                className="py-2 px-2 rounded hover:bg-cyan-200/40 dark:hover:bg-cyan-700/40 transition cursor-pointer text-sm text-gray-700 dark:text-gray-300"
+                                                                            >
+                                                                                {val.label}
+                                                                            </li>
+                                                                        ))}
+
+                                                                    {isError_list && (
+                                                                        <li className="py-2 px-2 text-red-500 text-sm">
+                                                                            خطا در دریافت مقدارها
+                                                                        </li>
+                                                                    )}
+                                                                </motion.ul>
+                                                            )}
+                                                        </AnimatePresence>
+                                                    </li>
+                                                );
+                                            })}
+
 
                                         {/*<SelectOptionMultiSelect*/}
                                         {/*    formik={formik}*/}
