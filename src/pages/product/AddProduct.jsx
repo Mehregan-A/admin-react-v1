@@ -303,28 +303,26 @@ const AddProduct = () => {
                                                         {/* Attribute Value Dropdown */}
                                                         <AnimatePresence>
                                                             {openAttribute === att.value && (
-                                                                <motion.ul
+                                                                <motion.div
                                                                     initial={{ height: 0, opacity: 0 }}
                                                                     animate={{ height: "auto", opacity: 1 }}
                                                                     exit={{ height: 0, opacity: 0 }}
                                                                     transition={{ duration: 0.25 }}
-                                                                    className="w-full bg-gray-50 dark:bg-cyan-900/30 mt-2 rounded-lg p-2 overflow-hidden dark:border-cyan-800"
+                                                                    className="w-full grid grid-cols-2 items-center gap-2  drop-shadow-lg drop-shadow-gray-300 bg-white/60 dark:bg-cyan-900/30 mt-2 rounded-lg p-4 overflow-y-auto max-h-36"
                                                                 >
                                                                     {isLoading_list && (
-                                                                        <li className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
+                                                                        <div className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
                                                                             در حال بارگذاری...
-                                                                        </li>
+                                                                        </div>
                                                                     )}
 
                                                                     {!isLoading_list &&
                                                                         list_attribute_val?.map((val) => (
-                                                                            <li
+                                                                            <div
                                                                                 onClick={(e) => {
-                                                                                    e.stopPropagation(); // مانع بسته شدن dropdown
+                                                                                    e.stopPropagation();
 
                                                                                     const attributeId = att.value;
-
-                                                                                    // همه valueها را آماده می‌کنیم
                                                                                     const allValues = list_attribute_val.map(v => ({
                                                                                         id: v.value,
                                                                                         title: v.label,
@@ -336,8 +334,6 @@ const AddProduct = () => {
 
                                                                                             const newValues = allValues.map(v => {
                                                                                                 const existing = attr.value.find(item => item.id === v.id);
-
-                                                                                                // اگر روی همین value کلیک شده → toggle select
                                                                                                 if (v.id === val.value) {
                                                                                                     return {
                                                                                                         ...v,
@@ -345,12 +341,10 @@ const AddProduct = () => {
                                                                                                     };
                                                                                                 }
 
-                                                                                                // اگر قبلاً در value بوده → همان را نگه دار
                                                                                                 if (existing) {
                                                                                                     return existing;
                                                                                                 }
 
-                                                                                                // بقیه مقدارها select:false باشند
                                                                                                 return v;
                                                                                             });
 
@@ -367,10 +361,43 @@ const AddProduct = () => {
                                                                                 }}
 
                                                                                 key={val.value}
-                                                                                className="py-2 px-2 rounded hover:bg-cyan-200/40 dark:hover:bg-cyan-700/40 transition cursor-pointer text-sm text-gray-700 dark:text-gray-300"
+                                                                                className={`
+                                                                                    p-1 rounded-lg flex items-center justify-center 
+                                                                                    transition cursor-pointer text-sm
+                                                                                    dark:text-gray-300 text-gray-700
+                                                                                    bg-white/80 drop-shadow-lg drop-shadow-gray-300
+                                                                                    ${formik.values.attribute
+                                                                                    ?.find(a => a.id === att.value)
+                                                                                    ?.value?.find(v => v.id === val.value)?.select
+                                                                                    ? ""
+                                                                                    : "hover:bg-cyan-100/30 dark:hover:bg-cyan-700/20"
+                                                                                }
+    `}
                                                                             >
-                                                                                {val.label}
-                                                                            </li>
+                                                                                <div className="flex gap-2 items-center">
+                                                                                    <span>
+                                                                                    {val.label}
+                                                                                </span>
+                                                                                    <input
+                                                                                        type="checkbox"
+                                                                                        checked={
+                                                                                            formik.values.attribute
+                                                                                                ?.find(a => a.id === att.value)
+                                                                                                ?.value?.find(v => v.id === val.value)?.select || false
+                                                                                        }
+                                                                                        readOnly
+                                                                                        className="
+                                                                                            w-4 h-4 cursor-pointer appearance-none rounded-md
+                                                                                            border border-gray-400 dark:border-gray-500
+                                                                                            transition-all duration-300
+                                                                                            checked:bg-cyan-500 checked:border-cyan-500
+                                                                                            hover:border-cyan-400 hover:shadow-md hover:shadow-cyan-300/40
+                                                                                            relative
+                                                                                        "
+                                                                                    />
+
+                                                                                </div>
+                                                                            </div>
                                                                         ))}
 
                                                                     {isError_list && (
@@ -378,7 +405,7 @@ const AddProduct = () => {
                                                                             خطا در دریافت مقدارها
                                                                         </li>
                                                                     )}
-                                                                </motion.ul>
+                                                                </motion.div>
                                                             )}
                                                         </AnimatePresence>
                                                     </li>
