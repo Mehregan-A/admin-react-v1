@@ -34,7 +34,11 @@ import {getAsyncListAttributeSelect} from "../../feature/redux/AttributeSlice.js
 import {AnimatePresence, motion} from "framer-motion";
 import FaIcons from "../../components/Icon.jsx";
 import {HiOutlineChevronDown} from "react-icons/hi";
-import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
+import {
+    attributeValClearResult,
+    getAsyncAddAttributeVal,
+    getAsyncListAttributeVal
+} from "../../feature/redux/AttributeValueSlice.jsx";
 
 
 const AddProduct = () => {
@@ -43,9 +47,10 @@ const AddProduct = () => {
     const {list_category_select} = useSelector(state => state.category);
     const {list_brand_select} = useSelector(state => state.brand);
     const {list_attribute_select} = useSelector(state => state.attribute);
-    const { list_attribute_val,isError_list,result_delete,isLoading_list,search,isLoading_search } = useSelector(state => state.attributeVal);
+    const { list_attribute_val,isError_list,isLoading_list,result:result_val} = useSelector(state => state.attributeVal);
     const {theme}=useSelector(state => state.theme)
     const [openAttribute, setOpenAttribute] = useState(null);
+    const [AttributeId, setAttributeId] = useState("");
 
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
@@ -166,7 +171,20 @@ const AddProduct = () => {
         )
         : undefined;
     const subCategories = selectedSubCategory?.sub_category || [];
-    console.log(formik.values.attribute)
+    useEffect(() => {
+        if(result_val && result_val?.status){
+            if(result_val.status === 200) {
+                // toast
+                Toast.success(`${result_val.data.message}`);
+                dispatch(getAsyncListAttributeVal({Id:AttributeId}));
+                dispatch(attributeValClearResult())
+            }else{
+                // toast
+                Toast.error(`${result_val.data.message}`);
+                dispatch(attributeValClearResult())
+            }
+        }
+    }, [result_val]);
 
     return (
         <>
@@ -187,22 +205,30 @@ const AddProduct = () => {
                     <form onSubmit={formik.handleSubmit} className="md:flex-row flex flex-col w-full  items-start gap-5">
                         <div className="bg-gray-100/50 p-5 dark:bg-gray-700/40 rounded-2xl flex xl:w-4/6 w-full flex-col gap-5">
                             <div className="flex flex-col">
-                                <div className="flex flex-col xl:flex-row w-full bg-gray-100 rounded-xl  dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
-                                    <div className="flex xl:w-3/4 w-full flex-col gap-4 p-4">
-                                        <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />
-                                        <Input formik={formik} maxLength={40} name="title" label="نام محصول" />
-                                        <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />
+                                <div className="flex flex-col gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
+                                    <div className="flex flex-col xl:flex-row gap-3">
+                                        <div className="flex xl:w-3/4 w-full flex-col gap-4">
+                                            <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />
+                                            <Input formik={formik} maxLength={40} name="title" label="نام محصول" />
+                                            <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />
+                                        </div>
+                                        <div className="flex xl:w-1/4 w-full flex-col rounded-xl">
+                                            <Media
+                                                single={true}
+                                                label="تصویر"
+                                                desc="تصویر"
+                                                name="image"
+                                                formik={formik}
+                                                formikAddress={formik.values.image}/>
+                                        </div>
                                     </div>
-                                    <div className="flex xl:w-1/4  w-full flex-col rounded-xl p-4">
-                                        <Media
-                                            single={true}
-                                            label="تصویر"
-                                            desc="تصویر"
-                                            name="image"
-                                            formik={formik}
-                                            formikAddress={formik.values.image}/>
+                                    <div className="w-full border-2 border-dashed bg-gray-50 dark:bg-gray-800 dark:border-gray-400 border-gray-200 p-4 rounded-xl h-52 ">
+                                        <button className="bg-cyan-400 shadow-lg text-sm rounded-lg p-2 text-gray-100 cursor-pointer">
+                                            افزودن رسانه
+                                        </button>
                                     </div>
                                 </div>
+
                                 <div className="flex justify-center">
                                 </div>
                             </div>
@@ -265,15 +291,15 @@ const AddProduct = () => {
                                                 const exists = formik.values.attribute.some(a => a.id === att.value);
 
                                                 return (
-                                                    <li
+                                                    <div
                                                         key={att.value}
                                                         onClick={() => {
+                                                            setAttributeId(att.value);
                                                             dispatch(getAsyncListAttributeVal({ Id: att.value }));
                                                             setOpenAttribute(
                                                                 openAttribute === att.value ? null : att.value
                                                             );
 
-                                                            // ❗ از تکرار جلوگیری می‌کنیم
                                                             if (!exists) {
                                                                 formik.setFieldValue("attribute", [
                                                                     ...formik.values.attribute,
@@ -287,16 +313,16 @@ const AddProduct = () => {
                                                             }
                                                         }}
                                                         className={`relative group border border-gray-300 cursor-pointer p-2 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
-                  hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
+                                                        hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                                     >
                                                         <div className="flex justify-between items-center w-full">
-                    <span className="dark:text-stone-100 text-sm text-gray-800 mr-1">
-                        {att.label}
-                    </span>
+                                                            <span className="dark:text-stone-100 text-sm text-gray-800 mr-1">
+                                                                {att.label}
+                                                            </span>
 
                                                             <HiOutlineChevronDown
                                                                 className={`text-cyan-300 transition-transform duration-300 
-                         ${openAttribute === att.value ? "rotate-180" : ""}`}
+                                                                 ${openAttribute === att.value ? "rotate-180" : ""}`}
                                                             />
                                                         </div>
 
@@ -308,14 +334,54 @@ const AddProduct = () => {
                                                                     animate={{ height: "auto", opacity: 1 }}
                                                                     exit={{ height: 0, opacity: 0 }}
                                                                     transition={{ duration: 0.25 }}
-                                                                    className="w-full grid grid-cols-2 items-center gap-2  drop-shadow-lg drop-shadow-gray-300 bg-white/60 dark:bg-cyan-900/30 mt-2 rounded-lg p-4 overflow-y-auto max-h-36"
+                                                                    className="w-full grid grid-cols-2 items-center gap-2  shadow-lg dark:shadow-gray-600 bg-white/60 dark:bg-gray-800 dark:border dark:border-cyan-300 mt-2 rounded-lg p-4 overflow-y-auto max-h-36"
                                                                 >
                                                                     {isLoading_list && (
                                                                         <div className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
                                                                             در حال بارگذاری...
                                                                         </div>
                                                                     )}
+                                                                    <form
+                                                                        onClick={(e) => e.stopPropagation()}
+                                                                        className="w-full col-span-2"
+                                                                    >
+                                                                        <div className="flex items-center gap-2">
+                                                                            <Input
+                                                                                formik={formik}
+                                                                                name="title"
+                                                                                label="افزودن ویژگی"
+                                                                            />
 
+                                                                            <button
+                                                                                type="button"
+                                                                                disabled={!formik.values.title.trim() || isLoading}
+                                                                                onClick={() => {
+                                                                                    const title = formik.values.title.trim();
+
+                                                                                    if (!title) return;
+
+                                                                                    dispatch(
+                                                                                        getAsyncAddAttributeVal({
+                                                                                            title,
+                                                                                            Id: att.value
+                                                                                        })
+                                                                                    );
+                                                                                    formik.setFieldValue("title", "");
+                                                                                }}
+                                                                                className="flex mt-4 h-10 text-xs justify-center items-center gap-x-2 px-2 py-0.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 transition-colors"
+                                                                            >
+                                                                                {isLoading ? (
+                                                                                    <>
+                                                                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                                                        <span>افزودن...</span>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <span>افزودن</span>
+                                                                                )}
+                                                                            </button>
+
+                                                                        </div>
+                                                                    </form>
                                                                     {!isLoading_list &&
                                                                         list_attribute_val?.map((val) => (
                                                                             <div
@@ -365,7 +431,7 @@ const AddProduct = () => {
                                                                                     p-1 rounded-lg flex items-center justify-center 
                                                                                     transition cursor-pointer text-sm
                                                                                     dark:text-gray-300 text-gray-700
-                                                                                    bg-white/80 drop-shadow-lg drop-shadow-gray-300
+                                                                                    bg-white/80 dark:bg-gray-700/20 border-b border-gray-200 shadow-lg dark:shadow-none
                                                                                     ${formik.values.attribute
                                                                                     ?.find(a => a.id === att.value)
                                                                                     ?.value?.find(v => v.id === val.value)?.select
@@ -408,7 +474,7 @@ const AddProduct = () => {
                                                                 </motion.div>
                                                             )}
                                                         </AnimatePresence>
-                                                    </li>
+                                                    </div>
                                                 );
                                             })}
 
