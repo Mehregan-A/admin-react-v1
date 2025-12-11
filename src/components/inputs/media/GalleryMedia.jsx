@@ -182,7 +182,7 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
                             {data.map((value, index) => {
                                 return (
                                     <div key={index + 1} onClick={() => {
-                                        selectHandler({id: parseInt(value.id), type: value.type, url: value.url})
+                                        selectHandler({id: parseInt(value.id), type: value.type, url: value.url ,alt : ""})
                                     }} className=" group  container object-center justify-center overflow-y-auto p-1 bg-white dark:bg-gray-700 drop-shadow-lg drop-shadow-gray-300 dark:drop-shadow-cyan-200 dark:hover:drop-shadow-cyan-300 hover:drop-shadow-gray-500 transition-all duration-350 rounded-2xl cursor-pointer relative">
                                         <img className="object-center container object-cover rounded-2xl" src={Config.apiImage + value.url} alt=""/>
 

@@ -78,7 +78,7 @@ const AddProduct = () => {
         publish_at:"",
         seo_title:"",
         seo_desc:"",
-        gallery:"",
+        gallery:[],
         attribute:[],
         pricing_type:"",
         price:"",
@@ -186,6 +186,8 @@ const AddProduct = () => {
         }
     }, [result_val]);
 
+    console.log(formik.values.gallery)
+
     return (
         <>
             <div className={`flex flex-col gap-4`}>
@@ -210,6 +212,7 @@ const AddProduct = () => {
                                         <div className="flex xl:w-3/4 w-full flex-col gap-4">
                                             <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />
                                             <Input formik={formik} maxLength={40} name="title" label="نام محصول" />
+                                            <Input formik={formik} maxLength={40} name={"title"} label="نام محصول" />
                                             <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />
                                         </div>
                                         <div className="flex xl:w-1/4 w-full flex-col rounded-xl">
@@ -222,10 +225,30 @@ const AddProduct = () => {
                                                 formikAddress={formik.values.image}/>
                                         </div>
                                     </div>
-                                    <div className="w-full border-2 border-dashed bg-gray-50 dark:bg-gray-800 dark:border-gray-400 border-gray-200 p-4 rounded-xl h-52 ">
-                                        <button className="bg-cyan-400 shadow-lg text-sm rounded-lg p-2 text-gray-100 cursor-pointer">
-                                            افزودن رسانه
-                                        </button>
+                                    <div className="w-full rounded-xl ">
+                                        <div className="flex flex-col xl:flex-row gap-3 ">
+                                            <div className="flex gap-2  w-full flex-col rounded-xl">
+                                                <Media
+                                                    label="تصویر"
+                                                    desc="تصویر"
+                                                    name="gallery"
+                                                    formik={formik}
+                                                    formikAddress={formik.values.image}/>
+                                                {/*<button*/}
+                                                {/*    onClick={*/}
+                                                {/*        formik.setFieldValue("gallery", [*/}
+                                                {/*            ...formik.values.gallery,*/}
+                                                {/*            {*/}
+                                                {/*                url: formik.values.gallery.alt,*/}
+                                                {/*                alt: formik.values.gallery.alt,*/}
+                                                {/*            }*/}
+                                                {/*        ])}*/}
+                                                {/*    className="bg-cyan-400 shadow-lg text-sm rounded-lg p-2 text-gray-100 cursor-pointer">*/}
+                                                {/*    افزودن رسانه*/}
+                                                {/*</button>*/}
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
 
