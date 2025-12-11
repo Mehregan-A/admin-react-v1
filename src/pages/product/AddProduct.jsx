@@ -212,13 +212,12 @@ const AddProduct = () => {
                                         <div className="flex xl:w-3/4 w-full flex-col gap-4">
                                             <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />
                                             <Input formik={formik} maxLength={40} name="title" label="نام محصول" />
-                                            <Input formik={formik} maxLength={40} name={"title"} label="نام محصول" />
                                             <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />
                                         </div>
-                                        <div className="flex xl:w-1/4 w-full flex-col rounded-xl">
+                                        <div className="flex xl:w-1/4 w-full flex-col mt-2 rounded-xl">
                                             <Media
                                                 single={true}
-                                                label="تصویر"
+                                                label=" تصویر اول"
                                                 desc="تصویر"
                                                 name="image"
                                                 formik={formik}
@@ -229,7 +228,7 @@ const AddProduct = () => {
                                         <div className="flex flex-col xl:flex-row gap-3 ">
                                             <div className="flex gap-2  w-full flex-col rounded-xl">
                                                 <Media
-                                                    label="تصویر"
+                                                    label="تصویر جانبی"
                                                     desc="تصویر"
                                                     name="gallery"
                                                     formik={formik}

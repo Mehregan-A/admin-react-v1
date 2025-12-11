@@ -166,7 +166,7 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
                                     <img src={Config.apiImage + selectedItem[editImage].url} alt="تصویر آپلود شده" className="w-2/5 shadow-lg cursor-pointer h-80 object-cover rounded-lg" />
                             )}
                             </div>
-                    <div className="p-2 flex gap-3 rounded-xl justify-end">
+                    <div className="p-2 m-4 flex gap-3 border border-gray-200 rounded-xl justify-end">
                         {selectedItem.map((item,index)=>{
                             return (
                                 <div

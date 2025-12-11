@@ -2,7 +2,7 @@ import {getIn} from "formik";
 
 
 
-const TextArea = ({formik, name, label, placeholder = null, dir = 'rtl', rows = 5,hidden = false , tabIndex = false}) => {
+const TextArea = ({formik, name, label, placeholder = null, dir = 'rtl', rows = 4,hidden = false , tabIndex = false}) => {
     let errorsStyle = getIn(formik.errors, name) && getIn(formik.touched, name) ? 'border-rose-500 bg-rose-100/30' : ''
 
     let propsTabIndex = tabIndex ? {tabIndex: tabIndex} : {};
