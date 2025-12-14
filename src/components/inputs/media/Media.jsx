@@ -4,8 +4,8 @@ import {MdDelete} from "react-icons/md";
 import GalleryMedia from "./GalleryMedia.jsx";
 import {Config} from "../../../config/Config.jsx"
 import {FaCloudUploadAlt} from "react-icons/fa";
-import {BiTrash} from "react-icons/bi";
-import Input from "../Input.jsx";
+import {BiChevronLeft, BiChevronRight, BiTrash} from "react-icons/bi";
+import { motion } from "framer-motion";
 
 
 const Media = ({formik, name,formikAddress,single=false,label,desc = false ,classImg, classDiv=""}) => {
@@ -63,21 +63,18 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
         console.log(selectedItem);
 
     };
+    const [index, setIndex] = useState(0);
 
-    // const x = {
-    //     seo_title : "ali",
-    //     gallery : [
-    //         {url : "dddd" , name : "ddd" ,alt : "Dddd"}, //0
-    //         {url : "dddd" , name : "ddd" ,alt : "Dddd"}, //1
-    //         {url : "dddd" , name : "ddd" ,alt : "Dddd"}, //2
-    //         {url : "dddd" , name : "ddd" ,alt : "Dddd"}, //3
-    //     ]
-    // }
-    //
-    // ///name : "seo_title"
-    // //name : gallery[1].alt
-    // //name : gallery[index][alt]
+    const maxIndex = Math.max(0, selectedItem.length - 5);
 
+    const next = () => {
+        setIndex((prev) => Math.min(prev -1 , maxIndex));
+    };
+
+    const prev = () => {
+        setIndex((prev) => Math.max(prev +1 , 0));
+    };
+    const translateX = Math.min(index * 88, maxIndex * 88);
 
     return (
         <div className=" mt-2 rounded-2xl  w-full h-full">
@@ -114,7 +111,7 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
                     </div>
                 </div>
             ) : (
-                <div className="border-2 bg-gray-50 dark:bg-gray-800 border-dashed border-gray-300/60 border-grayMe rounded-xl py-5">
+                <div className="border-2 bg-gray-50 dark:bg-gray-800 border-dashed border-gray-300/60 border-grayMe rounded-xl ">
                     {formikAddress && formikAddress.length > 0 && (
                         <div className="mt-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -147,37 +144,83 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
                         </div>
                     )}
 
-                        <div className="flex justify-start px-4 w-full">
-                            <div className="w-full">
-                                <div onClick={() => {setOpenGallery(true)}} className="bg-cyan-400 rounded-lg shadow-[0_3px_10px_rgba(14,165,233,0.6)] hover:bg-cyan-500 hover:shadow-[0_4px_15px_rgba(14,165,233,0.8)] active:scale-95 transition-all duration-400 ease-in-out cursor-pointer text-xs w-40 rounded-l-md p-2 mt-5 px-4 text-white">{label}</div>
-                                {selectedItem.length > 0 && (
-                                    <div className="w-full">
-                                        <label
-                                            htmlFor={name}
-                                            className="mb-1 flex flex-row justify-start text-xs font-medium text-gray-900 dark:text-gray-100"
-                                        >
-                                            alt:
-                                        </label>
-                                        <input {...formik.getFieldProps(`${name}[${editImage}]['alt']`)} type="text" className="focus-visible:border-cyan-300 border border-gray-300 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus-visible:outline-0 block h-10 p-2 px-2 pr-2"/>
-                                    </div>
-                                )}
-                            </div>
-                            {selectedItem.length > 0 && (
-                                    <img src={Config.apiImage + selectedItem[editImage].url} alt="تصویر آپلود شده" className="w-2/5 shadow-lg cursor-pointer h-80 object-cover rounded-lg" />
-                            )}
-                            </div>
-                    <div className="p-2 m-4 flex gap-3 border border-gray-200 rounded-xl justify-end">
-                        {selectedItem.map((item,index)=>{
-                            return (
-                                <div
-                                    onClick={() => {setEditImage(index)}}
-                                    className="rounded-xl items-center bg-gray-50 dark:bg-gray-800 shadow-lg p-2 flex gap-5">
-                                    <img src={Config.apiImage + item.url} alt="تصویر آپلود شده" className="w-16 cursor-pointer h-full object-cover rounded-lg" />
-                                </div>
+                        <div className="flex justify-between items-end gap-3 px-4 w-full">
+                            <div className="w-full py-4">
 
-                            )
-                        })}
-                    </div>
+                                    <div className="w-full h-72 flex flex-col justify-between gap-4 px-2">
+                                        <div onClick={() => {setOpenGallery(true)}} className="bg-cyan-400 rounded-lg shadow-[0_3px_10px_rgba(14,165,233,0.6)] hover:bg-cyan-500 hover:shadow-[0_4px_15px_rgba(14,165,233,0.8)] active:scale-95 transition-all duration-400 ease-in-out cursor-pointer text-xs w-40 rounded-l-md p-2 mt-5 px-4 text-white">{label}</div>
+                                        {selectedItem.length > 0 && (
+                                            <div className="flex flex-col gap-4">
+                                                <div className="flex flex-col gap-1">
+                                                    <label
+                                                        htmlFor={name}
+                                                        className="mb-1 flex flex-row justify-start text-xs font-medium text-gray-900 dark:text-gray-100"
+                                                    >
+                                                        alt:
+                                                    </label>
+                                                    <input {...formik.getFieldProps(`${name}[${editImage}]['alt']`)} type="text" className="focus-visible:border-cyan-300 border border-gray-300 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus-visible:outline-0 block h-10 p-2 px-2 pr-2"/>
+                                                </div>
+                                                <div className="p-2 border border-gray-200 rounded-xl relative">
+                                                    {selectedItem.length > 5 && (
+                                                        <>
+                                                            <button
+                                                                onClick={next}
+                                                                disabled={index === maxIndex}
+                                                                className="absolute -right-3 top-1/2 -translate-y-1/2 flex items-center justify-center z-10 bg-white shadow rounded-full w-8 h-8"
+                                                            >
+                                                              <BiChevronRight size={20} />
+                                                            </button>
+                                                            <button
+                                                                onClick={prev}
+                                                                disabled={index === 0}
+                                                                className="absolute -left-3 top-1/2 -translate-y-1/2 flex items-center justify-center z-10 bg-white shadow rounded-full w-8 h-8"
+                                                            >
+                                                                <BiChevronLeft size={20} />
+                                                            </button>
+
+                                                        </>
+                                                    )}
+
+                                                    <div className="overflow-hidden">
+                                                        <motion.div
+                                                            className="flex gap-3 justify-end"
+                                                            animate={{
+                                                                x:
+                                                                    selectedItem.length > 5
+                                                                        ? translateX
+                                                                        : 0,
+                                                            }}
+                                                            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                                                        >
+                                                            {selectedItem.map((item, i) => (
+                                                                <div
+                                                                    key={i}
+                                                                    onClick={() => setEditImage(i)}
+                                                                    className="rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg p-2 shrink-0"
+                                                                >
+                                                                    <img
+                                                                        src={Config.apiImage + item.url}
+                                                                        alt="تصویر"
+                                                                        className="w-16 h-16 object-cover rounded-lg cursor-pointer"
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                        </motion.div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                            </div>
+                                <div className="max-w-xl py-4">
+                                    {selectedItem.length > 0 && (
+                                        <img src={Config.apiImage + selectedItem[editImage].url} alt="تصویر آپلود شده" className="w-96 shadow-lg cursor-pointer h-72 object-cover rounded-lg" />
+                                    )}
+
+                                </div>
+                            </div>
+
                 </div>
             )}
 

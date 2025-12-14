@@ -39,12 +39,14 @@ import {
     getAsyncAddAttributeVal,
     getAsyncListAttributeVal
 } from "../../feature/redux/AttributeValueSlice.jsx";
+import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
 
 
 const AddProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
+    const {list_variant_attribute_select} = useSelector(state => state.variantAttribute);
     const {list_brand_select} = useSelector(state => state.brand);
     const {list_attribute_select} = useSelector(state => state.attribute);
     const { list_attribute_val,isError_list,isLoading_list,result:result_val} = useSelector(state => state.attributeVal);
@@ -53,6 +55,7 @@ const AddProduct = () => {
     const [AttributeId, setAttributeId] = useState("");
 
     useEffect(() => {
+        dispatch(getAsyncListVariantAttributeSelect())
         dispatch(getAsyncSelectCategory())
         dispatch(getAsyncSelectBrand())
         dispatch(getAsyncListAttributeSelect())
@@ -186,8 +189,6 @@ const AddProduct = () => {
         }
     }, [result_val]);
 
-    console.log(formik.values.gallery)
-
     return (
         <>
             <div className={`flex flex-col gap-4`}>
@@ -233,18 +234,6 @@ const AddProduct = () => {
                                                     name="gallery"
                                                     formik={formik}
                                                     formikAddress={formik.values.image}/>
-                                                {/*<button*/}
-                                                {/*    onClick={*/}
-                                                {/*        formik.setFieldValue("gallery", [*/}
-                                                {/*            ...formik.values.gallery,*/}
-                                                {/*            {*/}
-                                                {/*                url: formik.values.gallery.alt,*/}
-                                                {/*                alt: formik.values.gallery.alt,*/}
-                                                {/*            }*/}
-                                                {/*        ])}*/}
-                                                {/*    className="bg-cyan-400 shadow-lg text-sm rounded-lg p-2 text-gray-100 cursor-pointer">*/}
-                                                {/*    افزودن رسانه*/}
-                                                {/*</button>*/}
                                             </div>
                                         </div>
 
@@ -257,6 +246,26 @@ const AddProduct = () => {
                             <div className="flex flex-col w-full shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl">
                                 <NilfamEditor value={formik.values.body} isDark={theme} lang="fa"
                                               onChange={newContent => formik.setFieldValue("body", newContent)} />
+                            </div>
+                            <div className="flex flex-col">
+                                <div className="flex flex-col gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
+                                    {list_variant_attribute_select.length>0 && list_variant_attribute_select?.map((item)=>{
+                                        return(
+                                            <div>{item.label}</div>
+                                        )
+                                    })}
+                                    {/*<div className="flex flex-col xl:flex-row gap-3">*/}
+                                    {/*    <div className="flex xl:w-3/4 w-full flex-col gap-4">*/}
+                                    {/*        <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />*/}
+                                    {/*        <Input formik={formik} maxLength={40} name="title" label="نام محصول" />*/}
+                                    {/*        <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />*/}
+                                    {/*    </div>*/}
+
+                                    {/*</div>*/}
+                                </div>
+
+                                <div className="flex justify-center">
+                                </div>
                             </div>
                         </div>
 

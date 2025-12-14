@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 
-export const getAsyncListAttributeSelect = createAsyncThunk("attribute/getAsyncListAttributeSelect",async (payload,{rejectWithValue})=>{
+export const getAsyncListVariantAttributeSelect = createAsyncThunk("variantAttribute/getAsyncListVariantAttributeSelect",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/attribute/select`,{})
+        const res = await http.get(`admin/variant-attribute/select`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -69,7 +69,7 @@ const initialState = {
     isError_list:false,
     info_att: [],
     variant_attribute_list:[],
-    list_attribute_select:[],
+    list_variant_attribute_select:[],
     list_info_user:[],
     usersData: {},
     result : false,
@@ -94,18 +94,18 @@ const VariantAttributeSlice = createSlice({
         },
     },
     extraReducers : (builder)=>{
-        builder.addCase(getAsyncListAttributeSelect.fulfilled,(state, action)=>{
-            state.list_attribute_select = action.payload.data.result
+        builder.addCase(getAsyncListVariantAttributeSelect.fulfilled,(state, action)=>{
+            state.list_variant_attribute_select = action.payload.data.result
             state.isLoading_list = false
             state.isError_list = false
         })
-        builder.addCase(getAsyncListAttributeSelect.pending,(state)=>{
-            state.list_attribute_select = false
+        builder.addCase(getAsyncListVariantAttributeSelect.pending,(state)=>{
+            state.list_variant_attribute_select = false
             state.isLoading_list = true
             state.isError_list = false
         })
-        builder.addCase(getAsyncListAttributeSelect.rejected,(state,action)=>{
-            state.list_attribute_select = action.payload
+        builder.addCase(getAsyncListVariantAttributeSelect.rejected,(state,action)=>{
+            state.list_variant_attribute_select = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })
