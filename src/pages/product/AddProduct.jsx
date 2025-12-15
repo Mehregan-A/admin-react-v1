@@ -73,6 +73,7 @@ const AddProduct = () => {
     const {result,isLoading,info_product} = useSelector(state => state.product);
     // redux
     const initialValues = {
+        code:"1001",
         url:'',
         title:'',
         abstract:'',
@@ -87,58 +88,57 @@ const AddProduct = () => {
         seo_desc:"",
         gallery:[],
         attribute:[],
-        pricing_type:"",
+        pricing_type:"flex",
         price:"",
         discount_price:"",
         stock_qty:"",
         weight:"",
         variants:[],
-        code:"",
         current_stock:"",
         stock_order_limit:"",
     }
     const validationSchema = yup.object({
-        title: yup
-            .string()
-            .required('عنوان مقاله الزامی است')
-            .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
-            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-
-        url: yup
-            .string()
-            .required('آدرس URL الزامی است')
-            .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-
-        abstract: yup
-            .string()
-            .required('چکیده مقاله الزامی است')
-            // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
-            .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
-
-        body: yup
-            .string()
-            .required('متن مقاله الزامی است'),
-
-        image: yup
-            .mixed()
-            .required('تصویر مقاله الزامی است'),
-
-        category_id: yup
-            .number()
-            .required('انتخاب دسته الزامی است'),
-
-        sub_category_id: yup
-            .number()
-            .required('انتخاب زیر دسته الزامی است'),
-
-        read_time: yup
-            .number()
-            .required('زمان مطالعه الزامی است'),
-        seo_title: yup
-            .string()
-            .required('عنوان سئو الزامی است')
-            .min(2, 'عنوان سئو باید حداقل 2 کاراکتر باشد')
-            .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        // title: yup
+        //     .string()
+        //     .required('عنوان مقاله الزامی است')
+        //     .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
+        //     .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        //
+        // url: yup
+        //     .string()
+        //     .required('آدرس URL الزامی است')
+        //     .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        //
+        // abstract: yup
+        //     .string()
+        //     .required('چکیده مقاله الزامی است')
+        //     // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
+        //     .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
+        //
+        // body: yup
+        //     .string()
+        //     .required('متن مقاله الزامی است'),
+        //
+        // image: yup
+        //     .mixed()
+        //     .required('تصویر مقاله الزامی است'),
+        //
+        // category_id: yup
+        //     .number()
+        //     .required('انتخاب دسته الزامی است'),
+        //
+        // sub_category_id: yup
+        //     .number()
+        //     .required('انتخاب زیر دسته الزامی است'),
+        //
+        // read_time: yup
+        //     .number()
+        //     .required('زمان مطالعه الزامی است'),
+        // seo_title: yup
+        //     .string()
+        //     .required('عنوان سئو الزامی است')
+        //     .min(2, 'عنوان سئو باید حداقل 2 کاراکتر باشد')
+        //     .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
     });
 
     const onSubmit = (values) => {
@@ -255,13 +255,29 @@ const AddProduct = () => {
                             <div className="flex flex-col">
                                 <div className="flex flex-col gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
                                     {list_variant_attribute_select.length>0 && list_variant_attribute_select?.map((item)=>{
+                                        const exists = formik.values.variants.some(a => a.id === item.value);
                                         return(
                                             <div
-                                                onClick={() => { setOpenVariant(
-                                                    openVariant === item.value ? null : item.value
-                                                )}}
-                                                className="w-full border border-gray-300 p-2 rounded-lg">
-                                                <span>{item.label}</span>
+                                                key={item.value}
+                                                onClick={() => {
+                                                    setOpenVariant(
+                                                        openVariant === item.value ? null : item.value
+                                                    );
+
+                                                    if (!exists) {
+                                                        formik.setFieldValue("variants", [
+                                                            ...formik.values.variants,
+                                                            {
+                                                                id: item.value,
+                                                                option_ids: [],
+                                                                option_labels: []
+                                                            }
+                                                        ]);
+                                                    }
+                                                }}
+                                                className="w-full border border-gray-300 p-2 rounded-lg"
+                                            >
+                                            <span>{item.label}</span>
                                                 <AnimatePresence>
                                                     {openVariant === item.value && (
                                                         <motion.div
@@ -282,43 +298,29 @@ const AddProduct = () => {
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
 
-                                                                            const variantId = val.id;
-                                                                            const allValues = list_attribute_val.map(v => ({
-                                                                                id: v.value,
-                                                                                title: v.label,
-                                                                                select: false
-                                                                            }));
+                                                                            const variantId = item.value; // 👈 رنگ، ظرفیت، ...
+                                                                            const optionId = val.id;
+                                                                            const optionLabel = val.label;
 
-                                                                            const updated = formik.values.variants.map(attr => {
-                                                                                if (attr.id === variantId) {
+                                                                            const updated = formik.values.variants.map(v => {
+                                                                                if (v.id !== variantId) return v;
 
-                                                                                    const newValues = allValues.map(v => {
-                                                                                        const existing = attr.value.find(item => item.id === v.id);
-                                                                                        if (v.id === val.value) {
-                                                                                            return {
-                                                                                                ...v,
-                                                                                                select: existing ? !existing.select : true
-                                                                                            };
-                                                                                        }
+                                                                                const exists = v.option_ids.includes(optionId);
 
-                                                                                        if (existing) {
-                                                                                            return existing;
-                                                                                        }
-
-                                                                                        return v;
-                                                                                    });
-
-                                                                                    return {
-                                                                                        ...attr,
-                                                                                        value: newValues
-                                                                                    };
-                                                                                }
-
-                                                                                return attr;
+                                                                                return {
+                                                                                    ...v,
+                                                                                    option_ids: exists
+                                                                                        ? v.option_ids.filter(id => id !== optionId)
+                                                                                        : [...v.option_ids, optionId],
+                                                                                    option_labels: exists
+                                                                                        ? v.option_labels.filter(l => l !== optionLabel)
+                                                                                        : [...v.option_labels, optionLabel]
+                                                                                };
                                                                             });
 
                                                                             formik.setFieldValue("variants", updated);
                                                                         }}
+
 
                                                                         key={val.value}
                                                                         className={`
@@ -345,8 +347,8 @@ const AddProduct = () => {
                                                                                 type="checkbox"
                                                                                 checked={
                                                                                     formik.values.variants
-                                                                                        ?.find(a => a.id === val.value)
-                                                                                        ?.value?.find(v => v.id === val.value)?.select || false
+                                                                                        ?.find(v => v.id === item.value)
+                                                                                        ?.option_ids.includes(val.id) || false
                                                                                 }
                                                                                 readOnly
                                                                                 className="
@@ -375,6 +377,56 @@ const AddProduct = () => {
                                             </div>
                                         )
                                     })}
+                                    {formik.values.variants?.length > 0 &&
+                                        formik.values.variants.map((variant, index) => (
+                                            <div
+                                                key={variant.id}
+                                                className="w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60"
+                                            >
+                                                {/* عنوان واریانت */}
+                                                <div className="mb-3 text-sm font-medium text-cyan-600 dark:text-cyan-300">
+                                                    {variant.option_labels.join(" / ")}
+                                                </div>
+
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    <Input
+                                                        formik={formik}
+                                                        onlyNum
+                                                        name={`variants.${index}.price`}
+                                                        label="قیمت کالا"
+                                                    />
+
+                                                    <Input
+                                                        formik={formik}
+                                                        onlyNum
+                                                        name={`variants.${index}.discount_price`}
+                                                        label="قیمت تخفیف"
+                                                    />
+
+                                                    <Input
+                                                        formik={formik}
+                                                        onlyNum
+                                                        name={`variants.${index}.stock_qty`}
+                                                        label="تعداد"
+                                                    />
+
+                                                    <Input
+                                                        formik={formik}
+                                                        onlyNum
+                                                        name={`variants.${index}.weight`}
+                                                        label="وزن"
+                                                    />
+
+                                                    <Input
+                                                        formik={formik}
+                                                        onlyNum
+                                                        name={`variants.${index}.stock_order_limit`}
+                                                        label="محدودیت سفارش"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
                                 </div>
                                 {/*<div className="grid grid-cols-2 gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">*/}
                                 {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="price" label="قیمت کالا" />*!/*/}
