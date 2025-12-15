@@ -146,7 +146,6 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
 
                         <div className="flex justify-between items-end gap-3 px-4 w-full">
                             <div className="w-full py-4">
-
                                     <div className="w-full h-72 flex flex-col justify-between gap-4 px-2">
                                         <div onClick={() => {setOpenGallery(true)}} className="bg-cyan-400 rounded-lg shadow-[0_3px_10px_rgba(14,165,233,0.6)] hover:bg-cyan-500 hover:shadow-[0_4px_15px_rgba(14,165,233,0.8)] active:scale-95 transition-all duration-400 ease-in-out cursor-pointer text-xs w-40 rounded-l-md p-2 mt-5 px-4 text-white">{label}</div>
                                         {selectedItem.length > 0 && (

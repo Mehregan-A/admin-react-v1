@@ -40,6 +40,8 @@ import {
     getAsyncListAttributeVal
 } from "../../feature/redux/AttributeValueSlice.jsx";
 import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
+import {set_theme} from "../../feature/redux/ThemeSlice.jsx";
+import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
 
 
 const AddProduct = () => {
@@ -52,7 +54,9 @@ const AddProduct = () => {
     const { list_attribute_val,isError_list,isLoading_list,result:result_val} = useSelector(state => state.attributeVal);
     const {theme}=useSelector(state => state.theme)
     const [openAttribute, setOpenAttribute] = useState(null);
+    const [openVariant, setOpenVariant] = useState(null);
     const [AttributeId, setAttributeId] = useState("");
+    const [Pricing_type,setPricing_type] = useState("flex");
 
     useEffect(() => {
         dispatch(getAsyncListVariantAttributeSelect())
@@ -88,7 +92,7 @@ const AddProduct = () => {
         discount_price:"",
         stock_qty:"",
         weight:"",
-        variants:"",
+        variants:[],
         code:"",
         current_stock:"",
         stock_order_limit:"",
@@ -188,6 +192,7 @@ const AddProduct = () => {
             }
         }
     }, [result_val]);
+    console.log(formik.values)
 
     return (
         <>
@@ -251,18 +256,133 @@ const AddProduct = () => {
                                 <div className="flex flex-col gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
                                     {list_variant_attribute_select.length>0 && list_variant_attribute_select?.map((item)=>{
                                         return(
-                                            <div>{item.label}</div>
+                                            <div
+                                                onClick={() => { setOpenVariant(
+                                                    openVariant === item.value ? null : item.value
+                                                )}}
+                                                className="w-full border border-gray-300 p-2 rounded-lg">
+                                                <span>{item.label}</span>
+                                                <AnimatePresence>
+                                                    {openVariant === item.value && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: "auto", opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            transition={{ duration: 0.25 }}
+                                                            className="w-full grid grid-cols-2 items-center gap-2  shadow-lg dark:shadow-gray-600 bg-white/60 dark:bg-gray-800 dark:border dark:border-cyan-300 mt-2 rounded-lg p-4 overflow-y-auto max-h-36"
+                                                        >
+                                                            {isLoading_list && (
+                                                                <div className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
+                                                                    در حال بارگذاری...
+                                                                </div>
+                                                            )}
+                                                            {!isLoading_list &&
+                                                                item.options?.map((val) => (
+                                                                    <div
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+
+                                                                            const variantId = val.id;
+                                                                            const allValues = list_attribute_val.map(v => ({
+                                                                                id: v.value,
+                                                                                title: v.label,
+                                                                                select: false
+                                                                            }));
+
+                                                                            const updated = formik.values.variants.map(attr => {
+                                                                                if (attr.id === variantId) {
+
+                                                                                    const newValues = allValues.map(v => {
+                                                                                        const existing = attr.value.find(item => item.id === v.id);
+                                                                                        if (v.id === val.value) {
+                                                                                            return {
+                                                                                                ...v,
+                                                                                                select: existing ? !existing.select : true
+                                                                                            };
+                                                                                        }
+
+                                                                                        if (existing) {
+                                                                                            return existing;
+                                                                                        }
+
+                                                                                        return v;
+                                                                                    });
+
+                                                                                    return {
+                                                                                        ...attr,
+                                                                                        value: newValues
+                                                                                    };
+                                                                                }
+
+                                                                                return attr;
+                                                                            });
+
+                                                                            formik.setFieldValue("variants", updated);
+                                                                        }}
+
+                                                                        key={val.value}
+                                                                        className={`
+                                                                                    p-1 rounded-lg flex items-center justify-center 
+                                                                                    transition cursor-pointer text-sm
+                                                                                    dark:text-gray-300 text-gray-700
+                                                                                    bg-white/80 dark:bg-gray-700/20 border-b border-gray-200 shadow-lg dark:shadow-none
+                                                                                    ${formik.values.variants
+                                                                            ?.find(a => a.id === val.value)
+                                                                            ?.value?.find(v => v.id === val.value)?.select
+                                                                            ? ""
+                                                                            : "hover:bg-cyan-100/30 dark:hover:bg-cyan-700/20"
+                                                                        }
+    `}
+                                                                    >
+                                                                        <div className="flex gap-2 items-center">
+                                                                            {item.label==="رنگ" &&
+                                                                                <span className="inline-block size-4 rounded-full" style={{ background: `#${val.value}` }}/>
+                                                                            }
+                                                                            <span>
+                                                                                {val.label}
+                                                                            </span>
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={
+                                                                                    formik.values.variants
+                                                                                        ?.find(a => a.id === val.value)
+                                                                                        ?.value?.find(v => v.id === val.value)?.select || false
+                                                                                }
+                                                                                readOnly
+                                                                                className="
+                                                                                            w-4 h-4 cursor-pointer appearance-none rounded-md
+                                                                                            border border-gray-400 dark:border-gray-500
+                                                                                            transition-all duration-300
+                                                                                            checked:bg-cyan-500 checked:border-cyan-500
+                                                                                            hover:border-cyan-400 hover:shadow-md hover:shadow-cyan-300/40
+                                                                                            relative
+                                                                                        "
+                                                                            />
+
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+
+                                                            {isError_list && (
+                                                                <li className="py-2 px-2 text-red-500 text-sm">
+                                                                    خطا در دریافت مقدارها
+                                                                </li>
+                                                            )}
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+
+                                            </div>
                                         )
                                     })}
-                                    {/*<div className="flex flex-col xl:flex-row gap-3">*/}
-                                    {/*    <div className="flex xl:w-3/4 w-full flex-col gap-4">*/}
-                                    {/*        <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />*/}
-                                    {/*        <Input formik={formik} maxLength={40} name="title" label="نام محصول" />*/}
-                                    {/*        <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />*/}
-                                    {/*    </div>*/}
-
-                                    {/*</div>*/}
                                 </div>
+                                {/*<div className="grid grid-cols-2 gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">*/}
+                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="price" label="قیمت کالا" />*!/*/}
+                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="discount_price" label="قیمت تخفیف" />*!/*/}
+                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="stock_qty" label="تعداد" />*!/*/}
+                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="weight" label="وزن" />*!/*/}
+                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="stock_order_limit" label="محدودیت سفارش" />*!/*/}
+                                {/*</div>*/}
 
                                 <div className="flex justify-center">
                                 </div>

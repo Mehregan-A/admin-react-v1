@@ -32,8 +32,9 @@ import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttribute
 const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, open_slider }) => {
     const dispatch = useDispatch();
     const myElementRef = useRef(null);
-
+    const  [Color, setColor] = useState("");
     const [isOpenModal, setIsOpenModal] = useState(false);
+    console.log(Color.toString(1))
 
     useEffect(() => {
         if (open_slider) {
@@ -75,7 +76,6 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
             dispatch(deleteAsyncVariantAttributeVal({ del: Id, variant_option_id: value }));
         }
     };
-    console.log(result);
     useEffect(() => {
         if(result && result?.status){
             if(result.status === 200) {
@@ -208,6 +208,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
                                     name="label"
                                     label="افزودن ویژگی جدید"
                                 />
+                                <input type="color" onChange={(e)=>setColor(e.target.value) } />
                                 <Input
                                     formik={formik}
                                     name="value"
