@@ -3,22 +3,14 @@ import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import {Toast} from "../../components/toast/Toast.jsx";
-import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
 import {status} from "../../assets/data/Data.js";
-import {NavLink, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import TextArea from "../../components/inputs/TextArea.jsx";
 import { NilfamEditor } from 'nilfam-editor';
 import 'nilfam-editor/nilfam-editor.css';
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
-import {
-    articleClearInfo,
-    articleClearResult,
-    getAsyncGetInfoArticle,
-    postAsyncAddArticle,
-    putAsyncEditArticle
-} from "../../feature/redux/ArticleSlice.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 import {getAsyncSelectCategory} from "../../feature/redux/CategorySlice.jsx";
 import Media from "../../components/inputs/media/Media.jsx";
@@ -29,10 +21,8 @@ import {
     putAsyncEditProduct
 } from "../../feature/redux/ProductSlice.jsx";
 import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
-import SelectOptionMultiSelect from "../../components/inputs/SelectOptionMultiSelect.jsx";
 import {getAsyncListAttributeSelect} from "../../feature/redux/AttributeSlice.jsx";
 import {AnimatePresence, motion} from "framer-motion";
-import FaIcons from "../../components/Icon.jsx";
 import {HiOutlineChevronDown} from "react-icons/hi";
 import {
     attributeValClearResult,
@@ -40,9 +30,7 @@ import {
     getAsyncListAttributeVal
 } from "../../feature/redux/AttributeValueSlice.jsx";
 import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
-import {set_theme} from "../../feature/redux/ThemeSlice.jsx";
-import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
-import {IoIosCheckmarkCircleOutline} from "react-icons/io";
+import ProductVariants from "./ProductVariants.jsx";
 
 
 const AddProduct = () => {
@@ -55,9 +43,7 @@ const AddProduct = () => {
     const { list_attribute_val,isError_list,isLoading_list,result:result_val} = useSelector(state => state.attributeVal);
     const {theme}=useSelector(state => state.theme)
     const [openAttribute, setOpenAttribute] = useState(null);
-    const [openVariant, setOpenVariant] = useState(null);
     const [AttributeId, setAttributeId] = useState("");
-    const [numbers, setNumbers] = useState({momentNumber: 0, nextNumber: null});
     const [Pricing_type,setPricing_type] = useState("flex");
 
     useEffect(() => {
@@ -95,7 +81,15 @@ const AddProduct = () => {
         discount_price:"",
         stock_qty:"",
         weight:"",
-        variants:[{id:"",option_ids:[],option_labels:[]}],
+        variants:[{id: "",
+            option_ids: [],
+            option_labels: [],
+            price: "",
+            discount_price: "",
+            stock_qty: "",
+            weight: "",
+            stock_order_limit: "",
+            isConfirmed: false,}],
         current_stock:"",
         stock_order_limit:"",
     }
@@ -195,7 +189,6 @@ const AddProduct = () => {
         }
     }, [result_val]);
 
-
     return (
         <>
             <div className={`flex flex-col gap-4`}>
@@ -254,177 +247,12 @@ const AddProduct = () => {
                                 <NilfamEditor value={formik.values.body} isDark={theme} lang="fa"
                                               onChange={newContent => formik.setFieldValue("body", newContent)} />
                             </div>
-                            <div className="flex flex-col">
-                                <div className="flex flex-col gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
-                                    {list_variant_attribute_select.length>0 && list_variant_attribute_select?.map((item)=>{
-                                        return(
-                                            <div
-                                                key={item.value}
-                                                onClick={() => {setOpenVariant(openVariant === item.value ? null : item.value)}}
-                                                className="w-full border border-gray-300 p-2 rounded-lg"
-                                            >
-                                            <span>{item.label}</span>
-                                                <AnimatePresence>
-                                                    {openVariant === item.value && (
-                                                        <motion.div
-                                                            initial={{ height: 0, opacity: 0 }}
-                                                            animate={{ height: "auto", opacity: 1 }}
-                                                            exit={{ height: 0, opacity: 0 }}
-                                                            transition={{ duration: 0.25 }}
-                                                            className="w-full grid grid-cols-2 items-center gap-2  shadow-lg dark:shadow-gray-600 bg-white/60 dark:bg-gray-800 dark:border dark:border-cyan-300 mt-2 rounded-lg p-4 overflow-y-auto max-h-36"
-                                                        >
-                                                            {isLoading_list && (
-                                                                <div className="py-2 px-2 text-center text-sm text-gray-500 dark:text-gray-300">
-                                                                    در حال بارگذاری...
-                                                                </div>
-                                                            )}
-                                                            {!isLoading_list &&
-                                                                item.options?.map((val) => (
-                                                                    <div
-                                                                        onClick={(e) => {e.stopPropagation();}}
-                                                                        key={val.value}
-                                                                        className={`
-                                                                                    p-1 rounded-lg flex items-center justify-center 
-                                                                                    transition cursor-pointer text-sm
-                                                                                    dark:text-gray-300 text-gray-700
-                                                                                    bg-white/80 dark:bg-gray-700/20 border-b border-gray-200 shadow-lg dark:shadow-none
-                                                                          
-                                                                        }`}
-                                                                    >
-                                                                        <div className="flex gap-2 items-center">
-                                                                            {item.label==="رنگ" &&
-                                                                                <span className="inline-block size-4 rounded-full" style={{ background: `#${val.value}` }}/>
-                                                                            }
-                                                                            <span>
-                                                                                {val.label}
-                                                                            </span>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                checked={formik.values.variants?.[0]?.option_ids?.includes(val.id)}
-                                                                                onChange={(e) => {
-                                                                                    e.stopPropagation();
+                            <ProductVariants
+                                variantAttributes={list_variant_attribute_select}
+                                formik={formik}
+                                isLoadingOptions={isLoading_list}
+                            />
 
-                                                                                    const optionLabels =
-                                                                                        formik.values.variants?.[0]?.option_labels || [];
-
-                                                                                    if (e.target.checked) {
-                                                                                        formik.setFieldValue(
-                                                                                            "variants.0.option_labels",
-                                                                                            [...optionLabels, val.label]
-                                                                                        );
-                                                                                    } else {
-                                                                                        formik.setFieldValue(
-                                                                                            "variants.0.option_labels",
-                                                                                            optionLabels.filter(id => id !== val.label)
-                                                                                        );
-                                                                                    }
-
-                                                                                    const optionIds =
-                                                                                        formik.values.variants?.[0]?.option_ids || [];
-
-                                                                                    if (e.target.checked) {
-                                                                                        formik.setFieldValue(
-                                                                                            "variants.0.option_ids",
-                                                                                            [...optionIds, val.id]
-                                                                                        );
-                                                                                    } else {
-                                                                                        formik.setFieldValue(
-                                                                                            "variants.0.option_ids",
-                                                                                            optionIds.filter(id => id !== val.id)
-                                                                                        );
-                                                                                    }
-                                                                                }}
-                                                                            />
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-
-                                                            {isError_list && (
-                                                                <li className="py-2 px-2 text-red-500 text-sm">
-                                                                    خطا در دریافت مقدارها
-                                                                </li>
-                                                            )}
-                                                        </motion.div>
-                                                    )}
-                                                </AnimatePresence>
-
-                                            </div>
-                                        )
-                                    })}
-                                    {formik.values.variants?.length > 0 &&
-                                        formik.values.variants.map((variant, index) => (
-                                            <div
-                                                key={variant.id}
-                                                className="w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60"
-                                            >
-                                                <div className="flex justify-between">
-                                                    <div className="mb-3 text-sm font-medium text-cyan-600 dark:text-cyan-300">
-                                                        {variant.option_labels.join(" / ")}
-                                                    </div>
-                                                    <div
-                                                        onClick={() =>
-                                                            setNumbers(prev => ({
-                                                                momentNumber: prev.momentNumber + 1,
-                                                                nextNumber: prev.momentNumber + 2,
-                                                            }))
-                                                        }>
-                                                        <IoIosCheckmarkCircleOutline  className="cursor-pointer text-green-400" size={23} />
-                                                    </div>
-                                                </div>
-
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    <Input
-                                                        formik={formik}
-                                                        onlyNum
-                                                        name={`variants.${index}.price`}
-                                                        label="قیمت کالا"
-                                                    />
-
-                                                    <Input
-                                                        formik={formik}
-                                                        onlyNum
-                                                        name={`variants.${index}.discount_price`}
-                                                        label="قیمت تخفیف"
-                                                    />
-
-                                                    <Input
-                                                        formik={formik}
-                                                        onlyNum
-                                                        name={`variants.${index}.stock_qty`}
-                                                        label="تعداد"
-                                                    />
-
-                                                    <Input
-                                                        formik={formik}
-                                                        onlyNum
-                                                        name={`variants.${index}.weight`}
-                                                        label="وزن"
-                                                    />
-
-                                                    <Input
-                                                        formik={formik}
-                                                        onlyNum
-                                                        name={`variants.${index}.stock_order_limit`}
-                                                        label="محدودیت سفارش"
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                </div>
-                                {/*<div className="grid grid-cols-2 gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">*/}
-                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="price" label="قیمت کالا" />*!/*/}
-                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="discount_price" label="قیمت تخفیف" />*!/*/}
-                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="stock_qty" label="تعداد" />*!/*/}
-                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="weight" label="وزن" />*!/*/}
-                                {/*    /!*<Input formik={formik} maxLength={40} onlyNum={true} name="stock_order_limit" label="محدودیت سفارش" />*!/*/}
-                                {/*</div>*/}
-
-                                <div className="flex justify-center">
-                                </div>
-                            </div>
                         </div>
 
                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 xl:w-2/6 md:w-3/6 w-full flex flex-col gap-5">
@@ -666,15 +494,6 @@ const AddProduct = () => {
                                                     </div>
                                                 );
                                             })}
-
-
-                                        {/*<SelectOptionMultiSelect*/}
-                                        {/*    formik={formik}*/}
-                                        {/*    formikAddress={formik.values.attribute}*/}
-                                        {/*    options={list_attribute_select}*/}
-                                        {/*    name="attribute"*/}
-                                        {/*    label="انتخاب ویژگی غیر موثر بر قیمت"*/}
-                                        {/*/>*/}
                                     </div>
                                 </div>
                             </div>
