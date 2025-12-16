@@ -42,6 +42,7 @@ import {
 import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
 import {set_theme} from "../../feature/redux/ThemeSlice.jsx";
 import {PiMoonThin, PiSunDimThin} from "react-icons/pi";
+import {IoIosCheckmarkCircleOutline} from "react-icons/io";
 
 
 const AddProduct = () => {
@@ -56,6 +57,7 @@ const AddProduct = () => {
     const [openAttribute, setOpenAttribute] = useState(null);
     const [openVariant, setOpenVariant] = useState(null);
     const [AttributeId, setAttributeId] = useState("");
+    const [numbers, setNumbers] = useState({momentNumber: 0, nextNumber: null});
     const [Pricing_type,setPricing_type] = useState("flex");
 
     useEffect(() => {
@@ -93,7 +95,7 @@ const AddProduct = () => {
         discount_price:"",
         stock_qty:"",
         weight:"",
-        variants:[],
+        variants:[{id:"",option_ids:[],option_labels:[]}],
         current_stock:"",
         stock_order_limit:"",
     }
@@ -192,7 +194,7 @@ const AddProduct = () => {
             }
         }
     }, [result_val]);
-    console.log(formik.values)
+
 
     return (
         <>
@@ -255,26 +257,10 @@ const AddProduct = () => {
                             <div className="flex flex-col">
                                 <div className="flex flex-col gap-3 w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60">
                                     {list_variant_attribute_select.length>0 && list_variant_attribute_select?.map((item)=>{
-                                        const exists = formik.values.variants.some(a => a.id === item.value);
                                         return(
                                             <div
                                                 key={item.value}
-                                                onClick={() => {
-                                                    setOpenVariant(
-                                                        openVariant === item.value ? null : item.value
-                                                    );
-
-                                                    if (!exists) {
-                                                        formik.setFieldValue("variants", [
-                                                            ...formik.values.variants,
-                                                            {
-                                                                id: item.value,
-                                                                option_ids: [],
-                                                                option_labels: []
-                                                            }
-                                                        ]);
-                                                    }
-                                                }}
+                                                onClick={() => {setOpenVariant(openVariant === item.value ? null : item.value)}}
                                                 className="w-full border border-gray-300 p-2 rounded-lg"
                                             >
                                             <span>{item.label}</span>
@@ -295,46 +281,15 @@ const AddProduct = () => {
                                                             {!isLoading_list &&
                                                                 item.options?.map((val) => (
                                                                     <div
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-
-                                                                            const variantId = item.value; // 👈 رنگ، ظرفیت، ...
-                                                                            const optionId = val.id;
-                                                                            const optionLabel = val.label;
-
-                                                                            const updated = formik.values.variants.map(v => {
-                                                                                if (v.id !== variantId) return v;
-
-                                                                                const exists = v.option_ids.includes(optionId);
-
-                                                                                return {
-                                                                                    ...v,
-                                                                                    option_ids: exists
-                                                                                        ? v.option_ids.filter(id => id !== optionId)
-                                                                                        : [...v.option_ids, optionId],
-                                                                                    option_labels: exists
-                                                                                        ? v.option_labels.filter(l => l !== optionLabel)
-                                                                                        : [...v.option_labels, optionLabel]
-                                                                                };
-                                                                            });
-
-                                                                            formik.setFieldValue("variants", updated);
-                                                                        }}
-
-
+                                                                        onClick={(e) => {e.stopPropagation();}}
                                                                         key={val.value}
                                                                         className={`
                                                                                     p-1 rounded-lg flex items-center justify-center 
                                                                                     transition cursor-pointer text-sm
                                                                                     dark:text-gray-300 text-gray-700
                                                                                     bg-white/80 dark:bg-gray-700/20 border-b border-gray-200 shadow-lg dark:shadow-none
-                                                                                    ${formik.values.variants
-                                                                            ?.find(a => a.id === val.value)
-                                                                            ?.value?.find(v => v.id === val.value)?.select
-                                                                            ? ""
-                                                                            : "hover:bg-cyan-100/30 dark:hover:bg-cyan-700/20"
-                                                                        }
-    `}
+                                                                          
+                                                                        }`}
                                                                     >
                                                                         <div className="flex gap-2 items-center">
                                                                             {item.label==="رنگ" &&
@@ -345,21 +300,42 @@ const AddProduct = () => {
                                                                             </span>
                                                                             <input
                                                                                 type="checkbox"
-                                                                                checked={
-                                                                                    formik.values.variants
-                                                                                        ?.find(v => v.id === item.value)
-                                                                                        ?.option_ids.includes(val.id) || false
-                                                                                }
-                                                                                readOnly
-                                                                                className="
-                                                                                            w-4 h-4 cursor-pointer appearance-none rounded-md
-                                                                                            border border-gray-400 dark:border-gray-500
-                                                                                            transition-all duration-300
-                                                                                            checked:bg-cyan-500 checked:border-cyan-500
-                                                                                            hover:border-cyan-400 hover:shadow-md hover:shadow-cyan-300/40
-                                                                                            relative
-                                                                                        "
+                                                                                checked={formik.values.variants?.[0]?.option_ids?.includes(val.id)}
+                                                                                onChange={(e) => {
+                                                                                    e.stopPropagation();
+
+                                                                                    const optionLabels =
+                                                                                        formik.values.variants?.[0]?.option_labels || [];
+
+                                                                                    if (e.target.checked) {
+                                                                                        formik.setFieldValue(
+                                                                                            "variants.0.option_labels",
+                                                                                            [...optionLabels, val.label]
+                                                                                        );
+                                                                                    } else {
+                                                                                        formik.setFieldValue(
+                                                                                            "variants.0.option_labels",
+                                                                                            optionLabels.filter(id => id !== val.label)
+                                                                                        );
+                                                                                    }
+
+                                                                                    const optionIds =
+                                                                                        formik.values.variants?.[0]?.option_ids || [];
+
+                                                                                    if (e.target.checked) {
+                                                                                        formik.setFieldValue(
+                                                                                            "variants.0.option_ids",
+                                                                                            [...optionIds, val.id]
+                                                                                        );
+                                                                                    } else {
+                                                                                        formik.setFieldValue(
+                                                                                            "variants.0.option_ids",
+                                                                                            optionIds.filter(id => id !== val.id)
+                                                                                        );
+                                                                                    }
+                                                                                }}
                                                                             />
+
 
                                                                         </div>
                                                                     </div>
@@ -383,9 +359,19 @@ const AddProduct = () => {
                                                 key={variant.id}
                                                 className="w-full bg-gray-100 rounded-xl p-4 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60"
                                             >
-                                                {/* عنوان واریانت */}
-                                                <div className="mb-3 text-sm font-medium text-cyan-600 dark:text-cyan-300">
-                                                    {variant.option_labels.join(" / ")}
+                                                <div className="flex justify-between">
+                                                    <div className="mb-3 text-sm font-medium text-cyan-600 dark:text-cyan-300">
+                                                        {variant.option_labels.join(" / ")}
+                                                    </div>
+                                                    <div
+                                                        onClick={() =>
+                                                            setNumbers(prev => ({
+                                                                momentNumber: prev.momentNumber + 1,
+                                                                nextNumber: prev.momentNumber + 2,
+                                                            }))
+                                                        }>
+                                                        <IoIosCheckmarkCircleOutline  className="cursor-pointer text-green-400" size={23} />
+                                                    </div>
                                                 </div>
 
                                                 <div className="grid grid-cols-2 gap-3">
