@@ -1,33 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from "formik";
-import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { HiMiniXMark } from "react-icons/hi2";
-import { PiChartPieSlice } from "react-icons/pi";
-import { getAsyncListAttributeSelect } from "../../feature/redux/AttributeSlice.jsx";
-import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {deleteAsyncCategoryAtt, postAsyncCategoryAddAtt} from "../../feature/redux/CategoryAttSlice.jsx";
-import {
-    attributeValClearDelete,
-    attributeValClearResult, attributeValClearSearch, deleteAsyncAttributeVal,
-    getAsyncAddAttributeVal,
-    getAsyncListAttributeVal, postAsyncSearchAttributeVal
-} from "../../feature/redux/AttributeValueSlice.jsx";
 import Input from "../../components/inputs/Input.jsx";
-import {adminClearResult, adminClearResultDelete, putAsyncEditAdmin} from "../../feature/redux/AdminSlice.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
 import {BsListUl} from "react-icons/bs";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
-import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {BiSolidError} from "react-icons/bi";
-import {FaMagnifyingGlass, FaXmark} from "react-icons/fa6";
 import {
     deleteAsyncVariantAttributeVal,
     getAsyncListVariantAttributeVal,
     postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
 } from "../../feature/redux/VariantAttributeValueSlice.jsx";
-import {getAsyncListVariantAttribute} from "../../feature/redux/VariantAttributeSlice.jsx";
 
 const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, open_slider }) => {
     const dispatch = useDispatch();

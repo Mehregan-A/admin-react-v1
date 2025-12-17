@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { IoCreateOutline, IoTrashOutline } from "react-icons/io5";
-import { LuCirclePlus } from "react-icons/lu";
 import Input from "../../components/inputs/Input.jsx";
 import {HiOutlineChevronDown} from "react-icons/hi";
+import {Toast} from "../../components/toast/Toast.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    deleteAsyncVariantAttributeVal,
+    getAsyncListVariantAttributeVal,
+    postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
+} from "../../feature/redux/VariantAttributeValueSlice.jsx";
+import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
 
 // Empty variant template
 const emptyVariant = {
@@ -19,39 +26,61 @@ const emptyVariant = {
     isConfirmed: false,
 };
 
-const ProductVariants = ({
-                             variantAttributes = [],
-                             formik,
-                             isLoadingOptions,
-                         }) => {
-    const [openVariant, setOpenVariant] = useState(null);
-    const [activeVariantIndex, setActiveVariantIndex] = useState(0);
+const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
+    const dispatch = useDispatch();
+    const { list_variant_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.variantAttributeValue);
 
-    const variants = formik.values.variants || [];
+    const [openVariant, setOpenVariant] = useState(null);
+    const  [Color, setColor] = useState("");
+    const [activeVariantIndex, setActiveVariantIndex] = useState(0);
+    const variants = formik.values.variants;
+
 
     // Toggle option selection for a variant
-    const handleOptionChange = (variantIndex, option, checked) => {
-        const path = `variants.${variantIndex}`;
-        const optionIds = variants[variantIndex].option_ids || [];
-        const optionLabels = variants[variantIndex].option_labels || [];
+    const handleOptionChange = (variantIndex, option, attributeValue) => {
+        if (variants.length === 0) {
+            const newVariant = {
+                ...emptyVariant,
+                option_ids: [option.id],
+                option_labels: [option.label],
+            };
 
-        if (checked) {
-            formik.setFieldValue(`${path}.option_ids`, [...optionIds, option.id]);
-            formik.setFieldValue(`${path}.option_labels`, [...optionLabels, option.label]);
-        } else {
-            formik.setFieldValue(
-                `${path}.option_ids`,
-                optionIds.filter((id) => id !== option.id)
-            );
-            formik.setFieldValue(
-                `${path}.option_labels`,
-                optionLabels.filter((label) => label !== option.label)
-            );
+            formik.setFieldValue("variants", [newVariant]);
+            setActiveVariantIndex(0);
+            return;
         }
+
+        const path = `variants.${variantIndex}`;
+
+        const currentOptions = variants[variantIndex].option_ids || [];
+        const currentLabels = variants[variantIndex].option_labels || [];
+
+        const attributeOptions =
+            variantAttributes.find(attr => attr.value === attributeValue)?.options || [];
+
+        const filteredOptions = currentOptions.filter(
+            id => !attributeOptions.some(opt => opt.id === id)
+        );
+
+        const filteredLabels = currentLabels.filter(
+            label => !attributeOptions.some(opt => opt.label === label)
+        );
+
+        formik.setFieldValue(`${path}.option_ids`, [...filteredOptions, option.id]);
+        formik.setFieldValue(`${path}.option_labels`, [...filteredLabels, option.label]);
     };
 
     // Confirm variant and create next empty one
     const confirmVariant = (index) => {
+        if (variants[index].option_ids.length === 0) {
+            Toast.warning(`حداقل یک ویژگی انتخاب شود`);
+            return;
+        }
+        if (isDuplicateVariant(index)) {
+            Toast.warning(`این ترکیب ویژگی‌ها قبلاً ثبت شده است`);
+            return;
+        }
+
         const updated = [...variants];
         updated[index].isConfirmed = true;
 
@@ -63,17 +92,62 @@ const ProductVariants = ({
         setActiveVariantIndex(index + 1);
     };
 
+
     // Remove variant
     const removeVariant = (index) => {
         const updated = variants.filter((_, i) => i !== index);
         formik.setFieldValue("variants", updated);
         setActiveVariantIndex(Math.max(0, index - 1));
     };
+    const isDuplicateVariant = (currentIndex) => {
+        const currentOptions = [...(variants[currentIndex].option_ids || [])].sort();
+
+        return variants.some((variant, index) => {
+            if (index === currentIndex) return false;
+            if (!variant.isConfirmed) return false;
+
+            const otherOptions = [...(variant.option_ids || [])].sort();
+
+            return (
+                currentOptions.length === otherOptions.length &&
+                currentOptions.every((id, i) => id === otherOptions[i])
+            );
+        });
+    };
+    useEffect(() => {
+        if(result && result?.status){
+            if(result.status === 200) {
+                // toast
+                Toast.success(`${result.data.message}`);
+                dispatch(getAsyncListVariantAttributeSelect())
+                // dispatch(getAsyncListVariantAttributeVal({Id:openVariant}));
+                dispatch(variantAttributeValClearResult())
+            }else{
+                // toast
+                Toast.error(`${result.data.message}`);
+                dispatch(variantAttributeValClearResult())
+            }
+        }
+    }, [result]);
+    useEffect(() => {
+        if(result_delete && result_delete?.status){
+            if(result_delete.status === 200) {
+                Toast.success(`${result_delete.data.message}`);
+                dispatch(variantAttributeValClearDelete());
+                dispatch(getAsyncListVariantAttributeSelect())
+            }else{
+                // toast
+                Toast.error(`${result_delete.data.message}`);
+                dispatch(variantAttributeValClearDelete())
+            }
+        }
+    }, [result_delete]);
+
 
     return (
         <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
             <div className="flex items-center gap-3">
-                <span className="text-gray-600 text-xs font-semibold">قیمت گذاری پیشرفته</span>
+                <span className="text-gray-600 text-xs font-semibold dark:text-gray-100">قیمت گذاری پیشرفته</span>
                 <label className='flex cursor-pointer select-none items-center'>
                     <div className='relative'>
                         <input
@@ -104,7 +178,7 @@ const ProductVariants = ({
                     className="w-full  items-center border border-gray-300 p-2 rounded-lg cursor-pointer"
                 >
                     <div className="w-full flex justify-between">
-                        <span className="text-sm font-medium">{attr.label}</span>
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-100">{attr.label}</span>
                         <HiOutlineChevronDown
                             className={`text-cyan-300 transition-transform duration-300 
                                                                  ${openVariant === attr.value ? "rotate-180" : ""}`}
@@ -118,17 +192,88 @@ const ProductVariants = ({
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.25 }}
-                                className="w-full grid grid-cols-2 gap-2 mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg"
+                                className="w-full grid grid-cols-2 gap-2 mt-3 p-3 bg-white dark:bg-gray-700 rounded-lg"
                             >
                                 {isLoadingOptions && (
                                     <div className="col-span-2 text-center text-sm text-gray-400">
                                         لطفا صبر کنید...
                                     </div>
                                 )}
+                                <form
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="w-full col-span-2"
+                                >
+                                    <div className="flex w-full items-center gap-2">
+                                        <div className="w-full">
+                                            <Input
+                                                formik={formik}
+                                                name="label"
+                                                label="نام ویژگی"
+                                            />
+                                        </div>
+                                            <div className="w-full">
+                                                {attr.label === "رنگ" ?
+                                                    <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
+                                                        <input
+                                                            type="color"
+                                                            className="absolute w-6 h-6 opacity-0 cursor-pointer"
+                                                            onChange={(e) =>
+                                                                formik.setFieldValue("value", e.target.value.slice(1))
+                                                            }
+                                                        />
+                                                        <span
+                                                            className="w-6 h-6 rounded-md border border-gray-300"
+                                                            style={{ backgroundColor: `#${formik.values.value}` }}
+                                                        />
+                                                        <span className="text-sm text-gray-600 dark:text-gray-100">انتخاب کنید</span>
+                                                    </label>
+
+                                                    :
+                                                    <Input
+                                                        formik={formik}
+                                                        name="value"
+                                                        label="مقدار ویژگی"
+                                                    />
+                                                }
+                                            </div>
+
+                                        <button
+                                            type="button"
+                                            disabled={!formik.values.label.trim() || isLoading}
+                                            onClick={() => {
+                                                const label = formik.values.label.trim();
+                                                const value = formik.values.value.trim();
+
+                                                if (!label) return;
+
+                                                dispatch(
+                                                    postAsyncAddVariantAttributeVal({
+                                                        value,
+                                                        label,
+                                                        Id: attr.value
+                                                    })
+                                                );
+                                                formik.setFieldValue("label", "");
+                                                formik.setFieldValue("value", "");
+                                            }}
+                                            className="flex mt-4 h-10 text-xs justify-center items-center gap-x-2 px-2 py-0.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 transition-colors"
+                                        >
+                                            {isLoading ? (
+                                                <>
+                                                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                    <span>افزودن...</span>
+                                                </>
+                                            ) : (
+                                                <span>افزودن</span>
+                                            )}
+                                        </button>
+
+                                    </div>
+                                </form>
 
                                 {!isLoadingOptions &&
                                     attr.options?.map((opt) => (
-                                        <label
+                                        <form
                                             key={opt.value}
                                             onClick={(e) => e.stopPropagation()}
                                             className="flex items-center gap-2 text-sm cursor-pointer"
@@ -139,30 +284,50 @@ const ProductVariants = ({
                                                     style={{ backgroundColor: `#${opt.value}` }}
                                                 />
                                             )}
-                                            <span>{opt.label}</span>
+                                            <span className="text-gray-700 dark:text-gray-100">{opt.label}</span>
                                             <input
-                                                type="checkbox"
-                                                checked={variants?.[activeVariantIndex]?.option_ids?.includes(
-                                                    opt.id
-                                                )}
-                                                onChange={(e) =>
-                                                    handleOptionChange(
-                                                        activeVariantIndex,
-                                                        opt,
-                                                        e.target.checked
-                                                    )
+                                                type="radio"
+                                                name={`variant-${activeVariantIndex}-${attr.value}`}
+                                                checked={variants?.[activeVariantIndex]?.option_ids?.includes(opt.id)}
+                                                onChange={() =>
+                                                    handleOptionChange(activeVariantIndex, opt, attr.value)
                                                 }
                                             />
-                                        </label>
+                                            <button
+                                                type="button"
+                                                disabled={isLoading}
+                                                onClick={() => {
+
+                                                    dispatch(
+                                                        deleteAsyncVariantAttributeVal({
+                                                            variant_option_id:opt.id,
+                                                            del: attr.value
+                                                        })
+                                                    );
+                                                }}
+                                                className="cursor-pointer hover:text-red-400 transition-color text-gray-700 dark:text-gray-100"
+                                            >
+                                                {isLoading ? (
+                                                    <>
+                                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                        <IoTrashOutline size={16}/>
+                                                    </>
+                                                ) : (
+                                                    <IoTrashOutline size={16}/>
+                                                )}
+                                            </button>
+
+                                        </form>
                                     ))}
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             ))}
-
+            <div className="w-full h-px dark:bg-cyan-200 my-4 bg-gray-300"></div>
             {/* Variant items */}
-            {variants.map((variant, index) => {
+            {[...variants].reverse().map((variant, reversedIndex) => {
+                const index = variants.length - 1 - reversedIndex;
                 const isActive = index === activeVariantIndex;
 
                 return (
@@ -184,17 +349,6 @@ const ProductVariants = ({
                                     size={22}
                                     className="text-green-400 cursor-pointer"
                                     onClick={() => confirmVariant(index)}
-                                />
-                                <LuCirclePlus
-                                    size={22}
-                                    className="text-cyan-400 cursor-pointer"
-                                    onClick={() => {
-                                        formik.setFieldValue("variants", [
-                                            ...variants,
-                                            { ...emptyVariant },
-                                        ]);
-                                        setActiveVariantIndex(variants.length);
-                                    }}
                                 />
                                 <IoCreateOutline
                                     size={22}

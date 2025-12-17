@@ -61,7 +61,9 @@ const AddProduct = () => {
     const {result,isLoading,info_product} = useSelector(state => state.product);
     // redux
     const initialValues = {
-        code:"1001",
+        label:"",
+        value:"",
+        code:"",
         url:'',
         title:'',
         abstract:'',
@@ -213,7 +215,12 @@ const AddProduct = () => {
                                     <div className="flex flex-col xl:flex-row gap-3">
                                         <div className="flex xl:w-3/4 w-full flex-col gap-4">
                                             <Input formik={formik} maxLength={40} noPersian={true} name="url" label="url" />
-                                            <Input formik={formik} maxLength={40} name="title" label="نام محصول" />
+                                            <div className="grid grid-cols-4 gap-2">
+                                                <div className="col-span-3">
+                                                    <Input formik={formik} maxLength={40} name="title" label="نام محصول" />
+                                                </div>
+                                                <Input formik={formik} maxLength={6} onlyNum={true} name="code" label="کد محصول" />
+                                            </div>
                                             <TextArea formik={formik} maxLength={500} name="abstract" label="چکیده" />
                                         </div>
                                         <div className="flex xl:w-1/4 w-full flex-col mt-2 rounded-xl">
@@ -258,7 +265,7 @@ const AddProduct = () => {
                             {formik.values.pricing_type === "simple" &&
                                 <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
                                     <div className="flex items-center gap-3">
-                                        <span className="text-gray-600 text-xs font-semibold">قیمت گذاری پیشرفته</span>
+                                        <span className="text-gray-600 text-xs font-semibold dark:text-gray-100">قیمت گذاری پیشرفته</span>
                                         <label className='flex cursor-pointer select-none items-center'>
                                             <div className='relative'>
                                                 <input
