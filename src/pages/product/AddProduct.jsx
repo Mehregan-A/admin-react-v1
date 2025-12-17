@@ -44,7 +44,6 @@ const AddProduct = () => {
     const {theme}=useSelector(state => state.theme)
     const [openAttribute, setOpenAttribute] = useState(null);
     const [AttributeId, setAttributeId] = useState("");
-    const [Pricing_type,setPricing_type] = useState("flex");
 
     useEffect(() => {
         dispatch(getAsyncListVariantAttributeSelect())
@@ -83,15 +82,7 @@ const AddProduct = () => {
         discount_price:"",
         stock_qty:"",
         weight:"",
-        variants:[{id: "",
-            option_ids: [],
-            option_labels: [],
-            price: "",
-            discount_price: "",
-            stock_qty: "",
-            weight: "",
-            stock_order_limit: "",
-            isConfirmed: false,}],
+        variants:[],
         current_stock:"",
         stock_order_limit:"",
     }
@@ -361,8 +352,6 @@ const AddProduct = () => {
                                     <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
                                         {list_attribute_select?.length > 0 &&
                                             list_attribute_select.map((att) => {
-                                                const exists = formik.values.attribute.some(a => a.id === att.value);
-
                                                 return (
                                                     <div
                                                         key={att.value}
@@ -372,18 +361,6 @@ const AddProduct = () => {
                                                             setOpenAttribute(
                                                                 openAttribute === att.value ? null : att.value
                                                             );
-
-                                                            if (!exists) {
-                                                                formik.setFieldValue("attribute", [
-                                                                    ...formik.values.attribute,
-                                                                    {
-                                                                        id: att.value,
-                                                                        title: att.label,
-                                                                        data_type: att.data_type,
-                                                                        value: []
-                                                                    }
-                                                                ]);
-                                                            }
                                                         }}
                                                         className={`relative group border border-gray-300 cursor-pointer p-2 flex flex-col items-center rounded-lg transition-all duration-500 ease-in-out
                                                         hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
@@ -458,83 +435,95 @@ const AddProduct = () => {
                                                                     {!isLoading_list &&
                                                                         list_attribute_val?.map((val) => (
                                                                             <div
+                                                                                key={val.value}
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation();
 
                                                                                     const attributeId = att.value;
-                                                                                    const allValues = list_attribute_val.map(v => ({
-                                                                                        id: v.value,
-                                                                                        title: v.label,
-                                                                                        select: false
-                                                                                    }));
+                                                                                    const attributeTitle = att.label;
 
-                                                                                    const updated = formik.values.attribute.map(attr => {
-                                                                                        if (attr.id === attributeId) {
+                                                                                    let attributes = [...formik.values.attribute];
 
-                                                                                            const newValues = allValues.map(v => {
-                                                                                                const existing = attr.value.find(item => item.id === v.id);
-                                                                                                if (v.id === val.value) {
-                                                                                                    return {
-                                                                                                        ...v,
-                                                                                                        select: existing ? !existing.select : true
-                                                                                                    };
-                                                                                                }
+                                                                                    let attributeIndex = attributes.findIndex(
+                                                                                        (a) => a.id === attributeId
+                                                                                    );
 
-                                                                                                if (existing) {
-                                                                                                    return existing;
-                                                                                                }
+                                                                                    if (attributeIndex === -1) {
+                                                                                        attributes.push({
+                                                                                            id: attributeId,
+                                                                                            title: attributeTitle,
+                                                                                            data_type: att.data_type,
+                                                                                            value: []
+                                                                                        });
+                                                                                        attributeIndex = attributes.length - 1;
+                                                                                    }
 
-                                                                                                return v;
-                                                                                            });
+                                                                                    let currentAttribute = { ...attributes[attributeIndex] };
 
-                                                                                            return {
-                                                                                                ...attr,
-                                                                                                value: newValues
-                                                                                            };
-                                                                                        }
+                                                                                    const valueIndex = currentAttribute.value.findIndex(
+                                                                                        (v) => v.id === val.value
+                                                                                    );
 
-                                                                                        return attr;
-                                                                                    });
+                                                                                    if (valueIndex === -1) {
+                                                                                        currentAttribute.value.push({
+                                                                                            id: val.value,
+                                                                                            title: val.label,
+                                                                                            select: true
+                                                                                        });
+                                                                                    } else {
+                                                                                        currentAttribute.value[valueIndex] = {
+                                                                                            ...currentAttribute.value[valueIndex],
+                                                                                            select: !currentAttribute.value[valueIndex].select
+                                                                                        };
+                                                                                    }
 
-                                                                                    formik.setFieldValue("attribute", updated);
+                                                                                    currentAttribute.value = currentAttribute.value.filter(
+                                                                                        (v) => v.select
+                                                                                    );
+
+                                                                                    if (currentAttribute.value.length === 0) {
+                                                                                        attributes = attributes.filter(
+                                                                                            (a) => a.id !== attributeId
+                                                                                        );
+                                                                                    } else {
+                                                                                        attributes[attributeIndex] = currentAttribute;
+                                                                                    }
+
+                                                                                    formik.setFieldValue("attribute", attributes);
                                                                                 }}
-
-                                                                                key={val.value}
                                                                                 className={`
                                                                                     p-1 rounded-lg flex items-center justify-center 
                                                                                     transition cursor-pointer text-sm
                                                                                     dark:text-gray-300 text-gray-700
                                                                                     bg-white/80 dark:bg-gray-700/20 border-b border-gray-200 shadow-lg dark:shadow-none
-                                                                                    ${formik.values.attribute
-                                                                                    ?.find(a => a.id === att.value)
-                                                                                    ?.value?.find(v => v.id === val.value)?.select
-                                                                                    ? ""
-                                                                                    : "hover:bg-cyan-100/30 dark:hover:bg-cyan-700/20"
+                                                                                    ${
+                                                                                    formik.values.attribute
+                                                                                        ?.find((a) => a.id === att.value)
+                                                                                        ?.value?.some((v) => v.id === val.value)
+                                                                                        ? "bg-cyan-100/40 dark:bg-cyan-700/30"
+                                                                                        : "hover:bg-cyan-100/30 dark:hover:bg-cyan-700/20"
                                                                                 }
-    `}
+                                                                                     `}
                                                                             >
                                                                                 <div className="flex gap-2 items-center">
-                                                                                    <span>
-                                                                                    {val.label}
-                                                                                </span>
+                                                                                    <span>{val.label}</span>
+
                                                                                     <input
                                                                                         type="checkbox"
+                                                                                        readOnly
                                                                                         checked={
                                                                                             formik.values.attribute
-                                                                                                ?.find(a => a.id === att.value)
-                                                                                                ?.value?.find(v => v.id === val.value)?.select || false
+                                                                                                ?.find((a) => a.id === att.value)
+                                                                                                ?.value?.some((v) => v.id === val.value) || false
                                                                                         }
-                                                                                        readOnly
                                                                                         className="
-                                                                                            w-4 h-4 cursor-pointer appearance-none rounded-md
-                                                                                            border border-gray-400 dark:border-gray-500
-                                                                                            transition-all duration-300
-                                                                                            checked:bg-cyan-500 checked:border-cyan-500
-                                                                                            hover:border-cyan-400 hover:shadow-md hover:shadow-cyan-300/40
-                                                                                            relative
-                                                                                        "
+                                                                                        w-4 h-4 cursor-pointer appearance-none rounded-md
+                                                                                        border border-gray-400 dark:border-gray-500
+                                                                                        transition-all duration-300
+                                                                                        checked:bg-cyan-500 checked:border-cyan-500
+                                                                                        hover:border-cyan-400 hover:shadow-md hover:shadow-cyan-300/40
+                                                                                    "
                                                                                     />
-
                                                                                 </div>
                                                                             </div>
                                                                         ))}
