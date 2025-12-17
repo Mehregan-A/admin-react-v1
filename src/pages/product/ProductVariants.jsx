@@ -4,6 +4,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { IoCreateOutline, IoTrashOutline } from "react-icons/io5";
 import { LuCirclePlus } from "react-icons/lu";
 import Input from "../../components/inputs/Input.jsx";
+import {HiOutlineChevronDown} from "react-icons/hi";
 
 // Empty variant template
 const emptyVariant = {
@@ -70,7 +71,29 @@ const ProductVariants = ({
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
+            <div className="flex items-center gap-3">
+                <span className="text-gray-600 text-xs font-semibold">قیمت گذاری پیشرفته</span>
+                <label className='flex cursor-pointer select-none items-center'>
+                    <div className='relative'>
+                        <input
+                            type='button'
+                            onClick={(e)=>formik.setFieldValue("pricing_type",formik.values.pricing_type==="simple"?"flex":"simple")}
+                            className='sr-only'
+                        />
+                        <div
+                            className={`box block h-6 w-11 border border-cyan-300 rounded-full ${
+                                formik.values.pricing_type==="simple" ? 'bg-gray-300' : 'bg-cyan-400'
+                            }`}
+                        ></div>
+                        <div
+                            className={`absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white transition ${
+                                formik.values.pricing_type==="simple" ? 'translate-x-full' : ''
+                            }`}
+                        ></div>
+                    </div>
+                </label>
+            </div>
             {/* Variant attribute selector */}
             {variantAttributes.length>0 && variantAttributes?.map((attr) => (
                 <div
@@ -78,9 +101,15 @@ const ProductVariants = ({
                     onClick={() =>
                         setOpenVariant(openVariant === attr.value ? null : attr.value)
                     }
-                    className="w-full border border-gray-300 p-2 rounded-lg cursor-pointer"
+                    className="w-full  items-center border border-gray-300 p-2 rounded-lg cursor-pointer"
                 >
-                    <span className="text-sm font-medium">{attr.label}</span>
+                    <div className="w-full flex justify-between">
+                        <span className="text-sm font-medium">{attr.label}</span>
+                        <HiOutlineChevronDown
+                            className={`text-cyan-300 transition-transform duration-300 
+                                                                 ${openVariant === attr.value ? "rotate-180" : ""}`}
+                        />
+                    </div>
 
                     <AnimatePresence>
                         {openVariant === attr.value && (
@@ -89,11 +118,11 @@ const ProductVariants = ({
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.25 }}
-                                className="grid grid-cols-2 gap-2 mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg"
+                                className="w-full grid grid-cols-2 gap-2 mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg"
                             >
                                 {isLoadingOptions && (
                                     <div className="col-span-2 text-center text-sm text-gray-400">
-                                        Loading options...
+                                        لطفا صبر کنید...
                                     </div>
                                 )}
 
@@ -139,16 +168,16 @@ const ProductVariants = ({
                 return (
                     <div
                         key={index}
-                        className={`rounded-xl p-4 transition ${
+                        className={`rounded-xl p-4 transition border-2 border-dashed border-gray-200 dark:border-gray-400  ${
                             isActive
-                                ? "bg-gray-100 dark:bg-gray-800"
-                                : "bg-gray-200 dark:bg-gray-700 opacity-60"
+                                ? "bg-gray-50 dark:bg-gray-800"
+                                : "bg-gray-100 dark:bg-gray-700 opacity-60"
                         }`}
                     >
                         <div className="flex justify-between items-center mb-3">
-              <span className="text-sm text-cyan-500">
-                {variant.option_labels.join(" / ")}
-              </span>
+                          <span className="text-sm text-cyan-500">
+                            {variant.option_labels.join(" / ")}
+                          </span>
 
                             <div className="flex gap-2">
                                 <IoIosCheckmarkCircleOutline
@@ -182,25 +211,25 @@ const ProductVariants = ({
 
                         {/* Pricing inputs */}
                         <div className="grid grid-cols-2 gap-3">
-                            <Input formik={formik} onlyNum name={`variants.${index}.price`} label="Price" />
+                            <Input formik={formik} onlyNum name={`variants.${index}.price`} label="قیمت" />
                             <Input
                                 formik={formik}
                                 onlyNum
                                 name={`variants.${index}.discount_price`}
-                                label="Discount price"
+                                label="مبلغ پس از تخفیف"
                             />
                             <Input
                                 formik={formik}
                                 onlyNum
                                 name={`variants.${index}.stock_qty`}
-                                label="Stock quantity"
+                                label="تعداد"
                             />
-                            <Input formik={formik} onlyNum name={`variants.${index}.weight`} label="Weight" />
+                            <Input formik={formik} onlyNum name={`variants.${index}.weight`} label="وزن" />
                             <Input
                                 formik={formik}
                                 onlyNum
                                 name={`variants.${index}.stock_order_limit`}
-                                label="Order limit"
+                                label="حداکثر سفارش"
                             />
                         </div>
                     </div>

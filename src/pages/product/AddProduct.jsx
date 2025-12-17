@@ -76,7 +76,7 @@ const AddProduct = () => {
         seo_desc:"",
         gallery:[],
         attribute:[],
-        pricing_type:"flex",
+        pricing_type:"simple",
         price:"",
         discount_price:"",
         stock_qty:"",
@@ -188,6 +188,7 @@ const AddProduct = () => {
             }
         }
     }, [result_val]);
+    console.log(formik.values)
 
     return (
         <>
@@ -247,14 +248,62 @@ const AddProduct = () => {
                                 <NilfamEditor value={formik.values.body} isDark={theme} lang="fa"
                                               onChange={newContent => formik.setFieldValue("body", newContent)} />
                             </div>
-                            <ProductVariants
-                                variantAttributes={list_variant_attribute_select}
-                                formik={formik}
-                                isLoadingOptions={isLoading_list}
-                            />
-
+                            {formik.values.pricing_type === "flex" &&
+                                <ProductVariants
+                                    variantAttributes={list_variant_attribute_select}
+                                    formik={formik}
+                                    isLoadingOptions={isLoading_list}
+                                />
+                            }
+                            {formik.values.pricing_type === "simple" &&
+                                <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-gray-600 text-xs font-semibold">قیمت گذاری پیشرفته</span>
+                                        <label className='flex cursor-pointer select-none items-center'>
+                                            <div className='relative'>
+                                                <input
+                                                    type='button'
+                                                    onClick={(e)=>formik.setFieldValue("pricing_type",formik.values.pricing_type==="simple"?"flex":"simple")}
+                                                    className='sr-only'
+                                                />
+                                                <div
+                                                    className={`box block h-6 w-11 border border-cyan-300 rounded-full ${
+                                                        formik.values.pricing_type==="simple" ? 'bg-gray-300' : 'bg-cyan-400'
+                                                    }`}
+                                                ></div>
+                                                <div
+                                                    className={`absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white transition ${
+                                                        formik.values.pricing_type==="simple" ? 'translate-x-full' : ''
+                                                    }`}
+                                                ></div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Input formik={formik} onlyNum name="price" label="قیمت" />
+                                        <Input
+                                            formik={formik}
+                                            onlyNum
+                                            name="discount_price"
+                                            label="مبلغ پس از تخفیف"
+                                        />
+                                        <Input
+                                            formik={formik}
+                                            onlyNum
+                                            name="stock_qty"
+                                            label="تعداد"
+                                        />
+                                        <Input formik={formik} onlyNum name="weight" label="وزن" />
+                                        <Input
+                                            formik={formik}
+                                            onlyNum
+                                            name="stock_order_limit"
+                                            label="حداکثر سفارش"
+                                        />
+                                    </div>
+                                </div>
+                            }
                         </div>
-
                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 xl:w-2/6 md:w-3/6 w-full flex flex-col gap-5">
                             <div className="flex gap-2 ">
                                 <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
