@@ -13,15 +13,9 @@ import {Toast} from "../../components/toast/Toast.jsx";
 import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
-// import AddCategory from "./AddCategory.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
-// import AttributeCategory from "./AttributeCategory.jsx";
-import {getAsyncListProduct} from "../../feature/redux/ProductSlice.jsx";
+import {deleteAsyncProduct, getAsyncListProduct, productClearResultDelete} from "../../feature/redux/ProductSlice.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
-import DataTableProduct from "../../components/dataTable/DataTableProduct.jsx";
-import Color from 'color-thief-react';
-import AddProduct from "./AddProduct.jsx";
-import DynamicShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
 import ColoredShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
 
 
@@ -58,13 +52,7 @@ const ListProduct = () => {
     };
     // Handle delete or deactivate action
     const handleActionRequest = useCallback((type, id) => {
-        if (type === "active"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را غیرفعال کنید؟"
-            setModalData({ actionType: type, id, text });
-        }else if (type === "inactive"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را فعال کنید؟"
-            setModalData({ actionType: type, id, text });
-        }else if (type === "delete"){
+         if (type === "delete"){
             const text = "آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟"
             setModalData({ actionType: type, id, text });
         }
@@ -77,11 +65,7 @@ const ListProduct = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncCategory({ del: id }));
-            } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
-            }else if (actionType === "active") {
-                await dispatch(getAsyncStatusCategory({ Id: id }));
+                await dispatch(deleteAsyncProduct({ del: id }));
             }
 
             setShowModal(false);
@@ -93,11 +77,11 @@ const ListProduct = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
-                dispatch(categoryClearResultDelete());
+                dispatch(productClearResultDelete());
             }else{
                 // toast
                 Toast.error(`${result_delete.data.message}`);
-                dispatch(categoryClearResultDelete())
+                dispatch(productClearResultDelete())
             }
         }
     }, [result_delete]);
@@ -161,22 +145,10 @@ const ListProduct = () => {
                         hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                     />
                     <ButtonWithTooltip
-                        onClick={() => handleActionRequest(row.status, row.id)}
-                        icon={<IoBanOutline className="w-5 h-5" />}
-                        text={`${row.status === "active"?"غیرفعال":"فعال"}`}
-                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
-                    />
-                    <ButtonWithTooltip
                         onClick={() => handleActionRequest("delete", row.id)}
                         icon={<IoTrashOutline className="w-5 h-5" />}
                         text="حذف"
                         hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => setOpenIdAtt(row.id, "att")}
-                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
-                        text="ویژگی"
-                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
                     />
                 </div>
             )

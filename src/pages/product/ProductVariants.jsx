@@ -12,6 +12,7 @@ import {
     postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
 } from "../../feature/redux/VariantAttributeValueSlice.jsx";
 import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
+import {VscSettings} from "react-icons/vsc";
 
 // Empty variant template
 const emptyVariant = {
@@ -147,26 +148,34 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
     return (
         <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
             <div className="flex items-center gap-3">
-                <span className="text-gray-600 text-xs font-semibold dark:text-gray-100">قیمت گذاری پیشرفته</span>
-                <label className='flex cursor-pointer select-none items-center'>
-                    <div className='relative'>
-                        <input
-                            type='button'
-                            onClick={(e)=>formik.setFieldValue("pricing_type",formik.values.pricing_type==="simple"?"flex":"simple")}
-                            className='sr-only'
-                        />
-                        <div
-                            className={`box block h-6 w-11 border border-cyan-300 rounded-full ${
-                                formik.values.pricing_type==="simple" ? 'bg-gray-300' : 'bg-cyan-400'
-                            }`}
-                        ></div>
-                        <div
-                            className={`absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white transition ${
-                                formik.values.pricing_type==="simple" ? 'translate-x-full' : ''
-                            }`}
-                        ></div>
+                <div className="flex flex-col items-start gap-3">
+                    <div className="flex gap-2 items-center dark:text-gray-100 text-gray-700 py-2 pt-2">
+                        <VscSettings size={20}/>
+                        <span className="text-sm">قیمت گذاری</span>
                     </div>
-                </label>
+                    <div className="flex gap-2 items-center">
+                        <span className="text-gray-600 text-xs font-semibold dark:text-gray-100">قیمت گذاری پیشرفته</span>
+                        <label className='flex cursor-pointer select-none items-center'>
+                            <div className='relative'>
+                                <input
+                                    type='button'
+                                    onClick={(e)=>formik.setFieldValue("pricing_type",formik.values.pricing_type==="simple"?"flex":"simple")}
+                                    className='sr-only'
+                                />
+                                <div
+                                    className={`box block h-6 w-11 border border-cyan-300 rounded-full ${
+                                        formik.values.pricing_type==="simple" ? 'bg-gray-300' : 'bg-cyan-400'
+                                    }`}
+                                ></div>
+                                <div
+                                    className={`absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white transition ${
+                                        formik.values.pricing_type==="simple" ? 'translate-x-full' : ''
+                                    }`}
+                                ></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
             </div>
             {/* Variant attribute selector */}
             {variantAttributes.length>0 && variantAttributes?.map((attr) => (

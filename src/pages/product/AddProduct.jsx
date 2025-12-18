@@ -31,6 +31,8 @@ import {
 } from "../../feature/redux/AttributeValueSlice.jsx";
 import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
 import ProductVariants from "./ProductVariants.jsx";
+import {PiSwatches} from "react-icons/pi";
+import {VscSettings} from "react-icons/vsc";
 
 
 const AddProduct = () => {
@@ -232,15 +234,13 @@ const AddProduct = () => {
                                                     desc="تصویر"
                                                     name="gallery"
                                                     formik={formik}
-                                                    formikAddress={formik.values.image}/>
+                                                    formikAddress={formik.values.gallery}/>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
 
-                                <div className="flex justify-center">
-                                </div>
                             </div>
                             <div className="flex flex-col w-full shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl">
                                 <NilfamEditor value={formik.values.body} isDark={theme} lang="fa"
@@ -255,27 +255,33 @@ const AddProduct = () => {
                             }
                             {formik.values.pricing_type === "simple" &&
                                 <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-gray-600 text-xs font-semibold dark:text-gray-100">قیمت گذاری پیشرفته</span>
-                                        <label className='flex cursor-pointer select-none items-center'>
-                                            <div className='relative'>
-                                                <input
-                                                    type='button'
-                                                    onClick={(e)=>formik.setFieldValue("pricing_type",formik.values.pricing_type==="simple"?"flex":"simple")}
-                                                    className='sr-only'
-                                                />
-                                                <div
-                                                    className={`box block h-6 w-11 border border-cyan-300 rounded-full ${
-                                                        formik.values.pricing_type==="simple" ? 'bg-gray-300' : 'bg-cyan-400'
-                                                    }`}
-                                                ></div>
-                                                <div
-                                                    className={`absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white transition ${
-                                                        formik.values.pricing_type==="simple" ? 'translate-x-full' : ''
-                                                    }`}
-                                                ></div>
-                                            </div>
-                                        </label>
+                                    <div className="flex flex-col items-start gap-3">
+                                        <div className="flex gap-2 items-center dark:text-gray-100 text-gray-700 py-2 pt-2">
+                                            <VscSettings size={20}/>
+                                            <span className="text-sm ">قیمت گذاری</span>
+                                        </div>
+                                        <div className="flex gap-2 items-center">
+                                            <span className="text-gray-600 text-xs font-semibold dark:text-gray-100">قیمت گذاری پیشرفته</span>
+                                            <label className='flex cursor-pointer select-none items-center'>
+                                                <div className='relative'>
+                                                    <input
+                                                        type='button'
+                                                        onClick={(e)=>formik.setFieldValue("pricing_type",formik.values.pricing_type==="simple"?"flex":"simple")}
+                                                        className='sr-only'
+                                                    />
+                                                    <div
+                                                        className={`box block h-6 w-11 border border-cyan-300 rounded-full ${
+                                                            formik.values.pricing_type==="simple" ? 'bg-gray-300' : 'bg-cyan-400'
+                                                        }`}
+                                                    ></div>
+                                                    <div
+                                                        className={`absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white transition ${
+                                                            formik.values.pricing_type==="simple" ? 'translate-x-full' : ''
+                                                        }`}
+                                                    ></div>
+                                                </div>
+                                            </label>
+                                        </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
                                         <Input formik={formik} onlyNum name="price" label="قیمت" />
@@ -302,12 +308,53 @@ const AddProduct = () => {
                                 </div>
                             }
                         </div>
+
                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 xl:w-2/6 md:w-3/6 w-full flex flex-col gap-5">
                             <div className="flex gap-2 ">
                                 <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
-                                    <Input formik={formik} maxLength={4} name="read_time" label="زمان مطالعه" />
-                                    <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
-                                    <div className="w-full h-px bg-gray-300 dark:bg-cyan-200 my-3"></div>
+                                    {/* Submit */}
+                                    <div className="flex justify-center">
+                                        <button
+                                            disabled={!formik.isValid || isLoading}
+                                            type="submit"
+                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                                        >
+                                            {isLoading ? (
+                                                <>
+                                                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                    <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                                                </>
+                                            ) : (
+                                                <span>{id ? "ویرایش" : "ثبت"}</span>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <div className="flex justify-center items-center gap-2">
+                                        <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
+                                        {!id &&
+                                            <SelectOption
+                                                formik={formik}
+                                                options={status}
+                                                name="status"
+                                                label="وضعیت"
+                                            />
+                                        }
+                                        {id &&
+                                            <InputSelectStatus
+                                                formik={formik}
+                                                optionEnter={info_product?.status}
+                                                options={status}
+                                                name="status"
+                                                label="وضعیت"
+                                            />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-2 ">
+                                <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
                                     <SelectOption
                                         formik={formik}
                                         options={list_brand_select}
@@ -326,30 +373,24 @@ const AddProduct = () => {
                                         name="sub_category_id"
                                         label="انتخاب زیر دسته"
                                     />
-                                    <div className="w-full h-px bg-gray-300 dark:bg-cyan-200 my-3"></div>
-
-                                    {!id &&
-                                        <SelectOption
-                                            formik={formik}
-                                            options={status}
-                                            name="status"
-                                            label="وضعیت"
-                                        />
-                                    }
-                                    {id &&
-                                        <InputSelectStatus
-                                            formik={formik}
-                                            optionEnter={info_product?.status}
-                                            options={status}
-                                            name="status"
-                                            label="وضعیت"
-                                        />
-                                    }
                                 </div>
                             </div>
                             <div className="flex flex-col gap-6">
                                 <div className="flex gap-2 ">
                                     <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
+                                        <Input formik={formik} maxLength={25} name="seo_title" label="عنوان سئو" />
+                                        <Input formik={formik} maxLength={25} name="seo_keywords" label="کلمات کلیدی" />
+                                        <TextArea formik={formik} maxLength={25} name="seo_desc" label="توضیحات سئو" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-6">
+                                <div className="flex gap-2 ">
+                                    <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl p-4">
+                                        <div className="flex gap-2 items-center dark:text-gray-100 text-gray-700 py-1">
+                                            <PiSwatches size={20}/>
+                                            <span className="text-sm">ویژگی ها</span>
+                                        </div>
                                         {list_attribute_select?.length > 0 &&
                                             list_attribute_select.map((att) => {
                                                 return (
@@ -541,33 +582,6 @@ const AddProduct = () => {
                                             })}
                                     </div>
                                 </div>
-                            </div>
-                            <div className="flex flex-col gap-6">
-                                <div className="flex gap-2 ">
-                                    <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl  p-4">
-                                        <Input formik={formik} maxLength={25} name="seo_title" label="عنوان سئو" />
-                                        <Input formik={formik} maxLength={25} name="seo_keywords" label="کلمات کلیدی" />
-                                        <TextArea formik={formik} maxLength={25} name="seo_desc" label="توضیحات سئو" />
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Submit */}
-                            <div className="flex justify-center">
-                                <button
-                                    disabled={!formik.isValid || isLoading}
-                                    type="submit"
-                                    className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
-                                            text-gray-50 text-sm transition-colors`}
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                            <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
-                                        </>
-                                    ) : (
-                                        <span>{id ? "ویرایش" : "ثبت"}</span>
-                                    )}
-                                </button>
                             </div>
                         </div>
 

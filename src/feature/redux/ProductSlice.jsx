@@ -36,18 +36,9 @@ export const postAsyncAddProduct = createAsyncThunk("product/postAsyncAddProduct
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
+export const deleteAsyncProduct = createAsyncThunk("product/deleteAsyncProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const deleteAsyncCategory = createAsyncThunk("category/deleteAsyncCategory",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.delete(`/admin/category/delete/${payload.del}`,{})
+        const res = await http.delete(`/admin/products/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -140,34 +131,18 @@ const ProductSlice = createSlice({
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
-            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
-            result.status = action.payload.data.result.status
-            state.isError = false
-            state.isLoading_action = false
-        })
-        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
-            state.result = false
-            state.isError = false
-            state.isLoading_action = true
-        })
-        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
-            state.result = action.payload
-            state.isError = true
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategory.fulfilled,(state, action)=>{
-            state.list_category.data = state.list_category.data.filter(
-                driver => driver.id !== Number(action.payload.data.result)
+        builder.addCase(deleteAsyncProduct.fulfilled,(state, action)=>{
+            state.list_product.data = state.list_product.data.filter(
+                product => product.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncCategory.pending,(state)=>{
+        builder.addCase(deleteAsyncProduct.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncCategory.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncProduct.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
