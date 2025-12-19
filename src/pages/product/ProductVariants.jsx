@@ -21,7 +21,7 @@ const emptyVariant = {
     option_labels: [],
     price: "",
     discount_price: "",
-    stock_qty: "",
+    sales_count: "",
     weight: "",
     stock_order_limit: "",
     isConfirmed: false,
@@ -29,6 +29,8 @@ const emptyVariant = {
 
 const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
     const dispatch = useDispatch();
+    const [label, setLabel] = useState("");
+    const [value, setValue] = useState("");
     const { list_variant_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.variantAttributeValue);
 
     const [openVariant, setOpenVariant] = useState(null);
@@ -44,6 +46,7 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                 ...emptyVariant,
                 option_ids: [option.id],
                 option_labels: [option.label],
+                id:attributeValue
             };
 
             formik.setFieldValue("variants", [newVariant]);
@@ -213,57 +216,69 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                     className="w-full col-span-2"
                                 >
                                     <div className="flex w-full items-center gap-2">
+
+                                        {/* نام ویژگی */}
                                         <div className="w-full">
-                                            <Input
-                                                formik={formik}
-                                                name="label"
-                                                label="نام ویژگی"
+                                            <label className="block text-xs mb-1 text-gray-600 dark:text-gray-200">
+                                                نام ویژگی
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={label}
+                                                onChange={(e) => setLabel(e.target.value)}
+                                                className="w-full h-9.5 px-3 rounded-lg border border-gray-300  bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
                                             />
                                         </div>
-                                            <div className="w-full">
-                                                {attr.label === "رنگ" ?
-                                                    <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
-                                                        <input
-                                                            type="color"
-                                                            className="absolute w-6 h-6 opacity-0 cursor-pointer"
-                                                            onChange={(e) =>
-                                                                formik.setFieldValue("value", e.target.value.slice(1))
-                                                            }
-                                                        />
-                                                        <span
-                                                            className="w-6 h-6 rounded-md border border-gray-300"
-                                                            style={{ backgroundColor: `#${formik.values.value}` }}
-                                                        />
-                                                        <span className="text-sm text-gray-600 dark:text-gray-100">انتخاب کنید</span>
-                                                    </label>
 
-                                                    :
-                                                    <Input
-                                                        formik={formik}
-                                                        name="value"
-                                                        label="مقدار ویژگی"
+                                        {/* مقدار ویژگی */}
+                                        <div className="w-full">
+                                            {attr.label === "رنگ" ? (
+                                                <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
+                                                    <input
+                                                        type="color"
+                                                        className="absolute w-6 h-6 opacity-0 cursor-pointer"
+                                                        onChange={(e) => setValue(e.target.value.slice(1))}
                                                     />
-                                                }
-                                            </div>
+                                                    <span
+                                                        className="w-6 h-6 rounded-md border border-gray-300"
+                                                        style={{ backgroundColor: value ? `#${value}` : "#fff" }}
+                                                    />
+                                                    <span className="text-sm text-gray-600 dark:text-gray-100">
+                                                    انتخاب کنید
+                                                </span>
+                                                </label>
+                                            ) : (
+                                                <>
+                                                    <label className="block text-sm mb-1 text-gray-600 dark:text-gray-200">
+                                                        مقدار ویژگی
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        value={value}
+                                                        onChange={(e) => setValue(e.target.value)}
+                                                        className="w-full h-10 px-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                                                    />
+                                                </>
+                                            )}
+                                        </div>
 
+                                        {/* دکمه افزودن */}
                                         <button
                                             type="button"
-                                            disabled={!formik.values.label.trim() || isLoading}
+                                            disabled={isLoading}
                                             onClick={() => {
-                                                const label = formik.values.label.trim();
-                                                const value = formik.values.value.trim();
-
-                                                if (!label) return;
+                                                if (!label.trim()) return;
 
                                                 dispatch(
                                                     postAsyncAddVariantAttributeVal({
-                                                        value,
-                                                        label,
-                                                        Id: attr.value
+                                                        label: label.trim(),
+                                                        value: value.trim(),
+                                                        Id: attr.value,
                                                     })
                                                 );
-                                                formik.setFieldValue("label", "");
-                                                formik.setFieldValue("value", "");
+
+                                                setLabel("");
+                                                setValue("");
                                             }}
                                             className="flex mt-4 h-10 text-xs justify-center items-center gap-x-2 px-2 py-0.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 transition-colors"
                                         >
@@ -279,6 +294,7 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
 
                                     </div>
                                 </form>
+
 
                                 {!isLoadingOptions &&
                                     attr.options?.map((opt) => (
@@ -384,8 +400,8 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                             <Input
                                 formik={formik}
                                 onlyNum
-                                name={`variants.${index}.stock_qty`}
-                                label="تعداد"
+                                name={`variants.${index}.sales_count`}
+                                label="تعداد فروش"
                             />
                             <Input formik={formik} onlyNum name={`variants.${index}.weight`} label="وزن" />
                             <Input

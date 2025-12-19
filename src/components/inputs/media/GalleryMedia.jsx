@@ -13,13 +13,14 @@ import Alert from "./Alert.jsx";
 const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,setSelectedItem}) => {
 
 
+
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [error, setError] = useState(null);
     const [count, setCount] = useState(false);
     const [page, setPage] = useState(false);
-
+    console.log(selectedItem)
 
     const [perPage, setPerPage] = useState(21);
     const [numberPage, setNumberPage] = useState(1);

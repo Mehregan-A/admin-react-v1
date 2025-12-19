@@ -46,6 +46,7 @@ const AddProduct = () => {
     const {theme}=useSelector(state => state.theme)
     const [openAttribute, setOpenAttribute] = useState(null);
     const [AttributeId, setAttributeId] = useState("");
+    const [attributeValueTitle, setAttributeValueTitle] = useState("");
 
     useEffect(() => {
         dispatch(getAsyncListVariantAttributeSelect())
@@ -437,18 +438,18 @@ const AddProduct = () => {
                                                                         className="w-full col-span-2"
                                                                     >
                                                                         <div className="flex items-center gap-2">
-                                                                            <Input
-                                                                                formik={formik}
-                                                                                name="title"
-                                                                                label="افزودن ویژگی"
+                                                                            <input
+                                                                                value={attributeValueTitle}
+                                                                                onChange={(e) => setAttributeValueTitle(e.target.value)}
+                                                                                className="w-full border focus-visible:outline-0 focus-visible:border-cyan-300 border-gray-300 dark:text-gray-100 text-gray-700  rounded-lg p-2"
+                                                                                placeholder="افزودن ویژگی"
                                                                             />
 
                                                                             <button
                                                                                 type="button"
-                                                                                disabled={!formik.values.title.trim() || isLoading}
+                                                                                disabled={!attributeValueTitle.trim() || isLoading}
                                                                                 onClick={() => {
-                                                                                    const title = formik.values.title.trim();
-
+                                                                                    const title = attributeValueTitle.trim();
                                                                                     if (!title) return;
 
                                                                                     dispatch(
@@ -457,18 +458,12 @@ const AddProduct = () => {
                                                                                             Id: att.value
                                                                                         })
                                                                                     );
-                                                                                    formik.setFieldValue("title", "");
+
+                                                                                    setAttributeValueTitle("");
                                                                                 }}
                                                                                 className="flex mt-4 h-10 text-xs justify-center items-center gap-x-2 px-2 py-0.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 transition-colors"
                                                                             >
-                                                                                {isLoading ? (
-                                                                                    <>
-                                                                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                                                                        <span>افزودن...</span>
-                                                                                    </>
-                                                                                ) : (
-                                                                                    <span>افزودن</span>
-                                                                                )}
+                                                                                افزودن
                                                                             </button>
 
                                                                         </div>

@@ -70,7 +70,7 @@ const ProductSlice = createSlice({
             state.result_delete = false
         },
         productClearInfo : (state) => {
-            state.info_edit = false
+            state.info_product = false
         },
     },
     extraReducers : (builder)=>{
