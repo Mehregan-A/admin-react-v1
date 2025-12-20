@@ -27,6 +27,7 @@ import FreeShippingList from "./pages/freeShipping/FreeShippingList.jsx";
 import SeoList from "./pages/seo/SeoList.jsx";
 import AttributeList from "./pages/attribute/AttributeList.jsx";
 import VariantAttributeList from "./pages/variantAttribute/VariantAttributeList.jsx";
+import ListProductAmazing from "./pages/productAmazing/ListProductAmazing.jsx";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
                     <Route path="variant-attribute/list/:row/:page" element={<VariantAttributeList/>} />
                     <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
                     <Route path="product/list/:row/:page" element={<ListProduct/>} />
+                    <Route path="product-amazing/list/:row/:page" element={<ListProductAmazing/>} />
                     <Route path="order/list/:row/:page" element={<ListOrder/>} />
                     <Route path="shipping-methods/list/:row/:page" element={<ListShippingMethod/>} />
                     <Route path="free-shipping/list" element={<FreeShippingList/>} />

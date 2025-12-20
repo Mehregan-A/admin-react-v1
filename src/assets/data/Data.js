@@ -17,6 +17,14 @@ export const SideItem = [
         sub: [],
     },
     {
+        id: 3,
+        icon_fill: "PiStarFourFill",
+        icon_outline: "PiStarFour",
+        label: "محصولات شگفت انگیز",
+        link: "/product-amazing/list/50/1",
+        sub: [],
+    },
+    {
         id: 18,
         icon_fill: "PiShoppingCartSimpleFill",
         icon_outline: "PiShoppingCartSimple",

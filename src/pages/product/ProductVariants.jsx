@@ -217,7 +217,6 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                 >
                                     <div className="flex w-full items-center gap-2">
 
-                                        {/* نام ویژگی */}
                                         <div className="w-full">
                                             <label className="block text-xs mb-1 text-gray-600 dark:text-gray-200">
                                                 نام ویژگی
@@ -230,7 +229,6 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                             />
                                         </div>
 
-                                        {/* مقدار ویژگی */}
                                         <div className="w-full">
                                             {attr.label === "رنگ" ? (
                                                 <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
@@ -262,7 +260,6 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                             )}
                                         </div>
 
-                                        {/* دکمه افزودن */}
                                         <button
                                             type="button"
                                             disabled={isLoading}

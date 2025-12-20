@@ -16,13 +16,11 @@ import {
     getAsyncStatusAttribute
 } from "../../feature/redux/AttributeSlice.jsx";
 import {BsListUl} from "react-icons/bs";
-import AttributeValue from "./AttributeValue.jsx";
 import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
-import AddAttribute from "./AddAttribute.jsx";
 import PerPageSelector from "../../components/RowSelector.jsx";
 
 
-const AttributeList = () => {
+const ListProductAmazing = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
     const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
@@ -41,7 +39,7 @@ const AttributeList = () => {
     useEffect(() => {
         if (page) {
             dispatch(getAsyncListAttribute({ row, page}));
-            navigate(`/attribute/list/${row}/${page}`);
+            navigate(`/product-amazing/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
     // Open user form with selected id
@@ -149,8 +147,26 @@ const AttributeList = () => {
                             return (
                                 <div
                                     key={item.id}
-                                    className="relative shadow-md shadow-cyan-300  attribute dark:bg-gray-800 rounded-3xl overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
+                                    className="relative overflow-hidden rounded-3xl shadow-md shadow-cyan-300
+                                 border border-gray-200 dark:border-gray-700
+                                 dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300"
                                 >
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+                                        <div className="relative w-52 h-28">
+
+                                            <div className="absolute inset-0 rounded-3xl bg-cyan-300/20 scale-[1.45] blur-md"></div>
+
+                                            <div className="absolute inset-0 rounded-3xl bg-cyan-300/30 scale-[1.32]"></div>
+                                            <div className="absolute inset-0 rounded-3xl bg-cyan-300/35 scale-[1.22]"></div>
+
+                                            <div className="absolute inset-0 rounded-3xl bg-cyan-400/40 scale-[1.14]"></div>
+                                            <div className="absolute inset-0 rounded-3xl bg-cyan-400/45 scale-[1.08]"></div>
+
+                                            <div className="absolute inset-0 rounded-3xl bg-cyan-500/55 scale-[1.02]"></div>
+
+                                        </div>
+                                    </div>
+
                                     {/* Header */}
                                     <div className="flex items-start justify-between  p-6 pb-4 relative">
                                         <div className="flex flex-col gap-2 w-full">
@@ -159,17 +175,20 @@ const AttributeList = () => {
                                             </h2>
 
                                             <span className="text-sm text-gray-500 dark:text-gray-300">
-                            نوع ویژگی: <span className="font-semibold">{item.data_type==="bool"?"دو گزینه ای":item.data_type==="text"?"نوشتاری":"عددی"}</span>
-                        </span>
+                                            نوع ویژگی: <span
+                                                className="font-semibold">{item.data_type === "bool" ? "دو گزینه ای" : item.data_type === "text" ? "نوشتاری" : "عددی"}</span>
+                                        </span>
 
                                             <div className="flex gap-3 mt-1">
-                            <span className={`px-2 py-1 rounded-lg text-xs font-medium text-nowrap ${item.is_filter ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                فیلتر بر جست و جو: {item.is_filter ? "فعال" : "غیرفعال"}
-                            </span>
+                                            <span
+                                                className={`px-2 py-1 rounded-lg text-xs font-medium text-nowrap ${item.is_filter ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
+                                                فیلتر بر جست و جو: {item.is_filter ? "فعال" : "غیرفعال"}
+                                            </span>
 
-                                                <span className={`px-2 py-1 rounded-lg text-xs text-nowrap font-medium ${item.is_spec ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                 نمایش در مشخصات: {item.is_spec ? "نمایش" : "عدم نمایش"}
-                            </span>
+                                                <span
+                                                    className={`px-2 py-1 rounded-lg text-xs text-nowrap font-medium ${item.is_spec ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
+                                                 نمایش در مشخصات: {item.is_spec ? "نمایش" : "عدم نمایش"}
+                                            </span>
                                             </div>
                                         </div>
 
@@ -180,35 +199,35 @@ const AttributeList = () => {
                                                     : "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400"
                                             }`}
                                         >
-                        {item.status === "active" ? "فعال" : "غیرفعال"}
-                    </span>
+                                        {item.status === "active" ? "فعال" : "غیرفعال"}
+                                    </span>
                                     </div>
                                     <div className="border-t border-gray-200 dark:border-gray-700"></div>
                                     {/* Footer Buttons */}
                                     <div className="flex items-center gap-2 justify-end p-6 pt-0 mt-3">
                                         <ButtonWithTooltip
-                                            onClick={ () => setOpenId(item.id, "edit")}
-                                            icon={<IoCreateOutline className={`w-5 h-5 `} />}
+                                            onClick={() => setOpenId(item.id, "edit")}
+                                            icon={<IoCreateOutline className={`w-5 h-5 `}/>}
                                             text="ویرایش"
                                             hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
                                         />
 
                                         <ButtonWithTooltip
                                             onClick={() => handleActionRequest(item.status, item.id)}
-                                            icon={<IoBanOutline className="w-5 h-5" />}
+                                            icon={<IoBanOutline className="w-5 h-5"/>}
                                             text={item.status === "active" ? "غیرفعال" : "فعال"}
                                             hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                                         />
 
                                         <ButtonWithTooltip
                                             onClick={() => handleActionRequest("delete", item.id)}
-                                            icon={<IoTrashOutline className={`w-5 h-5 `} />}
+                                            icon={<IoTrashOutline className={`w-5 h-5 `}/>}
                                             text="حذف"
                                             hoverColor="hover:text-red-600 dark:hover:text-red-400"
                                         />
                                         <ButtonWithTooltip
                                             onClick={() => setOpenIdAtt(item.id, "att")}
-                                            icon={<BsListUl className={`w-5.5 h-5.5 `} />}
+                                            icon={<BsListUl className={`w-5.5 h-5.5 `}/>}
                                             text="مقادیر ویژگی"
                                             hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
                                         />
@@ -227,28 +246,6 @@ const AttributeList = () => {
                     </div>
                 )}
             </div>
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddAttribute
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_attribute={list_attribute.data}
-                    />
-                </div>
-            )}
-            {openAtt.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AttributeValue
-                        open_slider={openAtt.open}
-                        open_close={() => setOpenAtt({ open: !openAtt.open })}
-                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
-                        Id={isIdsEdit.id}
-                        list_attribute={list_attribute.data}
-                    />
-                </div>
-            )}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}
@@ -267,4 +264,4 @@ const AttributeList = () => {
     );
 };
 
-export default AttributeList;
+export default ListProductAmazing;
