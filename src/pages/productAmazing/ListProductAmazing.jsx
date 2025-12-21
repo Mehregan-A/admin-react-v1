@@ -152,17 +152,33 @@ const ListProductAmazing = () => {
                                  dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300"
                                 >
                                     <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
-                                        <div className="relative w-52 h-28">
-
-                                            <div className="absolute inset-0 rounded-3xl bg-cyan-300/20 scale-[1.45] blur-md"></div>
-
-                                            <div className="absolute inset-0 rounded-3xl bg-cyan-300/30 scale-[1.32]"></div>
-                                            <div className="absolute inset-0 rounded-3xl bg-cyan-300/35 scale-[1.22]"></div>
-
-                                            <div className="absolute inset-0 rounded-3xl bg-cyan-400/40 scale-[1.14]"></div>
-                                            <div className="absolute inset-0 rounded-3xl bg-cyan-400/45 scale-[1.08]"></div>
-
-                                            <div className="absolute inset-0 rounded-3xl bg-cyan-500/55 scale-[1.02]"></div>
+                                        <div className="relative bg-cyan-200/50 dark:bg-gray-800 w-full h-full">
+                                            <svg
+                                                width="130"
+                                                height="95"
+                                                viewBox="0 0 66 44"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="text-orange-400 "
+                                                style={{ position: "absolute", top: 0, left: 0}}
+                                            >
+                                                <path
+                                                    d="M-27.4997 -7.50004C-35.2584 7.3926 -14.3286 52.7562 0.000276566 43.9999C9.00049 38.4999 6.98483 23.4141 15.5003 14.5C33.983 -4.84802 56.5003 11.4999 65.0003 -13.0001C75.4973 -43.2562 -12.7027 -35.9021 -27.4997 -7.50004Z"
+                                                    fill="currentColor" fillOpacity="1"
+                                                />
+                                            </svg>
+                                            <svg
+                                                width="180"
+                                                height="110"
+                                                viewBox="0 0 83 40"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="text-cyan-400"
+                                                style={{ position: "absolute", bottom: 0, right: 0 }}
+                                            >
+                                                <path
+                                                    d="M84.7627 40.9096C92.5215 26.0169 100.937 -6.60423 84.7627 -2.09042C72.8886 1.22329 77.7782 16.4954 69.2627 25.4096C50.78 44.7576 16.2893 18.8231 2.76271 41.9096C-13.427 69.5414 69.9658 69.3116 84.7627 40.9096Z"
+                                                    fill="currentColor" fillOpacity="1"
+                                                />
+                                            </svg>
 
                                         </div>
                                     </div>
