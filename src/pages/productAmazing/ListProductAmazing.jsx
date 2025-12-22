@@ -18,6 +18,11 @@ import {
 import {BsListUl} from "react-icons/bs";
 import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
 import PerPageSelector from "../../components/RowSelector.jsx";
+import {getAsyncListAmazingProduct} from "../../feature/redux/AmazingProductSlice.jsx";
+import {persianDateNT} from "../../components/utility/persianDateNT.js";
+import AddAdmin from "../admin/AddAdmin.jsx";
+import {getAsyncListAdmin} from "../../feature/redux/AdminSlice.jsx";
+import AddProductAmazing from "./AddProductAmazing.jsx";
 
 
 const ListProductAmazing = () => {
@@ -34,11 +39,11 @@ const ListProductAmazing = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_attribute,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.attribute);
+    const { list_product_amazing,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.amazingProduct);
 // Effects
     useEffect(() => {
         if (page) {
-            dispatch(getAsyncListAttribute({ row, page}));
+            dispatch(getAsyncListAmazingProduct({ row, page}));
             navigate(`/product-amazing/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
@@ -121,14 +126,14 @@ const ListProductAmazing = () => {
             <div className="flex justify-between items-center p-2">
                 <div className="flex justify-start gap-2 p-5">
                     <div className="text-gray-400 dark:text-gray-300">داشبورد |</div>
-                    <div className="text-cyan-700 dark:text-cyan-400">ویژگی ها</div>
+                    <div className="text-cyan-700 dark:text-cyan-400">شگفت انگیز</div>
                 </div>
 
                 <button
                     onClick={() => setOpenId("")}
                     className="flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400 drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm"
                 >
-                    افزودن ویژگی
+                    افزودن شگفت انگیز
                 </button>
             </div>
 
@@ -141,9 +146,9 @@ const ListProductAmazing = () => {
                     <Loading />
                 ) : isError_list ? (
                     <Reject />
-                ) : list_attribute?.data?.length > 0 ? (
+                ) : list_product_amazing?.data?.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-2 mt-4">
-                        {list_attribute.data.map((item) => {
+                        {list_product_amazing.data.map((item) => {
                             return (
                                 <div
                                     key={item.id}
@@ -158,7 +163,13 @@ const ListProductAmazing = () => {
                                                 height="95"
                                                 viewBox="0 0 66 44"
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="text-orange-400 "
+                                                className={`${
+                                                    item.flag === "in_progress"
+                                                        ? "text-cyan-400"
+                                                        : item.flag === "not_started"
+                                                            ?"text-red-700"
+                                                            :"text-orange-700"
+                                                }`}
                                                 style={{ position: "absolute", top: 0, left: 0}}
                                             >
                                                 <path
@@ -184,41 +195,35 @@ const ListProductAmazing = () => {
                                     </div>
 
                                     {/* Header */}
-                                    <div className="flex items-start justify-between  p-6 pb-4 relative">
+                                    <div className="flex items-start justify-between p-6 pb-4 relative">
                                         <div className="flex flex-col gap-2 w-full">
-                                            <h2 className="text-lg mt-2 text-nowrap font-semibold text-gray-900 dark:text-gray-100">
+                                            <h2 className="text-lg mt-2 text-nowrap font-semibold text-gray-800 dark:text-gray-100">
                                                 {item.title}
                                             </h2>
-
-                                            <span className="text-sm text-gray-500 dark:text-gray-300">
-                                            نوع ویژگی: <span
-                                                className="font-semibold">{item.data_type === "bool" ? "دو گزینه ای" : item.data_type === "text" ? "نوشتاری" : "عددی"}</span>
-                                        </span>
-
-                                            <div className="flex gap-3 mt-1">
+                                            <div className="flex flex-col w-40 gap-3 mt-1">
                                             <span
-                                                className={`px-2 py-1 rounded-lg text-xs font-medium text-nowrap ${item.is_filter ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                                فیلتر بر جست و جو: {item.is_filter ? "فعال" : "غیرفعال"}
+                                                className={`px-2 py-1 rounded-lg text-xs font-medium text-nowrap  bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300`}>
+                                                تاریخ شروع:{persianDateNT.unix(item.start_at)}
                                             </span>
-
-                                                <span
-                                                    className={`px-2 py-1 rounded-lg text-xs text-nowrap font-medium ${item.is_spec ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300" : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"}`}>
-                                                 نمایش در مشخصات: {item.is_spec ? "نمایش" : "عدم نمایش"}
+                                            <span
+                                                    className={`px-2 py-1 rounded-lg text-xs text-nowrap font-medium bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300`}>
+                                                  تاریخ پایان:{persianDateNT.unix(item.end_at)}
                                             </span>
                                             </div>
                                         </div>
 
                                         <span
                                             className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
-                                                item.status === "active"
+                                                item.flag === "in_progress"
                                                     ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400"
-                                                    : "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400"
+                                                    : item.flag === "not_started"
+                                                    ?"bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-400" 
+                                                    :"bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-400"
                                             }`}
                                         >
-                                        {item.status === "active" ? "فعال" : "غیرفعال"}
+                                        {item.flag === "in_progress" ? "جاری" : item.flag === "not_started" ?"شروع نشده":"اتمام"}
                                     </span>
                                     </div>
-                                    <div className="border-t border-gray-200 dark:border-gray-700"></div>
                                     {/* Footer Buttons */}
                                     <div className="flex items-center gap-2 justify-end p-6 pt-0 mt-3">
                                         <ButtonWithTooltip
@@ -272,8 +277,19 @@ const ListProductAmazing = () => {
                     showModal={showModal}
                 />
             )}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddProductAmazing
+                        open_slider={openAdd.open}
+                        open_close={() => setOpenAdd({ open: !openAdd.open })}
+                        reload={() => dispatch(getAsyncListAdmin({ row, page }))}
+                        id={isIdsEdit}
+                        list_admin={list_product_amazing.data}
+                    />
+                </div>
+            )}
             <div className='flex justify-end p-2 rounded-3xl mt-3'>
-                <PagingGetUrl total_page={list_attribute?.page} />
+                <PagingGetUrl total_page={list_product_amazing?.page} />
             </div>
         </div>
 
