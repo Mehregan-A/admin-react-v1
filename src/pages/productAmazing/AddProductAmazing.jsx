@@ -19,6 +19,14 @@ import {
     postAsyncSearchAttributeVal
 } from "../../feature/redux/AttributeValueSlice.jsx";
 import {postAsyncSearchAmazingProduct} from "../../feature/redux/AmazingProductSlice.jsx";
+import {BsListUl} from "react-icons/bs";
+import Loading from "../../components/loading/Loading.jsx";
+import Reject from "../../components/loading/Reject.jsx";
+import {BiSolidError} from "react-icons/bi";
+import {Config} from "../../config/Config.jsx";
+import CategoryNotFound from "../../assets/image/category_not_found.png";
+import {persianDateNT} from "../../components/utility/persianDateNT.js";
+import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 
 
 const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
@@ -116,17 +124,18 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
     });
 
     const onSubmit = (values) => {
+        console.log(1)
         if(values.search && values.search.trim() !== "") {
+            console.log(2)
             dispatch(postAsyncSearchAmazingProduct({ search: values.search }));
         }
     };
 
     const formik = useFormik({
-        initialValues:initialValues,
-        validationSchema: validationSchema(!!id),
+        initialValues: initialValues,
         onSubmit,
-        validateOnMount : true
-    })
+        validateOnMount: true
+    });
 
     useEffect(() => {
         if(result && result?.status){
@@ -182,64 +191,180 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
         formik.setFieldValue("search", "");
         dispatch(attributeValClearSearch());
     };
-    console.log(search);
+    const ButtonWithTooltip = ({ onClick, icon, text, hoverColor }) => (
+        <div className="relative group">
+            <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
+                {icon}
+            </button>
+            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-700 dark:text-gray-100 dark:bg-gray-800 bg-gray-100 rounded-lg drop-shadow-lg  drop-shadow-gray-400 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
+                {text}
+            </span>
+        </div>
+    );
+    const columns = [
+        {
+            name: "تصویر",
+            selector: row => (
+                <div className="w-18 h-18 flex items-center justify-center">
+                    <div className="hexagon-shadow">
+                        <img
+                            src={row.image ? Config.apiImage + row.image : CategoryNotFound}
+                            alt="category"
+                            className="hexagon-img"
+                        />
+                    </div>
+                </div>
+            ),
+        },
+        {
+            name: "عنوان مقاله",
+            selector: row => row.title,
+        },
+        {
+            name: "url",
+            selector: row => row.url,
+        },
+        {
+            name: "چکیده",
+            selector: row => row.abstract,
+        },
+        {
+            name: " نام دسته بندی",
+            selector: row => row.category_title,
+        },
+        {
+            name: " نام زیر دسته",
+            selector: row => row.sub_category_title,
+        },
+        {
+            name: " وضعیت",
+            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-500`}>پیش نویس</div>
+        },
+        {
+            name: "زمان انتشار",
+            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
+        },
+        {
+            name: "عملیات",
+            style: {
+                width: '100px'
+            },
+            selector: row => (
+                <div className="flex lg:justify-center gap-0.5">
+                    <ButtonWithTooltip
+                        onClick={() => navigate(`/article/add/${row.id}`)}
+                        icon={<IoCreateOutline className="w-5 h-5" />}
+                        text="ویرایش مقاله"
+                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
+                    />
+                    <ButtonWithTooltip
+                        onClick={() => handleActionRequest("delete", row.id)}
+                        icon={<IoTrashOutline className="w-5 h-5" />}
+                        text="حذف"
+                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
+                    />
+                </div>
+            )
+        }
+    ];
+    console.log(search)
 
 
     return (
         <>
-            <div>
-                <form onSubmit={formik.handleSubmit} className="flex w-full items-center gap-2">
-                    <div className="w-full relative">
-                        <Input
-                            formik={formik}
-                            type="search"
-                            name="search"
-                            maxLength={30}
-                            minLength={1}
-                            label=""
-                            formikAddress={formik.values.search}
-                            placeholder={""}
-                        />
 
-                        <FaMagnifyingGlass className="absolute right-1.5 -translate-y-6.5 text-sm text-gray-400" />
+            <div className="fixed inset-0 z-20 flex items-center justify-center overflow-auto p-4">
+                <div
+                    className={`absolute inset-0 bg-black/20 backdrop-blur-[3px] transition-opacity duration-300 z-0 ${
+                        isOpenModal ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
+                />
 
-                        {/* clean search */}
-                        <button
-                            tabIndex={-1}
-                            type="button"
-                            onClick={removeSearch}
-                            className="absolute left-2 -translate-y-7 text-cyan-300 cursor-pointer"
-                        >
-                            <FaXmark size={20} />
-                        </button>
-                    </div>
-
-                    {/* search button */}
-                    <button
-                        disabled={!formik.values.search || isLoading_search}
-                        type="submit"
-                        className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors"
+                <div ref={myElementRef} className="flex flex-col gap-2 w-full items-center">
+                    <div
+                        className={`relative md:max-w-2xl w-full rounded-tr-4xl dark:shadow-gray-600 rounded-bl-4xl shadow-lg bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 pt-1 ${
+                            isOpenModal ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+                        } z-10`}
                     >
-                        {isLoading_search ? (
-                            <>
-                                <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
-                                <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                            </>
-                        ) : (
-                            <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
-                        )}
-                    </button>
-                </form>
-                {/*<DataTable*/}
-                {/*    icon={''}*/}
-                {/*    isLoading={isLoading_list}*/}
-                {/*    isError={isError_list}*/}
-                {/*    title=""*/}
-                {/*    data={list_category?.data}*/}
-                {/*    numberPage={list_category?.page}*/}
-                {/*    columns={columns}*/}
-                {/*/>*/}
 
+                        {/* Header */}
+                        <div className="h-8 flex items-center justify-between text-gray-800 m-2">
+                            <button
+                                className="cursor-pointer hover:text-cyan-300 dark:text-gray-200 transition-colors"
+                                onClick={closeModal}
+                            >
+                                <HiMiniXMark className="w-6 h-6 cursor-pointer" />
+                            </button>
+                            <div className="flex gap-2 items-center dark:text-gray-200 rounded-3xl">
+                                <BsListUl className="w-5 h-5" />
+                                <span className="text-sm">ویژگی ها</span>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-cyan-300"></div>
+
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-2 space-y-5">
+
+                            <form onSubmit={formik.handleSubmit} className="flex w-full items-center gap-2">
+                                <div className="w-full relative">
+                                    <Input
+                                        formik={formik}
+                                        type="search"
+                                        name="search"
+                                        maxLength={30}
+                                        minLength={1}
+                                        label=""
+                                        formikAddress={formik.values.search}
+                                        placeholder={""}
+                                    />
+
+                                    <FaMagnifyingGlass className="absolute right-1.5 -translate-y-6.5 text-sm text-gray-400" />
+
+                                    {/* clean search */}
+                                    <button
+                                        tabIndex={-1}
+                                        type="button"
+                                        onClick={removeSearch}
+                                        className="absolute left-2 -translate-y-7 text-cyan-300 cursor-pointer"
+                                    >
+                                        <FaXmark size={20} />
+                                    </button>
+                                </div>
+
+                                {/* search button */}
+                                <button
+                                    disabled={!formik.values.search || isLoading_search}
+                                    type="submit"
+                                    className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors"
+                                >
+                                    {isLoading_search ? (
+                                        <>
+                                            <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
+                                            <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                        </>
+                                    ) : (
+                                        <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
+                                    )}
+                                </button>
+                            </form>
+
+
+                            <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
+
+                                <DataTable
+                                    icon={''}
+                                    isLoading={isLoading_search}
+                                    isError={''}
+                                    title=""
+                                    data={search.data.result}
+                                    numberPage={search?.page}
+                                    columns={columns}
+                                />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );
