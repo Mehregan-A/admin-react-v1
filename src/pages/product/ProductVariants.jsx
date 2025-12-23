@@ -34,7 +34,6 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
     const { list_variant_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.variantAttributeValue);
 
     const [openVariant, setOpenVariant] = useState(null);
-    const  [Color, setColor] = useState("");
     const [activeVariantIndex, setActiveVariantIndex] = useState(0);
     const variants = formik.values.variants;
 

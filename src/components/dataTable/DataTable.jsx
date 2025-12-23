@@ -7,7 +7,7 @@ import Loading from "../loading/Loading.jsx";
 import Reject from "../loading/Reject.jsx";
 
 
-const DataTable = ({title,columns,isError, data,isLoading, numberPage,icon,perPage=true,searchParams,user}) => {
+const DataTable = ({type,title,columns,isError, data,isLoading, numberPage,icon,perPage=true,searchParams,user}) => {
     const {width} = useWindowSize();
     const [typeDataTable, setTypeDataTable] = useState(<PcMode data={data} columns={columns}/>);
     useEffect(() => {
@@ -16,7 +16,7 @@ const DataTable = ({title,columns,isError, data,isLoading, numberPage,icon,perPa
     }, [width, data])
 
     return (
-        <div className="flex bg-gray-50 dark:bg-gray-800  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 inset-shadow-sm inset-shadow-cyan-400 flex-col lg:gap-2 w-full lg:mt-0">
+        <div className={`flex bg-gray-50 dark:bg-gray-800  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 ${type==="amazing"?"":"inset-shadow-sm inset-shadow-cyan-400"}  flex-col lg:gap-2 w-full lg:mt-0`}>
             <div className="flex flex-row justify-between items-center gap-1 px-4">
                 <div className="flex flex-row gap-2 items-center">
                     {icon}

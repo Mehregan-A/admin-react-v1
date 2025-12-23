@@ -33,6 +33,7 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
     const myElementRef = useRef(null);
     // transitions for open & close
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [listIndex, setListIndex] = useState(null);
     useEffect(() => {
         if (open_slider){
             setTimeout(() => {
@@ -54,7 +55,8 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
     const dispatch = useDispatch();
     // formik
     const initialValues = {
-       search:""
+       search:"",
+       list:[]
     }
 
     const validationSchema = (isEditMode) => yup.object({
@@ -124,9 +126,7 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
     });
 
     const onSubmit = (values) => {
-        console.log(1)
         if(values.search && values.search.trim() !== "") {
-            console.log(2)
             dispatch(postAsyncSearchAmazingProduct({ search: values.search }));
         }
     };
@@ -217,7 +217,7 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
             ),
         },
         {
-            name: "عنوان مقاله",
+            name: "عنوان محصول",
             selector: row => row.title,
         },
         {
@@ -225,24 +225,21 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
             selector: row => row.url,
         },
         {
-            name: "چکیده",
-            selector: row => row.abstract,
-        },
-        {
-            name: " نام دسته بندی",
-            selector: row => row.category_title,
-        },
-        {
-            name: " نام زیر دسته",
-            selector: row => row.sub_category_title,
-        },
-        {
-            name: " وضعیت",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-500`}>پیش نویس</div>
-        },
-        {
-            name: "زمان انتشار",
-            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
+            name: "محصولات",
+            selector: row => row.list?.map((item, index) => (
+                <div className="items-center flex gap-2">
+                    <input
+                        type="checkbox"
+                        name={`list-${index}-${item.value}`}
+                        checked={formik.values.list?.[index]?.includes(item.id)}
+                        onChange={() =>{
+                                formik.setFieldValue("list", formik.values.list[index](...row.list))
+                        }}
+                    />
+                    <span>{item.sku_code}</span>
+                </div>
+
+            ))
         },
         {
             name: "عملیات",
@@ -250,24 +247,13 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
                 width: '100px'
             },
             selector: row => (
-                <div className="flex lg:justify-center gap-0.5">
-                    <ButtonWithTooltip
-                        onClick={() => navigate(`/article/add/${row.id}`)}
-                        icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش مقاله"
-                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest("delete", row.id)}
-                        icon={<IoTrashOutline className="w-5 h-5" />}
-                        text="حذف"
-                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
+                <div>
+
                 </div>
             )
         }
     ];
-    console.log(search)
+    console.log(formik.values);
 
 
     return (
@@ -282,7 +268,7 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
 
                 <div ref={myElementRef} className="flex flex-col gap-2 w-full items-center">
                     <div
-                        className={`relative md:max-w-2xl w-full rounded-tr-4xl dark:shadow-gray-600 rounded-bl-4xl shadow-lg bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 pt-1 ${
+                        className={`relative md:max-w-5xl w-full rounded-tr-4xl dark:shadow-gray-600 rounded-bl-4xl shadow-lg bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 pt-1 ${
                             isOpenModal ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
                         } z-10`}
                     >
@@ -349,14 +335,14 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
                             </form>
 
 
-                            <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
-
+                            <div className="flex flex-col rounded-2xl h-96 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
                                 <DataTable
+                                    type={`amazing`}
                                     icon={''}
                                     isLoading={isLoading_search}
                                     isError={''}
                                     title=""
-                                    data={search.data.result}
+                                    data={search.data?.result}
                                     numberPage={search?.page}
                                     columns={columns}
                                 />
