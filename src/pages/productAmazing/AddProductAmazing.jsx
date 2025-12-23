@@ -230,11 +230,17 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
                 <div className="items-center flex gap-2">
                     <input
                         type="checkbox"
-                        name={`list-${index}-${item.value}`}
+                        name={`list[${index}][${item.id}]`}
                         checked={formik.values.list?.[index]?.includes(item.id)}
-                        onChange={() =>{
-                                formik.setFieldValue("list", formik.values.list[index](...row.list))
+                        onChange={(e) => {
+                            if (e.target.checked) {
+                                console.log(`list[${index}][${item.id}]`)
+                                formik.setFieldValue("list", [...(formik.values.list), ...row.list]);
+                            } else {
+                                formik.setFieldValue("list", (formik.values.list).filter(item => !row.list.some(r => r.id === item.id)));
+                            }
                         }}
+
                     />
                     <span>{item.sku_code}</span>
                 </div>
