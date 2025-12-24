@@ -29,11 +29,10 @@ import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 
 
-const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
+const SearchProductAmazing = ({open_close,reload,open_slider,setItemSelected,itemSelected}) => {
     const myElementRef = useRef(null);
     // transitions for open & close
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [itemSelected, setItemSelected] = useState([]);
     useEffect(() => {
         if (open_slider){
             setTimeout(() => {
@@ -242,26 +241,12 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
                             }
                         }}
                     />
-
                     <span>{item.sku_code}</span>
                 </div>
 
             ))
         },
-        {
-            name: "عملیات",
-            style: {
-                width: '100px'
-            },
-            selector: row => (
-                <div>
-
-                </div>
-            )
-        }
     ];
-    console.log(formik.values);
-
 
     return (
         <>
@@ -340,7 +325,9 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
                                     )}
                                 </button>
                             </form>
-
+                            <div
+                                onClick={(e)=>closeModal()}
+                                className="cursor-pointer inline-block  py-3  font-semibold  bg-cyan-400 rounded-lg shadow-[0_3px_10px_rgba(14,165,233,0.6)] hover:bg-cyan-500 hover:shadow-[0_4px_15px_rgba(14,165,233,0.8)] active:scale-95 transition-all duration-400 ease-in-out select-none hover:text-white dark:hover:text-white text-xs text-gray-100 p-2 px-10">تایید</div>
 
                             <div className="flex flex-col rounded-2xl h-96 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
                                 <DataTable
@@ -363,4 +350,4 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
     );
 };
 
-export default AddProductAmazing;
+export default SearchProductAmazing;

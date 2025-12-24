@@ -22,7 +22,7 @@ import {getAsyncListAmazingProduct} from "../../feature/redux/AmazingProductSlic
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import AddAdmin from "../admin/AddAdmin.jsx";
 import {getAsyncListAdmin} from "../../feature/redux/AdminSlice.jsx";
-import AddProductAmazing from "./AddProductAmazing.jsx";
+import SearchProductAmazing from "./SearchProductAmazing.jsx";
 
 
 const ListProductAmazing = () => {
@@ -130,7 +130,7 @@ const ListProductAmazing = () => {
                 </div>
 
                 <button
-                    onClick={() => setOpenId("")}
+                    onClick={() => navigate("/amazing/add")}
                     className="flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400 drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm"
                 >
                     افزودن شگفت انگیز
@@ -277,17 +277,7 @@ const ListProductAmazing = () => {
                     showModal={showModal}
                 />
             )}
-            {openAdd.open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <AddProductAmazing
-                        open_slider={openAdd.open}
-                        open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListAdmin({ row, page }))}
-                        id={isIdsEdit}
-                        list_admin={list_product_amazing.data}
-                    />
-                </div>
-            )}
+
             <div className='flex justify-end p-2 rounded-3xl mt-3'>
                 <PagingGetUrl total_page={list_product_amazing?.page} />
             </div>

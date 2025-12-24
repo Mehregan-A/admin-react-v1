@@ -180,16 +180,16 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
                     {/*{isError && (<Error isError={isError}/>)}*/}
                     {!isLoading && !isError && data && (
                         <div className="grid md:grid-cols-5 grid-cols-3 gap-5">
-                            {data.map((value, index) => {
+                            {data?.map((value, index) => {
                                 return (
                                     <div key={index + 1} onClick={() => {
                                         selectHandler({id: parseInt(value.id), type: value.type, url: value.url ,alt : ""})
                                     }} className=" group  container object-center justify-center overflow-y-auto p-1 bg-white dark:bg-gray-700 drop-shadow-lg drop-shadow-gray-300 dark:drop-shadow-cyan-200 dark:hover:drop-shadow-cyan-300 hover:drop-shadow-gray-500 transition-all duration-350 rounded-2xl cursor-pointer relative">
                                         <img className="object-center container object-cover rounded-2xl" src={Config.apiImage + value.url} alt=""/>
 
-                                        {selectedItem.find(item => item.id === parseInt(value.id)) && (
-                                            <FiCheckCircle size={30} className="absolute left-1/2 top-1/2 transition -translate-x-1/2 -translate-y-1/2 text-cyan-400 bg-white/40 rounded-full "/>
-                                        )}
+                                        {/*{selectedItem?.find(item => item.id === parseInt(value.id)) && (*/}
+                                        {/*    <FiCheckCircle size={30} className="absolute left-1/2 top-1/2 transition -translate-x-1/2 -translate-y-1/2 text-cyan-400 bg-white/40 rounded-full "/>*/}
+                                        {/*)}*/}
                                         <div
                                             onClick={() => {
                                                 showAlert(value.id)

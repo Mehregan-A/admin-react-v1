@@ -14,7 +14,6 @@ import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {optionsActive} from "../../assets/data/Data.js";
 import {
     postAsyncAddSubCategory,
 
