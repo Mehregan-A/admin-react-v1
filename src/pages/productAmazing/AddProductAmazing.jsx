@@ -33,7 +33,7 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
     const myElementRef = useRef(null);
     // transitions for open & close
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [listIndex, setListIndex] = useState(null);
+    const [itemSelected, setItemSelected] = useState([]);
     useEffect(() => {
         if (open_slider){
             setTimeout(() => {
@@ -231,17 +231,18 @@ const AddProductAmazing = ({id,list_admin,open_close,reload,open_slider}) => {
                     <input
                         type="checkbox"
                         name={`list[${index}][${item.id}]`}
-                        checked={formik.values.list?.[index]?.includes(item.id)}
+                        checked={itemSelected[index]?.some(i => i.id === item.id)}
                         onChange={(e) => {
                             if (e.target.checked) {
-                                console.log(`list[${index}][${item.id}]`)
-                                formik.setFieldValue("list", [...(formik.values.list), ...row.list]);
+                                setItemSelected(prev => [...prev, row.list[index]]);
                             } else {
-                                formik.setFieldValue("list", (formik.values.list).filter(item => !row.list.some(r => r.id === item.id)));
+                                setItemSelected(prev =>
+                                    prev.filter(list => list !== row.list[index])
+                                );
                             }
                         }}
-
                     />
+
                     <span>{item.sku_code}</span>
                 </div>
 
