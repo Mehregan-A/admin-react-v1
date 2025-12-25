@@ -143,7 +143,6 @@ const AddProductAmazing = () => {
     //         }
     //     }
     // }, [result]);
-    console.log(itemSelected)
 
     return (
         <>
@@ -183,7 +182,7 @@ const AddProductAmazing = () => {
                         {/*    label="وضعیت"*/}
                         {/*/>*/}
                     </div>
-                    {itemSelected.length>0 && itemSelected?.map((item,index)=>{
+                    {formik.values.list.length>0 && formik.values.list?.map((item,index)=>{
                         return (
                             <div className="bg-gray-50 flex justify-between w-full gap-4 items-center rounded-xl p-3">
                                 <div className="flex gap-4 items-center ">
@@ -222,12 +221,7 @@ const AddProductAmazing = () => {
 
                 {openAdd.open && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center">
-                        <SearchProductAmazing
-                            itemSelected={itemSelected}
-                            setItemSelected={setItemSelected}
-                            open_slider={openAdd.open}
-                            open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        />
+                        <SearchProductAmazing formik={formik} close={() => setOpenAdd({ open: false })}/>
                     </div>
                 )}
                 {/*<form className="" onSubmit={formik.handleSubmit}>*/}

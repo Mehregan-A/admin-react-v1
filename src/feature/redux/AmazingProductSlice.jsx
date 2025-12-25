@@ -73,6 +73,9 @@ const AmazingProductSlice = createSlice({
     name: 'amazingProduct',
     initialState,
     reducers : {
+        productAmazingSearchClearResult : (state) => {
+            state.search = false
+        },
         productClearResult : (state) => {
             state.result = false
         },
@@ -170,6 +173,6 @@ const AmazingProductSlice = createSlice({
         })
     }
 })
-export const { productClearResult,productClearInfo,productClearResultDelete} = AmazingProductSlice.actions
+export const { productClearResult,productAmazingSearchClearResult,productClearInfo,productClearResultDelete} = AmazingProductSlice.actions
 
 export default AmazingProductSlice.reducer

@@ -34,8 +34,8 @@ const DataTable = ({type,title,columns,isError, data,isLoading, numberPage,icon,
                         :data?.length > 0
                             ?typeDataTable
                             :<div className={`flex mt-40 flex-col gap-4 items-center justify-center`}>
-                                <BiSolidError size={35} className={`text-cyan-700 animate-pulse`}/>
-                                <span className={`font-semibold`}>موردی برای نمایش وجود ندارد.</span>
+                                <BiSolidError size={35} className={`text-cyan-300 animate-pulse`}/>
+                                <span className={`font-semibold text-gray-700 dark:text-green-100`}>موردی برای نمایش وجود ندارد.</span>
                             </div>
                 }
             </div>
