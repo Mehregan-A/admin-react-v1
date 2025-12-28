@@ -6,7 +6,7 @@ import {Toast} from "../../components/toast/Toast.jsx";
 import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {status} from "../../assets/data/Data.js";
+import {options, status} from "../../assets/data/Data.js";
 import {useLocation, useParams} from "react-router-dom";
 import TextArea from "../../components/inputs/TextArea.jsx";
 import { NilfamEditor } from 'nilfam-editor';
@@ -26,23 +26,28 @@ import SearchProductAmazing from "./SearchProductAmazing.jsx";
 import {PiStarFour, PiStarFourFill} from "react-icons/pi";
 import {Config} from "../../config/Config.jsx";
 import CategoryNotFound from "../../assets/image/category_not_found.png";
+import {
+    getAsyncInfoAmazingProduct,
+    postAsyncAddAmazingProduct,
+    postAsyncSearchAmazingProduct, productAmazingClearInfo,
+    productAmazingClearResult
+} from "../../feature/redux/AmazingProductSlice.jsx";
 
 
 const AddProductAmazing = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const location = useLocation();
-    const [itemSelected, setItemSelected] = useState([]);
     const [openAdd ,setOpenAdd] = useState({open:false})
+    const {result,isLoading,info_amazing} = useSelector(state => state.amazingProduct);
     const openModal = location.state?.openModal;
-    // useEffect(() => {
-    //     dispatch(getAsyncSelectCategory())
-    //     if (id){
-    //         dispatch(getAsyncGetInfoArticle({Id:id}))
-    //     }else{
-    //         dispatch(articleClearInfo())
-    //     }
-    // },[])
+    useEffect(() => {
+        if (id){
+            dispatch(getAsyncInfoAmazingProduct({Id:id}))
+        }else{
+            dispatch(productAmazingClearInfo())
+        }
+    },[])
     useEffect(() => {
         if (openModal) {
             setOpenAdd({ open: !openAdd.open })
@@ -52,97 +57,51 @@ const AddProductAmazing = () => {
         setOpenAdd({ open: true });
     };
 
-    // const {result,isLoading,list_info_article} = useSelector(state => state.article);
     // redux
     const initialValues = {
         title:"",
         product_id : "",
-        amazing_price : "",
-        start_time : "",
-        end_time: "",
-        amazing_count : "",
+        start_at : "",
+        end_at: "",
         status: "",
         list:[]
     }
     const validationSchema = yup.object({
-        title: yup
-            .string()
-            .required('عنوان مقاله الزامی است')
-            .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
-            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
 
-        url: yup
-            .string()
-            .required('آدرس URL الزامی است')
-            .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
 
-        abstract: yup
-            .string()
-            .required('چکیده مقاله الزامی است')
-            // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
-            .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
-
-        body: yup
-            .string()
-            .required('متن مقاله الزامی است'),
-
-        image: yup
-            .mixed()
-            .required('تصویر مقاله الزامی است'),
-
-        category_id: yup
-            .number()
-            .required('انتخاب دسته الزامی است'),
-
-        sub_category_id: yup
-            .number()
-            .required('انتخاب زیر دسته الزامی است'),
-
-        read_time: yup
-            .number()
-            .required('زمان مطالعه الزامی است'),
-        seo_title: yup
-            .string()
-            .required('عنوان سئو الزامی است')
-            .min(2, 'عنوان سئو باید حداقل 2 کاراکتر باشد')
-            .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        seo_desc: yup
-            .string()
-            .required('توضیحات سئو الزامی است')
-            .min(2, 'توضیحات باید حداقل 2 کاراکتر باشد')
-            .max(300, 'توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد'),
     });
 
     const onSubmit = (values) => {
         if (id) {
             dispatch(putAsyncEditArticle(values));
         } else {
-            dispatch(postAsyncAddArticle(values));
+            dispatch(postAsyncAddAmazingProduct(values));
         }
     };
 
     const formik = useFormik({
-        initialValues: initialValues,
+        initialValues:info_amazing || initialValues,
         validationSchema,
         onSubmit,
         validateOnMount : true,
         enableReinitialize: true
     })
 
-    // useEffect(() => {
-    //     if(result && result?.status){
-    //         if(result.status === 200) {
-    //             // toast
-    //             Toast.success(`${result.data.message}`);
-    //             dispatch(articleClearResult())
-    //
-    //         }else{
-    //             // toast
-    //             Toast.error(`${result.data.message}`);
-    //             dispatch(articleClearResult())
-    //         }
-    //     }
-    // }, [result]);
+    useEffect(() => {
+        if(result && result?.status){
+            if(result.status === 200) {
+                // toast
+                Toast.success(`${result.data.message}`);
+                dispatch(productAmazingClearResult())
+
+            }else{
+                // toast
+                Toast.error(`${result.data.message}`);
+                dispatch(productAmazingClearResult())
+            }
+        }
+    }, [result]);
+    console.log(formik.values);
 
     return (
         <>
@@ -171,16 +130,34 @@ const AddProductAmazing = () => {
                 </div>
                 <form onSubmit={formik.handleSubmit} className="bg-gray-100 flex flex-col gap-3 w-full rounded-2xl p-3">
                     <div className="flex gap-2">
-                        <InputCalendar formik={formik} name="start_time" type="normal" label="تاریخ شروع" formikAddress={formik.values.start_time} />
-                        <InputCalendar formik={formik} name="end_time" type="normal" label="تاریخ پایان" formikAddress={formik.values.end_time} />
-                        <Input formik={formik} maxLength={40} noPersian={true} name="title" label="نام شگفت انگیز" />
-                        {/*<InputSelectStatus*/}
-                        {/*    formik={formik}*/}
-                        {/*    optionEnter={list_info_article?.status}*/}
-                        {/*    options={status}*/}
-                        {/*    name="status"*/}
-                        {/*    label="وضعیت"*/}
-                        {/*/>*/}
+                        <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.start_at} />
+                        <InputCalendar formik={formik} name="end_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.end_at} />
+                        <Input formik={formik} maxLength={40} name="title" label="نام شگفت انگیز" />
+                        <InputSelectStatus
+                            formik={formik}
+                            // optionEnter={list_info_article?.status}
+                            options={options}
+                            name="status"
+                            label="وضعیت"
+                        />
+                        {/* Submit */}
+                        <div className="flex justify-center">
+                            <button
+                                disabled={!formik.isValid || isLoading}
+                                type="submit"
+                                className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                        <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                                    </>
+                                ) : (
+                                    <span>{id ? "ویرایش" : "ثبت"}</span>
+                                )}
+                            </button>
+                        </div>
                     </div>
                     {formik.values.list.length>0 && formik.values.list?.map((item,index)=>{
                         return (
@@ -209,10 +186,10 @@ const AddProductAmazing = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex xl:w-3/4 w-full  gap-4 p-4">
-                                    <Input formik={formik} maxLength={40} noPersian={true} name="amazing_price" label="مبلغ شگفت انگیز" />
-                                    <Input formik={formik} maxLength={40} name="amazing_count" label="تعداد فروش" />
-                                    <Input formik={formik} maxLength={500} name="abstract" label="حداکثر تعداد سبد خرید" />
+                                <div className="flex xl:w-3/4 w-full gap-4 p-4">
+                                    <Input formik={formik} name={`list[${index}].amazing_price`} onChange={e => formik.setFieldValue(`list[${index}].amazing_price`, e.target.value)} label="مبلغ شگفت انگیز" />
+                                    <Input formik={formik} name={`list[${index}].limit_qty`} onChange={e => formik.setFieldValue(`list[${index}].limit_qty`, e.target.value)} label="تعداد فروش" />
+                                    <Input formik={formik} name={`list[${index}].order_limit`} onChange={e => formik.setFieldValue(`list[${index}].order_limit`, e.target.value)} label="حداکثر تعداد سبد خرید" />
                                 </div>
                             </div>
                             )

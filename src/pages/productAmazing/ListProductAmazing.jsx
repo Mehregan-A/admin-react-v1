@@ -18,7 +18,11 @@ import {
 import {BsListUl} from "react-icons/bs";
 import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
 import PerPageSelector from "../../components/RowSelector.jsx";
-import {getAsyncListAmazingProduct} from "../../feature/redux/AmazingProductSlice.jsx";
+import {
+    deleteAsyncAmazingProduct,
+    getAsyncListAmazingProduct,
+    getAsyncStatusAmazingProduct
+} from "../../feature/redux/AmazingProductSlice.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import AddAdmin from "../admin/AddAdmin.jsx";
 import {getAsyncListAdmin} from "../../feature/redux/AdminSlice.jsx";
@@ -77,11 +81,11 @@ const ListProductAmazing = () => {
             const { actionType, id } = modalData;
 
             if (actionType === "delete") {
-                await dispatch(deleteAsyncAttribute({ del: id }));
+                await dispatch(deleteAsyncAmazingProduct({ del: id }));
             } else if (actionType === "inactive") {
-                await dispatch(getAsyncStatusAttribute({ Id: id }));
+                await dispatch(getAsyncStatusAmazingProduct({ Id: id }));
             }else if (actionType === "active") {
-                await dispatch(getAsyncStatusAttribute({ Id: id }));
+                await dispatch(getAsyncStatusAmazingProduct({ Id: id }));
             }
             setShowModal(false);
         } catch (err) {
@@ -157,35 +161,19 @@ const ListProductAmazing = () => {
                                  dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300"
                                 >
                                     <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
-                                        <div className="relative bg-cyan-200/50 dark:bg-gray-800 w-full h-full">
-                                            <svg
-                                                width="130"
-                                                height="95"
-                                                viewBox="0 0 66 44"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className={`${
-                                                    item.flag === "in_progress"
-                                                        ? "text-cyan-400"
-                                                        : item.flag === "not_started"
-                                                            ?"text-red-700"
-                                                            :"text-orange-700"
-                                                }`}
-                                                style={{ position: "absolute", top: 0, left: 0}}
-                                            >
-                                                <path
+                                        <div className={`relative w-full h-full ${item.flag==="not_started"?"bg-blue-200/50 dark:bg-cyan-500/20":item.flag==="in_progress"?"bg-green-200/50 dark:bg-green-500/20":"bg-red-200/50 dark:bg-red-500/20"}`}>
+
+                                            <svg width="130" height="95" viewBox="0 0 66 44" xmlns="http://www.w3.org/2000/svg" className={`${item.flag==="not_started"?"text-cyan-500 dark:text-cyan-400":item.flag==="in_progress"?"text-green-500 dark:text-green-400":"text-red-500 dark:text-red-400"}`} style={{ position: "absolute", top: 0, left: 0 }}>
+
+                                            <path
                                                     d="M-27.4997 -7.50004C-35.2584 7.3926 -14.3286 52.7562 0.000276566 43.9999C9.00049 38.4999 6.98483 23.4141 15.5003 14.5C33.983 -4.84802 56.5003 11.4999 65.0003 -13.0001C75.4973 -43.2562 -12.7027 -35.9021 -27.4997 -7.50004Z"
                                                     fill="currentColor" fillOpacity="1"
                                                 />
                                             </svg>
-                                            <svg
-                                                width="180"
-                                                height="110"
-                                                viewBox="0 0 83 40"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="text-cyan-400"
-                                                style={{ position: "absolute", bottom: 0, right: 0 }}
-                                            >
-                                                <path
+                                            <svg width="180" height="110" viewBox="0 0 83 40" xmlns="http://www.w3.org/2000/svg" className={`${item.flag==="not_started"?"text-cyan-500 dark:text-cyan-400":item.flag==="in_progress"?"text-green-500 dark:text-green-400":"text-red-500 dark:text-red-400"}`} style={{ position: "absolute", bottom: 0, right: 0 }}>
+
+
+                                            <path
                                                     d="M84.7627 40.9096C92.5215 26.0169 100.937 -6.60423 84.7627 -2.09042C72.8886 1.22329 77.7782 16.4954 69.2627 25.4096C50.78 44.7576 16.2893 18.8231 2.76271 41.9096C-13.427 69.5414 69.9658 69.3116 84.7627 40.9096Z"
                                                     fill="currentColor" fillOpacity="1"
                                                 />
@@ -227,7 +215,7 @@ const ListProductAmazing = () => {
                                     {/* Footer Buttons */}
                                     <div className="flex items-center gap-2 justify-end p-6 pt-0 mt-3">
                                         <ButtonWithTooltip
-                                            onClick={() => setOpenId(item.id, "edit")}
+                                            onClick={() => navigate(`/amazing/add/${item.id}`)}
                                             icon={<IoCreateOutline className={`w-5 h-5 `}/>}
                                             text="ویرایش"
                                             hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
@@ -235,22 +223,15 @@ const ListProductAmazing = () => {
 
                                         <ButtonWithTooltip
                                             onClick={() => handleActionRequest(item.status, item.id)}
-                                            icon={<IoBanOutline className="w-5 h-5"/>}
+                                            icon={<IoBanOutline className="w-5 h-5" />}
                                             text={item.status === "active" ? "غیرفعال" : "فعال"}
                                             hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
                                         />
-
                                         <ButtonWithTooltip
                                             onClick={() => handleActionRequest("delete", item.id)}
                                             icon={<IoTrashOutline className={`w-5 h-5 `}/>}
                                             text="حذف"
                                             hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                                        />
-                                        <ButtonWithTooltip
-                                            onClick={() => setOpenIdAtt(item.id, "att")}
-                                            icon={<BsListUl className={`w-5.5 h-5.5 `}/>}
-                                            text="مقادیر ویژگی"
-                                            hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
                                         />
                                     </div>
                                 </div>

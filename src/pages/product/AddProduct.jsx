@@ -295,7 +295,7 @@ const AddProduct = () => {
                                         <Input
                                             formik={formik}
                                             onlyNum
-                                            name="stock_qty"
+                                            name="current_stock"
                                             label="تعداد"
                                         />
                                         <Input formik={formik} onlyNum name="weight" label="وزن" />

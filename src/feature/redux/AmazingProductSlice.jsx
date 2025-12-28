@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
 import {putAsyncEditArticle} from "./ArticleSlice.jsx";
-import {postAsyncSearchAttribute} from "./AttributeSlice.jsx";
+import {getAsyncStatusAttribute, postAsyncSearchAttribute} from "./AttributeSlice.jsx";
 
 export const getAsyncListAmazingProduct = createAsyncThunk("amazingProduct/getAsyncListAmazingProduct",async (payload,{rejectWithValue})=>{
     try {
@@ -19,9 +19,9 @@ export const postAsyncSearchAmazingProduct = createAsyncThunk("amazingProduct/po
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoProduct = createAsyncThunk("product/getAsyncInfoProduct",async (payload,{rejectWithValue})=>{
+export const getAsyncInfoAmazingProduct = createAsyncThunk("amazingProduct/getAsyncInfoAmazingProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/products/get/${payload.Id}`,{
+        const res = await http.get(`/admin/products/amazing/get/${payload.Id}`,{
         })
         return await res
     }catch (error) {
@@ -37,17 +37,26 @@ export const putAsyncEditProduct = createAsyncThunk("product/putAsyncEditProduct
     }
 });
 
-export const postAsyncAddProduct = createAsyncThunk("product/postAsyncAddProduct",async (payload,{rejectWithValue})=>{
+export const postAsyncAddAmazingProduct = createAsyncThunk("amazingProduct/postAsyncAddAmazingProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/products/add",payload,{})
+        const res = await http.post("/admin/products/amazing/add",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncProduct = createAsyncThunk("product/deleteAsyncProduct",async (payload,{rejectWithValue})=>{
+export const getAsyncStatusAmazingProduct = createAsyncThunk("amazingProduct/getAsyncStatusAmazingProduct",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.delete(`/admin/products/delete/${payload.del}`,{})
+        const res = await http.get(`/admin/products/amazing/status/change/${payload.Id}`,{
+        })
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
+export const deleteAsyncAmazingProduct = createAsyncThunk("amazingProduct/deleteAsyncAmazingProduct",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.delete(`/admin/products/amazing/delete/${payload.del}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -61,7 +70,7 @@ const initialState = {
     isLoading_action: false,
     isLoading_list:false,
     isError_list:false,
-    info_product: false,
+    info_amazing: false,
     list_product_amazing:[],
     result : false,
     isLoading: false,
@@ -76,14 +85,14 @@ const AmazingProductSlice = createSlice({
         productAmazingSearchClearResult : (state) => {
             state.search = false
         },
-        productClearResult : (state) => {
+        productAmazingClearResult : (state) => {
             state.result = false
         },
-        productClearResultDelete : (state) => {
+        productAmazingClearResultDelete : (state) => {
             state.result_delete = false
         },
-        productClearInfo : (state) => {
-            state.info_product = false
+        productAmazingClearInfo : (state) => {
+            state.info_amazing = false
         },
     },
     extraReducers : (builder)=>{
@@ -114,20 +123,20 @@ const AmazingProductSlice = createSlice({
             state.search = action.payload
             state.isLoading_search = false
         })
-        builder.addCase(getAsyncInfoProduct.fulfilled,(state, action)=>{
-            state.info_product = action.payload.data.result
+        builder.addCase(getAsyncInfoAmazingProduct.fulfilled,(state, action)=>{
+            state.info_amazing = action.payload.data.result
             state.isLoading = false
             state.isError = false
             // const user = action.payload.data.result.user;
             // state.usersData[user.id] = user;
         })
-        builder.addCase(getAsyncInfoProduct.pending,(state)=>{
-            state.info_product = false
+        builder.addCase(getAsyncInfoAmazingProduct.pending,(state)=>{
+            state.info_amazing = false
             state.isLoading = true
             state.isError = false
         })
-        builder.addCase(getAsyncInfoProduct.rejected,(state,action)=>{
-            state.info_product = action.payload
+        builder.addCase(getAsyncInfoAmazingProduct.rejected,(state,action)=>{
+            state.info_amazing = action.payload
             state.isLoading = false
             state.isError = true
         })
@@ -144,35 +153,51 @@ const AmazingProductSlice = createSlice({
             state.isLoading = false
         })
 
-        builder.addCase(postAsyncAddProduct.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncAddAmazingProduct.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(postAsyncAddProduct.pending,(state)=>{
+        builder.addCase(postAsyncAddAmazingProduct.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(postAsyncAddProduct.rejected,(state,action)=>{
+        builder.addCase(postAsyncAddAmazingProduct.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(deleteAsyncProduct.fulfilled,(state, action)=>{
-            state.list_product.data = state.list_product.data.filter(
-                product => product.id !== Number(action.payload.data.result)
+        builder.addCase(getAsyncStatusAmazingProduct.fulfilled,(state, action)=>{
+            const result = state.list_product_amazing.data.find(val => val.id == action.payload.data.result.id)
+            result.status = action.payload.data.result.status
+            state.isError = false
+            state.isLoading_action = false
+        })
+        builder.addCase(getAsyncStatusAmazingProduct.pending,(state)=>{
+            state.result = false
+            state.isError = false
+            state.isLoading_action = true
+        })
+        builder.addCase(getAsyncStatusAmazingProduct.rejected,(state,action)=>{
+            state.result = action.payload
+            state.isError = true
+            state.isLoading_action = false
+        })
+        builder.addCase(deleteAsyncAmazingProduct.fulfilled,(state, action)=>{
+            state.list_product_amazing.data = state.list_product_amazing.data.filter(
+                amazing => amazing.id !== Number(action.payload.data.result)
             );
             state.result_delete = action.payload
             state.isLoading_action = false
         })
-        builder.addCase(deleteAsyncProduct.pending,(state)=>{
+        builder.addCase(deleteAsyncAmazingProduct.pending,(state)=>{
             state.result_delete = false
             state.isLoading_action = true
         })
-        builder.addCase(deleteAsyncProduct.rejected,(state,action)=>{
+        builder.addCase(deleteAsyncAmazingProduct.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })
     }
 })
-export const { productClearResult,productAmazingSearchClearResult,productClearInfo,productClearResultDelete} = AmazingProductSlice.actions
+export const { productAmazingClearResult,productAmazingSearchClearResult,productAmazingClearInfo,productAmazingClearResultDelete} = AmazingProductSlice.actions
 
 export default AmazingProductSlice.reducer

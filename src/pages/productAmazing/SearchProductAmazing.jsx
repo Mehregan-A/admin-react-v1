@@ -2,7 +2,10 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {HiMiniXMark} from "react-icons/hi2";
 import {FaMagnifyingGlass, FaXmark} from "react-icons/fa6";
-import {postAsyncSearchAmazingProduct} from "../../feature/redux/AmazingProductSlice.jsx";
+import {
+    postAsyncSearchAmazingProduct,
+    productAmazingSearchClearResult
+} from "../../feature/redux/AmazingProductSlice.jsx";
 import {BsListUl} from "react-icons/bs";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
@@ -25,7 +28,6 @@ const SearchProductAmazing = ({close,formik}) => {
 
     const handleCheckBox=(input)=>{
         const result = formik.values.list.find(val => val.sku_code === input.sku_code)
-        console.log("result",result)
         if(!result){
             formik.setFieldValue('list',[...formik.values.list,input]);
         }else {
@@ -42,7 +44,7 @@ const SearchProductAmazing = ({close,formik}) => {
                     <div className={`relative md:max-w-5xl w-full rounded-tr-4xl dark:shadow-gray-600 rounded-bl-4xl shadow-lg bg-gray-50 dark:bg-gray-800 transform transition-all duration-300 ease-in-out p-4 pt-1 opacity-100 scale-100 z-10`} >
 
                         <div className="h-8 flex items-center justify-between text-gray-800 m-2">
-                            <button className="cursor-pointer hover:text-cyan-300 dark:text-gray-200 transition-colors" onClick={()=>{close()}}>
+                            <button className="cursor-pointer hover:text-cyan-300 dark:text-gray-200 transition-colors" onClick={()=>{close();dispatch(productAmazingSearchClearResult());}}>
                                 <HiMiniXMark className="w-6 h-6 cursor-pointer" />
                             </button>
                             <div className="flex gap-2 items-center dark:text-gray-200 rounded-3xl">
@@ -76,13 +78,12 @@ const SearchProductAmazing = ({close,formik}) => {
                                         <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
                                     )}
                                 </button>
-                                <button onClick={()=>{close()}} type="submit" className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
+                                <button onClick={()=>{close();dispatch(productAmazingSearchClearResult());}} type="submit" className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
                                     تایید
                                 </button>
                             </div>
 
-                            {search?.data && search?.data?.result && search?.data?.result?.length > 0  && search?.data?.result?.map((val,index) => (
-                                <div key={index}>
+                                <div >
                                     {/*pc*/}
                                 <div className="hidden md:flex flex-col gap-3">
 
@@ -97,9 +98,7 @@ const SearchProductAmazing = ({close,formik}) => {
                             {/* Body */}
                             {isLoading_search ? (
                                 <Loading />
-                            ) : 0 ? (
-                                <Reject />
-                            ) : search?.data?.result?.length > 0 ? (
+                            ): search?.data?.result?.length > 0 ? (
                                     search?.data?.result?.map((row, rowIndex) => (
                                         <div key={rowIndex} className="grid grid-cols-4 gap-4 px-4 py-3 items-center rounded-xl bg-gray-50 dark:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-900 text-sm">
                                             <div className="w-18  flex items-center justify-center">
@@ -113,7 +112,7 @@ const SearchProductAmazing = ({close,formik}) => {
                                             <div>{row.url}</div>
 
                                             <div className="flex flex-col gap-2 items-center">
-                                                {val.list?.map((item, index) => (
+                                                {row.list?.map((item, index) => (
                                                     <div key={index} className="grid grid-cols-4 gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 text-sm">
                                                         <label key={index} className="flex items-center gap-2 cursor-pointer select-none">
                                                             <input type="checkbox" onChange={() => handleCheckBox(item)} className="hidden peer" />
@@ -156,7 +155,7 @@ const SearchProductAmazing = ({close,formik}) => {
                                               </span>
                                                 </div>
                                                 <div className="flex flex-col gap-2 ">
-                                                    {val.list?.map((item, index) => (
+                                                    {row.list?.map((item, index) => (
                                                         <div key={index} className=" flex gap-1 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-sm">
                                                             <div>کد :</div>
                                                             <label key={index} className="flex items-center gap-2 cursor-pointer select-none">
@@ -175,10 +174,7 @@ const SearchProductAmazing = ({close,formik}) => {
                                             </div>
                                         ))}
                                     </div>
-
-
                     </div>
-                            ))}
 
                         </div>
                     </div>

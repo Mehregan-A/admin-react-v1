@@ -21,7 +21,7 @@ const emptyVariant = {
     option_labels: [],
     price: "",
     discount_price: "",
-    sales_count: "",
+    current_stock: "",
     weight: "",
     stock_order_limit: "",
     isConfirmed: false,
@@ -396,7 +396,7 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                             <Input
                                 formik={formik}
                                 onlyNum
-                                name={`variants.${index}.sales_count`}
+                                name={`variants.${index}.current_stock`}
                                 label="تعداد فروش"
                             />
                             <Input formik={formik} onlyNum name={`variants.${index}.weight`} label="وزن" />

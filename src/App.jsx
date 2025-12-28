@@ -51,6 +51,7 @@ function App() {
                     <Route path="seo-site" element={<SeoList/>} />
                     <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="amazing/add" element={<AddProductAmazing />} />
+                    <Route path="amazing/add/:id" element={<AddProductAmazing />} />
                     <Route path="product/add" element={<AddProduct />} />
                     <Route path="article/add/:id" element={<AddArticle />} />
                     <Route path="article/add" element={<AddArticle />} />
