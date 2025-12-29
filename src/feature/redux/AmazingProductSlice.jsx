@@ -28,9 +28,9 @@ export const getAsyncInfoAmazingProduct = createAsyncThunk("amazingProduct/getAs
         return rejectWithValue(error.response, error.message)
     }
 })
-export const putAsyncEditProduct = createAsyncThunk("product/putAsyncEditProduct", async (payload, { rejectWithValue }) => {
+export const postAsyncEditAmazingProduct = createAsyncThunk("amazingProduct/postAsyncEditAmazingProduct", async (payload, { rejectWithValue }) => {
     try {
-        const res = await http.put(`/admin/products/update/${payload.id}`, payload, {});
+        const res = await http.post(`/admin/products/amazing/update/${payload.id}`, payload, {});
         return res;
     } catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -140,15 +140,15 @@ const AmazingProductSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(putAsyncEditProduct.fulfilled,(state, action)=>{
+        builder.addCase(postAsyncEditAmazingProduct.fulfilled,(state, action)=>{
             state.result = action.payload
             state.isLoading = false
         })
-        builder.addCase(putAsyncEditProduct.pending,(state)=>{
+        builder.addCase(postAsyncEditAmazingProduct.pending,(state)=>{
             state.result = false
             state.isLoading = true
         })
-        builder.addCase(putAsyncEditProduct.rejected,(state,action)=>{
+        builder.addCase(postAsyncEditAmazingProduct.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })

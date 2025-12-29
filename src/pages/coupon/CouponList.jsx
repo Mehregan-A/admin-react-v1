@@ -183,8 +183,7 @@ const CouponList = () => {
                                         list_coupon?.data?.map((item, index) => (
                                             <div key={index} className="relative  flex shadow-md dark:shadow-cyan-500  border-gray-300 rounded-2xl  overflow-hidden hover:shadow-md transition-all duration-300">
                                                 <div className="flex flex-col flex-1 p-4">
-                                                    <div className="flex items-center gap-3 mb-3">
-
+                                                    <div className="flex  gap-3">
                                                         <div className="flex justify-between w-full">
                                                             <div>
                                                                 <h3 className="text-base font-semibold text-gray-800 dark:text-gray-100">
@@ -197,11 +196,8 @@ const CouponList = () => {
                                                                 <p className="text-xs text-gray-500 dark:text-gray-200"> محدود به سفارش اول : {item.first_order_only===1?"بله":"خیر"}</p>
                                                             </div>
                                                         </div>
-                                                    </div>
-
-                                                    <div className="flex justify-between items-center">
                                                         <span
-                                                            className={`text-xs font-semibold px-2 py-1 rounded-xl ${
+                                                            className={`text-xs font-semibold px-2 py-1 h-6 rounded-xl ${
                                                                 item.status === "active"
                                                                     ? "bg-green-100 dark:bg-gray-700 text-green-700 dark:text-emerald-400"
                                                                     : "bg-red-100 dark:bg-gray-700  dark:text-red-400 text-red-700"
@@ -209,6 +205,9 @@ const CouponList = () => {
                                                         >
                                                           {item.status === "active" ? "فعال" : "غیرفعال"}
                                                         </span>
+                                                    </div>
+
+                                                    <div className="flex justify-end items-center mb-3">
 
                                                         <div className="flex gap-1">
                                                             <ButtonWithTooltip

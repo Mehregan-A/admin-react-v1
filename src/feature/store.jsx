@@ -24,6 +24,7 @@ import VariantAttributeSlice from "./redux/VariantAttributeSlice.jsx";
 import VariantAttributeValueSlice from "./redux/VariantAttributeValueSlice.jsx";
 import CategoryAttSlice from "./redux/CategoryAttSlice.jsx";
 import AmazingProductSlice from "./redux/AmazingProductSlice.jsx";
+import RulesSlice from "./redux/RulesSlice.jsx";
 
 
 
@@ -54,6 +55,7 @@ export const store = configureStore({
         variantAttribute:VariantAttributeSlice,
         variantAttributeValue:VariantAttributeValueSlice,
         amazingProduct:AmazingProductSlice,
+        rules:RulesSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })

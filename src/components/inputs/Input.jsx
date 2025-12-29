@@ -5,6 +5,7 @@ import {FaPercentage} from "react-icons/fa";
 
 const Input = ({
                    iconLable,
+                   defaultValue,
                    formik,
                    name,
                    label,

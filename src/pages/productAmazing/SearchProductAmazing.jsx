@@ -68,7 +68,7 @@ const SearchProductAmazing = ({close,formik}) => {
                                 </div>
 
                                 {/* search button */}
-                                <button onClick={()=>{onSubmit()}} type="submit" className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors">
+                                <button onClick={()=>{onSubmit()}} type="submit" className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 dark:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors">
                                     {isLoading_search ? (
                                         <>
                                             <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
@@ -78,7 +78,7 @@ const SearchProductAmazing = ({close,formik}) => {
                                         <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
                                     )}
                                 </button>
-                                <button onClick={()=>{close();dispatch(productAmazingSearchClearResult());}} type="submit" className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
+                                <button onClick={()=>{close();dispatch(productAmazingSearchClearResult());}} type="submit" className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 dark:bg-cyan-400 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
                                     تایید
                                 </button>
                             </div>
@@ -88,7 +88,7 @@ const SearchProductAmazing = ({close,formik}) => {
                                 <div className="hidden md:flex flex-col gap-3">
 
                             {/* Header */}
-                            <div className="grid grid-cols-4 gap-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm font-bold">
+                            <div className="grid dark:text-gray-100 text-gray-700 grid-cols-4 gap-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm font-bold">
                                 <div>تصویر</div>
                                 <div>نام محصول</div>
                                 <div>url</div>
@@ -100,17 +100,14 @@ const SearchProductAmazing = ({close,formik}) => {
                                 <Loading />
                             ): search?.data?.result?.length > 0 ? (
                                     search?.data?.result?.map((row, rowIndex) => (
-                                        <div key={rowIndex} className="grid grid-cols-4 gap-4 px-4 py-3 items-center rounded-xl bg-gray-50 dark:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-900 text-sm">
+                                        <div key={rowIndex} className="grid grid-cols-4 text-gray-700 dark:text-gray-100 gap-4 px-4 py-3 items-center rounded-xl bg-gray-50   dark:bg-gray-700 text-sm">
                                             <div className="w-18  flex items-center justify-center">
                                                 <div className="hexagon-shadow">
                                                     <img src={row.image ? Config.apiImage + row.image : CategoryNotFound} alt="category" className="hexagon-img" />
                                                 </div>
                                             </div>
-
                                             <div>{row.title}</div>
-
                                             <div>{row.url}</div>
-
                                             <div className="flex flex-col gap-2 items-center">
                                                 {row.list?.map((item, index) => (
                                                     <div key={index} className="grid grid-cols-4 gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 text-sm">
@@ -138,25 +135,25 @@ const SearchProductAmazing = ({close,formik}) => {
 
                         </div>
                         {/* mobile*/}
-                                    <div className="block md:hidden">
+                                    <div className="flex flex-col gap-3 md:hidden ">
                                         {search?.data?.result?.map((row, index) => (
-                                            <div key={index} className="flex flex-col gap-2 p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
+                                            <div key={index} className="flex flex-col gap-2 p-4 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
                                                 <div key={index} className="flex flex-col  gap-4">
                                                     <div className="hexagon-shadow">
                                                         <img src={row.image ? Config.apiImage + row.image : CategoryNotFound} alt="category" className="hexagon-img" />
                                                     </div>
-                                                    <span className="flex bg-gray-100 p-3 rounded-xl items-center gap-4 text-xs font-bold text-gray-700">
+                                                    <span className="flex bg-gray-100 dark:bg-gray-700  dark:text-gray-100 p-3 rounded-xl items-center gap-2 text-xs font-bold text-gray-700">
                                                   <div>نام محصول:</div>
                                                         {row.title}
                                               </span>
-                                                    <span className="flex bg-gray-100 p-3 rounded-xl items-center gap-4 text-xs font-bold text-gray-700">
+                                                    <span className="flex bg-gray-100 dark:bg-gray-700 p-3 dark:text-gray-100 rounded-xl items-center gap-2 text-xs font-bold text-gray-700">
                                                  <div>url :</div>
                                                         {row.url}
                                               </span>
                                                 </div>
                                                 <div className="flex flex-col gap-2 ">
                                                     {row.list?.map((item, index) => (
-                                                        <div key={index} className=" flex gap-1 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-sm">
+                                                        <div key={index} className="flex gap-1 px-4 py-3 rounded-xl bg-gray-100 dark:text-gray-100 text-gray-700 dark:bg-gray-700 text-sm">
                                                             <div>کد :</div>
                                                             <label key={index} className="flex items-center gap-2 cursor-pointer select-none">
                                                                 <span className="text-sm text-nowrap">{item.sku_code}</span>

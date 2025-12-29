@@ -197,6 +197,12 @@ export const SideItem = [
                 label: "سئو سایت",
                 link: "/seo-site",
             },
+            {
+                id: 54,
+                icon: "PiCirclesThreeFill",
+                label: "قوانین",
+                link: "/rules",
+            },
         ],
     },
     // {
