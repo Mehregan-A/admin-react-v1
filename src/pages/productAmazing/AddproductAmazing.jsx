@@ -27,6 +27,7 @@ import {
     productAmazingClearResult,
 } from "../../feature/redux/AmazingProductSlice.jsx";
 import {FaTrash} from "react-icons/fa";
+import InputCount from "../../components/inputs/InputCount.jsx";
 
 
 const AddProductAmazing = () => {
@@ -103,6 +104,7 @@ const AddProductAmazing = () => {
             formik.setFieldValue('list',data);
         }
     }
+    console.log(formik.values);
 
     return (
         <>
@@ -190,8 +192,8 @@ const AddProductAmazing = () => {
 
                                 <div className="flex md:flex-row flex-col xl:w-3/4 w-full gap-4 p-4">
                                     <Input isAmount={true} formik={formik} name={`list[${index}].amazing_price`} onChange={e => formik.setFieldValue(`list[${index}].amazing_price`, e.target.value)} label="مبلغ شگفت انگیز" />
-                                    <Input formik={formik} name={`list[${index}].limit_qty`} onChange={e => formik.setFieldValue(`list[${index}].limit_qty`, e.target.value)} label="تعداد فروش" />
-                                    <Input formik={formik} name={`list[${index}].order_limit`} onChange={e => formik.setFieldValue(`list[${index}].order_limit`, e.target.value)} label="حداکثر تعداد سبد خرید" />
+                                    <InputCount  formik={formik} name={`list[${index}].limit_qty`} onChange={e => formik.setFieldValue(`list[${index}].limit_qty`, e.target.value)} label="تعداد فروش" />
+                                    <InputCount  defaultValue={1} formik={formik} name={`list[${index}].order_limit`} onChange={e => formik.setFieldValue(`list[${index}].order_limit`, e.target.value)} label="حداکثر تعداد سبد خرید" />
                                 </div>
                                 <div onClick={()=>handleDelete(item)} className="text-cyan-300 pt-3.5 transition-all hover:text-red-500 cursor-pointer">
                                     <FaTrash size={20}/>
