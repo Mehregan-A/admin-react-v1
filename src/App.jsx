@@ -30,6 +30,7 @@ import VariantAttributeList from "./pages/variantAttribute/VariantAttributeList.
 import ListProductAmazing from "./pages/productAmazing/ListProductAmazing.jsx";
 import AddProductAmazing from "./pages/productAmazing/AddproductAmazing.jsx";
 import ListRules from "./pages/rules/ListRules.jsx";
+import ListCouponRedemptions from "./pages/copunRedemptions/ListCouponRedemptions.jsx";
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
                     <Route path="setting" element={<SettingList />} />
                     <Route path="rules" element={<ListRules />} />
                     <Route path="sms-setting" element={<SmsSetting />} />
+                    <Route path="coupon/redemptions/:id/:row/:page" element={<ListCouponRedemptions />} />
                     <Route path="coupon/add/:id" element={<CouponAdd />} />
                     <Route path="coupon/add" element={<CouponAdd />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />

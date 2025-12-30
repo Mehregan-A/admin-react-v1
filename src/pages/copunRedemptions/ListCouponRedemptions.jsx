@@ -22,6 +22,7 @@ import {getAsyncListCouponRedemption} from "../../feature/redux/CouponRedemption
 
 const ListCouponRedemptions = () => {
     const [openAdd ,setOpenAdd] = useState({open:false})
+    const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
     const openModal = location.state?.openModal;
@@ -32,7 +33,7 @@ const ListCouponRedemptions = () => {
     const dispatch = useDispatch();
     const { page,row } = useParams();
 // List article selector
-    const { list_article,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.couponRedemption);
+    const { list_coupon_redemption,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.couponRedemption);
 // Effects
     useEffect(() => {
         if (page) {
@@ -96,12 +97,12 @@ const ListCouponRedemptions = () => {
     );
     const columns = [
         {
-            name: "عنوان مقاله",
-            selector: row => row.title,
+            name: "کد",
+            selector: row => row.code,
         },
         {
-            name: "url",
-            selector: row => row.url,
+            name: "ارزش",
+            selector: row => row.value,
         },
         {
             name: "چکیده",
@@ -157,32 +158,23 @@ const ListCouponRedemptions = () => {
             <div className='flex justify-between items-center p-2'>
                 <div className='flex justify-start gap-2 p-5'>
                     <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">مقاله ها</div>
+                    <div className="text-gray-400 dark:text-gray-300">  کوپن   |  </div>
+                    <div className="text-cyan-700 dark:text-cyan-400">تعداد استفاده از کوپن</div>
                 </div>
                 <button
                     onClick={() => navigate("/article/add")}
                     className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مقاله</button>
 
             </div>
-            <DataTableArticle
+            <DataTable
                 icon={''}
                 isLoading={isLoading_list}
                 isError={isError_list}
                 title=""
-                data={list_article?.data}
-                numberPage={list_article?.page}
+                data={list_coupon_redemption?.data}
+                numberPage={list_coupon_redemption?.page}
                 columns={columns}
             />
-            {showModal && (
-                <AcceptMessage
-                    isLoading={isLoading_action}
-                    text={modalData.text}
-                    accept={handleAccept}
-                    reject={handleReject}
-                    open_close={() => setShowModal(!showModal)}
-                    showModal={showModal}
-                />
-            )}
         </div>
     );
 };

@@ -3,7 +3,7 @@ import http from "../../services/services.jsx";
 
 export const getAsyncListCouponRedemption = createAsyncThunk("couponRedemption/getAsyncListCouponRedemption",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get(`admin/coupon/list/${payload.id}/${payload.row}/${payload.page}`,{})
+        const res = await http.get(`/admin/coupon/redemptions/list/${payload.id}/${payload.row}/${payload.page}`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -174,6 +174,6 @@ const CouponRedemptionSlice = createSlice({
         })
     }
 })
-export const { couponClearResult,couponClearResultDelete} = CouponSlice.actions
+export const { couponClearResult,couponClearResultDelete} = CouponRedemptionSlice.actions
 
 export default CouponRedemptionSlice.reducer

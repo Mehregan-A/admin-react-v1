@@ -1,40 +1,15 @@
 import {Link, useLocation, useParams} from "react-router-dom";
-import {HiTrash} from "react-icons/hi2";
-import {HiOutlinePencilAlt, HiOutlineUserCircle} from "react-icons/hi";
 import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    FaCar,
-    FaChevronLeft,
-    FaFileSignature,
-    FaKey,
     FaListUl, FaMoneyBillWave,
-    FaPen,
     FaPercentage,
-    FaRegIdCard,
-    FaTasks,
-    FaUserTie
 } from "react-icons/fa";
-import {VscCircleSlash} from "react-icons/vsc";
-import PagingGetUrl from "../../components/PagingGetUrl.jsx";
-import {FaCirclePlus, FaClipboardUser} from "react-icons/fa6";
-// import AddAdmin from "./AddAdmin.jsx";
-import {
-    adminClearResult, adminClearResultDelete,
-    deleteAsyncAdmin,
-    getAsyncListAdmin,
-    getAsyncStatusAdmin
-} from "../../feature/redux/AdminSlice.jsx";
 import Loading from "../../components/loading/Loading.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
-// import PasswordAdmin from "./PasswordAdmin.jsx";
 import Reject from "../../components/loading/Reject.jsx";
-import {Config} from "../../config/Config.jsx";
-// import UserImage from "../../assets/images/User.png";
 import {BiSolidError} from "react-icons/bi";
-import PerPageSelector from "../../components/RowSelector.jsx";
-import {MdOutlineGroups, MdOutlinePerson, MdOutlineSupervisorAccount} from "react-icons/md";
 import {IoBanOutline, IoCreateOutline, IoKeyOutline, IoPersonCircleOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {
@@ -44,6 +19,7 @@ import {
     getAsyncStatusCoupon
 } from "../../feature/redux/CouponSlice.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
+import {HiOutlineTicket} from "react-icons/hi";
 
 const CouponList = () => {
 
@@ -132,13 +108,6 @@ const CouponList = () => {
             }
         }
     }, [result_delete]);
-    // useEffect(() => {
-    //     if(result && result?.status){
-    //         if (result.status === 200){
-    //             dispatch(getAsyncProfile())
-    //         }
-    //     }
-    // }, [result]);
     const ButtonWithTooltip = ({ onClick, icon, text, hoverColor }) => (
         <div className="relative group">
             <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
@@ -228,6 +197,12 @@ const CouponList = () => {
                                                                 text="حذف"
                                                                 hoverColor="hover:text-red-600 dark:hover:text-red-400"
                                                             />
+                                                            <ButtonWithTooltip
+                                                                onClick={() => navigate(`/coupon/redemptions/${item.id}/${10}/${1}`)}
+                                                                icon={<HiOutlineTicket className="w-5.5 h-5.5" />}
+                                                                text="تعداد استفاده از کوپن"
+                                                                hoverColor="hover:text-cyan-600 dark:hover:text-cyan-400"
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -267,18 +242,6 @@ const CouponList = () => {
                     }
                 </div>
             </div>
-            {/*/!* New admin Component *!/*/}
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddAdmin*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListAdmin({ row, page }))}*/}
-            {/*            id={isIdsEdit}*/}
-            {/*            list_admin={list_admin.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {/* Confirm modal */}
             {showModal && (
                 <AcceptMessage
