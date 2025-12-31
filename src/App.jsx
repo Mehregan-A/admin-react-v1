@@ -51,6 +51,7 @@ function App() {
                     <Route path="shipping-methods/list/:row/:page" element={<ListShippingMethod/>} />
                     <Route path="free-shipping/list" element={<FreeShippingList/>} />
                     <Route path="seo-site" element={<SeoList/>} />
+                    <Route path="/order/detail/:id" element={<OrderDetail />} />
                     <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="amazing/add" element={<AddProductAmazing />} />
                     <Route path="amazing/add/:id" element={<AddProductAmazing />} />

@@ -101,51 +101,61 @@ const ListCouponRedemptions = () => {
             selector: row => row.code,
         },
         {
-            name: "ارزش",
+            name: "مقدار تخفیف",
             selector: row => row.value,
         },
         {
-            name: "چکیده",
-            selector: row => row.abstract,
+            name: "شماره سفارش",
+            selector: row => row.order_no,
         },
         {
-            name: " نام دسته بندی",
-            selector: row => row.category_title,
+            name: "مبلغ سفارش قبل از تخفیف و مالیات",
+            selector: row => row.subtotal,
         },
         {
-            name: " نام زیر دسته",
-            selector: row => row.sub_category_title,
+            name: "مجموع تخفیف‌ها",
+            selector: row => row.discount_total,
         },
         {
-            name: " وضعیت",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-500`}>پیش نویس</div>
+            name: "مالیات",
+            selector: row => row.tax_total,
         },
         {
-            name: "زمان انتشار",
-            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
+            name: "مبلغ نهایی پرداختی",
+            selector: row => row.grand_total,
         },
         {
-            name: "عملیات",
-            style: {
-                width: '100px'
-            },
-            selector: row => (
-                <div className="flex lg:justify-center gap-0.5">
-                    <ButtonWithTooltip
-                        onClick={() => navigate(`/article/add/${row.id}`)}
-                        icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش مقاله"
-                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest("delete", row.id)}
-                        icon={<IoTrashOutline className="w-5 h-5" />}
-                        text="حذف"
-                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
-                </div>
-            )
-        }
+            name: "نام و نام خانوادگی",
+            selector: row => row.full_name,
+        },
+        {
+            name: "موبایل",
+            selector: row => row.mobile,
+        },
+        {
+            name: "کد ملی",
+            selector: row => row.mobile,
+        },
+        {
+            name: "وضعیت",
+            selector: row => {
+                if (row.status === "basket") {
+                    return <div className={`text-white green-500 bg-cyan-400 rounded-lg p-1 w-14 text-xs`}>سبد خرید</div>
+                } else if (row.status === "shipped") {
+                    return <div className={`text-white green-500 bg-green-400 rounded-lg p-1 w-16 text-xs`}>ارسال شده</div>
+                } else if (row.status === "cancelled") {
+                    return <div className={`text-white green-500 bg-red-400 rounded-lg p-1 w-16 text-xs`}>کنسل شده</div>
+                }
+                else if (row.status === "paid") {
+                    return <div className={`text-white green-500 bg-yellow-400 rounded-lg p-1 w-17 text-xs`}>پرداخت شده</div>
+                }
+                else if (row.status === "pending") {
+                    return <div className={`text-white green-500 bg-purple-400 rounded-lg p-1 w-9 text-xs`}>انتظار</div>
+                }else {
+                    return <div className="text-red-500">ناموفق</div>;
+                }
+            }
+        },
     ];
     useEffect(() => {
         if (openModal) {
@@ -161,10 +171,6 @@ const ListCouponRedemptions = () => {
                     <div className="text-gray-400 dark:text-gray-300">  کوپن   |  </div>
                     <div className="text-cyan-700 dark:text-cyan-400">تعداد استفاده از کوپن</div>
                 </div>
-                <button
-                    onClick={() => navigate("/article/add")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن مقاله</button>
-
             </div>
             <DataTable
                 icon={''}
