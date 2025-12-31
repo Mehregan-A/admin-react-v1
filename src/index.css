@@ -192,6 +192,20 @@ html {
     opacity: 0.1;
     pointer-events: none;
 }
+/*chart theme*/
+.dark .apexcharts-xaxis-texts-g text {
+    fill: #eee !important;
+}
+.light .apexcharts-xaxis-texts-g text {
+    fill: #333 !important;
+}
+
+.dark .apexcharts-yaxis text {
+    fill: #eee !important;
+}
+.light .apexcharts-yaxis text {
+    fill: #333 !important;
+}
 
 
 
