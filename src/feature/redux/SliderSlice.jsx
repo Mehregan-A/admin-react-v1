@@ -9,23 +9,6 @@ export const getAsyncListSlider = createAsyncThunk("slider/getAsyncListSlider",a
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncSelectCategory = createAsyncThunk("category/getAsyncSelectCategory",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`admin/category/select`,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncInfoCategoryAtt = createAsyncThunk("category/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
 export const putAsyncEditSlider = createAsyncThunk("slider/putAsyncEditSlider", async (payload, { rejectWithValue }) => {
     try {
         const res = await http.put(`/admin/slider/update/${payload.id}`, payload, {});
@@ -58,31 +41,6 @@ export const deleteAsyncSlider = createAsyncThunk("slider/deleteAsyncSlider",asy
         return rejectWithValue(error.response, error.message)
     }
 })
-export const deleteAsyncCategoryAtt = createAsyncThunk("category/deleteAsyncCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/remove/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCategoryAddAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/add/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
 
 
 const initialState = {
@@ -92,8 +50,6 @@ const initialState = {
     isError_list:false,
     info_att: [],
     list_slider:[],
-    list_category_select:[],
-    list_info_user:[],
     usersData: {},
     result : false,
     isLoading: false,
@@ -129,38 +85,6 @@ const SliderSlice = createSlice({
             state.list_slider = action.payload
             state.isLoading_list = false
             state.isError_list = true
-        })
-        builder.addCase(getAsyncSelectCategory.fulfilled,(state, action)=>{
-            state.list_category_select = action.payload.data.result
-            state.isLoading_list = false
-            state.isError_list = false
-        })
-        builder.addCase(getAsyncSelectCategory.pending,(state)=>{
-            state.list_category_select = false
-            state.isLoading_list = true
-            state.isError_list = false
-        })
-        builder.addCase(getAsyncSelectCategory.rejected,(state,action)=>{
-            state.list_category_select = action.payload
-            state.isLoading_list = false
-            state.isError_list = true
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-            // const user = action.payload.data.result.user;
-            // state.usersData[user.id] = user;
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
-            state.isLoading = false
-            state.isError = true
         })
         builder.addCase(putAsyncEditSlider.fulfilled,(state, action)=>{
             state.result = action.payload
@@ -216,45 +140,6 @@ const SliderSlice = createSlice({
         builder.addCase(deleteAsyncSlider.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(deleteAsyncCategoryAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(postAsyncCategoryAddAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
-            state.isLoading = false
-            state.isError = true
         })
     }
 })

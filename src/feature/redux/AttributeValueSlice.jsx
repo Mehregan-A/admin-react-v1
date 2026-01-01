@@ -27,35 +27,9 @@ export const postAsyncSearchAttributeVal = createAsyncThunk("attributeVal/postAs
         return rejectWithValue(error.response, error.message)
     }
 });
-export const postAsyncAddCategory = createAsyncThunk("category/postAsyncAddCategory",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post("/admin/category/add",payload,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncStatusCategory = createAsyncThunk("category/getAsyncStatusCategory",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/category/status/change/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
 export const deleteAsyncAttributeVal = createAsyncThunk("attributeVal/deleteAsyncAttributeVal",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.post(`/admin/attribute/value/remove/${payload.del}`,payload,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const getAsyncGetInfo = createAsyncThunk("user/getAsyncGetInfo",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/user/get/${payload.Id}`,{
-        })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -71,7 +45,6 @@ const initialState = {
     info_att: [],
     list_attribute:[],
     list_attribute_val:[],
-    list_info_user:[],
     usersData: {},
     result : false,
     isLoading: false,
@@ -137,34 +110,6 @@ const AttributeValueSlice = createSlice({
             state.search = action.payload
             state.isLoading_search = false
         })
-        builder.addCase(postAsyncAddCategory.fulfilled,(state, action)=>{
-            state.result = action.payload
-            state.isLoading = false
-        })
-        builder.addCase(postAsyncAddCategory.pending,(state)=>{
-            state.result = false
-            state.isLoading = true
-        })
-        builder.addCase(postAsyncAddCategory.rejected,(state,action)=>{
-            state.result = action.payload
-            state.isLoading = false
-        })
-        builder.addCase(getAsyncStatusCategory.fulfilled,(state, action)=>{
-            const result = state.list_category.data.find(val => val.id == action.payload.data.result.id)
-            result.status = action.payload.data.result.status
-            state.isError = false
-            state.isLoading_action = false
-        })
-        builder.addCase(getAsyncStatusCategory.pending,(state)=>{
-            state.result = false
-            state.isError = false
-            state.isLoading_action = true
-        })
-        builder.addCase(getAsyncStatusCategory.rejected,(state,action)=>{
-            state.result = action.payload
-            state.isError = true
-            state.isLoading_action = false
-        })
         builder.addCase(deleteAsyncAttributeVal.fulfilled, (state, action) => {
             const deletedValue = action.payload?.result;
 
@@ -186,21 +131,6 @@ const AttributeValueSlice = createSlice({
         builder.addCase(deleteAsyncAttributeVal.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
-            state.isError = true
-        })
-        builder.addCase(getAsyncGetInfo.fulfilled,(state, action)=>{
-            state.list_info_user = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.pending,(state)=>{
-            state.list_info_user = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncGetInfo.rejected,(state,action)=>{
-            state.list_info_user = action.payload
-            state.isLoading = false
             state.isError = true
         })
     }

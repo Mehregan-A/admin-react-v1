@@ -9,15 +9,6 @@ export const getAsyncListSubCategory = createAsyncThunk("subcategory/getAsyncLis
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncInfoCategoryAtt = createAsyncThunk("subcategory/getAsyncInfoCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.get(`/admin/category/attribute/get/${payload.Id}`,{
-        })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
 export const updateAsyncEditSubCategory = createAsyncThunk("subcategory/updateAsyncEditSubCategory", async (payload, { rejectWithValue }) => {
     try {
         const res = await http.put(`/admin/sub-category/update/${payload.id}`, payload, {});
@@ -46,22 +37,6 @@ export const getAsyncStatusSubCategory = createAsyncThunk("subcategory/getAsyncS
 export const deleteAsyncSubCategory = createAsyncThunk("subcategory/deleteAsyncSubCategory",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.delete(`/admin/sub-category/delete/${payload.del}`,{})
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const deleteAsyncCategoryAtt = createAsyncThunk("category/deleteAsyncCategoryAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/remove/${payload.del}`, { value: payload.value })
-        return await res
-    }catch (error) {
-        return rejectWithValue(error.response, error.message)
-    }
-})
-export const postAsyncCategoryAddAtt = createAsyncThunk("category/postAsyncCategoryAddAtt",async (payload,{rejectWithValue})=>{
-    try {
-        const res = await http.post(`/admin/category/attribute/add/${payload.del}`, { value: payload.value })
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -113,23 +88,6 @@ const categorySubSlice = createSlice({
             state.list_sub_category = action.payload
             state.isLoading_list = false
             state.isError_list = true
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.fulfilled,(state, action)=>{
-            state.info_att = action.payload.data.result
-            state.isLoading = false
-            state.isError = false
-            // const user = action.payload.data.result.user;
-            // state.usersData[user.id] = user;
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.pending,(state)=>{
-            state.info_att = false
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getAsyncInfoCategoryAtt.rejected,(state,action)=>{
-            state.info_att = action.payload
-            state.isLoading = false
-            state.isError = true
         })
         builder.addCase(updateAsyncEditSubCategory.fulfilled,(state, action)=>{
             state.result = action.payload
@@ -183,30 +141,6 @@ const categorySubSlice = createSlice({
             state.isLoading_action = true
         })
         builder.addCase(deleteAsyncSubCategory.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(deleteAsyncCategoryAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(deleteAsyncCategoryAtt.rejected,(state,action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.fulfilled,(state, action)=>{
-            state.result_delete = action.payload
-            state.isLoading_action = false
-        })
-        builder.addCase(postAsyncCategoryAddAtt.pending,(state)=>{
-            state.result_delete = false
-            state.isLoading_action = true
-        })
-        builder.addCase(postAsyncCategoryAddAtt.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
         })

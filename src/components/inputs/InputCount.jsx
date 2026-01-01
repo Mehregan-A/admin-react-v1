@@ -165,7 +165,7 @@ const InputCount = ({
                             setDisplayValue("کل موجودی");
                             formik.setFieldValue(name, 0);
                         }}
-                        className="absolute bg-gray-100 shadow shadow-cyan-300 cursor-pointer p-2 rounded-lg inset-y-0 flex items-center text-cyan-500 text-xs hover:text-cyan-600"
+                        className="absolute bg-gray-100 dark:bg-gray-800 transition-all duration-300 shadow shadow-cyan-300 cursor-pointer p-2 rounded-lg inset-y-0 flex items-center text-cyan-500 text-xs hover:text-cyan-600"
                     >
                         کل موجودی
                     </button>
@@ -178,9 +178,9 @@ const InputCount = ({
                             setIsAllBalance(false);
                             formik.setFieldValue(name, defaultValue || "");
                         }}
-                        className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-red-500"
+                        className="absolute inset-y-0 right-2 flex cursor-pointer items-center text-gray-400 hover:text-red-500"
                     >
-                        <HiX size={14} />
+                        <HiX size={18} />
                     </button>
                 )}
 

@@ -90,51 +90,9 @@ const AddProduct = () => {
         stock_order_limit:"",
     }
     const validationSchema = yup.object({
-        // title: yup
-        //     .string()
-        //     .required('عنوان مقاله الزامی است')
-        //     .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
-        //     .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // url: yup
-        //     .string()
-        //     .required('آدرس URL الزامی است')
-        //     .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // abstract: yup
-        //     .string()
-        //     .required('چکیده مقاله الزامی است')
-        //     // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
-        //
-        // body: yup
-        //     .string()
-        //     .required('متن مقاله الزامی است'),
-        //
-        // image: yup
-        //     .mixed()
-        //     .required('تصویر مقاله الزامی است'),
-        //
-        // category_id: yup
-        //     .number()
-        //     .required('انتخاب دسته الزامی است'),
-        //
-        // sub_category_id: yup
-        //     .number()
-        //     .required('انتخاب زیر دسته الزامی است'),
-        //
-        // read_time: yup
-        //     .number()
-        //     .required('زمان مطالعه الزامی است'),
-        // seo_title: yup
-        //     .string()
-        //     .required('عنوان سئو الزامی است')
-        //     .min(2, 'عنوان سئو باید حداقل 2 کاراکتر باشد')
-        //     .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
     });
 
     const onSubmit = (values) => {
-        console.log(values)
         if (id) {
             dispatch(putAsyncEditProduct(values));
         } else {
@@ -184,7 +142,6 @@ const AddProduct = () => {
             }
         }
     }, [result_val]);
-    console.log(formik.values)
 
     return (
         <>
@@ -195,7 +152,7 @@ const AddProduct = () => {
                         <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
                         <div className="text-gray-400 dark:text-gray-300"> محصول |</div>
                         {!id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">افرودن محصول</div>
+                            <div className="text-cyan-700 dark:text-cyan-400">افزودن محصول</div>
                         }
                         {id &&
                             <div className="text-cyan-700 dark:text-cyan-400">ویرایش محصول</div>
