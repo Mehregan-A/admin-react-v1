@@ -1,14 +1,16 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BiSolidError} from "react-icons/bi";
 import PagingGetUrl from "../PagingGetUrl.jsx";
 import PerPageSelector from "../RowSelector.jsx";
 import useWindowSize from "../../customHook/UseWinowsSize.jsx";
 import Loading from "../loading/Loading.jsx";
 import Reject from "../loading/Reject.jsx";
+import {useNavigate} from "react-router";
 
 
-const DataTable = ({type,title,columns,isError, data,isLoading, numberPage,icon,perPage=true,searchParams,user}) => {
+const DataTable = ({type,url,open,nameButton,columns,isError, data,isLoading, numberPage,icon,perPage=true,searchParams,user}) => {
     const {width} = useWindowSize();
+    const navigate = useNavigate();
     const [typeDataTable, setTypeDataTable] = useState(<PcMode data={data} columns={columns}/>);
     useEffect(() => {
         if (width < 1024) setTypeDataTable(<MobileMode key="1234" data={data} columns={columns} numberPage={numberPage} searchParams={searchParams}/>);
@@ -16,12 +18,18 @@ const DataTable = ({type,title,columns,isError, data,isLoading, numberPage,icon,
     }, [width, data])
 
     return (
-        <div className={`flex bg-gray-50 dark:bg-gray-800  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 ${type==="amazing"?"":"inset-shadow-sm inset-shadow-cyan-400"}  flex-col lg:gap-2 w-full lg:mt-0`}>
+        <div className={`flex bg-gray-50 dark:bg-gray-700/60  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 ${type==="amazing"?"":""}  flex-col lg:gap-2 w-full lg:mt-0`}>
             <div className="flex flex-row justify-between items-center gap-1 px-4">
-                <div className="flex flex-row gap-2 items-center">
-                    {icon}
-                    <span className='text-gray-800'>{title}</span>
-                </div>
+                {url?
+                    <button
+                    onClick={() => navigate(`${url}`)}
+                    className='dark:bg-gray-800 bg-gray-100 text-gray-700 cursor-pointer hover:text-cyan-400 transition-all rounded-2xl px-5 text-nowrap py-3 dark:text-gray-100 border border-cyan-400 duration-400 hover:shadow-[0px_0px_4px_4px_rgba(0,200,243,0.4)] hover:dark:shadow-[0px_0px_4px_4px_rgba(0,189,243,0.6)]'>{nameButton}</button>
+                :
+                    <button
+                        onClick={() => open("")}
+                        className='dark:bg-gray-800 bg-gray-100 text-gray-700 cursor-pointer hover:text-cyan-400 transition-all rounded-2xl px-5 text-nowrap py-3 dark:text-gray-100 border border-cyan-400 duration-400 hover:shadow-[0px_0px_4px_4px_rgba(0,200,243,0.4)] hover:dark:shadow-[0px_0px_4px_4px_rgba(0,189,243,0.6)]'>{nameButton}</button>
+
+                }
                 {perPage &&
                     <PerPageSelector searchParams={searchParams}/>
                 }

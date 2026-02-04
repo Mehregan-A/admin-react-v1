@@ -16,7 +16,7 @@ const DataTableOrder = ({title,columns,isError, data,isLoading, numberPage,icon,
     }, [width, data])
 
     return (
-        <div className="flex bg-gray-50 dark:bg-gray-800  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 inset-shadow-sm inset-shadow-cyan-400 flex-col lg:gap-2 w-full lg:mt-0">
+        <div className="flex bg-gray-50 dark:bg-gray-700/60  p-5 rounded-3xl  dark:drop-shadow-xl drop-shadow-gray-500 flex-col lg:gap-2 w-full lg:mt-0">
             <div className="flex flex-row justify-between items-center gap-1 px-4">
                 <div className="flex flex-row gap-2 items-center">
                     {icon}

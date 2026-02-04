@@ -33,6 +33,7 @@ import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAtt
 import ProductVariants from "./ProductVariants.jsx";
 import {PiSwatches} from "react-icons/pi";
 import {VscSettings} from "react-icons/vsc";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const AddProduct = () => {
@@ -148,16 +149,7 @@ const AddProduct = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-2'>
-                        <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                        <div className="text-gray-400 dark:text-gray-300"> محصول |</div>
-                        {!id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">افزودن محصول</div>
-                        }
-                        {id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">ویرایش محصول</div>
-                        }
-                    </div>
+                    <HeaderBox text1={"تعاریف"} text2={"محصول"}  text3={`${id?"ویرایش محصول":"افزودن محصول"}`}/>
                 </div>
                     <form onSubmit={formik.handleSubmit} className="md:flex-row flex flex-col w-full  items-start gap-5">
                         <div className="bg-gray-100/50 p-5 dark:bg-gray-700/40 rounded-2xl flex xl:w-4/6 w-full flex-col gap-5">

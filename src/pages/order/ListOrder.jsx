@@ -18,6 +18,7 @@ import {getAsyncListOrder, getAsyncStatusOrder} from "../../feature/redux/OrderS
 import DataTableOrder from "../../components/dataTable/DataTableOrder.jsx";
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import {HiOutlineDocumentMagnifyingGlass} from "react-icons/hi2";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const ListOrder = () => {
@@ -238,12 +239,9 @@ const ListOrder = () => {
 
     return (
         <div className={`flex flex-col gap-2`}>
-            <div className='flex justify-between items-center p-2'>
-                <div className='flex justify-start gap-2 p-5'>
-                    <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">سفارشات</div>
+                <div className='flex justify-between items-center p-2'>
+                    <HeaderBox text1={"داشبورد"} text2={false}  text3={"سفارشات"}/>
                 </div>
-            </div>
             <DataTableOrder
                 icon={''}
                 isLoading={isLoading_list}
