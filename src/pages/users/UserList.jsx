@@ -15,6 +15,7 @@ import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "reac
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
 import {getAsyncListUser} from "../../feature/redux/UserSlice.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const UserList = () => {
@@ -173,16 +174,11 @@ const UserList = () => {
     return (
         <div className={`flex flex-col gap-2`}>
             <div className='flex justify-between items-center p-2'>
-                <div className='flex justify-start gap-2 p-5'>
-                    <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">کاربران</div>
-                </div>
-                <button
-                    onClick={() => setOpenId("")}
-                    className='flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400  drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm'>افزودن دسته بندی</button>
-
+                <HeaderBox text1={"داشبورد"} text2={false}  text3={"کاربران"}/>
             </div>
             <DataTable
+                nameButton={"افزودن کاربر"}
+                open={() => setOpenId("")}
                 user={1}
                 icon={''}
                 isLoading={isLoading_list}

@@ -16,6 +16,7 @@ import AcceptMessage from "../../AcceptMessage.jsx";
 import {PiChartPieSlice} from "react-icons/pi";
 import {getAsyncListPayment, getAsyncStatusPayment} from "../../feature/redux/PaymentSlice.jsx";
 import zarinpal from "../../assets/image/zarnpal.png"
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const ListPayment = () => {
@@ -180,11 +181,7 @@ const ListPayment = () => {
     return (
         <div className={`flex flex-col gap-2`}>
             <div className='flex justify-between items-center p-2'>
-                <div className='flex justify-start gap-2 p-5'>
-                    <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">پرداخت</div>
-                </div>
-
+                <HeaderBox text1={"داشبورد"} text2={false}  text3={"پرداخت"}/>
             </div>
             <DataTable
                 icon={''}

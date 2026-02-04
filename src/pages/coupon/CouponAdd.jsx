@@ -24,6 +24,7 @@ import {
     putAsyncEditCoupon
 } from "../../feature/redux/CouponSlice.jsx";
 import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const CouponAdd = () => {
@@ -97,16 +98,7 @@ const CouponAdd = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
-                        <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-gray-400 dark:text-gray-300"> کوپن |</div>
-                        {!id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">افرودن کوپن</div>
-                        }
-                        {id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">ویرایش کوپن</div>
-                        }
-                    </div>
+                    <HeaderBox text1={"داشبورد"} text2={"کوپن"}  text3={`${id?"ویرایش کوپن":"افرودن کوپن"}`}/>
                 </div>
                 <form className="mt-7" onSubmit={formik.handleSubmit}>
                         <div className="flex flex-col gap-6">

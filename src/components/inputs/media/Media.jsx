@@ -57,7 +57,7 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
     },[displayValue])
     const [index, setIndex] = useState(0);
 
-    const maxIndex = Math.max(0, selectedItem.length - 5);
+    const maxIndex = Math.max(0, selectedItem?.length - 5);
 
     const next = () => {
         setIndex((prev) => Math.min(prev -1 , maxIndex));

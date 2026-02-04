@@ -20,6 +20,7 @@ import AttributeValue from "./AttributeValue.jsx";
 import {getAsyncListAttributeVal} from "../../feature/redux/AttributeValueSlice.jsx";
 import AddAttribute from "./AddAttribute.jsx";
 import PerPageSelector from "../../components/RowSelector.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const AttributeList = () => {
@@ -120,24 +121,20 @@ const AttributeList = () => {
     return (
         <div className="flex flex-col gap-2">
             {/* Header */}
-            <div className="flex justify-between items-center p-2">
-                <div className="flex justify-start gap-2 p-5">
-                    <div className="text-gray-400 dark:text-gray-300">داشبورد |</div>
-                    <div className="text-cyan-700 dark:text-cyan-400">ویژگی ها</div>
-                </div>
-
-                <button
-                    onClick={() => setOpenId("")}
-                    className="flex justify-center items-center gap-2 p-3 bg-gray-100 dark:hover:bg-gray-800/90 hover:bg-gray-200 dark:bg-gray-800 border dark:border-0 border-cyan-300 dark:inset-shadow-sm inset-shadow-gray-900 dark:inset-shadow-cyan-400 drop-shadow-lg dark:drop-shadow-gray-500 dark:hover:drop-shadow-cyan-400 transition-all cursor-pointer rounded-2xl w-32 dark:text-gray-200 text-sm"
-                >
-                    افزودن ویژگی
-                </button>
+            <div className='flex justify-between items-center p-2'>
+                <HeaderBox text1={"داشبورد"} text2={false}  text3={"ویژگی های غیر موثر بر قیمت"}/>
             </div>
 
             {/* Content */}
-            <div className="flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 inset-shadow-sm inset-shadow-cyan-400 p-5">
-                <div className="flex justify-end">
-                    <PerPageSelector />
+            <div className="flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-700/60 rounded-3xl dark:drop-shadow-xl drop-shadow-gray-500 p-5">
+                <div className="flex items-center justify-between">
+                    <button
+                        onClick={() => setOpenId("")}
+                        className='dark:bg-gray-800 bg-gray-100 text-gray-700 cursor-pointer hover:text-cyan-400 transition-all rounded-2xl px-5 text-nowrap py-3 dark:text-gray-100 border border-cyan-400 duration-400 hover:shadow-[0px_0px_4px_4px_rgba(0,200,243,0.4)] hover:dark:shadow-[0px_0px_4px_4px_rgba(0,189,243,0.6)]'>افزودن ویژگی</button>
+
+                    <div className="flex justify-end">
+                        <PerPageSelector />
+                    </div>
                 </div>
                 {isLoading_list ? (
                     <Loading />
