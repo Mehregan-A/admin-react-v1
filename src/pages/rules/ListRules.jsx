@@ -15,6 +15,7 @@ import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
 import {getAsyncListRules, postAsyncEditRules} from "../../feature/redux/RulesSlice.jsx";
 import {NilfamEditor} from "nilfam-editor";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const ListRules = () => {
@@ -72,12 +73,9 @@ const ListRules = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
-                        <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-cyan-700 dark:text-cyan-400">قوانین </div>
-                    </div>
+                    <HeaderBox text1={"داشبورد"} text2={false}  text3={"قوانین"}/>
                 </div>
-                <div className="w-full  p-1.5 flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
+                <div className="w-full text-sm p-1.5 flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
                     <button
                         onClick={() => setActiveTab("1")}
                         className={`w-full relative flex items-center justify-center rounded-xl p-2.5 md:text-[15px] text-gray-800 text-xs cursor-pointer transition-colors 

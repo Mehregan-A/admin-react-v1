@@ -28,6 +28,7 @@ import {
 } from "../../feature/redux/AmazingProductSlice.jsx";
 import {FaTrash} from "react-icons/fa";
 import InputCount from "../../components/inputs/InputCount.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const AddProductAmazing = () => {
@@ -111,16 +112,7 @@ const AddProductAmazing = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-2'>
-                        <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                        <div className="text-gray-400 dark:text-gray-300"> شگفت انگیز |</div>
-                        {!id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">افرودن شگفت انگیز</div>
-                        }
-                        {id &&
-                            <div className="text-cyan-700 dark:text-cyan-400">ویرایش شگفت انگیز</div>
-                        }
-                    </div>
+                    <HeaderBox text1={"تعاریف"} text2={" شگفت انگیز"}  text3={`${id?"ویرایش شگفت انگیز":"افرودن شگفت انگیز"}`}/>
                 </div>
                 <div
                     onClick={() => setOpenId("")}

@@ -13,6 +13,7 @@ import InputActivate from "../../components/inputs/InputActive.jsx";
 import Media from "../../components/inputs/media/Media.jsx";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const SettingList = () => {
@@ -128,41 +129,51 @@ const SettingList = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
-                        <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-cyan-700 dark:text-cyan-400">تنظیمات </div>
-                    </div>
+                    <HeaderBox text1={"داشبورد"} text2={false}  text3={"تنظیمات"}/>
                 </div>
-                <div className="flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-800 inset-shadow-sm inset-shadow-cyan-300  rounded-xl shadow-lg items-center">
+                <div className="w-full text-sm p-1.5 flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
                     <button
                         onClick={() => setActiveTab("1")}
-                        className={`w-full flex items-center justify-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
+                        className={`w-full relative flex items-center justify-center rounded-xl p-2.5 md:text-[15px] text-gray-800 text-xs cursor-pointer transition-colors 
               ${
                             activeTab === "1"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
+                                ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
                                 : "dark:text-gray-100"
                         }`}
-                    >تنظیمات سایت</button>
+
+                    >
+                        <div className={`${ activeTab === "1"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+                        تنظیمات سایت
+                    </button>
 
                     <button
                         onClick={() => setActiveTab("2")}
-                        className={`w-full flex justify-center items-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
+                        className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
               ${
                             activeTab === "2"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
+                                ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
                                 : "dark:text-gray-100"
                         }`}
-                    >تنظیمات ادمین</button>
+
+                    >
+                        <div className={`${ activeTab === "2"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+                        تنظیمات ادمین</button>
                     <button
                         onClick={() => setActiveTab("3")}
-                        className={`w-full flex justify-center items-center rounded-xl p-3 md:text-[13px] text-xs cursor-pointer transition-colors 
+                        className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
               ${
                             activeTab === "3"
-                                ? "bg-gray-50 drop-shadow-lg drop-shadow-cyan-500 dark:bg-gray-800/90 dark:text-gray-100"
+                                ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
                                 : "dark:text-gray-100"
                         }`}
-                    >تنظیمات کاربر</button>
+
+                    >
+                        <div className={`${ activeTab === "3"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
+
+                        تنظیمات کاربر</button>
+
                 </div>
+
                 <div className={`flex flex-col gap-3 min-h-120`}>
                     {isLoading_list
                         ?<Loading />

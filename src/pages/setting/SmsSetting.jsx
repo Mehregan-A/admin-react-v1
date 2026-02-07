@@ -15,6 +15,7 @@ import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
 import {getAsyncListSms, postAsyncAddSms, smsClearResult} from "../../feature/redux/SmsSlice.jsx";
 import TextArea from "../../components/inputs/TextArea.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const SmsSetting = () => {
@@ -122,11 +123,7 @@ const SmsSetting = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
-                        <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-gray-400 dark:text-gray-300">  تنظیمات   |  </div>
-                        <div className="text-cyan-700 dark:text-cyan-400">پیامک </div>
-                    </div>
+                    <HeaderBox text1={"داشبورد"} text2={"تنظیمات"}  text3={`پیامک`}/>
                 </div>
                 <div className={`flex flex-col gap-3 min-h-120`}>
                     {isLoading_list

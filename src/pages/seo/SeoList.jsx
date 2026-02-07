@@ -26,6 +26,7 @@ import SelectOption from "../../components/inputs/SelectOption.jsx";
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import {status} from "../../assets/data/Data.js";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const SeoList = () => {
@@ -149,10 +150,7 @@ const SeoList = () => {
             <div className={`flex flex-col gap-4`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
-                        <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-cyan-700 dark:text-cyan-400">سئو سایت</div>
-                    </div>
+                    <HeaderBox text1={"داشبورد"} text2={false}  text3={"سئو سایت"}/>
                 </div>
                 <div className="mt-7 ">
                     <div className="flex w-full flex-col gap-6">
@@ -163,7 +161,7 @@ const SeoList = () => {
                                 <Reject />
                             ) : Object.values(list_seo).length  > 0 ? (
                                     <div className="w-full">
-                                        <div className="w-full  p-1.5 flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
+                                        <div className="w-full  p-1.5 flex flex-col text-sm md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
                                             <button
                                                 onClick={() => setActiveTab("1")}
                                                 className={`w-full relative flex items-center justify-center rounded-xl p-2.5 md:text-[15px] text-gray-800 text-xs cursor-pointer transition-colors 
@@ -202,7 +200,7 @@ const SeoList = () => {
                                             >
                                                 <div className={`${ activeTab === "3"?"w-12":"w-0"} absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300 bg-cyan-400 dark:bg-gray-300`}></div>
 
-                                                درباره ما/یازگشت کالا</button>
+                                                درباره ما/بازگشت کالا</button>
                                             <button
                                                 onClick={() => setActiveTab("4")}
                                                 className={`w-full relative flex justify-center items-center rounded-xl p-3 md:text-[15px] text-xs cursor-pointer transition-colors 
