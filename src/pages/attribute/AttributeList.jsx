@@ -229,7 +229,7 @@ const AttributeList = () => {
                     <AddAttribute
                         open_slider={openAdd.open}
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
-                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
+                        reload={() => dispatch(getAsyncListAttribute({ row, page }))}
                         Id={isIdsEdit.id}
                         list_attribute={list_attribute.data}
                     />
@@ -240,7 +240,7 @@ const AttributeList = () => {
                     <AttributeValue
                         open_slider={openAtt.open}
                         open_close={() => setOpenAtt({ open: !openAtt.open })}
-                        reload={() => dispatch(getAsyncListAttributeVal({ row, page }))}
+                        reload={() => dispatch(getAsyncListAttribute({ row, page }))}
                         Id={isIdsEdit.id}
                         list_attribute={list_attribute.data}
                     />

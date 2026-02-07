@@ -69,7 +69,7 @@ const Dashboard = () => {
     };
 
     return (
-        <div className='w-full h-screen dark:bg-gray-700/50 bg-gray-50 rounded-4xl p-5'>
+        <div className='w-full  dark:bg-gray-700/50 bg-gray-50 rounded-4xl p-5'>
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-1 md:grid-cols-2 items-center justify-center gap-7 w-full p-2">
                 <div onClick={() => navigate(`/product/add`)} className="group relative flex flex-col justify-center p-3 hover:scale-105 transition-all duration-500 cursor-pointer hover:shadow-cyan-300 bg-cyan-400 dark:bg-cyan-500 rounded-4xl shadow-lg shadow-gray-300 dark:shadow-gray-600 w-[280px] h-32 overflow-hidden">
                     <div className="absolute -right-10 -top-10 shape1 bg-gradient-to-r from-gray-50/40 via-gray-50/5 to-cyan-400 dark:from-gray-50/40 dark:via-gray-50/5 dark:to-cyan-500"></div>

@@ -4,7 +4,7 @@ import {useNavigate} from "react-router";
 const HeaderBox = ({text1,text2,text3}) => {
     const navigate = useNavigate();
     return (
-        <div className="w-full flex items-center justify-between py-2 px-6 dark:bg-gray-700/30 bg-gray-100 rounded-2xl shadow-lg dark:shadow dark:shadow-cyan-300">
+        <div className="w-full flex items-center justify-between py-2 px-6 dark:bg-gray-700/30 bg-gray-50 rounded-2xl shadow-lg dark:shadow dark:shadow-cyan-300">
             <div className='flex justify-start gap-2'>
                 <div className="text-gray-400 dark:text-gray-300">  {text1}   |  </div>
                 <div className={`text-gray-400 dark:text-gray-300 ${text2?"":"hidden"} `}>  {text2}   |  </div>

@@ -268,12 +268,12 @@ export const data_type = [
     { value: 'bool', label: 'دو گزینه ای' },
 ];
 export const filter = [
-    { value: "1", label: 'فعال' },
-    { value: "0", label: 'غیرفعال' },
+    { value: 1, label: 'فعال' },
+    { value: 0, label: 'غیرفعال' },
 ];
 export const is_spec = [
-    { value: "1", label: 'فعال' },
-    { value: "0", label: 'غیرفعال' },
+    { value: 1, label: 'فعال' },
+    { value: 0, label: 'غیرفعال' },
 ];
 
 

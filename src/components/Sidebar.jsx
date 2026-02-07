@@ -112,12 +112,24 @@ const Sidebar = ({ open_close, open_slider }) => {
             />
             <div
                 ref={sidebarRef}
-                className="your-scroll-container mx-3 my-2 rounded-2xl flex-shrink-0 fixed h-screen hidden lg:block lg:sticky lg:self-start z-30 overflow-y-auto backdrop-blur-md w-64 transition-transform duration-500 ease-in-out
-          bg-gradient-to-br from-white to-gray-100 dark:from-gray-900 dark:to-gray-800
-          shadow-[8px_8px_20px_rgba(0,0,0,0.25),_-8px_-8px_20px_rgba(255,255,255,0.4)]
-          dark:shadow-[0_0_25px_5px_rgba(34,211,238,0.1)] thin-scrollbar"
+                className="
+    mx-3 my-2 rounded-2xl flex-shrink-0
+    hidden lg:block
+    lg:sticky lg:top-0
+    h-screen
+    z-30
+    overflow-y-auto
+    backdrop-blur-md
+    w-64
+    transition-transform duration-500 ease-in-out
+    bg-gradient-to-br from-white to-gray-100 dark:from-gray-900 dark:to-gray-800
+    shadow-[8px_8px_20px_rgba(0,0,0,0.25),_-8px_-8px_20px_rgba(255,255,255,0.4)]
+    dark:shadow-[0_0_25px_5px_rgba(34,211,238,0.1)]
+    thin-scrollbar
+  "
             >
-                <div className="flex flex-col h-full justify-between">
+
+            <div className="flex flex-col h-full justify-between">
                     <div className="mx-3 flex flex-col items-center justify-center text-sm">
                         <MyAnimation />
                         <ul className="mb-10 flex flex-col gap-5 w-full">
@@ -195,7 +207,14 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 onClick={handleItemClick}
                                                 className="w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full flex items-center justify-center text-cyan-600 dark:text-white"
                                             >
-                                                <FaIcons icon={item.icon_outline} />
+                                                <FaIcons
+                                                    icon={
+                                                        location.pathname === item.link ||
+                                                        item.sub.some((sub) => sub.link === location.pathname)
+                                                            ? item.icon_fill
+                                                            : item.icon_outline
+                                                    }
+                                                />
                                             </NavLink>
                                         </div>
                                         <div className="dark:text-cyan-100 text-cyan-800 mr-10">{item.label}</div>
@@ -297,7 +316,14 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 onClick={handleItemClick}
                                                 className="w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full flex items-center justify-center text-cyan-600 dark:text-white"
                                             >
-                                                <FaIcons icon={item.icon_outline} />
+                                                <FaIcons
+                                                    icon={
+                                                        location.pathname === item.link ||
+                                                        item.sub.some((sub) => sub.link === location.pathname)
+                                                            ? item.icon_fill
+                                                            : item.icon_outline
+                                                    }
+                                                />
                                             </NavLink>
                                         </div>
                                         <div className="dark:text-cyan-100 text-cyan-800 mr-10">{item.label}</div>
