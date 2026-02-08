@@ -184,11 +184,11 @@ const SettingList = () => {
                                 {activeTab==="1" &&
                                     <div className="flex flex-col gap-6">
                                         <div className="flex flex-col w-full gap-2">
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl  p-4">
                                                 <Input formik={formik} maxLength={25} name="site_title" label="نام سایت" />
                                             </div>
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
-                                                <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
+                                                <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
                                                     <Media
                                                         single={true}
                                                         label="افزودن لوگو ادمین"
@@ -212,12 +212,12 @@ const SettingList = () => {
                                 }
                                 {activeTab==="2" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex flex-col md:flex-row gap-3  bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                        <div className="flex flex-col md:flex-row gap-3  bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl  p-4">
                                             <InputActivate formik={formik} name="allow_admin_to_enter" label="اجازه ورود مدیران" options={options} formikAddress={formik.values.allow_admin_to_enter} />
                                             <Input formik={formik} maxLength={25} name="admin_login_title" label="نام ورود ادمین" />
                                         </div>
                                         <div className="flex flex-col md:flex-row gap-3 ">
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
                                                 <Media
                                                     single={true}
                                                     label="افزودن لوگو ادمین"
@@ -226,7 +226,7 @@ const SettingList = () => {
                                                     formik={formik}
                                                     formikAddress={formik.values.admin_login_logo}/>
                                             </div>
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
                                                 <Media
                                                     single={true}
                                                     label="افزودن اسلایدر ادمین"
@@ -235,7 +235,7 @@ const SettingList = () => {
                                                     formik={formik}
                                                     formikAddress={formik.values.admin_slider_logo}/>
                                             </div>
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
                                                 <Media
                                                     single={true}
                                                     label="افزودن بک گراند ورود ادمین"
@@ -259,11 +259,11 @@ const SettingList = () => {
                                 }
                                 {activeTab==="3" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex flex-col md:flex-row gap-3  bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                        <div className="flex flex-col md:flex-row gap-3  bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl  p-4">
                                             <InputActivate formik={formik} name="allow_user_to_enter" label="اجازه ورود کاربر" options={options} formikAddress={formik.values.allow_user_to_enter} />
                                             <Input formik={formik} maxLength={25} name="user_login_title" label="نام ورود کاربر" />
                                         </div>
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
                                             <Media
                                                 single={true}
                                                 label="افزودن لوگو کاربر"

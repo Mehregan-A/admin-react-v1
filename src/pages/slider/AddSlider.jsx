@@ -65,6 +65,15 @@ const AddSlider = ({Id,list_slider,open_close,reload,open_slider}) => {
             .required('نام الزامی است')
             .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
             .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
+        body: yup
+            .string()
+            .required('توضیحات الزامی است')
+            .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
+            .max(500, 'نام نباید بیشتر از 500 کاراکتر باشد'),
+        url: yup
+            .string()
+            .required('آدرس URL الزامی است')
+            .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
 
     });
     const onSubmit = (values) => {
@@ -160,10 +169,10 @@ const AddSlider = ({Id,list_slider,open_close,reload,open_slider}) => {
                             <div className="flex flex-col md:flex-row md:gap-4 gap-6">
                                 {/* Inputs */}
                                 <div className="w-full flex flex-col items-center justify-center gap-3">
-                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام بنر" />
-                                    <Input formik={formik} maxLength={25} name="url" onlyChar={true} label="url" />
+                                    <Input formik={formik} maxLength={25} name="title"  label="نام بنر" />
+                                    <Input formik={formik} maxLength={25} name="url" noPersian={true} label="url" />
                                     <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
-                                    <TextArea formik={formik} maxLength={25} name="body" label="توضیحات بنر" />
+                                    <TextArea formik={formik} maxLength={500} name="body" label="توضیحات بنر" />
                                 </div>
 
                                 <div className="w-full md:w-[250px] flex flex-col justify-between gap-4 md:gap-3">

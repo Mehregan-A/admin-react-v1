@@ -38,7 +38,6 @@ const AddArticle = () => {
                 dispatch(articleClearInfo())
         }
     },[])
-    console.log(window.location.href)
 
     const {result,isLoading,list_info_article} = useSelector(state => state.article);
     // redux

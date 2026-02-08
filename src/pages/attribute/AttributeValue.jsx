@@ -70,7 +70,6 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
         }
     };
 
-
     const formik = useFormik({
         initialValues: initialValues,
         onSubmit,
@@ -276,11 +275,13 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                 <Input
                                     formik={formik}
                                     name="title"
+                                    maxLength={40}
                                     label="افزودن ویژگی جدید"
                                 />
                                 <Input
                                     formik={formik}
                                     name="extra_data"
+                                    maxLength={40}
                                     label="اطلاعات بیشتر"
                                 />
                             </div>

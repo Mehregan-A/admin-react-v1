@@ -18,8 +18,7 @@ const InputRadioButton = ({
     }, [list]);
 
     const handleChange = (value) => {
-        // 🔹 تبدیل value به عدد
-        formik.setFieldValue(name, Number(value));
+        formik.setFieldValue(name, (value));
         console.log(name, Number(value));
     };
 
@@ -44,10 +43,9 @@ const InputRadioButton = ({
                                 type="radio"
                                 id={inputId}
                                 name={name}
-                                // 🔹 value رو هم عدد بده
                                 value={item.value}
-                                checked={formik.values[name] === Number(item.value)}
-                                disabled={disabledValues.includes(Number(item.value))}
+                                checked={formik.values[name] === (item.value)}
+                                disabled={disabledValues.includes((item.value))}
                                 onChange={() => handleChange(item.value)}
                                 className="peer hidden"
                             />
@@ -55,9 +53,9 @@ const InputRadioButton = ({
                             <label
                                 htmlFor={inputId}
                                 className="block cursor-pointer select-none rounded-lg p-2 text-center text-xs
-                  dark:text-gray-100
-                  peer-checked:bg-cyan-300 dark:peer-checked:bg-cyan-400
-                  peer-checked:font-bold peer-checked:text-gray-100"
+                                  dark:text-gray-100
+                                  peer-checked:bg-cyan-300 dark:peer-checked:bg-cyan-400
+                                  peer-checked:font-bold peer-checked:text-gray-100"
                             >
                                 {item.label}
                             </label>

@@ -25,7 +25,11 @@ import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import InputRadioButton from "../../components/inputs/InputRadioButton.jsx";
 import {postAsyncAddSlider, putAsyncEditSlider, sliderClearResult} from "../../feature/redux/SliderSlice.jsx";
 import Media from "../../components/inputs/media/Media.jsx";
-import {postAsyncAddShippingMethod, postAsyncEditShippingMethod} from "../../feature/redux/ShippingMethodSlice.jsx";
+import {
+    postAsyncAddShippingMethod,
+    postAsyncEditShippingMethod,
+    shippingClearResult
+} from "../../feature/redux/ShippingMethodSlice.jsx";
 
 
 const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slider}) => {
@@ -65,6 +69,12 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
             .required('نام الزامی است')
             .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
             .max(30, 'نام نباید بیشتر از ۳۰ کاراکتر باشد'),
+        max_weight: yup
+            .number()
+            .required('حداکثر وزن وارد کنید'),
+        min_weight: yup
+            .number()
+            .required('حداقل وزن وارد کنید'),
 
     });
     const onSubmit = (values) => {
@@ -89,12 +99,12 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
                 Toast.success(`${result.data.message}`);
                 open_close()
                 reload()
-                dispatch(sliderClearResult())
+                dispatch(shippingClearResult())
 
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(sliderClearResult())
+                dispatch(shippingClearResult())
             }
         }
     }, [result]);
@@ -160,10 +170,10 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
                             <div className="flex flex-col md:gap-4 gap-6">
                                 {/* Inputs */}
                                 <div className="w-full grid md:grid-cols-2 grid-cols-1 items-center justify-center gap-3">
-                                    <Input formik={formik} maxLength={25} name="title" onlyChar={true} label="نام روش ارسال" />
-                                    <Input formik={formik} maxLength={25} name="description" onlyChar={true} label="توضیحات" />
-                                    <Input formik={formik} maxLength={20} name="max_weight" onlyNum={true} label="حداکثر وزن" />
-                                    <Input formik={formik} maxLength={20} name="min_weight" onlyNum={true} label="حداقل وزن" />
+                                    <Input formik={formik} maxLength={25} name="title" label="نام روش ارسال" />
+                                    <Input formik={formik} maxLength={50} name="description" label="توضیحات" />
+                                    <Input formik={formik} maxLength={10} name="max_weight" onlyNum={true} label="حداکثر وزن" />
+                                    <Input formik={formik} maxLength={10} name="min_weight" onlyNum={true} label="حداقل وزن" />
                                     <SelectOption formik={formik} options={optionsMethod} formikAddress={formik.values.cod} name="cod" onlyNum={true} disabled={true} label="نوع پرداخت" />
                                     <InputRadioButton
                                         formik={formik}

@@ -134,11 +134,11 @@ const SmsSetting = () => {
                             <form className="flex flex-col gap-5 mt-7" onSubmit={formik.handleSubmit}>
                                     <div className="flex flex-col gap-6">
                                         <div className="flex flex-col md:flex-row w-full items-center gap-2">
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl p-4">
                                                 <InputActivate formik={formik} name="enable_successful_payment_sms" label="فعال سازی پیامک پرداخت موفق" options={options} formikAddress={formik.values.enable_successful_payment_sms} />
                                                 <TextArea formik={formik} maxLength={25} name="successful_payment_sms_text" label="متن پیامک پرداخت موفق" />
                                             </div>
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl p-4">
                                                 <InputActivate formik={formik} name="enable_shipment_sms" label="زمان ارسال پیامک ارسال شود؟" options={options} formikAddress={formik.values.enable_shipment_sms} />
                                                 <TextArea formik={formik} maxLength={25} name="shipment_sms_text" label="متن پیامک زمان ارسال" />
                                             </div>

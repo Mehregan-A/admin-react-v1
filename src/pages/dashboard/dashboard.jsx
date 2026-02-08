@@ -116,7 +116,7 @@ const Dashboard = () => {
                 </div>
 
             </div>
-            <div id="chart">
+            <div className="mt-5" id="chart">
                 <Chart
                     key={theme}
                     options={chartOptions}

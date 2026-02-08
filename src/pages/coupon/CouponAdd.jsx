@@ -106,8 +106,8 @@ const CouponAdd = () => {
                                 <div className="grid grid-cols-2 w-full  gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
                                     <Input formik={formik} maxLength={25} name="code" label="کد:" />
                                     <Input formik={formik} maxLength={25} name="min_order" label="حداقل سفارش:" />
-                                    <Input formik={formik} maxLength={25} name="max_uses" label="حداکثر دفعات استفاده:" />
-                                    <Input formik={formik} maxLength={25} name="user_limit" label="محدودیت برای هر کاربر:" />
+                                    <Input formik={formik} maxLength={100} name="max_uses" label="حداکثر دفعات استفاده:" />
+                                    <Input formik={formik} maxLength={100} name="user_limit" label="محدودیت برای هر کاربر:" />
                                     {!id &&
                                         <SelectOption
                                             formik={formik}
@@ -126,9 +126,9 @@ const CouponAdd = () => {
                                         />
                                     }
                                     {formik.values.type==="percent"?
-                                        <Input formik={formik} maxLength={25} isPercent  name="value" label="درصد تخفیف:" />
+                                        <Input formik={formik} maxLength={100} isPercent  name="value" label="درصد تخفیف:" />
                                         :
-                                        <Input formik={formik} maxLength={25} name="value" isAmount  label="مبلغ تخفیف:" />
+                                        <Input formik={formik} maxLength={100000000000} name="value" isAmount label="مبلغ تخفیف:" />
                                     }
                                     <Input formik={formik} maxLength={25} name="first_order_only" label="فقط برای اولین سفارش:" />
 

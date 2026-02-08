@@ -119,8 +119,8 @@ const Login = () => {
                             <span className="text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-4">Marktoo</span>
                             <span className="text-2xl font-semibold mb-6 text-gray-700 dark:text-gray-100">ورود به حساب کاربری</span>
 
-                            <form className="w-full" onSubmit={formik.handleSubmit}>
-                                <div className="flex flex-col gap-5">
+                            <form className="w-full flex flex-col gap-5" onSubmit={formik.handleSubmit}>
+                                <div className="flex flex-col gap-2">
                                     <InputLogIn
                                         autoFocusOnMount={true}
                                         formik={formik}

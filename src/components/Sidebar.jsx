@@ -8,6 +8,7 @@ import { Toast } from "./toast/Toast.jsx";
 import { loginClearResult } from "../feature/redux/LoginSlice.jsx";
 import MyAnimation from "./MyAnimation.jsx";
 import { AnimatePresence, motion } from "framer-motion";
+import {HiXMark} from "react-icons/hi2";
 
 const Sidebar = ({ open_close, open_slider }) => {
     const { logout } = useSelector((state) => state.login);
@@ -148,13 +149,11 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 : "bg-gray-100/80 dark:bg-gray-800"
                                         } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                     >
-                                        <div
-                                            className={`${
+                                        <div className={`${
                                                 subId === item.id
-                                                    ? "bg-gray-300 dark:bg-gray-300/40"
+                                                    ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
                                                     : "bg-gray-100 dark:bg-gray-600/80"
-                                            } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}
-                                        >
+                                            } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}>
                                             <NavLink
                                                 to={item.link}
                                                 className={() =>
@@ -194,18 +193,27 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         to={item.link}
                                         end
                                         onClick={handleItemClick}
-                                        className={`relative group cursor-pointer flex items-center rounded-lg p-3.5 transition-all duration-500 ease-in-out ${
+                                        className={`relative group cursor-pointer p-3.5 flex flex-col  rounded-lg transition-all duration-500 ease-in-out ${
                                             location.pathname === item.link
-                                                ? "bg-gray-50 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 transform scale-105"
+                                                ? "bg-cyan-50/20 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 scale-105"
                                                 : "bg-gray-100/80 dark:bg-gray-800"
                                         } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                     >
-                                        <div className="absolute -right-2 rounded-full">
+                                        <div className={`${
+                                            subId === item.id
+                                                ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
+                                                : "bg-gray-100 dark:bg-gray-600/80 "
+                                        } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:drop-shadow-lg `}>
                                             <NavLink
                                                 to={item.link}
                                                 end
                                                 onClick={handleItemClick}
-                                                className="w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full flex items-center justify-center text-cyan-600 dark:text-white"
+                                                className={() =>
+                                                    location.pathname === item.link ||
+                                                    item.sub.some((sub) => sub.link === location.pathname)
+                                                        ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 shadow-lg flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
+                                                        : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
+                                                }
                                             >
                                                 <FaIcons
                                                     icon={
@@ -233,9 +241,9 @@ const Sidebar = ({ open_close, open_slider }) => {
             >
                 <button
                     onClick={open_close}
-                    className="self-end p-2 mb-4 rounded-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                    className="self-end cursor-pointer  p-2 mb-4 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                 >
-                    ✕
+                    <HiXMark size={17}/>
                 </button>
 
                 <div className="flex flex-col h-full justify-between">
@@ -260,9 +268,9 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         <div
                                             className={`${
                                                 subId === item.id
-                                                    ? "bg-gray-300 dark:bg-gray-300/40"
+                                                    ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
                                                     : "bg-gray-100 dark:bg-gray-600/80"
-                                            } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:bg-white group-hover:drop-shadow-lg drop-shadow-cyan-300`}
+                                            } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}
                                         >
                                             <NavLink
                                                 to={item.link}
@@ -309,12 +317,19 @@ const Sidebar = ({ open_close, open_slider }) => {
                                                 : "bg-gray-100/80 dark:bg-gray-800"
                                         } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                     >
-                                        <div className="absolute -right-2 rounded-full">
+                                        <div className={`${
+                                            subId === item.id
+                                                ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
+                                                : "bg-gray-100 dark:bg-gray-600/80"
+                                        } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}>
                                             <NavLink
                                                 to={item.link}
-                                                end
-                                                onClick={handleItemClick}
-                                                className="w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full flex items-center justify-center text-cyan-600 dark:text-white"
+                                                className={() =>
+                                                    location.pathname === item.link ||
+                                                    item.sub.some((sub) => sub.link === location.pathname)
+                                                        ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
+                                                        : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
+                                                }
                                             >
                                                 <FaIcons
                                                     icon={
