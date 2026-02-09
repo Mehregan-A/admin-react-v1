@@ -14,7 +14,7 @@ import {
     postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
 } from "../../feature/redux/VariantAttributeValueSlice.jsx";
 
-const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, open_slider }) => {
+const VariantAttributeValue = ({ Id,open_close, open_slider }) => {
     const dispatch = useDispatch();
     const myElementRef = useRef(null);
     const  [Color, setColor] = useState("");
@@ -189,6 +189,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
                             <div className="flex flex-col w-full gap-3">
                                 <Input
                                     formik={formik}
+                                    maxLength={50}
                                     name="label"
                                     label="افزودن ویژگی جدید"
                                 />
@@ -210,6 +211,7 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
                                     formik={formik}
                                     name="value"
                                     label="شرح ویژگی"
+                                    maxLength={50}
                                 />
                             </div>
                             <button
