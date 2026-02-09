@@ -63,58 +63,116 @@ const SeoList = () => {
         rules_desc: ""
     }
     const validationSchema = yup.object({
-        // title: yup
-        //     .string()
-        //     .required('عنوان مقاله الزامی است')
-        //     .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
-        //     .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // url: yup
-        //     .string()
-        //     .required('آدرس URL الزامی است')
-        //     .matches(/^[a-z0-9-]+$/, 'فقط حروف کوچک، عدد و خط تیره مجاز است')
-        //     .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // abstract: yup
-        //     .string()
-        //     .required('چکیده مقاله الزامی است')
-        //     // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
-        //
-        // body: yup
-        //     .string()
-        //     .required('متن مقاله الزامی است')
-        //     .min(50, 'مقاله حداقل ۵۰ کاراکتر داشته باشد'),
-        //
-        // // image: yup
-        // //     .mixed()
-        // //     .required('تصویر مقاله الزامی است'),
-        //
-        // category_id: yup
-        //     .string()
-        //     .required('انتخاب دسته الزامی است'),
-        //
-        // sub_category_id: yup
-        //     .string()
-        //     .required('انتخاب زیر دسته الزامی است'),
-        //
-        // read_time: yup
-        //     .number()
-        //     .typeError('زمان مطالعه باید عدد باشد')
-        //     .positive('عدد مثبت وارد کنید')
-        //     .integer('عدد صحیح وارد کنید')
-        //     .required('زمان مطالعه الزامی است'),
-        // seo_title: yup
-        //     .string()
-        //     .required('عنوان سئو الزامی است')
-        //     .min(3, 'عنوان سئو باید حداقل ۳ کاراکتر باشد')
-        //     .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // seo_desc: yup
-        //     .string()
-        //     .required('توضیحات سئو الزامی است')
-        //     .min(10, 'توضیحات باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(300, 'توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد'),
+        index_title: yup
+            .string()
+            .required('عنوان صفحه اول الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        index_desc: yup
+            .string()
+            .required('عنوان توضیحات صفحه اول الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        articles_title: yup
+            .string()
+            .required('عنوان مقاله الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        articles_desc: yup
+            .string()
+            .required('عنوان توضیحات مقاله الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        rules_title: yup
+            .string()
+            .required('عنوان قوانین الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        rules_desc: yup
+            .string()
+            .required('عنوان توضیحات قوانین الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        contact_us_title: yup
+            .string()
+            .required('عنوان ارتباط با ما الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        contact_us_desc: yup
+            .string()
+            .required('عنوان توضیحات ارتباط با ما الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        about_us_title: yup
+            .string()
+            .required('عنوان درباره ما الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        about_us_desc: yup
+            .string()
+            .required('عنوان توضیحات درباره ما الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        return_policy_title: yup
+            .string()
+            .required('عنوان سیاست بازگشت کالا الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        return_policy_desc: yup
+            .string()
+            .required('عنوان توضیحات سیاست بازگشت کالا الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        purchase_and_payment_guide_title: yup
+            .string()
+            .required('عنوان راهنمای خرید و پرداخت الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        purchase_and_payment_guide_desc: yup
+            .string()
+            .required('عنوان توضیحات راهنمای خرید و پرداخت الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        shipping_method_title: yup
+            .string()
+            .required('عنوان روش های ارسال الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        shipping_method_desc: yup
+            .string()
+            .required('توضیحات روش های ارسال الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        faq_title: yup
+            .string()
+            .required('عنوان پرسش و پاسخ الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        faq_desc: yup
+            .string()
+            .required('توضیحات پرسش و پاسخ الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        privacy_policy_title: yup
+            .string()
+            .required('عنوان سیاست حفظ حریم خصوصی الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        privacy_policy_desc: yup
+            .string()
+            .required('توضیحات سیاست حفظ حریم خصوصی الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
+        bug_report_title: yup
+            .string()
+            .required('عنوان گزارش اشکال الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
+        bug_report_desc: yup
+            .string()
+            .required('توضیحات گزارش اشکال الزامی است')
+            .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
+            .max(300, 'عنوان نباید بیشتر از 300 کاراکتر باشد'),
     });
 
     const onSubmit = (values) => {
@@ -152,7 +210,7 @@ const SeoList = () => {
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={false}  text3={"سئو سایت"}/>
                 </div>
-                <div className="mt-7 ">
+                <div>
                     <div className="flex w-full flex-col gap-6">
                         <div className="flex w-full gap-2 ">
                             {isLoading_list ? (
@@ -245,13 +303,13 @@ const SeoList = () => {
                                             {activeTab==="1" &&
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-col w-full gap-2 ">
-                                                        <div className="flex  w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                                            <Input formik={formik} maxLength={25} name="index_title" label="عنوان صفحه اول" />
-                                                            <Input formik={formik} maxLength={25} name="index_desc" label="توضیحات صفحه اول" />
+                                                        <div className="flex  w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={100} name="index_title" label="عنوان صفحه اول" />
+                                                            <TextArea formik={formik} maxLength={300} name="index_desc" label="توضیحات صفحه اول" />
                                                         </div>
-                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                                            <Input formik={formik} maxLength={25} name="articles_title" label="عنوان مقاله" />
-                                                            <Input formik={formik} maxLength={25} name="articles_desc" label="توضیحات مقاله" />
+                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={100} name="articles_title" label="عنوان مقاله" />
+                                                            <TextArea formik={formik} maxLength={300} name="articles_desc" label="توضیحات مقاله" />
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-center">
@@ -268,13 +326,13 @@ const SeoList = () => {
                                             {activeTab==="2" &&
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-col w-full gap-2 ">
-                                                        <div className="flex  w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                                            <Input formik={formik} maxLength={25} name="rules_title" label="عنوان قوانین" />
-                                                            <Input formik={formik} maxLength={25} name="rules_desc" label="توضیحات قوانین" />
+                                                        <div className="flex  w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={100} name="rules_title" label="عنوان قوانین" />
+                                                            <TextArea formik={formik} maxLength={300} name="rules_desc" label="توضیحات قوانین" />
                                                         </div>
-                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                                            <Input formik={formik} maxLength={25} name="contact_us_title" label="عنوان ارتیاط با ما" />
-                                                            <Input formik={formik} maxLength={25} name="contact_us_desc" label="توضیحات ارتباط با ما" />
+                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={100} name="contact_us_title" label="عنوان ارتیاط با ما" />
+                                                            <TextArea formik={formik} maxLength={300} name="contact_us_desc" label="توضیحات ارتباط با ما" />
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-center">
@@ -292,13 +350,13 @@ const SeoList = () => {
                                             {activeTab==="3" &&
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-col gap-2 ">
-                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                                            <Input formik={formik} maxLength={25} name="about_us_title" label="عنوان درباره ما" />
-                                                            <Input formik={formik} maxLength={25} name="about_us_desc" label="توضیحات درباره ما" />
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={100} name="about_us_title" label="عنوان درباره ما" />
+                                                            <TextArea formik={formik} maxLength={300} name="about_us_desc" label="توضیحات درباره ما" />
                                                         </div>
-                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                                            <Input formik={formik} maxLength={25} name="return_policy_title" label="عنوان سیاست بازگشت کالا" />
-                                                            <Input formik={formik} maxLength={25} name="return_policy_desc" label="توضیحات سیاست بازگشت کالا" />
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={100} name="return_policy_title" label="عنوان سیاست بازگشت کالا" />
+                                                            <TextArea formik={formik} maxLength={300} name="return_policy_desc" label="توضیحات سیاست بازگشت کالا" />
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-center">
@@ -315,13 +373,13 @@ const SeoList = () => {
                                             {activeTab==="4" &&
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-col gap-2 ">
-                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_title" label="عنوان راهنمای خرید و پرداخت" />
-                                                            <Input formik={formik} maxLength={25} name="purchase_and_payment_guide_desc" label="توضیحات راهنمای خرید و پرداخت" />
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={100} name="purchase_and_payment_guide_title" label="عنوان راهنمای خرید و پرداخت" />
+                                                            <TextArea formik={formik} maxLength={300} name="purchase_and_payment_guide_desc" label="توضیحات راهنمای خرید و پرداخت" />
                                                         </div>
-                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                                            <Input formik={formik} maxLength={25} name="shipping_method_title" label="عنوان روش های ارسال" />
-                                                            <Input formik={formik} maxLength={25} name="shipping_method_desc" label="توضیحات روش های ارسال" />
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={100} name="shipping_method_title" label="عنوان روش های ارسال" />
+                                                            <TextArea formik={formik} maxLength={300} name="shipping_method_desc" label="توضیحات روش های ارسال" />
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-center">
@@ -338,13 +396,13 @@ const SeoList = () => {
                                             {activeTab==="5" &&
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-col gap-2 ">
-                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                                            <Input formik={formik} maxLength={25} name="faq_title" label="عنوان پرسش و پاسخ" />
-                                                            <Input formik={formik} maxLength={25} name="faq_desc" label="توضیحات پرسش و پاسخ" />
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={100} name="faq_title" label="عنوان پرسش و پاسخ" />
+                                                            <TextArea formik={formik} maxLength={300} name="faq_desc" label="توضیحات پرسش و پاسخ" />
                                                         </div>
-                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl w-full p-4">
-                                                            <Input formik={formik} maxLength={25} name="privacy_policy_title" label="عنوان سیاست حفظ حریم خصوصی" />
-                                                            <Input formik={formik} maxLength={25} name="privacy_policy_desc" label="توضیحات سیاست حفظ حریم خصوصی" />
+                                                        <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl w-full p-4">
+                                                            <Input formik={formik} maxLength={100} name="privacy_policy_title" label="عنوان سیاست حفظ حریم خصوصی" />
+                                                            <TextArea formik={formik} maxLength={300} name="privacy_policy_desc" label="توضیحات سیاست حفظ حریم خصوصی" />
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-center">
@@ -361,9 +419,9 @@ const SeoList = () => {
                                             {activeTab==="6" &&
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex gap-2 ">
-                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                                            <Input formik={formik} maxLength={25} name="bug_report_title" label="عنوان گزارش اشکال" />
-                                                            <Input formik={formik} maxLength={25} name="bug_report_desc" label="توضیحات گزارش اشکال" />
+                                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg  dark:shadow-gray-600 rounded-xl  p-4">
+                                                            <Input formik={formik} maxLength={100} name="bug_report_title" label="عنوان گزارش اشکال" />
+                                                            <TextArea formik={formik} maxLength={300} name="bug_report_desc" label="توضیحات گزارش اشکال" />
                                                         </div>
                                                     </div>
                                                     {/* Submit */}

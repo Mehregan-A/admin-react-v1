@@ -246,7 +246,7 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                                 </label>
                                             ) : (
                                                 <>
-                                                    <label className="block text-sm mb-1 text-gray-600 dark:text-gray-200">
+                                                    <label className="block text-xs mb-1 text-gray-600 dark:text-gray-200">
                                                         مقدار ویژگی
                                                     </label>
                                                     <input
@@ -258,35 +258,36 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                                 </>
                                             )}
                                         </div>
+                                            <div className="mt-4">
+                                                <button
+                                                    type="button"
+                                                    disabled={isLoading}
+                                                    onClick={() => {
+                                                        if (!label.trim()) return;
 
-                                        <button
-                                            type="button"
-                                            disabled={isLoading}
-                                            onClick={() => {
-                                                if (!label.trim()) return;
+                                                        dispatch(
+                                                            postAsyncAddVariantAttributeVal({
+                                                                label: label.trim(),
+                                                                value: value.trim(),
+                                                                Id: attr.value,
+                                                            })
+                                                        );
 
-                                                dispatch(
-                                                    postAsyncAddVariantAttributeVal({
-                                                        label: label.trim(),
-                                                        value: value.trim(),
-                                                        Id: attr.value,
-                                                    })
-                                                );
-
-                                                setLabel("");
-                                                setValue("");
-                                            }}
-                                            className="flex mt-4 h-10 text-xs justify-center items-center gap-x-2 px-2 py-0.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 transition-colors"
-                                        >
-                                            {isLoading ? (
-                                                <>
-                                                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                                    <span>افزودن...</span>
-                                                </>
-                                            ) : (
-                                                <span>افزودن</span>
-                                            )}
-                                        </button>
+                                                        setLabel("");
+                                                        setValue("");
+                                                    }}
+                                                    className="flex h-10 text-xs justify-center items-center gap-x-2 px-2 py-0.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 transition-colors"
+                                                >
+                                                    {isLoading ? (
+                                                        <>
+                                                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                            <span>افزودن...</span>
+                                                        </>
+                                                    ) : (
+                                                        <span>افزودن</span>
+                                                    )}
+                                                </button>
+                                            </div>
 
                                     </div>
                                 </form>

@@ -19,7 +19,6 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
     const myElementRef = useRef(null);
     const  [Color, setColor] = useState("");
     const [isOpenModal, setIsOpenModal] = useState(false);
-    console.log(Color.toString(1))
 
     useEffect(() => {
         if (open_slider) {
@@ -193,7 +192,20 @@ const VariantAttributeValue = ({ Id, variantAttribute_list, open_close, reload, 
                                     name="label"
                                     label="افزودن ویژگی جدید"
                                 />
-                                <input type="color" onChange={(e)=>setColor(e.target.value) } />
+                                <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
+                                    <input
+                                        type="color"
+                                        className="absolute w-6 h-6 opacity-0 cursor-pointer"
+                                        onChange={(e) => setColor(e.target.value.slice(1))}
+                                    />
+                                    <span
+                                        className="w-6 h-6 rounded-md border border-gray-300"
+                                        style={{ backgroundColor: Color ? `#${Color}` : "#fff" }}
+                                    />
+                                    <span className="text-sm text-gray-600 dark:text-gray-100">
+                                                    انتخاب کنید
+                                                </span>
+                                </label>
                                 <Input
                                     formik={formik}
                                     name="value"

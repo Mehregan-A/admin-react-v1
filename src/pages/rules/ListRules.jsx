@@ -153,7 +153,7 @@ const ListRules = () => {
                                 {activeTab==="1" &&
                                     <div className="flex flex-col gap-6">
                                         <div className="flex flex-col w-full gap-2">
-                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                            <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
                                                 <NilfamEditor value={formik.values.purchase_and_payment_guide} isDark={theme} lang="fa"
                                                               onChange={newContent => formik.setFieldValue("purchase_and_payment_guide", newContent)} />
                                             </div>
@@ -161,7 +161,7 @@ const ListRules = () => {
                                         <div className="flex justify-center">
                                             <button
                                                 onClick={() => setActiveTab("2")}
-                                                className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500} 
+                                                className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl cursor-pointer bg-cyan-400 hover:bg-cyan-500
                                             text-gray-50 text-sm transition-colors`}
                                             >
                                                 ادامه
@@ -171,7 +171,7 @@ const ListRules = () => {
                                 }
                                 {activeTab==="2" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
                                             <NilfamEditor value={formik.values.privacy_policy} isDark={theme} lang="fa"
                                                           onChange={newContent => formik.setFieldValue("privacy_policy", newContent)} />
                                         </div>
@@ -189,7 +189,7 @@ const ListRules = () => {
                                 }
                                 {activeTab==="3" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
                                             <NilfamEditor value={formik.values.return_policy} isDark={theme} lang="fa"
                                                           onChange={newContent => formik.setFieldValue("return_policy", newContent)} />
                                         </div>
@@ -206,7 +206,7 @@ const ListRules = () => {
                                 }
                                 {activeTab==="4" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
                                             <NilfamEditor value={formik.values.purchase_and_payment_guideterms_and_conditions} isDark={theme} lang="fa"
                                                           onChange={newContent => formik.setFieldValue("purchase_and_payment_guideterms_and_conditions", newContent)} />
                                         </div>
@@ -223,7 +223,7 @@ const ListRules = () => {
                                 }
                                 {activeTab==="5" &&
                                     <div className="flex flex-col gap-6">
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl  p-4">
                                             <NilfamEditor value={formik.values.shipping_method} isDark={theme} lang="fa"
                                                           onChange={newContent => formik.setFieldValue("shipping_method", newContent)} />
                                         </div>
