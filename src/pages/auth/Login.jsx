@@ -25,11 +25,6 @@ const Login = () => {
     const { login,login_index,isLoading_enter } = useSelector(state => state.login);
     const navigation = useNavigate();
 
-    // const location = useLocation();
-    // useEffect(() => {
-    //     dispatch(getAsyncLoginIndex());
-    // },[])
-
     const initialValues = {
         username: "",
         password: "",
@@ -163,8 +158,8 @@ const Login = () => {
                                 <a href="#" className="text-cyan-500 font-semibold hover:underline"> ثبت نام کنید</a>
                             </p>
                         </div>
-                        <div className="hidden lg:flex items-center justify-center">
-                            <img src={loginImage} alt="login" className="max-w-lg w-full h-auto object-contain" />
+                        <div className="hidden w-2/6 lg:flex items-center justify-center">
+                            <img src={loginImage} alt="login" className="max-w-2xl w-full h-auto object-contain" />
                         </div>
                     </div>
                 </div>

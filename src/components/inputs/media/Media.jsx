@@ -16,6 +16,7 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
     const [displayValue, setDisplayValue] = useState("");
     const [editImage, setEditImage] = useState(0);
     const [changeGallery,setChangeGallery]=useState("simple");
+    console.log(formikAddress)
 
     useEffect(() => {
         setSelectedItem(formikAddress)
@@ -174,8 +175,8 @@ const Media = ({formik, name,formikAddress,single=false,label,desc = false ,clas
                                     <div
                                         onClick={() => setOpenGallery(true)}
                                         className="bg-cyan-400 w-full sm:w-40 text-center rounded-lg shadow-[0_3px_10px_rgba(14,165,233,0.6)]
-                     hover:bg-cyan-500 hover:shadow-[0_4px_15px_rgba(14,165,233,0.8)]
-                     active:scale-95 transition-all duration-300 cursor-pointer text-xs p-2 text-white"
+                                     hover:bg-cyan-500 hover:shadow-[0_4px_15px_rgba(14,165,233,0.8)]
+                                     active:scale-95 transition-all duration-300 cursor-pointer text-xs p-2 text-white"
                                     >
                                         {label}
                                     </div>

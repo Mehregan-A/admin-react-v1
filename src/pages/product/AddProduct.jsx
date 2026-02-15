@@ -16,9 +16,8 @@ import {getAsyncSelectCategory} from "../../feature/redux/CategorySlice.jsx";
 import Media from "../../components/inputs/media/Media.jsx";
 import {
     getAsyncInfoProduct,
-    postAsyncAddProduct,
+    postAsyncAddProduct, postAsyncEditProduct,
     productClearInfo, productClearResult,
-    putAsyncEditProduct
 } from "../../feature/redux/ProductSlice.jsx";
 import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
 import {getAsyncListAttributeSelect} from "../../feature/redux/AttributeSlice.jsx";
@@ -95,7 +94,7 @@ const AddProduct = () => {
 
     const onSubmit = (values) => {
         if (id) {
-            dispatch(putAsyncEditProduct(values));
+            dispatch(postAsyncEditProduct(values));
         } else {
             dispatch(postAsyncAddProduct(values));
         }
