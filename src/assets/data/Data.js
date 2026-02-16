@@ -269,6 +269,10 @@ export const options = [
     { value: 'active', label: 'فعال' },
     { value: 'inactive', label: 'غیرفعال' },
 ];
+export const IncreasePrice = [
+    { value: 'percent', label: 'درصدی' },
+    { value: 'constant', label: 'ثابت' },
+];
 export const gateway = [
     { value: 'zarinpal', label: 'زرین پال' },
     { value: 'zibal', label: 'زیبال' },

@@ -18,6 +18,8 @@ import {deleteAsyncProduct, getAsyncListProduct, productClearResultDelete} from 
 import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import ColoredShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
+import SearchProductAmazing from "../productAmazing/SearchProductAmazing.jsx";
+import AddIncreasePrice from "./AddIncreasePrice.jsx";
 
 
 const ListProduct = () => {
@@ -167,6 +169,8 @@ const ListProduct = () => {
                 <HeaderBox text1={"داشبورد"} text2={false}  text3={"محصولات"}/>
             </div>
             <DataTable
+                open2={() => setOpenId("")}
+                nameButton2={"افزایش قیمت"}
                 url={'/product/add'}
                 nameButton={"افزودن محصول"}
                 isLoading={isLoading_list}
@@ -196,6 +200,11 @@ const ListProduct = () => {
                     open_close={() => setShowModal(!showModal)}
                     showModal={showModal}
                 />
+            )}
+            {openAdd.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <AddIncreasePrice close={() => setOpenAdd({ open: false })}/>
+                </div>
             )}
         </div>
     );
