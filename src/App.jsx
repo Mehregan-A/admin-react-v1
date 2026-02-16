@@ -31,6 +31,7 @@ import ListProductAmazing from "./pages/productAmazing/ListProductAmazing.jsx";
 import AddProductAmazing from "./pages/productAmazing/AddproductAmazing.jsx";
 import ListRules from "./pages/rules/ListRules.jsx";
 import ListCouponRedemptions from "./pages/copunRedemptions/ListCouponRedemptions.jsx";
+import Listgateway from "./pages/payment/Listgateway.jsx";
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
                     <Route path="coupon/add" element={<CouponAdd />} />
                     <Route path="admin/list/:row/:page" element={<AdminList />} />
                     <Route path="payment/list/:row/:page" element={<ListPayment />} />
+                    <Route path="gateway/list" element={<Listgateway />} />
                     <Route path="coupon/list/:row/:page" element={<CouponList />} />
                     <Route path="slider/list/:row/:page" element={<SliderList />} />
                     <Route path="faq/list/:row/:page" element={<FaqList />} />

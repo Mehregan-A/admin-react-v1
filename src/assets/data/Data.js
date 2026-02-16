@@ -170,8 +170,20 @@ export const SideItem = [
         icon_fill: "PiCreditCardFill",
         icon_outline: "PiCreditCard",
         label: "پرداخت",
-        link: "/payment/list/50/1",
-        sub: [],
+        sub: [
+            {
+                id: 55,
+                icon: "PiCirclesThreeFill",
+                label: "پرداخت",
+                link: "/payment/list/50/1",
+            },
+            {
+                id: 56,
+                icon: "PiCirclesThreeFill",
+                label: "درگاه پرداخت",
+                link: "/gateway/list",
+            },
+        ],
     },
     {
         id: 17,
@@ -256,6 +268,10 @@ export const coupon = [
 export const options = [
     { value: 'active', label: 'فعال' },
     { value: 'inactive', label: 'غیرفعال' },
+];
+export const gateway = [
+    { value: 'zarinpal', label: 'زرین پال' },
+    { value: 'zibal', label: 'زیبال' },
 ];
 export const optionsMethod = [
     { value: 'prepaid', label: ' پس کرایه' },
