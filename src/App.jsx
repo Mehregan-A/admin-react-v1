@@ -32,6 +32,7 @@ import AddProductAmazing from "./pages/productAmazing/AddproductAmazing.jsx";
 import ListRules from "./pages/rules/ListRules.jsx";
 import ListCouponRedemptions from "./pages/copunRedemptions/ListCouponRedemptions.jsx";
 import Listgateway from "./pages/payment/Listgateway.jsx";
+import IncreasePrice from "./pages/product/IncreasePrice.jsx";
 
 
 function App() {
@@ -47,12 +48,13 @@ function App() {
                     <Route path="variant-attribute/list/:row/:page" element={<VariantAttributeList/>} />
                     <Route path="category/sub/list/:row/:page" element={<ListSubCategory/>} />
                     <Route path="product/list/:row/:page" element={<ListProduct/>} />
+                    <Route path="product/increase/:type" element={<IncreasePrice/>} />
                     <Route path="product-amazing/list/:row/:page" element={<ListProductAmazing/>} />
                     <Route path="order/list/:row/:page" element={<ListOrder/>} />
                     <Route path="shipping-methods/list/:row/:page" element={<ListShippingMethod/>} />
                     <Route path="free-shipping/list" element={<FreeShippingList/>} />
                     <Route path="seo-site" element={<SeoList/>} />
-                    <Route path="/order/detail/:id" element={<OrderDetail />} />
+                    <Route path="order/detail/:id" element={<OrderDetail />} />
                     <Route path="product/add/:id" element={<AddProduct />} />
                     <Route path="amazing/add" element={<AddProductAmazing />} />
                     <Route path="amazing/add/:id" element={<AddProductAmazing />} />

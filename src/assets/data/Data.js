@@ -269,7 +269,7 @@ export const options = [
     { value: 'active', label: 'فعال' },
     { value: 'inactive', label: 'غیرفعال' },
 ];
-export const IncreasePrice = [
+export const IncreasePriceOption = [
     { value: 'percent', label: 'درصدی' },
     { value: 'constant', label: 'ثابت' },
 ];

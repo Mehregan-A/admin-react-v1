@@ -10,6 +10,14 @@ export const getAsyncListProduct = createAsyncThunk("product/getAsyncListProduct
         return rejectWithValue(error.response, error.message)
     }
 })
+export const getAsyncListProductAll = createAsyncThunk("product/getAsyncListProductAll",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.get(`admin/products/list/all`,{})
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
 export const getAsyncInfoProduct = createAsyncThunk("product/getAsyncInfoProduct",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.get(`admin/products/get/${payload.Id}`,{
@@ -49,6 +57,7 @@ export const deleteAsyncProduct = createAsyncThunk("product/deleteAsyncProduct",
 
 const initialState = {
     result_delete:false,
+    list_product_all:false,
     isLoading_action: false,
     isLoading_list:false,
     isError_list:false,
@@ -86,6 +95,21 @@ const ProductSlice = createSlice({
         })
         builder.addCase(getAsyncListProduct.rejected,(state,action)=>{
             state.list_product = action.payload
+            state.isLoading_list = false
+            state.isError_list = true
+        })
+        builder.addCase(getAsyncListProductAll.fulfilled,(state, action)=>{
+            state.list_product_all = action.payload.data.result
+            state.isLoading_list = false
+            state.isError_list = false
+        })
+        builder.addCase(getAsyncListProductAll.pending,(state)=>{
+            state.list_product_all = false
+            state.isLoading_list = true
+            state.isError_list = false
+        })
+        builder.addCase(getAsyncListProductAll.rejected,(state,action)=>{
+            state.list_product_all = action.payload
             state.isLoading_list = false
             state.isError_list = true
         })

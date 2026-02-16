@@ -1,39 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {HiMiniXMark} from "react-icons/hi2";
-import {FaMagnifyingGlass, FaXmark} from "react-icons/fa6";
-import {
-    postAsyncSearchAmazingProduct,
-    productAmazingSearchClearResult
-} from "../../feature/redux/AmazingProductSlice.jsx";
-import {BsListUl} from "react-icons/bs";
-import Loading from "../../components/loading/Loading.jsx";
-import Reject from "../../components/loading/Reject.jsx";
-import {BiSolidError} from "react-icons/bi";
-import {Config} from "../../config/Config.jsx";
-import CategoryNotFound from "../../assets/image/category_not_found.png";
 import {LiaMoneyCheckSolid} from "react-icons/lia";
-import {IncreasePrice, options} from "../../assets/data/Data.js";
+import {IncreasePriceOption, options} from "../../assets/data/Data.js";
 import InputRadioButton from "../../components/inputs/InputRadioButton.jsx";
 import * as yup from "yup";
 import {postAsyncEditRules} from "../../feature/redux/RulesSlice.jsx";
 import {useFormik} from "formik";
+import IncreasePrices from "./IncreasePrice.jsx";
+import {productAmazingSearchClearResult} from "../../feature/redux/AmazingProductSlice.jsx";
+import {useNavigate} from "react-router";
 
 const AddIncreasePrice = ({close}) => {
+    const navigate = useNavigate();
     const initialValues = {
        value:""
     }
     const validationSchema = yup.object({
     });
 
-    const onSubmit = (values) => {
-        console.log(values);
-    };
-
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema,
-        onSubmit,
         validateOnMount : true,
         enableReinitialize: true
     })
@@ -56,15 +44,19 @@ const AddIncreasePrice = ({close}) => {
                         </div>
 
                         <div className="w-full h-px bg-cyan-300"></div>
-                        <div>
+                        <div className="p-5">
                             <InputRadioButton
                                 formik={formik}
-                                name="status"
+                                name="value"
                                 label="نوع افزایش قیمت:"
-                                list={IncreasePrice}
+                                list={IncreasePriceOption}
                             />
                         </div>
-
+                        {formik.values.value &&
+                        <button onClick={()=>{close();navigate(`/product/increase/${formik.values.value}`)}} type="submit" className="w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 dark:bg-cyan-400 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
+                            تایید
+                        </button>
+                        }
                     </div>
                 </div>
             </div>
