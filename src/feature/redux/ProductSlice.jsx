@@ -18,6 +18,14 @@ export const getAsyncListProductAll = createAsyncThunk("product/getAsyncListProd
         return rejectWithValue(error.response, error.message)
     }
 })
+export const postAsyncIncreaseProducts = createAsyncThunk("product/postAsyncIncreaseProducts",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.post("/admin/products/list/update",payload,{})
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
 export const getAsyncInfoProduct = createAsyncThunk("product/getAsyncInfoProduct",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.get(`admin/products/get/${payload.Id}`,{
@@ -152,6 +160,19 @@ const ProductSlice = createSlice({
             state.isLoading = true
         })
         builder.addCase(postAsyncAddProduct.rejected,(state,action)=>{
+            state.result = action.payload
+            state.isLoading = false
+        })
+
+        builder.addCase(postAsyncIncreaseProducts.fulfilled,(state, action)=>{
+            state.result = action.payload
+            state.isLoading = false
+        })
+        builder.addCase(postAsyncIncreaseProducts.pending,(state)=>{
+            state.result = false
+            state.isLoading = true
+        })
+        builder.addCase(postAsyncIncreaseProducts.rejected,(state,action)=>{
             state.result = action.payload
             state.isLoading = false
         })

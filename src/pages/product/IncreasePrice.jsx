@@ -5,73 +5,66 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Config} from "../../config/Config.jsx";
 import {Toast} from "../../components/toast/Toast.jsx";
-import DataTable from "../../components/dataTable/DataTable.jsx";
-import {IoBanOutline, IoCreateOutline, IoListOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {
-    deleteAsyncProduct,
-    getAsyncListProduct,
-    getAsyncListProductAll,
+    getAsyncListProductAll, postAsyncIncreaseProducts,
     productClearResultDelete
 } from "../../feature/redux/ProductSlice.jsx";
-import {persianDateNT} from "../../components/utility/persianDateNT.js";
-import ColoredShadowImage from "../../components/shadow/DynamicShadowImage.jsx";
+
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 import AddIncreasePrice from "./AddIncreasePrice.jsx";
+
+import {useFormik} from "formik";
+import * as yup from "yup";
 
 
 const IncreasePrices = () => {
     const { type } = useParams();
     const [openAdd ,setOpenAdd] = useState({open:false})
-    const [openAtt ,setOpenAtt] = useState({open:false})
     const navigate = useNavigate();
     const location = useLocation();
     const openModal = location.state?.openModal;
     // AcceptMessage.jsx module
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState({ actionType: "", id: "", text: "" });
-    const [isIdsEdit,setIdsEdit] = useState({id:"",action:""});
+    const [changePrice, setChangePrice] = useState();
+
 // Redux
     const dispatch = useDispatch();
+    const initialValues = {
+        title:'',
+        url:'',
+        logo:'',
+        is_featured:"",
+        status: ""
+    }
+    const validationSchema = yup.object({
+        title: yup
+            .string()
+            .required('عنوان برند الزامی است')
+            .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
+            .max(30, 'عنوان نباید بیشتر از 30 کاراکتر باشد'),
+        url: yup
+            .string()
+            .required('آدرس URL الزامی است')
+            .max(50, 'آدرس نباید بیشتر از 50 کاراکتر باشد'),
+
+    });
+    const onSubmit = (values) => {
+        dispatch(postAsyncIncreaseProducts(values))
+    };
+    const formik = useFormik({
+        initialValues: initialValues,
+        validationSchema,
+        onSubmit,
+        validateOnMount : true
+    })
 // List article selector
-    const { list_product_all,result_delete,isLoading_list,isError_list,isLoading_action } = useSelector(state => state.product);
+    const { list_product_all,result_delete,isLoading_action,isLoading } = useSelector(state => state.product);
 // Effects
     useEffect(() => {
             dispatch(getAsyncListProductAll());
     }, [dispatch, navigate]);
-    console.log(list_product_all);
-    // Open user form with selected id
-    const setOpenId = (id,action) => {
-        setOpenAdd({ open: true });
-        setIdsEdit({id,action});
-    };
-    const setOpenIdAtt = (id,action) => {
-        setOpenAtt({ open: true });
-        setIdsEdit({id,action});
-    };
-    // Handle delete or deactivate action
-    const handleActionRequest = useCallback((type, id) => {
-        if (type === "delete"){
-            const text = "آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟"
-            setModalData({ actionType: type, id, text });
-        }
-        setShowModal(true);
-    }, []);
-
-    // Confirm delete/deactivate
-    const handleAccept = useCallback(async () => {
-        try {
-            const { actionType, id } = modalData;
-
-            if (actionType === "delete") {
-                await dispatch(deleteAsyncProduct({ del: id }));
-            }
-
-            setShowModal(false);
-        } catch (err) {
-            console.error(err);
-        }
-    }, [modalData, dispatch]);
     useEffect(() => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
@@ -88,92 +81,92 @@ const IncreasePrices = () => {
     const handleReject = useCallback(() => {
         setShowModal(false);
     }, []);
-    const ButtonWithTooltip = ({ onClick, icon, text, hoverColor }) => (
-        <div className="relative group">
-            <button onClick={onClick} className={`w-7 h-7 rounded-full flex items-center justify-center ${hoverColor} text-gray-700 dark:text-gray-100 cursor-pointer`}>
-                {icon}
-            </button>
-            <span className={`absolute mb-1 px-2 py-1 text-xs text-gray-700 dark:text-gray-100 dark:bg-gray-800 bg-gray-100 rounded-lg drop-shadow-lg  drop-shadow-gray-400 opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10 left-0`}>
-                {text}
-            </span>
-        </div>
-    );
-    const columns = [
-        {
-            name: "تصویر",
-            selector: row => (
-                <ColoredShadowImage
-                    src={row.image ? Config.apiImage + row.image : CategoryNotFound}
-                />
-            ),
-        },
-
-        {
-            name: "نام محصول",
-            selector: row => row.title,
-        },
-        {
-            name: "url",
-            selector: row => row.url,
-        },
-        {
-            name: "چکیده",
-            selector: row => row.abstract,
-        },
-        {
-            name: " وضعیت انتشار",
-            selector: row => row.status === "published" ? <div className={`text-green-500`}>انتشار</div> :  <div className={`text-yellow-400`}>پیش نویس</div>
-        },
-        {
-            name: "زمان انتشار",
-            selector: row => persianDateNT.unixWithoutTime(row.publish_at),
-        },
-        {
-            name: "عملیات",
-            style: {
-                width: '100px'
-            },
-            selector: row => (
-                <div className="flex lg:justify-center gap-0.5">
-                    <ButtonWithTooltip
-                        onClick={() => navigate(`/product/add/${row.id}`)}
-                        icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش محصول"
-                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest("delete", row.id)}
-                        icon={<IoTrashOutline className="w-5 h-5" />}
-                        text="حذف"
-                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
-                </div>
-            )
-        }
-    ];
     useEffect(() => {
         if (openModal) {
             setOpenAdd({ open: !openAdd.open })
         }
     }, [openModal]);
 
+    const changePriceHandler = (value) => {
+        if (type==="percent"){
+            const priceIncrease=value*(changePrice/100)
+            return priceIncrease+value
+        }else {
+            return value+Number(changePrice)
+        }
+    }
+
     return (
         <div className={`flex flex-col gap-2`}>
             <div className='flex justify-between items-center p-2'>
-                <HeaderBox text1={"داشبورد"} text2={false}  text3={"محصولات"}/>
+                <HeaderBox text1={"داشبورد"} text2={"محصولات"}  text3={"افزایش قیمت"}/>
             </div>
-            <DataTable
-                open2={() => setOpenId("")}
-                nameButton2={"افزایش قیمت"}
-                url={'/product/add'}
-                nameButton={"افزودن محصول"}
-                isLoading={isLoading_list}
-                isError={isError_list}
-                title=""
-                data={list_product_all}
-                numberPage={list_product_all?.page}
-                columns={columns}
-            />
+            <div className="w-full flex items-center justify-between py-2 px-6 dark:bg-gray-700/30 bg-gray-50 rounded-2xl shadow-lg dark:shadow dark:shadow-cyan-300">
+                <span className="text-sm w-24 text-gray-700 dark:text-gray-100">{type==="percent"?"افزایش درصدی":"افزایش عددی"}</span>
+                <input maxLength={type==="percent"?100:10000000000} className={`focus-visible:border-cyan-300 border bg-gray-100 border-gray-300 dark:bg-gray-800 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus-visible:outline-0 block w-full p-2 px-2 pr-2`}
+                         value={changePrice} onChange={e => setChangePrice(e.target.value)} />
+                {/* Submit */}
+                <div className="flex justify-center">
+                    <button
+                        disabled={!formik.isValid || isLoading}
+                        type="submit"
+                        className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-2xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                    >
+                        {isLoading ? (
+                            <>
+                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                <span>در حال ثبت...</span>
+                            </>
+                        ) : (
+                            <span>ثبت</span>
+                        )}
+                    </button>
+                </div>
+            </div>
+            {list_product_all && list_product_all?.map((item,index)=>{
+                return (
+                    <div key={index} className="bg-gray-50 dark:bg-gray-700 flex w-full mt-3 gap-4 items-center rounded-xl p-3">
+                        <div className="flex flex-col md:flex-row gap-4 items-center ">
+                            <div className="w-18 h-18 flex items-center  justify-center">
+                                <img
+                                    src={item.image ? Config.apiImage + item.image : CategoryNotFound}
+                                    alt="amazing"
+                                    className="hexagon-img"
+                                />
+                            </div>
+                            <div className="flex text-gray-800 dark:text-gray-100 flex-col gap-1">
+                                <span className=" text-lg font-semibold">{item.title}</span>
+                                <div className="items-center flex gap-1 text-sm">
+                                    <span className="">قیمت فعلی:</span>
+                                    <span className="">{item.list?.map((val,index)=>{
+                                        return (
+                                            <div className="flex items-center justify-between gap-3">
+                                                <div key={index}>
+                                                    {val.price}تومان
+
+                                                </div>
+                                                {changePrice &&
+                                                    <div>
+                                                        قیمت افزایش یافته:{changePriceHandler(val.price)}
+                                                    </div>
+                                                }
+                                                <div className="text-xs">
+                                                    ({val.varient_label})
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                    </span>
+                                </div>
+                                <div className="items-center flex gap-0.5 text-sm">
+                                    <span className="">{item.sku_code}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })}
             {/*{openAtt.open && (*/}
             {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
             {/*        <AttributeCategory*/}
