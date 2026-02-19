@@ -5,7 +5,7 @@ const HeaderBox = ({text1,text2,text3}) => {
     const navigate = useNavigate();
     return (
         <div className="w-full flex items-center justify-between py-2 px-6 dark:bg-gray-700/30 bg-gray-50 rounded-2xl shadow-lg dark:shadow dark:shadow-cyan-300">
-            <div className='flex justify-start gap-2'>
+            <div className='flex justify-start gap-2 md:text-base text-xs'>
                 <div className="text-gray-400 dark:text-gray-300">  {text1}   |  </div>
                 <div className={`text-gray-400 dark:text-gray-300 ${text2?"":"hidden"} `}>  {text2}   |  </div>
                 <div className="text-cyan-700 dark:text-cyan-400">{text3}</div>

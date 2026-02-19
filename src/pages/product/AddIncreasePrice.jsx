@@ -52,11 +52,14 @@ const AddIncreasePrice = ({close}) => {
                                 list={IncreasePriceOption}
                             />
                         </div>
-                        {formik.values.value &&
-                        <button onClick={()=>{close();navigate(`/product/increase/${formik.values.value}`)}} type="submit" className="w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 dark:bg-cyan-400 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
-                            تایید
-                        </button>
-                        }
+                        <div className="w-full flex justify-center p-4">
+                            {formik.values.value &&
+                                <button onClick={()=>{close();navigate(`/product/increase/${formik.values.value}`)}} type="submit" className="w-full flex justify-center items-center gap-x-1 mt-1 px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 dark:bg-cyan-400 hover:bg-cyan-400 enabled:cursor-pointer text-gray-100 transition-colors">
+                                    تایید
+                                </button>
+                            }
+                        </div>
+
                     </div>
                 </div>
             </div>

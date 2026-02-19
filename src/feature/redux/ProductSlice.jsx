@@ -74,6 +74,7 @@ const initialState = {
     result : false,
     isLoading: false,
     isError: false,
+    result_increase: false,
 }
 
 const ProductSlice = createSlice({
@@ -82,6 +83,9 @@ const ProductSlice = createSlice({
     reducers : {
         productClearResult : (state) => {
             state.result = false
+        },
+        productClearResultIncrease : (state) => {
+            state.result_increase = false
         },
         productClearResultDelete : (state) => {
             state.result_delete = false
@@ -165,15 +169,15 @@ const ProductSlice = createSlice({
         })
 
         builder.addCase(postAsyncIncreaseProducts.fulfilled,(state, action)=>{
-            state.result = action.payload
+            state.result_increase = action.payload
             state.isLoading = false
         })
         builder.addCase(postAsyncIncreaseProducts.pending,(state)=>{
-            state.result = false
+            state.result_increase = false
             state.isLoading = true
         })
         builder.addCase(postAsyncIncreaseProducts.rejected,(state,action)=>{
-            state.result = action.payload
+            state.result_increase = action.payload
             state.isLoading = false
         })
         builder.addCase(deleteAsyncProduct.fulfilled,(state, action)=>{
@@ -193,6 +197,6 @@ const ProductSlice = createSlice({
         })
     }
 })
-export const { productClearResult,productClearInfo,productClearResultDelete} = ProductSlice.actions
+export const {productClearResultIncrease, productClearResult,productClearInfo,productClearResultDelete} = ProductSlice.actions
 
 export default ProductSlice.reducer
