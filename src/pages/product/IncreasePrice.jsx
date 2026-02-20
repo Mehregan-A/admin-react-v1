@@ -110,6 +110,19 @@ const IncreasePrices = () => {
                 )
             };
         });
+        formik.setFieldValue("data", updated);
+    };
+    const allSelected = formik.values.data?.every(product =>
+        product.list.every(item => item.checked)
+    );
+    const handleSelectAll = () => {
+        const updated = formik.values.data.map(product => ({
+            ...product,
+            list: product.list.map(item => ({
+                ...item,
+                checked: !allSelected
+            }))
+        }));
 
         formik.setFieldValue("data", updated);
     };
@@ -142,6 +155,30 @@ const IncreasePrices = () => {
                 </button>
             </div>
             <div className="bg-gray-50 dark:bg-gray-700 p-3 my-2 rounded-2xl ">
+                <div className="grid grid-cols-4 gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 text-sm">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <input
+                            type="checkbox"
+                            checked={allSelected}
+                            onChange={handleSelectAll}
+                            className="hidden peer"
+                        />
+                        <span className="w-4 h-4 rounded border border-gray-400 flex items-center justify-center peer-checked:bg-cyan-300 peer-checked:border-cyan-300 transition">
+                        <svg
+                            className="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 11.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                    </span>
+                        <span className="text-sm text-nowrap text-gray-700 dark:text-gray-100">{allSelected ? "لغو انتخاب همه" : "انتخاب همه"}</span>
+                    </label>
+                </div>
                 {formik.values.data?.map((item) => (
                     <div key={item.id} className="bg-gray-200/70 dark:bg-gray-800 flex w-full mt-3 gap-4 items-center rounded-xl p-3">
                         <div className="w-18 h-18 flex items-center  justify-center">
