@@ -18,6 +18,7 @@ import Reject from "../../components/loading/Reject.jsx";
 import {CiDeliveryTruck} from "react-icons/ci";
 import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {BiSolidError} from "react-icons/bi";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const FreeShippingList = () => {
@@ -117,27 +118,23 @@ const FreeShippingList = () => {
             }
         }
     }, [result]);
-    console.log(isLoading_list_free,isError_list_free)
 
     return (
         <>
-            <div className={`flex flex-col gap-4`}>
+            <div className={`flex flex-col gap-2`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
-                    <div className='flex justify-start gap-2 p-5'>
-                        <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                        <div className="text-cyan-700 dark:text-cyan-400"> ارسال رایگان</div>
-                    </div>
+                    <HeaderBox text1={"داشبورد"} text2={false}  text3={"ارسال رایگان"}/>
                 </div>
-                <form className="mt-7 " onSubmit={formik.handleSubmit}>
+                <form className=" " onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-6">
                         <div className="flex w-full gap-2 ">
                             {isLoading_list_free ? (
                                 <Loading />
                             ) : isError_list_free ? (
                                 <Reject />
-                            ) : Object.values(list_shipping_method_free).length  > 0 ? (
-                                <div className="flex flex-col w-4xl gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-2xl  p-10">
+                            ) :list_shipping_method_free && Object.values(list_shipping_method_free).length  > 0 ? (
+                                <div className="flex flex-col w-4xl gap-4 bg-gray-100 dark:bg-gray-700/50 shadow-lg rounded-3xl  p-10">
                                     <div className="flex items-center justify-between">
                                         <div className="w-1/2 flex-col flex gap-5">
                                             <InputCheckbox

@@ -76,7 +76,6 @@ const AddAttribute = ({Id,list_attribute,open_close,reload,open_slider}) => {
         onSubmit,
         validateOnMount : true
     })
-    console.log(formik.values)
 
     useEffect(() => {
         if(result && result?.status){

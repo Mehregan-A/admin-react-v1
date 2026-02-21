@@ -31,10 +31,8 @@ const CouponAdd = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
-    const {list_brand_select} = useSelector(state => state.brand);
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
-        dispatch(getAsyncSelectBrand())
         if (id){
             dispatch(getAsyncInfoCoupon({Id:id}))
         }
@@ -60,7 +58,6 @@ const CouponAdd = () => {
     });
 
     const onSubmit = (values) => {
-        console.log(values);
         if (id) {
             dispatch(putAsyncEditCoupon(values));
         } else {
@@ -90,8 +87,6 @@ const CouponAdd = () => {
             }
         }
     }, [result]);
-    console.log(formik.values.category_id)
-
 
     return (
         <>
@@ -104,10 +99,10 @@ const CouponAdd = () => {
                         <div className="flex flex-col gap-6">
                             <div className="flex w-full gap-2 ">
                                 <div className="grid grid-cols-2 w-full  gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
-                                    <Input formik={formik} maxLength={25} name="code" label="کد:" />
-                                    <Input formik={formik} maxLength={25} name="min_order" label="حداقل سفارش:" />
-                                    <Input formik={formik} maxLength={100} name="max_uses" label="حداکثر دفعات استفاده:" />
-                                    <Input formik={formik} maxLength={100} name="user_limit" label="محدودیت برای هر کاربر:" />
+                                    <Input formik={formik} maxLength={30} name="code" label="کد:" />
+                                    <Input formik={formik} maxLength={100000000000000000} name="min_order" label="حداقل سفارش:" />
+                                    <Input formik={formik} maxLength={100000000} onlyNum={true} name="max_uses" label="حداکثر دفعات استفاده:" />
+                                    <Input formik={formik} maxLength={100000000} onlyNum={true} name="user_limit" label="محدودیت برای هر کاربر:" />
                                     {!id &&
                                         <SelectOption
                                             formik={formik}

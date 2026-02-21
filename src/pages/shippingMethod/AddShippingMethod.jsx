@@ -172,8 +172,8 @@ const AddShippingMethod = ({Id,list_shipping_method,open_close,reload,open_slide
                                 <div className="w-full grid md:grid-cols-2 grid-cols-1 items-center justify-center gap-3">
                                     <Input formik={formik} maxLength={25} name="title" label="نام روش ارسال" />
                                     <Input formik={formik} maxLength={50} name="description" label="توضیحات" />
-                                    <Input formik={formik} maxLength={10} name="max_weight" onlyNum={true} label="حداکثر وزن" />
                                     <Input formik={formik} maxLength={10} name="min_weight" onlyNum={true} label="حداقل وزن" />
+                                    <Input formik={formik} maxLength={10} name="max_weight" onlyNum={true} label="حداکثر وزن" />
                                     <SelectOption formik={formik} options={optionsMethod} formikAddress={formik.values.cod} name="cod" onlyNum={true} disabled={true} label="نوع پرداخت" />
                                     <InputRadioButton
                                         formik={formik}

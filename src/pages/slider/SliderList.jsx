@@ -137,7 +137,7 @@ const SliderList = () => {
             </div>
 
             {/* Content */}
-            <div className="flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 inset-shadow-sm inset-shadow-cyan-400 p-5">
+            <div className="flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 p-5">
                 <div className="flex items-center justify-between">
                     <button
                         onClick={() => setOpenId("")}
@@ -257,9 +257,9 @@ const SliderList = () => {
                     showModal={showModal}
                 />
             )}
-            {/*<div className='flex justify-end p-2 rounded-3xl mt-3'>*/}
-            {/*    <PagingGetUrl total_page={list_slider?.page} searchParams={searchParams}/>*/}
-            {/*</div>*/}
+            <div className='flex justify-end p-2 rounded-3xl mt-3'>
+                <PagingGetUrl total_page={list_slider?.page} />
+            </div>
         </div>
 
     );

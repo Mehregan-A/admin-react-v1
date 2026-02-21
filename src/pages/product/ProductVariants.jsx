@@ -246,14 +246,14 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                                 </label>
                                             ) : (
                                                 <>
-                                                    <label className="block text-xs mb-1 text-gray-600 dark:text-gray-200">
+                                                    <label className="block text-xs mb-1 text-gray-500 dark:text-gray-200">
                                                         مقدار ویژگی
                                                     </label>
                                                     <input
                                                         type="text"
                                                         value={value}
                                                         onChange={(e) => setValue(e.target.value)}
-                                                        className="w-full h-10 px-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                                                        className="w-full h-10 px-3 rounded-lg border border-gray-300  bg-white dark:bg-gray-800  text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
                                                     />
                                                 </>
                                             )}

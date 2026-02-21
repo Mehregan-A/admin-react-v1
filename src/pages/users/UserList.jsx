@@ -130,40 +130,6 @@ const UserList = () => {
             name: " وضعیت",
             selector: row => row.status === "active" ? <div className={`text-green-500`}>فعال</div> :  <div className={`text-red-500`}>غیرفعال</div>
         },
-        {
-            name: "عملیات",
-            style: {
-                width: '100px'
-            },
-            selector: row => (
-                <div className="flex lg:justify-center gap-0.5">
-                    <ButtonWithTooltip
-                        onClick={() => setOpenId(row.id, "edit")}
-                        icon={<IoCreateOutline className="w-5 h-5" />}
-                        text="ویرایش دسته"
-                        hoverColor="hover:text-green-600 dark:hover:text-emerald-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest(row.status, row.id)}
-                        icon={<IoBanOutline className="w-5 h-5" />}
-                        text={`${row.status === "active"?"غیرفعال":"فعال"}`}
-                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest("delete", row.id)}
-                        icon={<IoTrashOutline className="w-5 h-5" />}
-                        text="حذف"
-                        hoverColor="hover:text-red-600 dark:hover:text-red-400"
-                    />
-                    <ButtonWithTooltip
-                        onClick={() => setOpenIdAtt(row.id, "att")}
-                        icon={<PiChartPieSlice className="w-5.5 h-5.5" />}
-                        text="ویژگی"
-                        hoverColor="hover:text-cyan-400 dark:hover:text-cyan-300"
-                    />
-                </div>
-            )
-        }
     ];
     useEffect(() => {
         if (openModal) {
@@ -177,8 +143,6 @@ const UserList = () => {
                 <HeaderBox text1={"داشبورد"} text2={false}  text3={"کاربران"}/>
             </div>
             <DataTable
-                nameButton={"افزودن کاربر"}
-                open={() => setOpenId("")}
                 user={1}
                 icon={''}
                 isLoading={isLoading_list}
@@ -188,17 +152,6 @@ const UserList = () => {
                 numberPage={list_user?.page}
                 columns={columns}
             />
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddCategory*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_category={list_category.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

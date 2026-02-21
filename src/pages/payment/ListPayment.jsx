@@ -155,22 +155,6 @@ const ListPayment = () => {
                 }
             }
         },
-        {
-            name: "عملیات",
-            style: {
-                width: '100px'
-            },
-            selector: row => (
-                <div className="flex lg:justify-center gap-0.5">
-                    <ButtonWithTooltip
-                        onClick={() => handleActionRequest(row.status, row.id)}
-                        icon={<IoBanOutline className="w-5 h-5" />}
-                        text={`${row.status === "active"?"غیرفعال":"فعال"}`}
-                        hoverColor="hover:text-yellow-600 dark:hover:text-yellow-400"
-                    />
-                </div>
-            )
-        }
     ];
     useEffect(() => {
         if (openModal) {

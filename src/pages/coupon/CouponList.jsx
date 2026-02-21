@@ -22,6 +22,7 @@ import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import {HiOutlineTicket} from "react-icons/hi";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 import PerPageSelector from "../../components/RowSelector.jsx";
+import PagingGetUrl from "../../components/PagingGetUrl.jsx";
 
 const CouponList = () => {
 
@@ -255,6 +256,9 @@ const CouponList = () => {
                     showModal={showModal}
                 />
             )}
+            <div className='flex justify-end p-2 rounded-3xl mt-3'>
+                <PagingGetUrl total_page={list_coupon?.page} />
+            </div>
         </>
     );
 };

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
+import Media from "../../components/inputs/media/Media.jsx";
 
 
 const AddAdmin = ({id,list_admin,open_close,reload,open_slider}) => {
@@ -226,7 +227,13 @@ const AddAdmin = ({id,list_admin,open_close,reload,open_slider}) => {
                             </div>
 
                             <div className="w-full md:w-[200px] flex flex-col justify-between gap-4 md:mt-2.5 md:gap-7">
-                                <InputImageUpload formik={formik} formikAddress={formik.values.image} name="image" label="تصویر" />
+                                <Media
+                                    single={true}
+                                    label="تصویر"
+                                    desc="تصویر"
+                                    name="image"
+                                    formik={formik}
+                                    formikAddress={formik.values.image}/>
 
                                 <div className="flex items-center justify-center">
                                     <InputCheckbox

@@ -3,14 +3,9 @@ import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import {HiMiniXMark} from "react-icons/hi2";
-import {HiOutlineLockClosed, HiOutlinePencilAlt} from "react-icons/hi";
 import {Toast} from "../../components/toast/Toast.jsx";
 import {adminClearResult, putAsyncPassword} from "../../feature/redux/AdminSlice.jsx";
 import Input from "../../components/inputs/Input.jsx";
-import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {gender, role} from "../../assets/data/Data.js";
-import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
-import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import {PiLockKeyOpenLight} from "react-icons/pi";
 
 

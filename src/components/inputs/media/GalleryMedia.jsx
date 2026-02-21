@@ -187,9 +187,9 @@ const GalleryMedia = ({setOpenGallery,refUpload,single,operator,selectedItem,set
                                     }} className=" group  container object-center justify-center overflow-y-auto p-1 bg-white dark:bg-gray-700 drop-shadow-lg drop-shadow-gray-300 dark:drop-shadow-cyan-200 dark:hover:drop-shadow-cyan-300 hover:drop-shadow-gray-500 transition-all duration-350 rounded-2xl cursor-pointer relative">
                                         <img className="object-center container object-cover rounded-2xl" src={Config.apiImage + value.url} alt=""/>
 
-                                        {selectedItem && selectedItem?.length>0 && selectedItem?.find(item => item.id === parseInt(value.id)) && (
-                                            <FiCheckCircle size={30} className="absolute left-1/2 top-1/2 transition -translate-x-1/2 -translate-y-1/2 text-cyan-400 bg-white/40 rounded-full "/>
-                                        )}
+                                        {/*{selectedItem && selectedItem?.length>0 && selectedItem?.find(item => item.id === parseInt(value.id)) && (*/}
+                                        {/*    <FiCheckCircle size={30} className="absolute left-1/2 top-1/2 transition -translate-x-1/2 -translate-y-1/2 text-cyan-400 bg-white/40 rounded-full "/>*/}
+                                        {/*)}*/}
                                         <div
                                             onClick={() => {
                                                 showAlert(value.id)
