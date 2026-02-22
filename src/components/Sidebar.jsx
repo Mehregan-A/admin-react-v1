@@ -151,7 +151,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     >
                                         <div className={`${
                                                 subId === item.id
-                                                    ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
+                                                    ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
                                                     : "bg-gray-100 dark:bg-gray-600/80"
                                             } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}>
                                             <NavLink
@@ -201,7 +201,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     >
                                         <div className={`${
                                             subId === item.id
-                                                ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
+                                                ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
                                                 : "bg-gray-100 dark:bg-gray-600/80 "
                                         } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:drop-shadow-lg `}>
                                             <NavLink
@@ -319,7 +319,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                     >
                                         <div className={`${
                                             subId === item.id
-                                                ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
+                                                ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
                                                 : "bg-gray-100 dark:bg-gray-600/80"
                                         } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}>
                                             <NavLink

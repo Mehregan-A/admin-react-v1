@@ -3,7 +3,7 @@ import { FaSearch, FaUserCircle} from "react-icons/fa";
 import {FaAlignRight} from "react-icons/fa";
 import {useDispatch, useSelector} from 'react-redux';
 import {redirect, useNavigate} from "react-router";
-import {getAsyncLogout, loginClearResult} from "../feature/redux/LoginSlice.jsx";
+import {getAsyncLogout} from "../feature/redux/LoginSlice.jsx";
 import {Toast} from "./toast/Toast.jsx";
 import {FaRightFromBracket} from "react-icons/fa6";
 import {IoLogOutOutline, IoReorderThreeOutline} from "react-icons/io5";
@@ -14,7 +14,6 @@ import {getAsyncProfile} from "../feature/redux/ProfileSlice.jsx";
 import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 
 const Navbar = ({open_close}) => {
-    const {logout} = useSelector(state => state.login);
     const {theme}=useSelector(state => state.theme)
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -24,21 +23,6 @@ const Navbar = ({open_close}) => {
 
 // List article selector
     const { profile } = useSelector(state => state.profile);
-    const navigation = useNavigate();
-
-
-    useEffect(() => {
-        if (logout && logout.status) {
-            if (logout.status === 200) {
-                Toast.success(`${logout.data.message}`);
-                dispatch(loginClearResult());
-                setTimeout(() => navigation("/login"), 2000);
-            } else {
-                Toast.error(`${logout.data.message}`);
-                dispatch(loginClearResult());
-            }
-        }
-    }, [logout]);
     useEffect(() => {
         if (theme) {
             document.documentElement.classList.add("dark");

@@ -20,6 +20,7 @@ import {persianDateNT} from "../../components/utility/persianDateNT.js";
 import {getAsyncListCouponRedemption} from "../../feature/redux/CouponRedemptionSlice.jsx";
 import {HiOutlineTicket} from "react-icons/hi";
 import {getAsyncInfoCoupon} from "../../feature/redux/CouponSlice.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
 
 const ListCouponRedemptions = () => {
@@ -29,8 +30,6 @@ const ListCouponRedemptions = () => {
     const location = useLocation();
     const openModal = location.state?.openModal;
     // AcceptMessage.jsx module
-    const [showModal, setShowModal] = useState(false);
-    const [modalData, setModalData] = useState({ actionType: "", id: "", text: "" });
 // Redux
     const dispatch = useDispatch();
     const { page,row } = useParams();
@@ -127,11 +126,7 @@ const ListCouponRedemptions = () => {
     return (
         <div className={`flex flex-col gap-2`}>
             <div className='flex justify-between items-center p-2'>
-                <div className='flex justify-start gap-2 p-5'>
-                    <div className="text-gray-400 dark:text-gray-300">  تعاریف   |  </div>
-                    <div className="text-gray-400 dark:text-gray-300">  کوپن   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">تعداد استفاده از کوپن</div>
-                </div>
+                <HeaderBox text1={"تعاریف"} text2={"کوپن"}  text3={"تعداد استفاده از کوپن"}/>
             </div>
             <div className="flex w-full gap-3">
                 <div className="shadow-lg w-full dark:shadow-gray-600 shadow-gray-300 rounded-3xl">
@@ -145,11 +140,11 @@ const ListCouponRedemptions = () => {
                         columns={columns}
                     />
                 </div>
-                <div className="relative xl:w-xl max-h-screen bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg inset-shadow-sm inset-shadow-cyan-400 dark:shadow-gray-600 shadow-gray-300">
-                    <div className="absolute items-center flex flex-col justify-center bg-gray-50  dark:bg-gray-800 dark:shadow-cyan-200  w-36 right-0 -top-10 p-3 rounded-3xl shadow-md shadow-gray-300">
-                        <span className="text-gray-700 dark:text-gray-100 font-semibold">مشخصات کوپن</span>
+                <div className="relative xl:w-xl max-h-screen bg-gray-50 dark:bg-gray-700/50 rounded-3xl shadow-lg dark:shadow-gray-600 shadow-gray-300">
+                    <div className="absolute items-center flex flex-col justify-center bg-gray-50  dark:bg-gray-700 dark:shadow-cyan-200  w-28 right-0 -top-8 p-3 rounded-3xl shadow-md shadow-gray-300">
+                        <span className="text-gray-700 text-sm text-nowrap dark:text-gray-100 font-semibold">مشخصات کوپن</span>
                         <div className="text-cyan-400">
-                            <HiOutlineTicket size={40}/>
+                            <HiOutlineTicket size={30}/>
                         </div>
                     </div>
                     <div className="mt-10 grid grid-cols-1 items-center gap-8 p-5">

@@ -37,58 +37,22 @@ const FreeShippingList = () => {
         max_weight_for_free_shipping: ""
     }
     const validationSchema = yup.object({
-        // title: yup
-        //     .string()
-        //     .required('عنوان مقاله الزامی است')
-        //     .min(3, 'عنوان باید حداقل ۳ کاراکتر باشد')
-        //     .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // url: yup
-        //     .string()
-        //     .required('آدرس URL الزامی است')
-        //     .matches(/^[a-z0-9-]+$/, 'فقط حروف کوچک، عدد و خط تیره مجاز است')
-        //     .max(100, 'آدرس نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // abstract: yup
-        //     .string()
-        //     .required('چکیده مقاله الزامی است')
-        //     // .min(10, 'چکیده باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(500, 'چکیده نباید بیشتر از ۵۰۰ کاراکتر باشد'),
-        //
-        // body: yup
-        //     .string()
-        //     .required('متن مقاله الزامی است')
-        //     .min(50, 'مقاله حداقل ۵۰ کاراکتر داشته باشد'),
-        //
-        // // image: yup
-        // //     .mixed()
-        // //     .required('تصویر مقاله الزامی است'),
-        //
-        // category_id: yup
-        //     .string()
-        //     .required('انتخاب دسته الزامی است'),
-        //
-        // sub_category_id: yup
-        //     .string()
-        //     .required('انتخاب زیر دسته الزامی است'),
-        //
-        // read_time: yup
-        //     .number()
-        //     .typeError('زمان مطالعه باید عدد باشد')
-        //     .positive('عدد مثبت وارد کنید')
-        //     .integer('عدد صحیح وارد کنید')
-        //     .required('زمان مطالعه الزامی است'),
-        // seo_title: yup
-        //     .string()
-        //     .required('عنوان سئو الزامی است')
-        //     .min(3, 'عنوان سئو باید حداقل ۳ کاراکتر باشد')
-        //     .max(100, 'عنوان سئو نباید بیشتر از ۱۰۰ کاراکتر باشد'),
-        //
-        // seo_desc: yup
-        //     .string()
-        //     .required('توضیحات سئو الزامی است')
-        //     .min(10, 'توضیحات باید حداقل ۱۰ کاراکتر باشد')
-        //     .max(300, 'توضیحات نباید بیشتر از ۳۰۰ کاراکتر باشد'),
+        min_order_for_free_shipping: yup
+            .number()
+            .required('حداقل سفارش نمی تواند خالی باشد')
+            .min(3, 'حداقل ۳ کاراکتر'),
+        min_count_for_free_shipping: yup
+            .number()
+            .required('حداقل تعداد نمی تواند خالی باشد')
+            .min(3, 'حداقل ۳ کاراکتر'),
+        min_weight_for_free_shipping: yup
+            .number()
+            .required('حداقل وزن نمی تواند خالی باشد')
+            .min(3, 'حداقل ۳ کاراکتر'),
+        max_weight_for_free_shipping: yup
+            .number()
+            .required('حداکثر وزن نمی تواند خالی باشد')
+            .min(3, 'حداقل ۳ کاراکتر'),
     });
 
     const onSubmit = (values) => {
@@ -101,7 +65,6 @@ const FreeShippingList = () => {
         onSubmit,
         validateOnMount : true,
         enableReinitialize: true
-
     })
 
     useEffect(() => {
@@ -126,7 +89,7 @@ const FreeShippingList = () => {
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={false}  text3={"ارسال رایگان"}/>
                 </div>
-                <form className=" " onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-6">
                         <div className="flex w-full gap-2 ">
                             {isLoading_list_free ? (
