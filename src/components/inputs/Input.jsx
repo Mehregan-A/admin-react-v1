@@ -106,6 +106,7 @@ const Input = ({
                     {...propsTabIndex}
                     disabled={disabled}
                     dir={dir}
+                    onBlur={formik.handleBlur}
                     value={displayValue}
                     onChange={handleChange}
                     onKeyPress={onKeyPressHandler}
@@ -138,15 +139,11 @@ const Input = ({
                 )}
             </div>
 
-            {!(type === "search") &&
-                getIn(formik.errors, name) &&
-                getIn(formik.touched, name) && (
-                    <p
-                        className={`text-red-500 text-[9px] absolute top-full mt-1 left-0 ${error}`}
-                    >
-                        {getIn(formik.errors, name)}
-                    </p>
-                )}
+            {getIn(formik.errors, name) && getIn(formik.touched, name) && (
+                <p className={`absolute -bottom-5 text-rose-600  text-xs ${error}`}>
+                    {getIn(formik.errors, name)}
+                </p>
+            )}
         </div>
     );
 };

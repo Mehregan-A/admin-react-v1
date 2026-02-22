@@ -128,26 +128,15 @@ const ListCouponRedemptions = () => {
             <div className='flex justify-between items-center p-2'>
                 <HeaderBox text1={"تعاریف"} text2={"کوپن"}  text3={"تعداد استفاده از کوپن"}/>
             </div>
-            <div className="flex w-full gap-3">
-                <div className="shadow-lg w-full dark:shadow-gray-600 shadow-gray-300 rounded-3xl">
-                    <DataTable
-                        icon={'لیست استفاده از کوپن'}
-                        isLoading={isLoading_list}
-                        isError={isError_list}
-                        title=""
-                        data={list_coupon_redemption?.data}
-                        numberPage={list_coupon_redemption?.page}
-                        columns={columns}
-                    />
-                </div>
-                <div className="relative xl:w-xl max-h-screen bg-gray-50 dark:bg-gray-700/50 rounded-3xl shadow-lg dark:shadow-gray-600 shadow-gray-300">
-                    <div className="absolute items-center flex flex-col justify-center bg-gray-50  dark:bg-gray-700 dark:shadow-cyan-200  w-28 right-0 -top-8 p-3 rounded-3xl shadow-md shadow-gray-300">
+            <div className="flex md:flex-row flex-col w-full gap-4">
+                <div className="xl:w-xl  max-h-screen bg-gray-50 dark:bg-gray-700/50 rounded-3xl shadow-lg dark:shadow-gray-600 shadow-gray-300">
+                    <div className="items-center flex flex-col justify-center bg-gray-50  dark:bg-gray-700 dark:shadow-cyan-200  w-28 p-3 rounded-3xl shadow-md shadow-gray-300">
                         <span className="text-gray-700 text-sm text-nowrap dark:text-gray-100 font-semibold">مشخصات کوپن</span>
                         <div className="text-cyan-400">
                             <HiOutlineTicket size={30}/>
                         </div>
                     </div>
-                    <div className="mt-10 grid grid-cols-1 items-center gap-8 p-5">
+                    <div className="grid grid-cols-1 items-center gap-8 p-5">
                         <div className="flex gap-1 items-center dark:text-gray-100 text-gray-700">
                             <span>کد:</span>
                             <span>{info_coupon?.code}</span>
@@ -189,6 +178,17 @@ const ListCouponRedemptions = () => {
                             <span>{info_coupon?.status==="active"?"فعال":"غیرفعال"}</span>
                         </div>
                     </div>
+                </div>
+                <div className="shadow-lg w-full dark:shadow-gray-600 shadow-gray-300 rounded-3xl">
+                    <DataTable
+                        icon={'لیست استفاده از کوپن'}
+                        isLoading={isLoading_list}
+                        isError={isError_list}
+                        title=""
+                        data={list_coupon_redemption?.data}
+                        numberPage={list_coupon_redemption?.page}
+                        columns={columns}
+                    />
                 </div>
             </div>
         </div>

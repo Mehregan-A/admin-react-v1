@@ -48,7 +48,7 @@ const Layout = () => {
                         <div className="w-full relative">
                             <div className="flex">
                                 <Sidebar open_slider={closed.open} open_close={toggleSidebar} />
-                                <div  className="flex w-full flex-col container mx-auto">
+                                <div  className="flex w-full flex-col mx-auto">
                                     <div>
                                         <Navbar open_close={toggleSidebar} />
                                     </div>
