@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
+import DateObject from "react-date-object";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
-import {HiMiniXMark} from "react-icons/hi2";
-import {HiOutlinePencilAlt} from "react-icons/hi";
 import {Toast} from "../../components/toast/Toast.jsx";
 import {
     getAsyncSelectCategory,
@@ -18,13 +19,13 @@ import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
 import SelectOptionMultiSelect from "../../components/inputs/SelectOptionMultiSelect.jsx";
 import {
-    couponClearResult,
+    couponClearResult, couponClearResultInfo,
     getAsyncInfoCoupon,
     postAsyncAddCoupon,
     putAsyncEditCoupon
 } from "../../feature/redux/CouponSlice.jsx";
-import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
+import InputLimitCount from "../../components/inputs/InputLimitCount.jsx";
 
 
 const CouponAdd = () => {
@@ -33,20 +34,21 @@ const CouponAdd = () => {
     const {list_category_select} = useSelector(state => state.category);
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
+        dispatch(couponClearResultInfo())
         if (id){
             dispatch(getAsyncInfoCoupon({Id:id}))
         }
-    },[])
+    },[id])
 
     const {result,isLoading,info_coupon} = useSelector(state => state.coupon);
     // redux
     const initialValues = {
-        code: "",
+        label: "",
         type: "",
         value: "",
         max_uses: "",
-        user_limit: "",
-        first_order_only: "",
+        user_limit: 10,
+        first_order_only: 10,
         min_order: "",
         start_at: "",
         expires_at: "",
@@ -102,7 +104,7 @@ const CouponAdd = () => {
                                     <Input formik={formik} maxLength={30} name="code" label="کد:" />
                                     <Input formik={formik} maxLength={100000000000000000} name="min_order" label="حداقل سفارش:" />
                                     <Input formik={formik} maxLength={100000000} onlyNum={true} name="max_uses" label="حداکثر دفعات استفاده:" />
-                                    <Input formik={formik} maxLength={100000000} onlyNum={true} name="user_limit" label="محدودیت برای هر کاربر:" />
+                                    <InputLimitCount formik={formik} name={`user_limit`} onChange={e => formik.setFieldValue(`user_limit`, e.target.value)} label="محدودیت برای هر کاربر:" />
                                     {!id &&
                                         <SelectOption
                                             formik={formik}
@@ -125,13 +127,7 @@ const CouponAdd = () => {
                                         :
                                         <Input formik={formik} maxLength={100000000000} name="value" isAmount label="مبلغ تخفیف:" />
                                     }
-                                    <Input formik={formik} maxLength={25} name="first_order_only" label="فقط برای اولین سفارش:" />
-
-                                    {/*{id && formik.values.type==="percent"?*/}
-                                    {/*    <Input formik={formik} maxLength={25} name="value" label="درصد تخفیف:" />*/}
-                                    {/*    :*/}
-                                    {/*    <Input formik={formik} maxLength={25} name="value" label="مبلغ تخفیف:" />*/}
-                                    {/*}*/}
+                                    <InputLimitCount formik={formik} name={`first_order_only`} onChange={e => formik.setFieldValue(`first_order_only`, e.target.value)} label="فقط برای اولین سفارش:" />
                                     <SelectOptionMultiSelect
                                         formik={formik}
                                         formikAddress={formik.values.category_id}
@@ -139,15 +135,16 @@ const CouponAdd = () => {
                                         name="category_id"
                                         label="انتخاب دسته"
                                     />
-                                    {/*<SelectOption*/}
-                                    {/*    formik={formik}*/}
-                                    {/*    formikAddress={formik.values.brand_id}*/}
-                                    {/*    options={list_brand_select}*/}
-                                    {/*    name="brand_id"*/}
-                                    {/*    label="انتخاب برند"*/}
-                                    {/*/>*/}
-                                    <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.publish_at} />
-                                    <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.publish_at} />
+                                    <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.start_at} />
+                                    <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.expires_at} minDate={
+                                        formik.values.start_at
+                                            ? new DateObject({
+                                                date: (formik.values.start_at + 3600) * 1000,
+                                                calendar: persian,
+                                                locale: persian_fa,
+                                            })
+                                            : null
+                                    } />
 
                                     <InputCheckbox
                                         formik={formik}

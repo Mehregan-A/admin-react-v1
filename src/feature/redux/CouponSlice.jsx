@@ -71,6 +71,9 @@ const CouponSlice = createSlice({
     name: 'coupon',
     initialState,
     reducers : {
+        couponClearResultInfo: (state) => {
+            state.info_coupon = false
+        },
         couponClearResult : (state) => {
             state.result = false
         },
@@ -174,6 +177,6 @@ const CouponSlice = createSlice({
         })
     }
 })
-export const { couponClearResult,couponClearResultDelete} = CouponSlice.actions
+export const { couponClearResultInfo,couponClearResult,couponClearResultDelete} = CouponSlice.actions
 
 export default CouponSlice.reducer

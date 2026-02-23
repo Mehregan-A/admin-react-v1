@@ -56,7 +56,7 @@ const AddAttribute = ({Id,list_attribute,open_close,reload,open_slider}) => {
     const validationSchema = yup.object({
         title: yup
             .string()
-            .required('عنوان مقاله الزامی است')
+            .required('عنوان ویژگی الزامی است')
             .min(2, 'عنوان باید حداقل 2 کاراکتر باشد')
             .max(100, 'عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد'),
 

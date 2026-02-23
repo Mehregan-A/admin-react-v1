@@ -215,20 +215,22 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                             </div>
 
                             {/* search button */}
-                            <button
-                                disabled={!formik.values.search || isLoading_search}
-                                type="submit"
-                                className=" w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors"
-                            >
-                                {isLoading_search ? (
-                                    <>
+                            <div className="mt-0.5">
+                                <button
+                                    disabled={!formik.values.search || isLoading_search}
+                                    type="submit"
+                                    className="w-32 flex justify-center items-center gap-x-1 mt-1  px-2 md:py-2.5 py-2 rounded-lg md:rounded-lg disabled:bg-gray-500 bg-cyan-300 hover:bg-cyan-400 enabled:cursor-pointer text-gray-200 transition-colors"
+                                >
+                                    {isLoading_search ? (
+                                        <>
+                                            <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
+                                            <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                        </>
+                                    ) : (
                                         <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
-                                        <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                    </>
-                                ) : (
-                                    <span className="text-xs md:text-sm text-gray-50">جست و جو</span>
-                                )}
-                            </button>
+                                    )}
+                                </button>
+                            </div>
                         </form>
 
                         <div className="flex flex-col inset-shadow-sm dark:bg-gray-700/80 inset-shadow-cyan-300 bg-cyan-50 rounded-2xl h-60 md:flex-row md:gap-4 gap-6 p-4 overflow-auto">
@@ -271,11 +273,12 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                             }}
                             className="w-full flex items-center justify-end gap-2"
                         >
-                            <div className="flex flex-col w-full gap-3">
+                            <div className="flex flex-col md:flex-row w-full gap-3">
                                 <Input
                                     formik={formik}
                                     name="title"
                                     maxLength={40}
+                                    minLength={2}
                                     label="افزودن ویژگی جدید"
                                 />
                                 <Input
@@ -285,20 +288,22 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                     label="اطلاعات بیشتر"
                                 />
                             </div>
-                            <button
-                                disabled={!formik.values.title || isLoading}
-                                type="submit"
-                                className="flex mt-4 justify-center items-center gap-x-2 px-5 py-2.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                        <span>افزودن...</span>
-                                    </>
-                                ) : (
-                                    <span>افزودن</span>
-                                )}
-                            </button>
+                            <div className="mt-4.5">
+                                <button
+                                    disabled={!formik.values.title || isLoading}
+                                    type="submit"
+                                    className="flex justify-center items-center gap-x-2 px-5 py-2.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                            <span>افزودن...</span>
+                                        </>
+                                    ) : (
+                                        <span>افزودن</span>
+                                    )}
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>

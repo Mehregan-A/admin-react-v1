@@ -161,7 +161,7 @@ const VariantAttributeValue = ({ Id,open_close, open_slider }) => {
                                 <Reject />
                             ) : list_variant_attribute_val.length > 0 ? (
                                 <div className="flex flex-wrap gap-2">
-                                    {list_variant_attribute_val.map((att) => (
+                                    {list_variant_attribute_val?.map((att) => (
                                         <div
                                             key={att.value}
                                             className="flex items-center gap-2 dark:bg-gray-800 dark:text-gray-100 bg-gray-50 drop-shadow-xl dark:drop-shadow-none p-2 rounded-xl h-10"
@@ -186,48 +186,55 @@ const VariantAttributeValue = ({ Id,open_close, open_slider }) => {
 
                         <form onSubmit={formik.handleSubmit} className="w-full flex items-center justify-end gap-2"
                         >
-                            <div className="flex flex-col w-full gap-3">
+                            <div className="flex flex-col md:flex-row w-full gap-3">
                                 <Input
                                     formik={formik}
                                     maxLength={50}
                                     name="label"
                                     label="افزودن ویژگی جدید"
                                 />
-                                <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
-                                    <input
-                                        type="color"
-                                        className="absolute w-6 h-6 opacity-0 cursor-pointer"
-                                        onChange={(e) => setColor(e.target.value.slice(1))}
-                                    />
-                                    <span
-                                        className="w-6 h-6 rounded-md border border-gray-300"
-                                        style={{ backgroundColor: Color ? `#${Color}` : "#fff" }}
-                                    />
-                                    <span className="text-sm text-gray-600 dark:text-gray-100">
+                                <div className="w-full">
+                                    {Id=="1" ?
+                                        <label className="bg-gray-100 dark:bg-gray-800 w-full inline-flex items-center mt-4.5 gap-3 px-4 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition relative">
+                                            <input
+                                                type="color"
+                                                className="absolute w-6 h-6 opacity-0 cursor-pointer"
+                                                onChange={(e) => setColor(e.target.value.slice(1))}
+                                            />
+                                            <span
+                                                className="w-6 h-6 rounded-md border border-gray-300"
+                                                style={{ backgroundColor: Color ? `#${Color}` : "#fff" }}
+                                            />
+                                            <span className="text-sm text-gray-600 dark:text-gray-100">
                                                     انتخاب کنید
                                                 </span>
-                                </label>
-                                <Input
-                                    formik={formik}
-                                    name="value"
-                                    label="شرح ویژگی"
-                                    maxLength={50}
-                                />
+                                        </label>
+                                        :
+                                        <Input
+                                            formik={formik}
+                                            name="value"
+                                            label="شرح ویژگی"
+                                            maxLength={50}
+                                        />
+                                    }
+                                </div>
                             </div>
-                            <button
-                                disabled={!formik.values.label || isLoading}
-                                type="submit"
-                                className="flex mt-4 justify-center items-center gap-x-2 px-5 py-2.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                                        <span>افزودن...</span>
-                                    </>
-                                ) : (
-                                    <span>افزودن</span>
-                                )}
-                            </button>
+                            <div className="mt-4.5">
+                                <button
+                                    disabled={!formik.values.label || isLoading}
+                                    type="submit"
+                                    className="flex mt-4 justify-center items-center gap-x-2 px-5 py-2.5 rounded-lg enabled:cursor-pointer disabled:bg-gray-500 bg-cyan-400 enabled:hover:bg-cyan-500 text-gray-50 text-sm transition-colors"
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                            <span>افزودن...</span>
+                                        </>
+                                    ) : (
+                                        <span>افزودن</span>
+                                    )}
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
