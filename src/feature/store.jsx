@@ -27,6 +27,7 @@ import AmazingProductSlice from "./redux/AmazingProductSlice.jsx";
 import RulesSlice from "./redux/RulesSlice.jsx";
 import CouponRedemptionSlice from "./redux/CouponRedemptionSlice.jsx";
 import GatewaySlice from "./redux/GatewaySlice.jsx";
+import SocialNetworkSlice from "./redux/SocialNetworkSlice.jsx";
 
 
 
@@ -60,6 +61,7 @@ export const store = configureStore({
         rules:RulesSlice,
         couponRedemption:CouponRedemptionSlice,
         gateway:GatewaySlice,
+        social:SocialNetworkSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })
