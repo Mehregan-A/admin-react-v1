@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Toast} from "../../components/toast/Toast.jsx";
 import rubika from "../../assets/image/social/rubika.png"
 import bale from "../../assets/image/social/bale.svg"
+import eitaa from "../../assets/image/social/eitaa.svg"
+import aparat from "../../assets/image/social/aparat.svg"
 import {useLocation} from "react-router-dom";
 import 'nilfam-editor/nilfam-editor.css';
 import Loading from "../../components/loading/Loading.jsx";
@@ -12,14 +14,15 @@ import Reject from "../../components/loading/Reject.jsx";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import {getAsyncListSocial, postAsyncEditSocial, socialClearResult} from "../../feature/redux/SocialNetworkSlice.jsx";
-import {FaTelegram} from "react-icons/fa";
+import {FaFacebookSquare, FaInstagram, FaLinkedin, FaTelegram, FaYoutube} from "react-icons/fa";
+import {FaSquareXTwitter} from "react-icons/fa6";
 
 
 const SocialNetworkList = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     useEffect(() => {
-        if (location.pathname === "/social/list") {
+        if (location.pathname === "/social-network") {
             dispatch(getAsyncListSocial())
         }
     },[location.pathname])
@@ -137,18 +140,54 @@ const SocialNetworkList = () => {
                             <form className="flex flex-col gap-5 mt-7" onSubmit={formik.handleSubmit}>
                                 <div className="flex flex-col gap-6">
                                     <div className="flex flex-col w-full items-center gap-2">
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl p-4">
+                                        <div className="grid grid-cols-2 w-full gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl p-4">
                                             <div className="flex items-center justify-center gap-2">
                                                 <Input formik={formik} name="rubika" label="آدرس روبیکا" />
                                                 <img className="w-10 h-10 mt-4.5" src={rubika}/>
                                             </div>
-                                            <Input formik={formik} name="instagram" label="آدرس اینستاگرام" />
-                                            <Input formik={formik} name="twitter" label="آدرس ایکس" />
-                                            <Input formik={formik} name="youtube" label="آدرس یوتیوب" />
-                                            <Input formik={formik} name="linkedin" label="آدرس لینکدین" />
-                                            <Input formik={formik} name="aparat" label="آدرس آپارات" />
-                                            <Input formik={formik} name="facebook" label="آدرس فیسبوک" />
-                                            <Input formik={formik} name="eitaa" label="آدرس ایتا" />
+
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="instagram" label="آدرس اینستاگرام" />
+                                                <div className="text-pink-600 mt-4.5">
+                                                    <FaInstagram size={35} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="twitter" label="آدرس ایکس" />
+                                                <div className="dark:text-white mt-4.5">
+                                                    <FaSquareXTwitter size={35} />
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="youtube" label="آدرس یوتیوب" />
+                                                <div className="text-red-500 mt-4.5">
+                                                    <FaYoutube size={35} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="linkedin" label="آدرس لینکدین" />
+                                                <div className="text-sky-500 mt-4.5">
+                                                    <FaLinkedin size={35} />
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="aparat" label="آدرس آپارات" />
+                                                <img className="w-10 h-10 mt-4.5" src={`${aparat}`}/>
+                                            </div>
+
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="facebook" label="آدرس فیسبوک" />
+                                                <div className="text-sky-500 mt-4.5">
+                                                    <FaFacebookSquare size={35} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="eitaa" label="آدرس ایتا" />
+                                                <img className="w-8.5 h-8.5 mt-4.5" src={eitaa}/>
+                                            </div>
                                             <div className="flex items-center justify-center gap-2">
                                                 <Input formik={formik} name="bale" label="آدرس بله" />
                                                 <img className="w-8.5 h-8.5 mt-4.5" src={bale}/>
