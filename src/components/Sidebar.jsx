@@ -134,7 +134,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         <div className={`${
                                                 subId === item.id
                                                     ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
-                                                    : "bg-gray-100 dark:bg-gray-600/80"
+                                                    : "bg-white dark:bg-gray-600/80"
                                             } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}>
                                             <NavLink
                                                 to={item.link}
@@ -175,39 +175,43 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         to={item.link}
                                         end
                                         onClick={handleItemClick}
-                                        className={`relative group cursor-pointer p-3.5 flex flex-col  rounded-lg transition-all duration-500 ease-in-out ${
+                                    >
+                                        <div className={`relative group cursor-pointer p-3.5 flex flex-col  rounded-lg transition-all duration-500 ease-in-out ${
                                             location.pathname === item.link
                                                 ? "bg-cyan-50/20 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 scale-105"
                                                 : "bg-gray-100/80 dark:bg-gray-800"
-                                        } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
-                                    >
-                                        <div className={`${
-                                            subId === item.id
-                                                ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
-                                                : "bg-gray-100 dark:bg-gray-600/80 "
-                                        } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:drop-shadow-lg `}>
-                                            <NavLink
-                                                to={item.link}
-                                                end
-                                                onClick={handleItemClick}
-                                                className={() =>
-                                                    location.pathname === item.link ||
-                                                    item.sub.some((sub) => sub.link === location.pathname)
-                                                        ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 shadow-lg flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
-                                                        : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
-                                                }
-                                            >
-                                                <FaIcons
-                                                    icon={
+                                        } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}>
+                                            <div className={`${
+                                                subId === item.id
+                                                    ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
+                                                    : "bg-white dark:bg-gray-600/80 "
+                                            } absolute -right-2 -top-0.5 rounded-full transition-all duration-500 group-hover:drop-shadow-lg`}>
+                                                <NavLink
+                                                    to={item.link}
+                                                    end
+                                                    onClick={handleItemClick}
+                                                    className={() =>
                                                         location.pathname === item.link ||
                                                         item.sub.some((sub) => sub.link === location.pathname)
-                                                            ? item.icon_fill
-                                                            : item.icon_outline
+                                                            ? "w-13 h-13 text-2xl bg-gray-50 dark:bg-gray-700 shadow-lg flex items-center justify-center text-cyan-600/70 dark:text-white rounded-full"
+                                                            : "w-13 h-13 bg-gray-50 dark:bg-gray-700 text-2xl rounded-full text-cyan-600/70 dark:text-white flex items-center justify-center"
                                                     }
-                                                />
-                                            </NavLink>
+                                                >
+                                                    <div>
+                                                        <FaIcons
+                                                            icon={
+                                                                location.pathname === item.link ||
+                                                                item.sub.some((sub) => sub.link === location.pathname)
+                                                                    ? item.icon_fill
+                                                                    : item.icon_outline
+                                                            }
+                                                        />
+                                                    </div>
+                                                </NavLink>
+                                            </div>
+                                            <div className="dark:text-cyan-100 text-cyan-800 mr-10">{item.label}</div>
                                         </div>
-                                        <div className="dark:text-cyan-100 text-cyan-800 mr-10">{item.label}</div>
+
                                     </NavLink>
                                 )
                             )}
@@ -251,7 +255,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                             className={`${
                                                 subId === item.id
                                                     ? "bg-gray-50 dark:bg-gray-300/40 drop-shadow-lg"
-                                                    : "bg-gray-100 dark:bg-gray-600/80"
+                                                    : "bg-white dark:bg-gray-600/80"
                                             } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}
                                         >
                                             <NavLink
@@ -292,17 +296,16 @@ const Sidebar = ({ open_close, open_slider }) => {
                                         key={item.id}
                                         to={item.link}
                                         end
-                                        onClick={handleItemClick}
-                                        className={`relative group cursor-pointer flex items-center rounded-lg p-3.5 transition-all duration-500 ease-in-out ${
-                                            location.pathname === item.link
-                                                ? "bg-gray-50 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 transform scale-105"
-                                                : "bg-gray-100/80 dark:bg-gray-800"
-                                        } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}
                                     >
+                                        <div className={`relative group cursor-pointer p-3.5 flex flex-col  rounded-lg transition-all duration-500 ease-in-out ${
+                                            location.pathname === item.link
+                                                ? "bg-cyan-50/20 dark:bg-cyan-900/30 shadow-lg shadow-cyan-300/50 scale-105"
+                                                : "bg-gray-100/80 dark:bg-gray-800"
+                                        } hover:bg-cyan-50/20 dark:hover:bg-cyan-900/30 hover:shadow-lg hover:shadow-cyan-300/50 transform hover:scale-105`}>
                                         <div className={`${
                                             subId === item.id
                                                 ? "bg-gray-50 dark:bg-gray-600/80 drop-shadow-lg"
-                                                : "bg-gray-100 dark:bg-gray-600/80"
+                                                : "bg-white dark:bg-gray-600/80"
                                         } absolute -right-2 -top-0.5 rounded-full transition-all duration-500  group-hover:drop-shadow-lg `}>
                                             <NavLink
                                                 to={item.link}
@@ -324,6 +327,7 @@ const Sidebar = ({ open_close, open_slider }) => {
                                             </NavLink>
                                         </div>
                                         <div className="dark:text-cyan-100 text-cyan-800 mr-10">{item.label}</div>
+                                        </div>
                                     </NavLink>
                                 )
                             )}
