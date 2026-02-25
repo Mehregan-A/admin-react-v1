@@ -123,7 +123,7 @@ const Listgateway = () => {
 
     return (
         <>
-            <div className={`flex flex-col gap-4`}>
+            <div className={`flex flex-col gap-2`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={"پرداخت"}  text3={`درگاه پرداخت`}/>
@@ -134,10 +134,10 @@ const Listgateway = () => {
                         :isError_list
                             ?<Reject />
                             :
-                            <form className="flex flex-col gap-5 mt-7" onSubmit={formik.handleSubmit}>
+                            <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
                                 <div className="flex flex-col gap-6">
                                     <div className="flex flex-col w-full items-center gap-2">
-                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl p-4">
+                                        <div className="flex w-full flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-3xl p-4">
                                             <InputActivate formik={formik} name="IS_BANK_GATEWAY_ACTIVE" label="فعال سازی درگاه پرداخت" options={options} formikAddress={formik.values.IS_BANK_GATEWAY_ACTIVE} />
                                             <InputActivate formik={formik} name="DEFAULT_GATEWAY" label="درگاه پیش فرض" options={gateway} formikAddress={formik.values.DEFAULT_GATEWAY} />
                                         </div>

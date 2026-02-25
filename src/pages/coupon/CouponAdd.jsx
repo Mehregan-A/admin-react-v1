@@ -92,15 +92,15 @@ const CouponAdd = () => {
 
     return (
         <>
-            <div className={`flex flex-col gap-4`}>
+            <div className={`flex flex-col gap-2`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={"کوپن"}  text3={`${id?"ویرایش کوپن":"افرودن کوپن"}`}/>
                 </div>
-                <form className="mt-7" onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                         <div className="flex flex-col gap-6">
                             <div className="flex w-full gap-2 ">
-                                <div className="grid grid-cols-2 w-full  gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-xl  p-4">
+                                <div className="grid grid-cols-2 w-full  gap-4 bg-gray-50 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-3xl  p-4">
                                     <Input formik={formik} maxLength={30} name="code" label="کد:" />
                                     <Input formik={formik} maxLength={100000000000000000} name="min_order" label="حداقل سفارش:" />
                                     <Input formik={formik} maxLength={100000000} onlyNum={true} name="max_uses" label="حداکثر دفعات استفاده:" />

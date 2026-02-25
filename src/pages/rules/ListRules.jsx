@@ -70,7 +70,7 @@ const ListRules = () => {
 
     return (
         <>
-            <div className={`flex flex-col gap-4`}>
+            <div className={`flex flex-col gap-2`}>
                 {/*header*/}
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={false}  text3={"قوانین"}/>
@@ -149,7 +149,7 @@ const ListRules = () => {
                         :isError_list
                             ?<Reject />
                             :
-                            <form className="mt-7" onSubmit={formik.handleSubmit}>
+                            <form onSubmit={formik.handleSubmit}>
                                 {activeTab==="1" &&
                                     <div className="flex flex-col gap-6">
                                         <div className="flex flex-col w-full gap-2">
