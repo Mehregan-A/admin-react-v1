@@ -8,7 +8,6 @@ import {Toast} from "../../components/toast/Toast.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {
     deleteAsyncVariantAttributeVal,
-    getAsyncListVariantAttributeVal,
     postAsyncAddVariantAttributeVal, variantAttributeValClearDelete, variantAttributeValClearResult
 } from "../../feature/redux/VariantAttributeValueSlice.jsx";
 import {getAsyncListVariantAttributeSelect} from "../../feature/redux/VariantAttributeSlice.jsx";
@@ -31,7 +30,7 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
     const dispatch = useDispatch();
     const [label, setLabel] = useState("");
     const [value, setValue] = useState("");
-    const { list_variant_attribute_val,isLoading,isError_list,result,result_delete,isLoading_list,isLoading_action } = useSelector(state => state.variantAttributeValue);
+    const { isLoading,result,result_delete} = useSelector(state => state.variantAttributeValue);
 
     const [openVariant, setOpenVariant] = useState(null);
     const [activeVariantIndex, setActiveVariantIndex] = useState(0);
@@ -123,7 +122,6 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                 // toast
                 Toast.success(`${result.data.message}`);
                 dispatch(getAsyncListVariantAttributeSelect())
-                // dispatch(getAsyncListVariantAttributeVal({Id:openVariant}));
                 dispatch(variantAttributeValClearResult())
             }else{
                 // toast
@@ -307,14 +305,21 @@ const ProductVariants = ({variantAttributes, formik, isLoadingOptions,}) => {
                                                 />
                                             )}
                                             <span className="text-gray-700 dark:text-gray-100">{opt.label}</span>
-                                            <input
-                                                type="radio"
-                                                name={`variant-${activeVariantIndex}-${attr.value}`}
-                                                checked={variants?.[activeVariantIndex]?.option_ids?.includes(opt.id)}
-                                                onChange={() =>
-                                                    handleOptionChange(activeVariantIndex, opt, attr.value)
-                                                }
-                                            />
+                                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                                <input
+                                                    type="radio"
+                                                    className="hidden peer"
+                                                    name={`variant-${activeVariantIndex}-${attr.value}`}
+                                                    checked={variants?.[activeVariantIndex]?.option_ids?.includes(opt.id)}
+                                                    onChange={() => handleOptionChange(activeVariantIndex, opt, attr.value)}
+                                                />
+                                                <span className="w-4 h-4 rounded border border-gray-400 flex items-center justify-center peer-checked:bg-cyan-300 peer-checked:border-cyan-300 transition">
+                                                                <svg className="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition" viewBox="0 0 20 20" fill="currentColor">
+                                                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 11.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                                                                </svg>
+                                                </span>
+                                            </label>
+
                                             <button
                                                 type="button"
                                                 disabled={isLoading}

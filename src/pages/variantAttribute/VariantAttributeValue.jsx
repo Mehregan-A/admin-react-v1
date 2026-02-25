@@ -46,6 +46,8 @@ const VariantAttributeValue = ({ Id,open_close, open_slider }) => {
 
     const onSubmit = (values) => {
             dispatch(postAsyncAddVariantAttributeVal({ label: values.label , value:values.value, Id }));
+            formik.setFieldValue("label","");
+            formik.setFieldValue("value","");
     };
 
     const formik = useFormik({

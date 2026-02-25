@@ -57,22 +57,13 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
     };
 
     const initialValues = {
-        title: '',
+        title: "",
         search:"",
         extra_data:""
     };
 
-    const onSubmit = (values) => {
-        if(values.search && values.search.trim() !== "") {
-            dispatch(postAsyncSearchAttributeVal({ search: values.search, Id }));
-        } else if(values.title && values.title.trim() !== "") {
-            dispatch(getAsyncAddAttributeVal({ title: values.title, Id }));
-        }
-    };
-
     const formik = useFormik({
         initialValues: initialValues,
-        onSubmit,
         validateOnMount: true
     });
 
@@ -143,9 +134,7 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [myElementRef]);
 
-    const displayList = search
-        ? search.data.result
-        : list_attribute_val;
+    const displayList = search ? search.data.result : list_attribute_val;
 
     useEffect(() => {
         if (formik.values.search.trim() === "") {
@@ -269,6 +258,8 @@ const AttributeValue = ({ Id, list_attribute, open_close, reload, open_slider })
                                 e.preventDefault();
                                 if (formik.values.title.trim() !== "") {
                                     dispatch(getAsyncAddAttributeVal({ title: formik.values.title, Id }));
+                                    formik.setFieldValue("title","");
+                                    formik.setFieldValue("extra_data","");
                                 }
                             }}
                             className="w-full flex items-center justify-end gap-2"

@@ -91,6 +91,7 @@ const CategoryList = () => {
         if(result_delete && result_delete?.status){
             if(result_delete.status === 200) {
                 Toast.success(`${result_delete.data.message}`);
+                dispatch(getAsyncListCategory({ row, page}));
                 dispatch(categoryClearResultDelete());
             }else{
                 // toast
