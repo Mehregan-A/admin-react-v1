@@ -16,30 +16,39 @@ import Input from "../../components/inputs/Input.jsx";
 import {getAsyncListSocial, postAsyncEditSocial, socialClearResult} from "../../feature/redux/SocialNetworkSlice.jsx";
 import {FaFacebookSquare, FaInstagram, FaLinkedin, FaTelegram, FaYoutube} from "react-icons/fa";
 import {FaSquareXTwitter} from "react-icons/fa6";
+import {
+    contactUsClearResult,
+    getAsyncListContactUs,
+    postAsyncEditContactUs
+} from "../../feature/redux/ContactUsSlice.jsx";
 
 
-const SocialNetworkList = () => {
+const ContactUsList = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     useEffect(() => {
-        if (location.pathname === "/social-network") {
-            dispatch(getAsyncListSocial())
+        if (location.pathname === "/contact-us") {
+            dispatch(getAsyncListContactUs())
         }
     },[location.pathname])
 
-    const {result,isLoading,list_social,isLoading_list,isError_list} = useSelector(state => state.social);
+    const {result,isLoading,list_contact,isLoading_list,isError_list} = useSelector(state => state.contact);
     // redux
     const initialValues = {
-        telegram: "",
-        instagram: "",
-        twitter: "",
-        youtube: "",
-        linkedin: "",
-        aparat: "",
-        facebook: "",
-        eitaa: "",
-        bale: "",
-        rubika: ""
+        about_title: "",
+        about_body: "",
+        license: "",
+        site_slogan: "",
+        site_slogan_sub: "",
+        contact_title: "",
+        contact_address: "",
+        contact_phone_one: "",
+        contact_phone_two: "",
+        contact_mobile_one: "",
+        contact_mobile_two: "",
+        contact_email: "",
+        contact_image: "",
+        contact_zipcode: ""
     }
     const validationSchema = yup.object({
         // title: yup
@@ -97,12 +106,11 @@ const SocialNetworkList = () => {
     });
 
     const onSubmit = (values) => {
-        console.log(values)
-        dispatch(postAsyncEditSocial(values));
+        dispatch(postAsyncEditContactUs(values));
     };
 
     const formik = useFormik({
-        initialValues: list_social || initialValues,
+        initialValues: list_contact || initialValues,
         validationSchema,
         onSubmit,
         validateOnMount : true,
@@ -114,12 +122,12 @@ const SocialNetworkList = () => {
             if(result.status === 200) {
                 // toast
                 Toast.success(`${result.data.message}`);
-                dispatch(socialClearResult())
+                dispatch(contactUsClearResult())
 
             }else{
                 // toast
                 Toast.error(`${result.data.message}`);
-                dispatch(socialClearResult())
+                dispatch(contactUsClearResult())
             }
         }
     }, [result]);
@@ -142,61 +150,46 @@ const SocialNetworkList = () => {
                                     <div className="flex flex-col w-full items-center gap-2">
                                         <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl p-4">
                                             <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="rubika" label="آدرس روبیکا" />
-                                                <img className="w-10 h-10 mt-4.5" src={rubika}/>
-                                            </div>
-
-                                            <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="instagram" label="آدرس اینستاگرام" />
-                                                <div className="text-pink-600 mt-4.5">
-                                                    <FaInstagram size={35} />
-                                                </div>
-                                            </div>
-
-                                            <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="twitter" label="آدرس ایکس" />
-                                                <div className="dark:text-white mt-4.5">
-                                                    <FaSquareXTwitter size={35} />
-                                                </div>
+                                                <Input formik={formik} name="about_title" label="درباره عنوان" />
                                             </div>
                                             <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="youtube" label="آدرس یوتیوب" />
-                                                <div className="text-red-500 mt-4.5">
-                                                    <FaYoutube size={35} />
-                                                </div>
-                                            </div>
-
-                                            <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="linkedin" label="آدرس لینکدین" />
-                                                <div className="text-sky-500 mt-4.5">
-                                                    <FaLinkedin size={35} />
-                                                </div>
+                                                <Input formik={formik} name="about_body" label="درباره بدنه" />
                                             </div>
                                             <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="aparat" label="آدرس آپارات" />
-                                                <img className="w-10 h-10 mt-4.5" src={`${aparat}`}/>
-                                            </div>
-
-                                            <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="facebook" label="آدرس فیسبوک" />
-                                                <div className="text-sky-500 mt-4.5">
-                                                    <FaFacebookSquare size={35} />
-                                                </div>
-                                            </div>
-
-                                            <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="eitaa" label="آدرس ایتا" />
-                                                <img className="w-8.5 h-8.5 mt-4.5" src={eitaa}/>
+                                                <Input formik={formik} name="license" label="مجوز" />
                                             </div>
                                             <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="bale" label="آدرس بله" />
-                                                <img className="w-8.5 h-8.5 mt-4.5" src={bale}/>
+                                                <Input formik={formik} name="site_slogan" label="شعار سایت" />
                                             </div>
                                             <div className="flex items-center justify-center gap-2">
-                                                <Input formik={formik} name="telegram" label="آدرس تلگرام" />
-                                                <div className="text-sky-500 mt-4.5">
-                                                    <FaTelegram size={35} />
-                                                </div>
+                                                <Input formik={formik} name="site_slogan_sub" label="شعار سایت توضیحات" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_title" label="عنوان تماس با ما" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_address" label="آدرس تماس با ما" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_phone_one" label="تلفن تماس با ما اول" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_phone_two" label="تلفن تماس با ما دوم" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_mobile_one" label="موبایل تماس با ما اول" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_mobile_two" label="موبایل تماس با ما دوم" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_email" label="ایمیل تماس با ما" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_image" label="تصویر تماس با ما" />
+                                            </div>
+                                            <div className="flex items-center justify-center gap-2">
+                                                <Input formik={formik} name="contact_zipcode" label="کد پستی تماس با ما" />
                                             </div>
                                         </div>
                                     </div>
@@ -227,4 +220,4 @@ const SocialNetworkList = () => {
 
     );
 };
-export default SocialNetworkList;
+export default ContactUsList;

@@ -172,13 +172,13 @@ export const SideItem = [
         label: "پرداخت",
         sub: [
             {
-                id: 56,
+                id: 57,
                 icon: "PiCirclesThreeFill",
                 label: "پرداخت",
                 link: "/payment/list/50/1",
             },
             {
-                id: 57,
+                id: 58,
                 icon: "PiCirclesThreeFill",
                 label: "درگاه پرداخت",
                 link: "/gateway/list",
@@ -220,6 +220,12 @@ export const SideItem = [
                 icon: "PiCirclesThreeFill",
                 label: "شبکه های اجتماعی",
                 link: "/social-network",
+            },
+            {
+                id: 56,
+                icon: "PiCirclesThreeFill",
+                label: "ارتباط با ما",
+                link: "/contact-us",
             },
         ],
     },

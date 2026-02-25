@@ -34,6 +34,7 @@ import ListCouponRedemptions from "./pages/copunRedemptions/ListCouponRedemption
 import Listgateway from "./pages/payment/Listgateway.jsx";
 import IncreasePrice from "./pages/product/IncreasePrice.jsx";
 import SocialNetworkList from "./pages/socialNetwork/SocialNetworkList.jsx";
+import ContactUsList from "./pages/ContactUs/ContactUsList.jsx";
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
                     <Route path="rules" element={<ListRules />} />
                     <Route path="sms-setting" element={<SmsSetting />} />
                     <Route path="social-network" element={<SocialNetworkList />} />
+                    <Route path="contact-us" element={<ContactUsList />} />
                     <Route path="coupon/redemptions/:id/:row/:page" element={<ListCouponRedemptions />} />
                     <Route path="coupon/add/:id" element={<CouponAdd />} />
                     <Route path="coupon/add" element={<CouponAdd />} />
