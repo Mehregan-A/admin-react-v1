@@ -285,6 +285,10 @@ export const IncreasePriceOption = [
     { value: 'percent', label: 'درصدی' },
     { value: 'constant', label: 'ثابت' },
 ];
+export const CouponChoose = [
+    { value: 'product', label: 'کد تخفیف محصول' },
+    { value: 'free_shipping', label: 'کد ارسال رایگان' },
+];
 export const gateway = [
     { value: 'zarinpal', label: 'زرین پال' },
     { value: 'zibal', label: 'زیبال' },
