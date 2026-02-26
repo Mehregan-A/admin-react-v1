@@ -83,7 +83,7 @@ const InputLimitCount = ({
     useEffect(() => {
 
         const formikValue = getIn(formik.values, name);
-        if (formikValue===1) setIsAllBalance(true)
+        if (formikValue===0) setIsAllBalance(true)
 
         if (isAllBalance) {
             setDisplayValue("بدون محدودیت");
@@ -165,7 +165,7 @@ const InputLimitCount = ({
                         onClick={() => {
                             setIsAllBalance(true);
                             setDisplayValue("بدون محدودیت");
-                            formik.setFieldValue(name, 1);
+                            formik.setFieldValue(name, 0);
                         }}
                         className="absolute bg-gray-100 dark:bg-gray-800 transition-all duration-300 shadow shadow-cyan-300 cursor-pointer p-2 rounded-lg inset-y-0 flex items-center text-cyan-500 text-[5px] hover:text-cyan-600"
                     >

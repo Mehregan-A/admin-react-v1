@@ -107,13 +107,10 @@ const ListProduct = () => {
             name: "تصویر",
             selector: row => (
                 <ColoredShadowImage
-                    src={row.image ? Config.apiImage + row.image : CategoryNotFound}
+                    src={row.image ? Config.apiImage + row?.image : CategoryNotFound}
                 />
             ),
         },
-
-
-
         {
             name: "نام محصول",
             selector: row => row.title,
@@ -180,17 +177,6 @@ const ListProduct = () => {
                 numberPage={list_product?.page}
                 columns={columns}
             />
-            {/*{openAtt.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AttributeCategory*/}
-            {/*            open_slider={openAtt.open}*/}
-            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_product={list_product.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

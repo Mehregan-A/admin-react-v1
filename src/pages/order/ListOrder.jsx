@@ -4,15 +4,10 @@ import {useNavigate} from "react-router";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Config} from "../../config/Config.jsx";
-import {Toast} from "../../components/toast/Toast.jsx";
-import DataTable from "../../components/dataTable/DataTable.jsx";
 import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import AcceptMessage from "../../AcceptMessage.jsx";
 import {
-    BrandClearResultDelete,
     deleteAsyncBrand,
-    getAsyncListBrand,
-    getAsyncStatusBrand
 } from "../../feature/redux/BrandSlice.jsx";
 import {getAsyncListOrder, getAsyncStatusOrder} from "../../feature/redux/OrderSlice.jsx";
 import DataTableOrder from "../../components/dataTable/DataTableOrder.jsx";
@@ -251,28 +246,6 @@ const ListOrder = () => {
                 numberPage={list_order?.page}
                 columns={columns}
             />
-            {/*{openAdd.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AddBrand*/}
-            {/*            open_slider={openAdd.open}*/}
-            {/*            open_close={() => setOpenAdd({ open: !openAdd.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListBrand({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_brand={list_brand.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
-            {/*{openAtt.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AttributeCategory*/}
-            {/*            open_slider={openAtt.open}*/}
-            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_brand={list_brand.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

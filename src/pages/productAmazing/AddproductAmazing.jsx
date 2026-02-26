@@ -3,19 +3,12 @@ import {useFormik} from "formik";
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import {Toast} from "../../components/toast/Toast.jsx";
-import InputImageUpload from "../../components/inputs/InputImageUpload.jsx";
 import Input from "../../components/inputs/Input.jsx";
-import SelectOption from "../../components/inputs/SelectOption.jsx";
 import {options, status} from "../../assets/data/Data.js";
 import {useLocation, useParams} from "react-router-dom";
-import TextArea from "../../components/inputs/TextArea.jsx";
-import { NilfamEditor } from 'nilfam-editor';
 import 'nilfam-editor/nilfam-editor.css';
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
-
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
-import {getAsyncSelectCategory} from "../../feature/redux/CategorySlice.jsx";
-import Media from "../../components/inputs/media/Media.jsx";
 import SearchProductAmazing from "./SearchProductAmazing.jsx";
 import {PiStarFour, PiStarFourFill} from "react-icons/pi";
 import {Config} from "../../config/Config.jsx";
@@ -27,8 +20,8 @@ import {
     productAmazingClearResult,
 } from "../../feature/redux/AmazingProductSlice.jsx";
 import {FaTrash} from "react-icons/fa";
-import InputCount from "../../components/inputs/InputCount.jsx";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
+import InputLimitCount from "../../components/inputs/InputLimitCount.jsx";
 
 
 const AddProductAmazing = () => {
@@ -184,8 +177,8 @@ const AddProductAmazing = () => {
 
                                 <div className="flex md:flex-row flex-col xl:w-3/4 w-full gap-4 p-4">
                                     <Input isAmount={true} formik={formik} name={`list[${index}].amazing_price`} onChange={e => formik.setFieldValue(`list[${index}].amazing_price`, e.target.value)} label="مبلغ شگفت انگیز" />
-                                    <InputCount  formik={formik} name={`list[${index}].limit_qty`} onChange={e => formik.setFieldValue(`list[${index}].limit_qty`, e.target.value)} label="تعداد فروش" />
-                                    <InputCount  defaultValue={1} formik={formik} name={`list[${index}].order_limit`} onChange={e => formik.setFieldValue(`list[${index}].order_limit`, e.target.value)} label="حداکثر تعداد سبد خرید" />
+                                    <InputLimitCount  defaultValue={1} formik={formik} name={`list[${index}].limit_qty`} onChange={e => formik.setFieldValue(`list[${index}].limit_qty`, e.target.value)} label="تعداد فروش" />
+                                    <InputLimitCount  defaultValue={1} formik={formik} name={`list[${index}].order_limit`} onChange={e => formik.setFieldValue(`list[${index}].order_limit`, e.target.value)} label="حداکثر تعداد سبد خرید" />
                                 </div>
                                 <div onClick={()=>handleDelete(item)} className="text-cyan-300 pt-3.5 transition-all hover:text-red-500 cursor-pointer">
                                     <FaTrash size={20}/>

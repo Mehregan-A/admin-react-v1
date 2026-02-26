@@ -102,6 +102,7 @@ const CouponAdd = () => {
                             <div className="flex w-full gap-2 ">
                                 <div className="grid grid-cols-2 w-full  gap-4 bg-gray-50 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-3xl  p-4">
                                     <Input formik={formik} maxLength={30} name="code" label="کد:" />
+                                    <Input formik={formik} maxLength={30} name="label" label="نام کوپن:" />
                                     <Input formik={formik} maxLength={100000000000000000} name="min_order" label="حداقل سفارش:" />
                                     <Input formik={formik} maxLength={100000000} onlyNum={true} name="max_uses" label="حداکثر دفعات استفاده:" />
                                     <InputLimitCount formik={formik} name={`user_limit`} onChange={e => formik.setFieldValue(`user_limit`, e.target.value)} label="محدودیت برای هر کاربر:" />

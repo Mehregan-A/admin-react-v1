@@ -13,6 +13,7 @@ import {TbLock, TbLockFilled} from "react-icons/tb";
 import PasswordAdmin from "../admin/PasswordAdmin.jsx";
 import {getAsyncListAdmin} from "../../feature/redux/AdminSlice.jsx";
 import ProfilePassword from "./ProfilePassword.jsx";
+import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 // import UserWoman from "../../assets/images/UserWomen.png";
 // import HeaderBox from "../../components/header/HeaderBox.jsx";
 
@@ -34,11 +35,10 @@ const Profile = () => {
 
     return (
         <>
-            <div className={`flex flex-col gap-2 bg-gray-200 dark:bg-gray-800  min-h-screen lg:container`}>
+            <div className={`flex flex-col gap-2 bg-gray-200 dark:bg-gray-800  min-h-screen`}>
                 {/* Header */}
-                <div className='flex justify-start gap-2 p-5'>
-                    <div className="text-gray-400 dark:text-gray-300">  داشبورد   |  </div>
-                    <div className="text-cyan-700 dark:text-cyan-400">پروفایل</div>
+                <div className='flex justify-between items-center p-2'>
+                    <HeaderBox text1={"داشبورد"} text2={false} text3={"پروفایل"}/>
                 </div>
                 <div className={`flex flex-col gap-3 min-h-120`}>
                     {isLoading_list
@@ -46,12 +46,12 @@ const Profile = () => {
                         :isError_list
                             ?<Reject />
                             :profile &&
-                            <div className="w-full bg-gray-50 dark:bg-gray-800 shadow-lg dark:shadow-cyan-400 shadow-gray-300 p-7 rounded-xl  flex flex-col gap-4">
+                            <div className="w-full bg-gray-50 dark:bg-gray-700/60 shadow-lg dark:shadow-gray-600 shadow-gray-300 p-7 rounded-xl  flex flex-col gap-4">
                                 <span className="text-xl text-gray-800 dark:text-gray-100 p-2">پروفایل</span>
                                 <div className="flex items-center gap-7">
                                     <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 drop-shadow-xl drop-shadow-cyan-300">
                                         <img
-                                            src={profile.image ? Config.apiImage + profile.image : CategoryNotFound}
+                                            src={profile?.image ? Config.apiImage + profile?.image : CategoryNotFound}
                                             className="w-full h-full rounded-full object-cover"
                                             alt="profile"
                                         />
@@ -68,8 +68,8 @@ const Profile = () => {
                                                 </span>
                                             </div>
                                             <div className='bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600  border rounded-2xl w-20 items-center flex justify-center'>
-                                                <div className={`${profile.status==="active"?"text-green-500":"text-red-500"} `}>
-                                                    <span>{profile.status==="active"?"فعال":"غیرفعال"}</span>
+                                                <div className={`${profile?.status==="active"?"text-green-500":"text-red-500"} `}>
+                                                    <span>{profile?.status==="active"?"فعال":"غیرفعال"}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,7 +98,7 @@ const Profile = () => {
                                         <div className='relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600 border rounded-2xl h-8 items-center flex justify-center p-5'>
                                             <div>
                                                 <div className='dark:text-gray-100 text-gray-700'>
-                                                    <span>{profile.username}</span>
+                                                    <span>{profile?.username}</span>
                                                 </div>
                                             </div>
                                             <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
@@ -110,7 +110,7 @@ const Profile = () => {
                                         <div className='relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600 border rounded-2xl h-8 items-center flex justify-center p-5'>
                                             <div>
                                                 <div className='dark:text-gray-100 text-gray-700'>
-                                                    <span>{profile.mobile}</span>
+                                                    <span>{profile?.mobile}</span>
                                                 </div>
                                             </div>
                                             <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
@@ -122,7 +122,7 @@ const Profile = () => {
                                         <div className='relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600 border rounded-2xl h-8 items-center flex justify-center p-5'>
                                             <div>
                                                 <div className='dark:text-gray-100 text-gray-700'>
-                                                    <span>{profile.gender==="male"?"آقا":"خانم"}</span>
+                                                    <span>{profile?.gender==="male"?"آقا":"خانم"}</span>
                                                 </div>
                                             </div>
                                             <div className='absolute -bottom-px h-px w-1/4 bg-gradient-to-r dark:from-gray-600 dark:via-gray-100 dark:to-gray-600 from-gray-200 via-gray-600 to-gray-200 items-center flex'>
