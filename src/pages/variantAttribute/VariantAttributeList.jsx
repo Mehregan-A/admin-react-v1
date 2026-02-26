@@ -226,7 +226,7 @@ const VariantAttributeList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListVariantAttribute({ row, page }))}
                         Id={isIdsEdit.id}
-                        variantAttribute_list={variant_attribute_list.data}
+                        variantAttribute_list={variant_attribute_list?.data}
                     />
                 </div>
             )}
@@ -237,7 +237,7 @@ const VariantAttributeList = () => {
                         open_close={() => setOpenAtt({ open: !openAtt.open })}
                         reload={() => dispatch(getAsyncListVariantAttribute({ row, page }))}
                         Id={isIdsEdit.id}
-                        variantAttribute_list={variant_attribute_list.data}
+                        variantAttribute_list={variant_attribute_list?.data}
                     />
                 </div>
             )}

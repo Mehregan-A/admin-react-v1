@@ -210,7 +210,7 @@ const CategoryList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListCategory({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_category={list_category.data}
+                        list_category={list_category?.data}
                     />
                 </div>
             )}
@@ -221,7 +221,7 @@ const CategoryList = () => {
                         open_close={() => setOpenAtt({ open: !openAtt.open })}
                         reload={() => dispatch(getAsyncListCategory({ row, page }))}
                         Id={isIdsEdit.id}
-                        variantAttribute_list={list_category.data}
+                        variantAttribute_list={list_category?.data}
                     />
                 </div>
             )}

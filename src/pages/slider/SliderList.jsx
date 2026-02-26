@@ -243,7 +243,7 @@ const SliderList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListSlider({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_slider={list_slider.data}
+                        list_slider={list_slider?.data}
                     />
                 </div>
             )}

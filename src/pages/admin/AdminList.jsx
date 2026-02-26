@@ -249,8 +249,6 @@ const AdminList = () => {
                                                       </span>
 
                                                     <div className="absolute left-7 -top-3 w-6 h-6 bg-gray-100 dark:bg-gray-800 rounded-full border border-gray-200 dark:border-0"></div>
-                                                    {/*<div className="absolute -left-3 -top-3 w-6 h-6 bg-gray-100 rounded-full  border-red-500 border-2 border-dashed"></div>*/}
-                                                    {/*<div className="absolute -left-3 -bottom-3 w-6 h-6 bg-gray-100 rounded-full border border-gray-200"></div>*/}
                                                     <div className="absolute left-7 -bottom-3 w-6 h-6 bg-gray-100 dark:bg-gray-800 rounded-full border border-gray-200 dark:border-0"></div>
                                                 </div>
                                             </div>
@@ -271,7 +269,7 @@ const AdminList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListAdmin({ row, page }))}
                         id={isIdsEdit}
-                        list_admin={list_admin.data}
+                        list_admin={list_admin?.data}
                     />
                 </div>
             )}

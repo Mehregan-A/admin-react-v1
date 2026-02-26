@@ -94,7 +94,6 @@ const UserList = () => {
             }
         }
     }, [result_delete]);
-    console.log(list_user.data)
     // Cancel modal
     const handleReject = useCallback(() => {
         setShowModal(false);

@@ -9,14 +9,15 @@ const http  = axios.create({
 })
 
 http.interceptors.response.use(
-    res => res,
-    err => {
-        console.log(err)
+    (res) => res,
+    (err) => {
         if (err.response.status === 401) {
-            window.location.replace("/login")
-        }else {
-            return Promise.reject(err);
+            const currentURL = window.location.href;
+            if (!currentURL.endsWith("/login")) {
+                return window.location.href = "/login"
+            }
         }
+        return Promise.reject(err);
     }
 )
 export default http

@@ -45,6 +45,7 @@ const initialState = {
     result : [],
     isLoading: false,
     isError: false,
+    checkLogin:false
 }
 
 const loginSlice = createSlice({
@@ -54,6 +55,7 @@ const loginSlice = createSlice({
         loginClearResult : (state) => {
             state.login = false
             state.logout = false
+            state.checkLogin = false
         },
     },
     extraReducers : (builder)=> {
@@ -89,14 +91,16 @@ const loginSlice = createSlice({
             state.isError = true
         })
         builder.addCase(getAsyncCheck.fulfilled, (state, action) => {
-            state.result = action.payload
-            state.isAuthenticated = true
+            state.checkLogin = true
             state.isLoading = false
             state.isError = false
         })
+        builder.addCase(getAsyncCheck.pending, (state) => {
+            state.isLoading = true
+            state.isError = false
+        })
         builder.addCase(getAsyncCheck.rejected, (state, action) => {
-            state.result = action.payload
-            state.isAuthenticated = false
+            state.checkLogin = false
             state.isLoading = false
             state.isError = true
         })

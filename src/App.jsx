@@ -35,6 +35,7 @@ import Listgateway from "./pages/payment/Listgateway.jsx";
 import IncreasePrice from "./pages/product/IncreasePrice.jsx";
 import SocialNetworkList from "./pages/socialNetwork/SocialNetworkList.jsx";
 import ContactUsList from "./pages/ContactUs/ContactUsList.jsx";
+import NotFoundPage from "./pages/notfound/Notfound.jsx";
 
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
                     <Route path="article/list/:row/:page" element={<ArticleList />} />
                     <Route path="user/list/:row/:page" element={<UserList />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

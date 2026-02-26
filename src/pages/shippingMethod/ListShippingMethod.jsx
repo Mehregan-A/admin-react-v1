@@ -260,7 +260,7 @@ const ListShippingMethod = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListShippingMethod({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_shipping_method={list_shipping_method.data}
+                        list_shipping_method={list_shipping_method?.data}
                     />
                 </div>
             )}

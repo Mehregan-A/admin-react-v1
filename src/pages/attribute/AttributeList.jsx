@@ -231,7 +231,7 @@ const AttributeList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListAttribute({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_attribute={list_attribute.data}
+                        list_attribute={list_attribute?.data}
                     />
                 </div>
             )}
@@ -242,7 +242,7 @@ const AttributeList = () => {
                         open_close={() => setOpenAtt({ open: !openAtt.open })}
                         reload={() => dispatch(getAsyncListAttribute({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_attribute={list_attribute.data}
+                        list_attribute={list_attribute?.data}
                     />
                 </div>
             )}

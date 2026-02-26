@@ -181,21 +181,10 @@ const ListSubCategory = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListSubCategory({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_sub_category={list_sub_category.data}
+                        list_sub_category={list_sub_category?.data}
                     />
                 </div>
             )}
-            {/*{openAtt.open && (*/}
-            {/*    <div className="fixed inset-0 z-50 flex items-center justify-center">*/}
-            {/*        <AttributeCategory*/}
-            {/*            open_slider={openAtt.open}*/}
-            {/*            open_close={() => setOpenAtt({ open: !openAtt.open })}*/}
-            {/*            reload={() => dispatch(getAsyncListCategory({ row, page }))}*/}
-            {/*            Id={isIdsEdit.id}*/}
-            {/*            list_sub_category={list_sub_category.data}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             {showModal && (
                 <AcceptMessage
                     isLoading={isLoading_action}

@@ -193,7 +193,7 @@ const BrandList = () => {
                         open_close={() => setOpenAdd({ open: !openAdd.open })}
                         reload={() => dispatch(getAsyncListBrand({ row, page }))}
                         Id={isIdsEdit.id}
-                        list_brand={list_brand.data}
+                        list_brand={list_brand?.data}
                     />
                 </div>
             )}

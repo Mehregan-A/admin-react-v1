@@ -21,9 +21,17 @@ import MyAnimation from "../../components/MyAnimation.jsx";
 
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {theme}=useSelector(state => state.theme)
-    const { login,login_index,isLoading_enter } = useSelector(state => state.login);
+    const { login,isLoading_enter,checkLogin,isLoading } = useSelector(state => state.login);
     const navigation = useNavigate();
+
+    useEffect(() => {
+        if (checkLogin && checkLogin === true) {
+            dispatch(loginClearResult());
+            navigate("/");
+        }
+    },[checkLogin])
 
     const initialValues = {
         username: "",
