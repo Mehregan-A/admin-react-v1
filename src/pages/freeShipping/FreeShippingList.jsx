@@ -6,17 +6,13 @@ import {Toast} from "../../components/toast/Toast.jsx";
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import 'nilfam-editor/nilfam-editor.css';
-import {couponClearResult,} from "../../feature/redux/CouponSlice.jsx";
 import {
     getAsyncListShippingMethodFree,
     postAsyncEditShippingMethodFree, shippingClearResult
 } from "../../feature/redux/ShippingMethodSlice.jsx";
 import freeShippingFreeIcon from "../../assets/image/free-shipping-icon.png";
-import PostLogo from "../../assets/image/PostLogo.png";
 import Loading from "../../components/loading/Loading.jsx";
 import Reject from "../../components/loading/Reject.jsx";
-import {CiDeliveryTruck} from "react-icons/ci";
-import {IoBanOutline, IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {BiSolidError} from "react-icons/bi";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 
@@ -91,13 +87,13 @@ const FreeShippingList = () => {
                 </div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-6">
-                        <div className="flex w-full gap-2 ">
+                        <div className="flex w-4xl min-h-52 gap-2 bg-gray-100 dark:bg-gray-700/50 shadow-lg rounded-3xl  ">
                             {isLoading_list_free ? (
                                 <Loading />
                             ) : isError_list_free ? (
                                 <Reject />
                             ) :list_shipping_method_free && Object.values(list_shipping_method_free).length  > 0 ? (
-                                <div className="flex flex-col w-4xl gap-4 bg-gray-100 dark:bg-gray-700/50 shadow-lg rounded-3xl  p-10">
+                                <div className="flex w-full flex-col gap-4 p-10">
                                     <div className="flex items-center justify-between">
                                         <div className="w-1/2 flex-col flex gap-5">
                                             <InputCheckbox

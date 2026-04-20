@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
@@ -12,12 +12,11 @@ import {
 import InputCheckbox from "../../components/inputs/InputCheckbox.jsx";
 import Input from "../../components/inputs/Input.jsx";
 import SelectOption from "../../components/inputs/SelectOption.jsx";
-import {coupon, CouponChoose, filter, IncreasePriceOption} from "../../assets/data/Data.js";
+import {coupon, CouponChoose, filter} from "../../assets/data/Data.js";
 import {useParams} from "react-router-dom";
 import 'nilfam-editor/nilfam-editor.css';
 import InputCalendar from "../../components/inputs/InputCalender.jsx";
 import InputSelectStatus from "../../components/inputs/InputSelectStatus.jsx";
-import SelectOptionMultiSelect from "../../components/inputs/SelectOptionMultiSelect.jsx";
 import {
     couponClearResult, couponClearResultInfo,
     getAsyncInfoCoupon,
@@ -27,16 +26,19 @@ import {
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
 import InputLimitCount from "../../components/inputs/InputLimitCount.jsx";
 import InputRadioButton from "../../components/inputs/InputRadioButton.jsx";
-import {getAsyncListBrand, getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
+import {getAsyncSelectBrand} from "../../feature/redux/BrandSlice.jsx";
+import {getAsyncSelectSubCategory} from "../../feature/redux/CategorySubSlice.jsx";
 
 
 const CouponAdd = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {list_category_select} = useSelector(state => state.category);
+    const {list_sub_category_select} = useSelector(state => state.subcategory);
     const {list_brand_select} = useSelector(state => state.brand);
     useEffect(() => {
         dispatch(getAsyncSelectCategory())
+        dispatch(getAsyncSelectSubCategory())
         dispatch(getAsyncSelectBrand())
         dispatch(couponClearResultInfo())
         if (id){
@@ -55,11 +57,17 @@ const CouponAdd = () => {
         first_order_only: "",
         min_order: "",
         max_order: "",
+        max_value: "",
         start_at: "",
         expires_at: "",
         status: "",
-        brand_id: [],
-        category_id:[],
+        brand_id: "",
+        category_id:"",
+        active_brand:"",
+        active_category:"",
+        sub_category_id:"",
+        active_sub_category_select:"",
+        active_category_select:""
     }
     const validationSchema = yup.object({
     });
@@ -71,6 +79,7 @@ const CouponAdd = () => {
             dispatch(postAsyncAddCoupon(values));
         }
     };
+
 
     const formik = useFormik({
         initialValues: info_coupon ||  initialValues,
@@ -94,6 +103,21 @@ const CouponAdd = () => {
             }
         }
     }, [result]);
+    useEffect(() => {
+        if (formik.values.active_brand==="inactive"){
+            formik.setFieldValue("brand_id",0)
+        }if (formik.values.active_category==="inactive"){
+            formik.setFieldValue("sub_category_id",0)
+            formik.setFieldValue("category_id",0)
+        }if (formik.values.active_sub_category_select==="inactive"){
+            formik.setFieldValue("sub_category_id",0)
+            formik.setFieldValue("active_category_select","active")
+        }if (formik.values.active_category_select==="inactive"){
+            formik.setFieldValue("category_id",0)
+            formik.setFieldValue("active_sub_category_select","active")
+        }
+    }, [formik.values]);
+    console.log(formik.values)
 
     return (
         <>
@@ -113,76 +137,113 @@ const CouponAdd = () => {
                 <form onSubmit={formik.handleSubmit}>
                         <div className="flex flex-col gap-6">
                             <div className="flex w-full gap-2 ">
-                                <div className="grid grid-cols-2 w-full  gap-4 bg-gray-50 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-3xl  p-4">
-                                    <Input formik={formik} maxLength={30} name="code" label="کد:" />
-                                    <Input formik={formik} maxLength={100000000000000000} name="min_order" label="حداقل مبلغ سفارش:" />
-                                    {formik.values.type_coupon==="free_shipping" &&
-                                        <Input formik={formik} maxLength={100000000000000000} name="max_order" label="حداکثر مبلغ سفارش:" />
-                                    }
-                                    <Input formik={formik} maxLength={100000000} onlyNum={true} name="max_uses" label="حداکثر دفعات استفاده:" />
-                                    <InputLimitCount formik={formik} name={`user_limit`} onChange={e => formik.setFieldValue(`user_limit`, e.target.value)} label="محدودیت برای هر کاربر:" />
-                                    {!id &&
-                                        <SelectOption
-                                            formik={formik}
-                                            options={coupon}
-                                            name="type"
-                                            label="نوع کوپن"
-                                        />
-                                    }
-                                    {id &&
-                                        <InputSelectStatus
-                                            formik={formik}
-                                            optionEnter={info_coupon?.type}
-                                            options={coupon}
-                                            name="type"
-                                            label="نوع کوپن"
-                                        />
-                                    }
-                                    {formik.values.type_coupon==="product" &&
-                                        <div>
-                                            {formik.values.type==="percent"?
-                                                <Input formik={formik} maxLength={100} isPercent  name="value" label="درصد تخفیف:" />
-                                                :
-                                                <Input formik={formik} maxLength={100000000000} name="value" isAmount label="مبلغ تخفیف:" />
-                                            }
-                                        </div>
-                                    }
-                                    <SelectOption options={filter} formik={formik} name={`first_order_only`} label="محدود به اولین سفارش:" />
-                                    {formik.values.type_coupon==="product" &&
-                                        <SelectOptionMultiSelect
-                                        formik={formik}
-                                        formikAddress={formik.values.category_id}
-                                        options={list_category_select}
-                                        name="category_id"
-                                        label="انتخاب دسته"
-                                        />
-                                    }
-                                    {formik.values.type_coupon==="product" &&
-                                        <SelectOptionMultiSelect
-                                            formik={formik}
-                                            formikAddress={formik.values.brand_id}
-                                            options={list_brand_select}
-                                            name="brand_id"
-                                            label="انتخاب برند"
-                                        />
-                                    }
-                                    <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.start_at} />
-                                    <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.expires_at} minDate={
-                                        formik.values.start_at
-                                            ? new DateObject({
-                                                date: (formik.values.start_at + 3600) * 1000,
-                                                calendar: persian,
-                                                locale: persian_fa,
-                                            })
-                                            : null
-                                    } />
+                                <div className=" w-full  gap-4 bg-gray-50 dark:bg-gray-800 shadow-lg shadow-cyan-300 dark:shadow-cyan-500 rounded-3xl  p-4">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Input formik={formik} maxLength={30} name="code" label="کد:" />
+                                        <Input formik={formik} maxLength={100000000000000000} name="min_order" label="حداقل مبلغ سفارش:" />
+                                        {formik.values.type_coupon==="free_shipping" &&
+                                            <Input formik={formik} maxLength={100000000000000000} name="max_order" label="حداکثر مبلغ سفارش:" />
+                                        }
+                                        <Input formik={formik} maxLength={100000000} onlyNum={true} name="max_uses" label="حداکثر دفعات استفاده:" />
+                                        <InputLimitCount formik={formik} name={`user_limit`} onChange={e => formik.setFieldValue(`user_limit`, e.target.value)} label="محدودیت برای هر کاربر:" />
+                                        <SelectOption options={filter} formik={formik} name={`first_order_only`} label="محدود به اولین سفارش:" />
+                                    </div>
 
-                                    <InputCheckbox
-                                        formik={formik}
-                                        name="status"
-                                        label="کوپن فعال باشد؟"
-                                        value={true}
-                                    />
+                                    <div className="w-full text-gray-300 my-3 h-px border-dashed border"></div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {!id &&
+                                            <SelectOption
+                                                formik={formik}
+                                                options={coupon}
+                                                name="type"
+                                                label="نوع کوپن"
+                                            />
+                                        }
+                                        {id &&
+                                            <InputSelectStatus
+                                                formik={formik}
+                                                optionEnter={info_coupon?.type}
+                                                options={coupon}
+                                                name="type"
+                                                label="نوع کوپن"
+                                            />
+                                        }
+                                        {formik.values.type_coupon==="product" &&
+                                            <div>
+                                                {formik.values.type==="percent"?
+                                                    <Input formik={formik} maxLength={100} isPercent  name="value" label="درصد تخفیف:" />
+                                                    :
+                                                    <Input formik={formik} maxLength={100000000000} name="value" isAmount label="مبلغ تخفیف:" />
+                                                }
+                                            </div>
+                                        }
+                                        <InputCalendar formik={formik} name="start_at" type="normal" label="تاریخ شروع" formikAddress={formik.values.start_at} />
+                                        <InputCalendar formik={formik} name="expires_at" type="normal" label="تاریخ پایان" formikAddress={formik.values.expires_at} minDate={
+                                            formik.values.start_at ? new DateObject({date: (formik.values.start_at + 3600) * 1000, calendar: persian, locale: persian_fa,}) : null} />
+                                    </div>
+                                    <div className="w-full text-gray-300 my-3 h-px border-dashed border"></div>
+                                    <div className="flex flex-col gap-3">
+                                        <InputCheckbox
+                                            formik={formik}
+                                            name="active_brand"
+                                            label="انتخاب برند؟"
+                                            value={false}
+                                        />
+                                        <div className={`${formik.values.active_brand==="active"?"":"opacity-40"} items-center flex w-full gap-3`}>
+                                            <SelectOption
+                                                formik={formik}
+                                                options={list_brand_select}
+                                                name="brand_id"
+                                                label="انتخاب برند"
+                                            />
+                                        </div>
+                                        <InputCheckbox
+                                            formik={formik}
+                                            name="active_category"
+                                            label="انتخاب دسته بندی؟"
+                                            value={false}
+                                        />
+                                            <div className={`${formik.values.active_category==="active"?"":"opacity-40"} flex gap-3 items-center w-full`}>
+                                                <div className="flex gap-3 items-center w-full">
+                                                    <div className={`${formik.values.active_category_select==="active"?"":"opacity-40"} items-center flex w-full gap-3`}>
+                                                        <SelectOption
+                                                            formik={formik}
+                                                            options={list_category_select}
+                                                            name="category_id"
+                                                            label="انتخاب دسته"
+                                                        />
+                                                    </div>
+                                                    <InputCheckbox
+                                                        formik={formik}
+                                                        name="active_category_select"
+                                                        label="انتخاب دسته؟"
+                                                        value={false}
+                                                    />
+                                                </div>
+                                                <div className="flex gap-3 items-center w-full">
+                                                    <div className={`${formik.values.active_sub_category_select==="active"?"":"opacity-40"} items-center flex w-full gap-3`}>
+                                                        <SelectOption
+                                                            formik={formik}
+                                                            options={list_category_select.sub_category}
+                                                            name="active_sub_category_select"
+                                                            label="انتخاب زیر دسته"
+                                                        />
+                                                    </div>
+                                                    <InputCheckbox
+                                                        formik={formik}
+                                                        name="active_sub_category_select"
+                                                        label="انتخاب زیر دسته؟"
+                                                        value={false}
+                                                    />
+                                                </div>
+                                            </div>
+                                        <InputCheckbox
+                                            formik={formik}
+                                            name="status"
+                                            label="کوپن فعال باشد؟"
+                                            value={true}
+                                        />
+                                    </div>
                                     {/* Submit */}
                                     <div className="flex justify-center">
                                         <button

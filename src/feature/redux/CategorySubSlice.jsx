@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import http from "../../services/services.jsx";
+import {getAsyncSelectCategory} from "./CategorySlice.jsx";
 
 export const getAsyncListSubCategory = createAsyncThunk("subcategory/getAsyncListSubCategory",async (payload,{rejectWithValue})=>{
     try {
@@ -20,6 +21,14 @@ export const updateAsyncEditSubCategory = createAsyncThunk("subcategory/updateAs
 export const postAsyncAddSubCategory = createAsyncThunk("subcategory/postAsyncAddSubCategory",async (payload,{rejectWithValue})=>{
     try {
         const res = await http.post("/admin/sub-category/add",payload,{})
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
+export const getAsyncSelectSubCategory = createAsyncThunk("subcategory/getAsyncSelectSubCategory",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.get(`admin/sub_category/select`,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -56,6 +65,7 @@ const initialState = {
     result : false,
     isLoading: false,
     isError: false,
+    list_sub_category_select:[]
 }
 
 
@@ -143,6 +153,21 @@ const categorySubSlice = createSlice({
         builder.addCase(deleteAsyncSubCategory.rejected,(state,action)=>{
             state.result_delete = action.payload
             state.isLoading_action = false
+        })
+        builder.addCase(getAsyncSelectSubCategory.fulfilled,(state, action)=>{
+            state.list_sub_category_select = action.payload.data.result
+            state.isLoading_list = false
+            state.isError_list = false
+        })
+        builder.addCase(getAsyncSelectSubCategory.pending,(state)=>{
+            state.list_sub_category_select = false
+            state.isLoading_list = true
+            state.isError_list = false
+        })
+        builder.addCase(getAsyncSelectSubCategory.rejected,(state,action)=>{
+            state.list_sub_category_select = action.payload
+            state.isLoading_list = false
+            state.isError_list = true
         })
     }
 })

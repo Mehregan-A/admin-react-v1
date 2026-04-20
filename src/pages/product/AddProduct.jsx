@@ -257,9 +257,8 @@ const AddProduct = () => {
                                 </div>
                             }
                         </div>
-
                         <div className="bg-gray-100/50 rounded-xl p-5 dark:bg-gray-700/40 xl:w-2/6 md:w-3/6 w-full flex flex-col gap-5">
-                            <div className="flex gap-2 ">
+                            <div className="md:flex hidden gap-2 ">
                                 <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
                                     {/* Submit */}
                                     <div className="flex justify-center">
@@ -523,6 +522,48 @@ const AddProduct = () => {
                                                     </div>
                                                 );
                                             })}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="md:hidden flex gap-2 ">
+                                <div className="flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-md shadow-gray-300 dark:shadow-cyan-300/60 rounded-xl w-full p-4">
+                                    {/* Submit */}
+                                    <div className="flex justify-center">
+                                        <button
+                                            disabled={!formik.isValid || isLoading}
+                                            type="submit"
+                                            className={`w-full flex justify-center items-center gap-x-2 px-4 py-2 rounded-xl enabled:cursor-pointer disabled:bg-gray-500  bg-cyan-400 enabled:hover:bg-cyan-500} 
+                                            text-gray-50 text-sm transition-colors`}
+                                        >
+                                            {isLoading ? (
+                                                <>
+                                                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                                    <span>در حال {id ? "ویرایش" : "ثبت"}...</span>
+                                                </>
+                                            ) : (
+                                                <span>{id ? "ویرایش" : "ثبت"}</span>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <div className="flex justify-center items-center gap-2">
+                                        <InputCalendar formik={formik} name="publish_at" type="normal" label="تاریخ انتشار" formikAddress={formik.values.publish_at} />
+                                        {!id &&
+                                            <SelectOption
+                                                formik={formik}
+                                                options={status}
+                                                name="status"
+                                                label="وضعیت"
+                                            />
+                                        }
+                                        {id &&
+                                            <InputSelectStatus
+                                                formik={formik}
+                                                optionEnter={info_product?.status}
+                                                options={status}
+                                                name="status"
+                                                label="وضعیت"
+                                            />
+                                        }
                                     </div>
                                 </div>
                             </div>

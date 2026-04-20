@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { FaSearch, FaUserCircle} from "react-icons/fa";
-import {FaAlignRight} from "react-icons/fa";
 import {useDispatch, useSelector} from 'react-redux';
 import {redirect, useNavigate} from "react-router";
 import {getAsyncLogout} from "../feature/redux/LoginSlice.jsx";
-import {Toast} from "./toast/Toast.jsx";
-import {FaRightFromBracket} from "react-icons/fa6";
 import {IoLogOutOutline, IoReorderThreeOutline} from "react-icons/io5";
 import {PiMoonThin, PiSignOut, PiSunDimThin} from "react-icons/pi";
 import {Config} from "../config/Config.jsx";
 import CategoryNotFound from "../assets/image/category_not_found.png";
+import UserNotFound from "../assets/image/Image-not-found.png";
 import {getAsyncProfile} from "../feature/redux/ProfileSlice.jsx";
 import {set_theme} from "../feature/redux/ThemeSlice.jsx";
 
@@ -75,18 +72,27 @@ const Navbar = ({open_close}) => {
                 <div
                     onClick={() => navigate(`/profile`)}
                     className="flex items-center justify-center gap-3 shadow-md dark:shadow-gray-500 dark:bg-gray-800 rounded-3xl px-2 py-1.5 cursor-pointer">
-                    <div className="flex dark:text-gray-100 text-sm text-gray-700 font-semibold">
+                    <div className="flex gap-1.5 dark:text-gray-100 text-sm text-gray-700 font-semibold">
                         <span>{profile?.name}</span>
                         <span>{profile?.family}</span>
                     </div>
-                    <div
-                        className="w-12 h-12 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
-                        <img
-                            src={profile?.image ? Config.apiImage + profile?.image : CategoryNotFound}
-                            className="w-full h-full rounded-full object-cover"
-                            alt="profile"
-                        />
-                    </div>
+                    {profile.role==="developer"?
+                        <div className="w-12 h-12 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
+                            <img
+                                src={UserNotFound}
+                                className="w-full h-full rounded-full object-cover"
+                                alt="profile"
+                            />
+                        </div>
+                        :
+                        <div className="w-12 h-12 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
+                            <img
+                                src={profile?.image ? Config.apiImage + profile?.image : UserNotFound}
+                                className="w-full h-full rounded-full object-cover"
+                                alt="profile"
+                            />
+                        </div>
+                    }
                 </div>
             </div>
         </div>

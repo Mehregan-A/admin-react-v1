@@ -14,14 +14,13 @@ import PasswordAdmin from "../admin/PasswordAdmin.jsx";
 import {getAsyncListAdmin} from "../../feature/redux/AdminSlice.jsx";
 import ProfilePassword from "./ProfilePassword.jsx";
 import HeaderBox from "../../components/headerBox/HeaderBox.jsx";
+import UserNotFound from "../../assets/image/Image-not-found.png";
 // import UserWoman from "../../assets/images/UserWomen.png";
 // import HeaderBox from "../../components/header/HeaderBox.jsx";
 
 
 
 const Profile = () => {
-    const navigate = useNavigate();
-    const [openAdd ,setOpenAdd] = useState({open:false})
     const [openPass ,setOpenPass] = useState({open:false})
 
 // Redux
@@ -32,30 +31,41 @@ const Profile = () => {
 
 // List article selector
     const { profile,isLoading_list,isError_list } = useSelector(state => state.profile);
+    console.log(Config.apiImage + profile?.image)
 
     return (
         <>
-            <div className={`flex flex-col gap-2 bg-gray-200 dark:bg-gray-800  min-h-screen`}>
+            <div className={`flex flex-col gap-2 bg-gray-200 dark:bg-gray-800  min-h-screen `}>
                 {/* Header */}
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={false} text3={"پروفایل"}/>
                 </div>
-                <div className={`flex flex-col gap-3 min-h-120`}>
+                <div className={`flex flex-col gap-3 min-h-120 w-full bg-gray-50 dark:bg-gray-700/60 shadow-lg dark:shadow-gray-600 shadow-gray-300 p-7 rounded-xl`}>
                     {isLoading_list
                         ?<Loading />
                         :isError_list
                             ?<Reject />
                             :profile &&
-                            <div className="w-full bg-gray-50 dark:bg-gray-700/60 shadow-lg dark:shadow-gray-600 shadow-gray-300 p-7 rounded-xl  flex flex-col gap-4">
+                            <div className="  flex flex-col gap-4">
                                 <span className="text-xl text-gray-800 dark:text-gray-100 p-2">پروفایل</span>
                                 <div className="flex items-center gap-7">
-                                    <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 drop-shadow-xl drop-shadow-cyan-300">
-                                        <img
-                                            src={profile?.image ? Config.apiImage + profile?.image : CategoryNotFound}
-                                            className="w-full h-full rounded-full object-cover"
-                                            alt="profile"
-                                        />
-                                    </div>
+                                    {profile.role==="developer"?
+                                        <div className="w-20 h-20 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
+                                            <img
+                                                src={UserNotFound}
+                                                className="w-full h-full rounded-full object-cover"
+                                                alt="profile"
+                                            />
+                                        </div>
+                                        :
+                                        <div className="w-20 h-20 cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-600 rounded-full border border-gray-100 dark:shadow-cyan-500 shadow-md">
+                                            <img
+                                                src={profile?.image ? Config.apiImage + profile?.image : CategoryNotFound}
+                                                className="w-full h-full rounded-full object-cover"
+                                                alt="profile"
+                                            />
+                                        </div>
+                                    }
                                     <div className="flex flex-col gap-4">
                                         <div className="flex  gap-5 items-center">
                                             <div className='bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600  border rounded-2xl w-20 items-center flex justify-center'>
@@ -73,7 +83,7 @@ const Profile = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='flex justify-center text-xl dark:text-gray-100'>
+                                        <div className='flex justify-center text-xl gap-2 dark:text-gray-100'>
                                             <span>{profile.name}</span>
                                             <span>{profile.family}</span>
                                         </div>
@@ -84,7 +94,7 @@ const Profile = () => {
                                         <span className="dark:text-gray-300 text-gray-800">نام</span>
                                         <div className='relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200 dark:border-gray-600 border rounded-2xl h-8 items-center flex justify-center p-5'>
                                             <div>
-                                                <div className='dark:text-gray-100 text-gray-700'>
+                                                <div className='flex justify-center gap-2 dark:text-gray-100 text-gray-700'>
                                                     <span>{profile.name}</span>
                                                     <span>{profile.family}</span>
                                                 </div>

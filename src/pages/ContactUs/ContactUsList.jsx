@@ -139,7 +139,7 @@ const ContactUsList = () => {
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={"تنظیمات"}  text3={`شبکه های اجتماعی`}/>
                 </div>
-                <div className={`flex flex-col gap-3 min-h-120`}>
+                <div className={`flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-700/60 rounded-3xl shadow-lg dark:drop-shadow-xl drop-shadow-gray-500 p-5`}>
                     {isLoading_list
                         ?<Loading />
                         :isError_list

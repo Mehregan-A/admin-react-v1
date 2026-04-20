@@ -131,7 +131,7 @@ const SocialNetworkList = () => {
                 <div className='flex justify-between items-center p-2'>
                     <HeaderBox text1={"داشبورد"} text2={"تنظیمات"}  text3={`شبکه های اجتماعی`}/>
                 </div>
-                <div className={`flex flex-col gap-3 min-h-120`}>
+                <div className={`flex flex-col gap-3 min-h-120 bg-gray-50 dark:bg-gray-700/60 rounded-3xl shadow-lg dark:drop-shadow-xl drop-shadow-gray-500 p-5`}>
                     {isLoading_list
                         ?<Loading />
                         :isError_list
@@ -140,7 +140,7 @@ const SocialNetworkList = () => {
                             <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
                                 <div className="flex flex-col gap-6">
                                     <div className="flex flex-col w-full items-center gap-2">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-gray-600 rounded-xl p-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 ">
                                             <div className="flex items-center justify-center gap-2">
                                                 <Input formik={formik} name="rubika" label="آدرس روبیکا" />
                                                 <img className="w-10 h-10 mt-4.5" src={rubika}/>

@@ -152,7 +152,7 @@ const AddVariantAttribute = ({Id,variantAttribute_list,open_close,reload,open_sl
                             <div className="flex flex-col md:flex-row md:gap-4 gap-6">
                                 {/* Inputs */}
                                 <div className="w-full grid grid-cols-1 items-center justify-center gap-4">
-                                    <Input formik={formik} name="title" onlyChar={true} maxLength={35} label="نام ویژگی" />
+                                    <Input formik={formik} name="title" maxLength={35} label="نام ویژگی" />
                                 </div>
                                 <div className="w-full md:w-[200px] flex flex-col justify-end gap-4 md:mt-2.5 md:gap-7">
 

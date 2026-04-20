@@ -42,15 +42,6 @@ const ArticleList = () => {
             navigate(`/article/list/${row}/${page}`);
         }
     }, [row,page, dispatch, navigate]);
-    // Open user form with selected id
-    const setOpenId = (id,action) => {
-        setOpenAdd({ open: true });
-        setIdsEdit({id,action});
-    };
-    const setOpenIdAtt = (id,action) => {
-        setOpenAtt({ open: true });
-        setIdsEdit({id,action});
-    };
     // Handle delete or deactivate action
     const handleActionRequest = useCallback((type, id) => {
         if (type === "active"){
