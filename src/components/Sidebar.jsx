@@ -41,7 +41,6 @@ const Sidebar = ({ open_close, open_slider }) => {
             return () => (document.body.style.overflow = "");
         }
     }, [open_slider]);
-
     useEffect(() => {
         if (logout && logout.status) {
             if (logout.status === 200) {
