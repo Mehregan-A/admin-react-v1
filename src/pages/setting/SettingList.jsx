@@ -134,8 +134,7 @@ const SettingList = () => {
                 <div className="w-full text-sm p-1.5 flex flex-col md:flex-row gap-3 bg-gray-100 dark:bg-gray-700 dark:shadow-cyan-200 dark:shadow-md   rounded-xl shadow-lg items-center">
                     <button
                         onClick={() => setActiveTab("1")}
-                        className={`w-full relative flex items-center justify-center rounded-xl p-2.5 md:text-[15px] text-gray-800 text-xs cursor-pointer transition-colors 
-              ${
+                        className={`w-full relative flex items-center justify-center rounded-xl p-2.5 md:text-[15px] text-gray-800 text-xs cursor-pointer transition-colors ${
                             activeTab === "1"
                                 ? "bg-gray-50 shadow-lg dark:shadow-cyan-200 dark:shadow-md shadow-gray-400/60 font-semibold dark:bg-gray-800/50 dark:text-gray-100"
                                 : "dark:text-gray-100"

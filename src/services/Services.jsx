@@ -3,7 +3,9 @@ import {Config as config} from "../config/Config.jsx";
 
 
 const http  = axios.create({
-    headers: {'Content-Type': 'multipart/form-data'},
+    headers: {
+        "Content-Type": "application/json"
+    },
     withCredentials: true,
     baseURL:config.api
 })

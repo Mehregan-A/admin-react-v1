@@ -1,18 +1,35 @@
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import http from "../../services/services.jsx";
+import http from "../../services/Services.jsx";
 
 export const postAsyncLogin = createAsyncThunk("login/postAsyncLogin",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.post("/admin/login",payload,{})
+        const res = await http.post("/verify",payload,{})
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
+export const postAsyncVerify = createAsyncThunk("login/postAsyncVerify",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.post("/OTP",payload,{})
+        return await res
+    }catch (error) {
+        return rejectWithValue(error.response, error.message)
+    }
+})
+export const postAsyncAuth = createAsyncThunk("login/postAsyncAuth",async (payload,{rejectWithValue})=>{
+    try {
+        const res = await http.post("/user/profile/update/form",payload,{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
 
+
 export const getAsyncLogout = createAsyncThunk("login/getAsyncLogout",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get("/admin/logout",{})
+        const res = await http.get("/user/logout",{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -20,15 +37,15 @@ export const getAsyncLogout = createAsyncThunk("login/getAsyncLogout",async (pay
 })
 export const getAsyncCheck = createAsyncThunk("login/getAsyncCheck",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get("/admin/check-login",{})
+        const res = await http.get("/user/check-login",{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
     }
 })
-export const getAsyncLoginIndex = createAsyncThunk("login/getAsyncLoginIndex",async (payload,{rejectWithValue})=>{
+export const getAsyncCaptcha = createAsyncThunk("login/getAsyncCaptcha",async (payload,{rejectWithValue})=>{
     try {
-        const res = await http.get("/index/login",{})
+        const res = await http.get("/captcha",{})
         return await res
     }catch (error) {
         return rejectWithValue(error.response, error.message)
@@ -36,6 +53,11 @@ export const getAsyncLoginIndex = createAsyncThunk("login/getAsyncLoginIndex",as
 })
 
 const initialState = {
+    open:false,
+    isLoading_auth:false,
+    isLoading_verify:false,
+    captcha:false,
+    verify:false,
     login_index:[],
     isLoading_enter:false,
     isAuthenticated: null,
@@ -43,9 +65,11 @@ const initialState = {
     logout:false,
     login : false,
     result : [],
+    checkLogin:null,
     isLoading: false,
     isError: false,
-    checkLogin:false
+    auth:false,
+    isLoading_captcha: false,
 }
 
 const loginSlice = createSlice({
@@ -57,6 +81,18 @@ const loginSlice = createSlice({
             state.logout = false
             state.checkLogin = false
         },
+        authClearResult : (state) => {
+            state.auth = false
+            state.checkLogin = true
+        },
+        verifyClearResult : (state) => {
+            state.verify = false
+            state.checkLogin = true
+
+        },
+        openLoginState: (state, action) => {
+            state.open = action.payload;
+        }
     },
     extraReducers : (builder)=> {
         builder.addCase(postAsyncLogin.fulfilled, (state, action) => {
@@ -72,6 +108,36 @@ const loginSlice = createSlice({
         builder.addCase(postAsyncLogin.rejected, (state, action) => {
             state.login = action.payload
             state.isLoading_enter = false
+            state.isError = true
+        })
+        builder.addCase(postAsyncAuth.fulfilled, (state, action) => {
+            state.auth = action.payload
+            state.isLoading_auth = false
+            state.isError = false
+        })
+        builder.addCase(postAsyncAuth.pending, (state) => {
+            state.auth = false
+            state.isLoading_auth = true
+            state.isError = false
+        })
+        builder.addCase(postAsyncAuth.rejected, (state, action) => {
+            state.auth = action.payload
+            state.isLoading_auth = false
+            state.isError = true
+        })
+        builder.addCase(postAsyncVerify.fulfilled, (state, action) => {
+            state.verify = action.payload
+            state.isLoading_verify = false
+            state.isError = false
+        })
+        builder.addCase(postAsyncVerify.pending, (state) => {
+            state.verify = false
+            state.isLoading_verify = true
+            state.isError = false
+        })
+        builder.addCase(postAsyncVerify.rejected, (state, action) => {
+            state.verify = action.payload
+            state.isLoading_verify = false
             state.isError = true
         })
 
@@ -104,24 +170,24 @@ const loginSlice = createSlice({
             state.isLoading = false
             state.isError = true
         })
-        builder.addCase(getAsyncLoginIndex.fulfilled, (state, action) => {
-            state.login_index = action.payload.data.result
-            state.isLoading = false
+        builder.addCase(getAsyncCaptcha.fulfilled, (state, action) => {
+            state.captcha = action.payload.data.result
+            state.isLoading_captcha = false
             state.isError = false
         })
-        builder.addCase(getAsyncLoginIndex.pending, (state) => {
-            state.login_index = false
-            state.isLoading = true
+        builder.addCase(getAsyncCaptcha.pending, (state) => {
+            state.captcha = false
+            state.isLoading_captcha = true
             state.isError = false
         })
-        builder.addCase(getAsyncLoginIndex.rejected, (state, action) => {
-            state.login_index = action.payload
-            state.isLoading = false
+        builder.addCase(getAsyncCaptcha.rejected, (state, action) => {
+            state.captcha = action.payload
+            state.isLoading_captcha = false
             state.isError = true
         })
     }
 
 })
-export const { loginClearResult} = loginSlice.actions
+export const {openLoginState, loginClearResult,authClearResult,verifyClearResult} = loginSlice.actions
 
 export default loginSlice.reducer
